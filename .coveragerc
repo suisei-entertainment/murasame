@@ -1,0 +1,24 @@
+[run]
+branch = True
+cover_pylib = False
+concurrency = thread
+omit =
+    */test/*
+    */__init__.py
+    */site-packages/*
+    */.murasame/*
+
+[paths]
+source =
+    */murasame/*
+
+[report]
+precision = 2
+skip_covered = False
+
+[html]
+directory = ~/.murasame/logs/test/coverage
+title = Murasame Unit Test Coverage Report
+
+[xml]
+output = ~/.murasame/coverage.xml
