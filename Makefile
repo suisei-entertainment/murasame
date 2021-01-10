@@ -17,61 +17,72 @@
 ##
 ## ============================================================================
 
+SHELL := /bin/bash
+
 WORKSPACE_DIRECTORY =  ~/.murasame
 VIRTUALENV_DIRECTORY = ./.env
 
 configure:
-	echo "Creating workspace directories..."
+	@echo Creating workspace directories...
 	mkdir -p $(WORKSPACE_DIRECTORY)
+	mkdir -p $(WORKSPACE_DIRECTORY)/build
+	mkdir -p $(WORKSPACE_DIRECTORY)/dist
 	mkdir -p $(WORKSPACE_DIRECTORY)/testfiles
 	mkdir -p $(WORKSPACE_DIRECTORY)/logs
 	mkdir -p $(WORKSPACE_DIRECTORY)/logs/unittest
-	echo ""
+	@echo
 
-	echo "Creating virtual environment in ./.env..."
+	@echo Creating virtual environment in ./.env...
 	virtualenv --python=python3.8 $(VIRTUALENV_DIRECTORY)
-	echo ""
+	@echo
 
-	echo "Installing requirements inside the virtual environment..."
-	source $(VIRTUALENV_DIRECTORY)/bin/activate; \
-	pip install -r requirements-dev.txt; \
-	pip install -r requirements.txt;
-	echo ""
+	@echo Installing requirements inside the virtual environment...
+	( \
+		source $(VIRTUALENV_DIRECTORY)/bin/activate; \
+		pip install -r requirements-dev.txt; \
+		pip install -r requirements.txt; \
+	)
+	@echo
 
 install:
-	echo "Uninstalling previous version..."
+	@echo Uninstalling previous version...
 	pip uninstall -y murasame
-	echo ""
+	@echo
 
-	echo "Installing current version..."
-	pip install ./dist/murasame-0.1.0-py3-none-any.whl
-	echo ""
+	@echo Installing current version...
+	pip install $(WORKSPACE_DIRECTORY)/murasame-0.1.0-py3-none-any.whl
+	@echo
 
 build:
-	echo "Executing project build..."
-	./scripts/build
-	echo ""
+	@echo Executing project build...
+	./scripts/build development
+	@echo
 
 documentaiton:
-	echo "Building project documentation..."
-	sphinx-build -E -a -b html ./documentation/ ./dist/documentation/
-	echo ""
+	@echo Building project documentation...
+	sphinx-build -E -a -b html ./documentation/ $(WORKSPACE_DIRECTORY)/dist/documentation/
+	@echo
 
 unittest:
-	echo "Executing unit tests..."
+	@echo Executing unit tests...
 	pytest -v --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
-	echo ""
+	@echo
 
 lint:
-	echo "Executing linter..."
+	@echo Executing linter...
 	pylint --rcfile=./.pylintrc --exit-zero ./murasame
-	echo ""
+	@echo
 
 coverage:
-	echo "Measuring unit test coverage..."
+	@echo Measuring unit test coverage...
 	coverage run -m pytest -vv --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
 	coverage report
 	coverage html
-	echo ""
+	@echo
+
+release:
+	@echo Releasing new version...
+	./scripts/build release
+	@echo
 
 .PHONY: unittest build

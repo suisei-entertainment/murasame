@@ -1,0 +1,10 @@
+{
+    "major": "0",
+    "minor": "1",
+    "patch": "0",
+    "release": "development",
+    "meta": {
+        "codename": "Fujin",
+        "build": "0"
+    }
+}
