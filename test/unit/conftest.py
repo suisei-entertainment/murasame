@@ -17,4 +17,14 @@
 ##
 ## ============================================================================
 
-from murasame.utils.singleton import Singleton
+"""
+Contains unit test configuration.
+"""
+
+# Dependency Imports
+import pytest
+from py.xml import html
+
+def pytest_html_report_title(report):
+
+   report.title = "Murasame Unit Test Results"

@@ -16,5 +16,3 @@
 ##  limitations under the License.
 ##
 ## ============================================================================
-
-from murasame.utils.singleton import Singleton
