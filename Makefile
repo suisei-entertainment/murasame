@@ -50,12 +50,12 @@ install:
 	@echo
 
 	@echo Installing current version...
-	pip install $(WORKSPACE_DIRECTORY)/murasame-0.1.0-py3-none-any.whl
+	pip install $(WORKSPACE_DIRECTORY)/dist/murasame-0.1.0-py3-none-any.whl
 	@echo
 
 build:
 	@echo Executing project build...
-	./scripts/build development
+	./scripts/build
 	@echo
 
 documentaiton:
@@ -82,7 +82,7 @@ coverage:
 
 release:
 	@echo Releasing new version...
-	./scripts/build release
+	./scripts/build --release
 	@echo
 
 .PHONY: unittest build

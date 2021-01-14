@@ -445,7 +445,7 @@ def parse_command_line() -> object:
     parser = argparse.ArgumentParser(
         description='Build utility of the Murasame framework.')
 
-    parser.add_argument('release',
+    parser.add_argument('--release',
                         dest='release',
                         action='store_true',
                         help='Execute the release process after a successful '
@@ -476,6 +476,9 @@ def main() -> None:
 
     # Process command line
     args = parse_command_line()
+
+    if args.release:
+        build_type == BuildTypes.RELEASE
 
     # Execute the build
     bump_version_number()
