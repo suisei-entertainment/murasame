@@ -109,6 +109,11 @@ class SystemLocator:
         List of directories where system implementations are stored.
         """
 
+        self._modules = []
+        """
+        List of modules loaded by the system locator.
+        """
+
     def register_provider(self, system: object, instance: object) -> None:
 
         """
@@ -148,10 +153,10 @@ class SystemLocator:
         if providers is not None:
             providers.remove(instance)
 
-        if len(providers) == 0:
-            system_object = self._systems.get(system)
-            if system_object:
-                del system_object
+            if len(providers) == 0:
+                system_object = self._systems.get(system)
+                if system_object:
+                    del system_object
 
     def unregister_all_providers(self, system: object) -> None:
 
@@ -167,7 +172,7 @@ class SystemLocator:
 
         system_object = self._systems.get(system)
         if system_object:
-            del system_object
+            self._systems.pop(system)
 
     def reset(self) -> None:
 
@@ -180,6 +185,10 @@ class SystemLocator:
 
         self._systems = {}
         self._system_paths = []
+
+        # Also invalidate the module caches so modules can be imported again
+        # if required.
+        importlib.invalidate_caches()
 
     def get_all_providers(self, system: object) -> list:
 
@@ -303,8 +312,19 @@ class SystemLocator:
 
                 import_name = '{}.{}'.format(system_path.Package, filename)
 
-                # Register the system
-                importlib.import_module(import_name)
+                module_loaded = False
+                for module in self._modules:
+                    if module.__name__ == import_name:
+                        importlib.reload(module)
+                        module_loaded = True
+                        break
+
+                if not module_loaded:
+
+                    # Register the system by loading its module
+                    module = importlib.import_module(import_name)
+                    if module is not None:
+                        self._modules.append(module)
 
             os.chdir(current_dir)
 
@@ -316,6 +336,10 @@ def System(*systems):
     Class decorator that declares a class to provide a set of systems. It is
     expected that the class has a no-arg constructor and will be instantiated
     as a singleton.
+
+    This decorator only works once. So if this system is unregistered manually
+    or reset() is called on SystemLocator then all systems using this
+    decorator has to be registered manually again.
 
     Args:
         systems:        The list of systems that the decorated class will

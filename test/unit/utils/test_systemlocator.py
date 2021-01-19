@@ -155,15 +155,15 @@ class TestSystemLocator:
         if not os.path.isdir(SYSTEM_DIR):
             os.mkdir(SYSTEM_DIR)
 
-        # Create a test system file
-        system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
-        with open(system_file, 'w+') as test_file:
-            test_file.write(TEST_SYSTEM)
+            # Create a test system file
+            system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
+            with open(system_file, 'w+') as test_file:
+                test_file.write(TEST_SYSTEM)
 
-        # Create an __init__.py file
-        init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
-        with open(init_file, 'w+') as test_file:
-            test_file.write('\n')
+            # Create an __init__.py file
+            init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
+            with open(init_file, 'w+') as test_file:
+                test_file.write('\n')
 
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
         SystemLocator.instance().discover_systems()
@@ -172,3 +172,97 @@ class TestSystemLocator:
         provider = SystemLocator.instance().get_provider(AbstractSystem)
         assert provider is not None
         assert provider.system_function()
+
+    def test_resetting_system_locator(self):
+
+        """
+        Tests that the system locator can be reset.
+        """
+
+        # STEP #1 - Reset should remove existing providers
+        sys.path.append(os.path.abspath(os.path.expanduser(
+            '~/.murasame/testfiles/')))
+
+        if not os.path.isdir(SYSTEM_DIR):
+            os.mkdir(SYSTEM_DIR)
+
+            # Create a test system file
+            system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
+            with open(system_file, 'w+') as test_file:
+                test_file.write(TEST_SYSTEM)
+
+            # Create an __init__.py file
+            init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
+            with open(init_file, 'w+') as test_file:
+                test_file.write('\n')
+
+        SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
+        SystemLocator.instance().discover_systems()
+
+        from systems.testsystem import AbstractSystem, ConcreteSystem
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+        assert provider is not None
+        assert provider.system_function()
+
+        SystemLocator.instance().reset()
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+        assert provider is None
+
+        # STEP #2 - New providers can be added after reset
+        SystemLocator.instance().register_provider(AbstractSystem, ConcreteSystem())
+
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+        assert provider is not None
+        assert provider.system_function()
+
+    def test_provider_unregistration(self):
+
+        """
+        Tests that registered system providers can be unregistered.
+        """
+
+        # STEP #1 - Unregistering a single provider
+        SystemLocator.instance().reset()
+
+        sys.path.append(os.path.abspath(os.path.expanduser(
+            '~/.murasame/testfiles/')))
+
+        if not os.path.isdir(SYSTEM_DIR):
+            os.mkdir(SYSTEM_DIR)
+
+            # Create a test system file
+            system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
+            with open(system_file, 'w+') as test_file:
+                test_file.write(TEST_SYSTEM)
+
+            # Create an __init__.py file
+            init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
+            with open(init_file, 'w+') as test_file:
+                test_file.write('\n')
+
+        SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
+        SystemLocator.instance().discover_systems()
+
+        from systems.testsystem import AbstractSystem, ConcreteSystem
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+        assert provider is not None
+        assert provider.system_function()
+
+        SystemLocator.instance().unregister_provider(AbstractSystem, provider)
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+
+        assert provider is None
+
+        # STEP #2 - Unregister all providers
+        from systems.testsystem import AbstractSystem
+        SystemLocator.instance().reset()
+        SystemLocator.instance().register_provider(AbstractSystem, ConcreteSystem())
+
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+        assert provider is not None
+        assert provider.system_function()
+
+        SystemLocator.instance().unregister_all_providers(AbstractSystem)
+        provider = SystemLocator.instance().get_provider(AbstractSystem)
+
+        assert provider is None
