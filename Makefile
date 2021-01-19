@@ -55,7 +55,7 @@ install:
 
 build:
 	@echo Executing project build...
-	./scripts/build
+	./scripts/build --type=development
 	@echo
 
 documentaiton:
@@ -82,7 +82,7 @@ coverage:
 
 release:
 	@echo Releasing new version...
-	./scripts/build --release
+	./scripts/build --type=release
 	@echo
 
 .PHONY: unittest build
