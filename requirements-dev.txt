@@ -26,6 +26,7 @@ pyinstaller>=3.4
 
 # Testing
 pytest>=5.4.1
+pytest-cov>=2.7.1
 pytest-html>=2.1.1
 pytest-reraise>=1.0.3
 codecov>=2.0.15

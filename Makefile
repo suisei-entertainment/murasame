@@ -75,9 +75,8 @@ lint:
 
 coverage:
 	@echo Measuring unit test coverage...
-	coverage run -m pytest -vv --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
-	coverage report
-	coverage html
+	pip uninstall -y murasame
+	pytest -v --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html --cov=./murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	@echo
 
 release:
