@@ -23,3 +23,4 @@ Contains the implementation of framework utilities.
 
 from murasame.utils.singleton import Singleton
 from murasame.utils.systemlocator import SystemLocator, System
+from murasame.utils.productversion import ProductVersion
