@@ -58,9 +58,9 @@ build:
 	./scripts/build --type=development
 	@echo
 
-documentaiton:
+documentation:
 	@echo Building project documentation...
-	sphinx-build -E -a -b html ./documentation/ $(WORKSPACE_DIRECTORY)/dist/documentation/
+	sphinx-build -E -a -b html ./doc/ $(WORKSPACE_DIRECTORY)/dist/documentation/
 	@echo
 
 unittest:
