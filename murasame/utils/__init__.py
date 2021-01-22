@@ -34,3 +34,4 @@ from murasame.utils.rsa import (
     RSAVerifier,
     RSAEncryptor,
     RSADecryptor)
+from murasame.utils.jsonfile import JsonFile
