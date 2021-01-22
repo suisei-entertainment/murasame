@@ -18,21 +18,39 @@
 ## ============================================================================
 
 """
-Contains the implementation of framework utilities.
+Contains the implementation of the PasswordGenerator class.
 """
 
-from murasame.utils.singleton import Singleton
-from murasame.utils.systemlocator import SystemLocator, System
-from murasame.utils.productversion import ProductVersion
-from murasame.utils.pwgenerator import PasswordGenerator
-from murasame.utils.aes import AESCipher
-from murasame.utils.rsa import (
-    RSAKeyLengths,
-    RSAPrivate,
-    RSAPublic,
-    RSAKeyGenerator,
-    RSASigner,
-    RSAVerifier,
-    RSAEncryptor,
-    RSADecryptor)
-from murasame.utils.jsonfile import JsonFile
+# Platform Imports
+import string
+import random
+
+class PasswordGenerator:
+
+    """
+    Utility class to generate simple passwords.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    @staticmethod
+    def generate(
+            pwd_length: int = 12,
+            allowed_chars: int = string.ascii_letters + string.digits + string.punctuation) -> str:
+
+        """
+        Generates a password.
+
+        Args:
+            pwd_length:     The length of the password to generate.
+            allowed_chars:  The list of allowed characters in the password.
+
+        Returns:
+            The generated password as a string.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return ''.join(random.choice(allowed_chars) for _ in range(pwd_length))

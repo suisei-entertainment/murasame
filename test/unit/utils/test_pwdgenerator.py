@@ -18,21 +18,40 @@
 ## ============================================================================
 
 """
-Contains the implementation of framework utilities.
+Contains the unit tests of the PasswordGenerator class.
 """
 
-from murasame.utils.singleton import Singleton
-from murasame.utils.systemlocator import SystemLocator, System
-from murasame.utils.productversion import ProductVersion
-from murasame.utils.pwgenerator import PasswordGenerator
-from murasame.utils.aes import AESCipher
-from murasame.utils.rsa import (
-    RSAKeyLengths,
-    RSAPrivate,
-    RSAPublic,
-    RSAKeyGenerator,
-    RSASigner,
-    RSAVerifier,
-    RSAEncryptor,
-    RSADecryptor)
-from murasame.utils.jsonfile import JsonFile
+# Platform Imports
+import os
+import sys
+
+# Dependency Imports
+import pytest
+
+# Fix paths to make framework modules accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+
+# Murasame Imports
+from murasame.utils import PasswordGenerator
+
+class TestPasswordGenerator:
+
+    """
+    Contains the unit tests of the PasswordGenerator class.
+    """
+
+    def test_generation(self):
+
+        """
+        Tests password generation.
+        """
+
+        # STEP #1 - Generate a single character
+        pwd = PasswordGenerator.generate(pwd_length=1)
+
+        assert len(pwd) == 1
+
+        # STEP #2 - Generate multiple characters
+        pwd = PasswordGenerator.generate(pwd_length=12)
+
+        assert len(pwd) == 12
