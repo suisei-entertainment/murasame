@@ -122,8 +122,9 @@ class AESCipher:
         # Base64 decode the input data
         try:
             content = base64.b64decode(content)
-        except binascii.Error:
-            raise InvalidInputError('The input file is not properly encoded.')
+        except binascii.Error as error:
+            raise InvalidInputError('The input file is not properly encoded.') \
+                from error
 
         # Retrieve the initialization vector
         initialization_vector = content[:16]
