@@ -294,7 +294,8 @@ def collect_packages() -> list:
 
     for obj in objects:
         if obj.is_dir():
-            result.append(f'murasame.{obj.name}')
+            if obj.name != '__pycache__':
+                result.append(f'murasame.{obj.name}')
 
     return result
 
