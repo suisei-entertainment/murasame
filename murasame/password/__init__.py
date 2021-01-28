@@ -18,40 +18,8 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the PasswordGenerator class.
+Contains the implementation of password handling utilities.
 """
 
-# Platform Imports
-import os
-import sys
-
-# Dependency Imports
-import pytest
-
-# Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
-
-# Murasame Imports
-from murasame.utils import PasswordGenerator
-
-class TestPasswordGenerator:
-
-    """
-    Contains the unit tests of the PasswordGenerator class.
-    """
-
-    def test_generation(self):
-
-        """
-        Tests password generation.
-        """
-
-        # STEP #1 - Generate a single character
-        pwd = PasswordGenerator.generate(pwd_length=1)
-
-        assert len(pwd) == 1
-
-        # STEP #2 - Generate multiple characters
-        pwd = PasswordGenerator.generate(pwd_length=12)
-
-        assert len(pwd) == 12
+from murasame.password.pwgenerator import PasswordGenerator
+from murasame.password.pwcomplexity import PasswordComplexity
