@@ -36,3 +36,4 @@ from murasame.utils.rsa import (
     RSADecryptor)
 from murasame.utils.jsonfile import JsonFile
 from murasame.utils.secrets import Secrets
+from murasame.utils.geoip import GeoIP, GeoIPData
