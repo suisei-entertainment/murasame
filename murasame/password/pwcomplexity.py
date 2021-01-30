@@ -288,7 +288,8 @@ class PasswordComplexity:
                 passwords = pwd_file.readlines()
         except IOError as error:
             raise RuntimeError(
-                f'Failed to load the common password list from {common_pwds}.')
+                f'Failed to load the common password '
+                f'list from {common_pwds}.') from error
 
         for pwd in passwords:
             self._common_passwords.append(pwd.strip())
