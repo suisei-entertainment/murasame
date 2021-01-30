@@ -35,3 +35,4 @@ from murasame.utils.rsa import (
     RSAEncryptor,
     RSADecryptor)
 from murasame.utils.jsonfile import JsonFile
+from murasame.utils.secrets import Secrets
