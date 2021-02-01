@@ -293,9 +293,12 @@ def collect_packages() -> list:
     objects = os.scandir('./murasame')
 
     for obj in objects:
-        if obj.is_dir():
-            if obj.name != '__pycache__':
+        if obj.is_dir() and obj.name != '__pycache__':
                 result.append(f'murasame.{obj.name}')
+                subdirs = os.scandir(f'./murasame/{obj.name}')
+                for subdir in subdirs:
+                    if subdir.is_dir() and subdir.name != '__pycache__':
+                        result.append(f'murasame.{obj.name}.{subdir.name}')
 
     return result
 

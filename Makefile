@@ -44,13 +44,18 @@ configure:
 	)
 	@echo
 
-install:
-	@echo Uninstalling previous version...
+install: build
+	@echo Uninstalling installed library...
 	pip uninstall -y murasame
 	@echo
 
 	@echo Installing current version...
 	pip install $(WORKSPACE_DIRECTORY)/dist/murasame-0.1.0-py3-none-any.whl
+	@echo
+
+uninstall:
+	@echo Uninstalling installed library...
+	pip uninstall -y murasame
 	@echo
 
 build:
@@ -75,7 +80,6 @@ lint:
 
 coverage:
 	@echo Measuring unit test coverage...
-	pip uninstall -y murasame
 	pytest -v --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html --cov=./murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	@echo
 
