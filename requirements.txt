@@ -49,3 +49,6 @@ sentry-sdk
 # Database Interfaces
 influxdb>=5.3.0
 redis>=3.5.2
+
+# Utils
+pyyaml>=5.4.1

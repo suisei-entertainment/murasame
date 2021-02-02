@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Utility class to help in parsing and handling JSON files.
+Utility class to help in parsing and handling content files.
 """
 
 # Platform Imports

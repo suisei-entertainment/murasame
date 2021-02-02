@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the JsonFile class.
+Contains the unit tests of the YamlFile class.
 """
 
 # Platform Imports
@@ -33,16 +33,16 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.utils import JsonFile
+from murasame.utils import YamlFile
 
 TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
-    '~/.murasame/testfiles/json_test.json'))
+    '~/.murasame/testfiles/yaml_test.yaml'))
 
 INVALID_TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
-    '~/.murasame/testfiles/nonexistent.json'))
+    '~/.murasame/testfiles/nonexistent.yaml'))
 
 MALFORMED_FILE_PATH = os.path.abspath(os.path.expanduser(
-    '~/.murasame/testfiles/malformed.json'))
+    '~/.murasame/testfiles/malformed.yaml'))
 
 def get_password():
 
@@ -55,7 +55,7 @@ def get_password():
 
     return 'testpassword'
 
-class TestJsonFile:
+class TestYamlFile:
 
     """
     Contains all unit tests of the JsonFile class.
@@ -68,58 +68,58 @@ class TestJsonFile:
         """
 
         # STEP 1 - Create file
-        sut = JsonFile(path=TEST_FILE_PATH)
+        sut = YamlFile(path=TEST_FILE_PATH)
         assert sut.Path is not None
         assert sut.Content == {}
 
     def test_saving_and_loading_json_file(self):
 
         """
-        Tests that JSON content can be saved to and loaded from a file on disk.
+        Tests that YAML content can be saved to and loaded from a file on disk.
         """
 
-        # STEP #1 - Compacted JSON file
-        sut1 = JsonFile(path=TEST_FILE_PATH)
+        # STEP #1 - Compacted YAML file
+        sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
         sut1.save()
         del sut1
 
-        sut2 = JsonFile(path=TEST_FILE_PATH)
+        sut2 = YamlFile(path=TEST_FILE_PATH)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-        # STEP #2 - Formatted JSON file
-        sut1 = JsonFile(path=TEST_FILE_PATH)
+        # STEP #2 - Formatted YAML file
+        sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
         sut1.save(compact=False)
         del sut1
 
-        sut2 = JsonFile(path=TEST_FILE_PATH)
+        sut2 = YamlFile(path=TEST_FILE_PATH)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
     def test_saving_and_loading_encrypted_json_file(self):
 
         """
-        Tests that JSON content can be saved to and loaded from an encrypted
+        Tests that YAML content can be saved to and loaded from an encrypted
         file on disk.
         """
 
-        sut1 = JsonFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
+        sut1 = YamlFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
         sut1.Content['test'] = 'test content'
         sut1.save()
 
-        sut2 = JsonFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
+        sut2 = YamlFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
     def test_loading_non_existent_file(self):
 
         """
-        Tests loading a non-existent JSON file is handled properly.
+        Tests loading a non-existent YAML file is handled properly.
         """
 
-        sut = JsonFile(path=INVALID_TEST_FILE_PATH)
+        sut = YamlFile(path=INVALID_TEST_FILE_PATH)
         sut.load()
         assert sut.Content == {}
 
@@ -129,27 +129,27 @@ class TestJsonFile:
         Tests that the file is not saved to an invalid location.
         """
 
-        # STEP #1 - Unencrypted JSON file
-        sut = JsonFile(path='/invalid/path/to/somewhere/file.json')
+        # STEP #1 - Unencrypted YAML file
+        sut = YamlFile(path='/invalid/path/to/somewhere/file.yaml')
         with pytest.raises(RuntimeError):
             sut.save()
 
-        # STEP #2 - Encrypted JSON file
-        sut = JsonFile(path='/invalid/path/to/somewhere/file.json',
+        # STEP #2 - Encrypted YAML file
+        sut = YamlFile(path='/invalid/path/to/somewhere/file.yaml',
                        cb_retrieve_key=get_password)
         with pytest.raises(RuntimeError):
             sut.save()
 
-    def test_loading_malformed_json_file(self):
+    def test_loading_malformed_yaml_file(self):
 
         # Create a malformed file
-        malformed_json = '{invalid json: [}'
+        malformed_json = '{invalid yaml: [}'
         with open(MALFORMED_FILE_PATH, 'w+') as malformed:
             malformed.write(malformed_json)
 
-        # STEP 1 - Trying to load a malformed JSON file results in
+        # STEP 1 - Trying to load a malformed YAML file results in
         # an exception
-        sut = JsonFile(path=MALFORMED_FILE_PATH)
+        sut = YamlFile(path=MALFORMED_FILE_PATH)
         with pytest.raises(InvalidInputError):
             sut.load()
 
@@ -163,13 +163,13 @@ class TestJsonFile:
         # STEP #2 - Trying to load an encrypted and malformed JSON file results
         # in an exception
 
-        sut = JsonFile(path=MALFORMED_FILE_PATH, cb_retrieve_key=get_password)
+        sut = YamlFile(path=MALFORMED_FILE_PATH, cb_retrieve_key=get_password)
         with pytest.raises(InvalidInputError):
             sut.load()
 
-    def test_overwrite_json_file_content(self):
+    def test_overwrite_yaml_file_content(self):
 
-        sut1 = JsonFile(path=TEST_FILE_PATH)
+        sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
         sut1.overwrite_content({'test': 'overwritten'})
         assert sut1.Content['test'] == 'overwritten'
