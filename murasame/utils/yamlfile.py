@@ -22,9 +22,10 @@ Utility class to help in parsing and handling YAML files.
 """
 
 # Platform Imports
-import os
-import yaml
 from typing import Callable
+
+# Dependency Imports
+import yaml
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
@@ -78,7 +79,7 @@ class YamlFile(ContentFile):
         # Save the file unencrypted.
         try:
             with open(self._path, 'w+') as yaml_file:
-                    yaml.dump(self._content, yaml_file)
+                yaml.dump(self._content, yaml_file)
         except OSError as exception:
             raise RuntimeError(
                 'Failed to save the content of YAML file to {}.'.format(
