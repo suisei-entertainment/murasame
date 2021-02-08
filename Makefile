@@ -22,6 +22,8 @@ SHELL := /bin/bash
 WORKSPACE_DIRECTORY =  ~/.murasame
 VIRTUALENV_DIRECTORY = ./.env
 
+SUBLIME_VERSION := $(shell subl --version 2> /dev/null)
+
 configure:
 	@echo Creating workspace directories...
 	mkdir -p $(WORKSPACE_DIRECTORY)
@@ -42,6 +44,24 @@ configure:
 		pip install -r requirements-dev.txt; \
 		pip install -r requirements.txt; \
 	)
+	@echo
+
+semgrep:
+	@echo Executing semgrep...
+	semgrep --config=p/python ./murasame
+	semgrep --config=p/r2c-best-practices ./murasame
+	semgrep --config=p/r2c-bug-scan ./murasame
+	semgrep --config=p/r2c-ci ./murasame
+	semgrep --config=p/r2c-security-audit ./murasame
+	@echo
+
+semgrep-sarif:
+	@echo Executing semgrep with SARIF output...
+	semgrep --config=p/python -o ${WORKSPACE_DIRECTORY}/logs/semgrep-python.sarif --sarif ./murasame
+	semgrep --config=p/r2c-best-practices -o ${WORKSPACE_DIRECTORY}/logs/semgrep-best-practices.sarif --sarif ./murasame
+	semgrep --config=p/r2c-bug-scan -o ${WORKSPACE_DIRECTORY}/logs/semgrep-bug-scan.sarif --sarif ./murasame
+	semgrep --config=p/r2c-ci -o ${WORKSPACE_DIRECTORY}/logs/semgrep-ci.sarif --sarif ./murasame
+	semgrep --config=p/r2c-security-audit -o ${WORKSPACE_DIRECTORY}/logs/semgrep-security-audit.sarif --sarif ./murasame
 	@echo
 
 install: build

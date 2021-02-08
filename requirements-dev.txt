@@ -32,3 +32,4 @@ pytest-reraise>=1.0.3
 codecov>=2.0.15
 coverage>=4.5.2
 pylint>=2.2.2
+semgrep>=0.39.1
