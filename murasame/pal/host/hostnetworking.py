@@ -394,9 +394,15 @@ class HostNetworking(LogWriter):
         """
 
         try:
-            ip_address = requests.get('https://api.ipify.org', timeout=1).text
+            response = requests.get('https://api.ipify.org', timeout=1)
+            response.raise_for_status()
+            ip_address = response.text
         except requests.exceptions.Timeout:
             self.warning('Failed to detect public IP. Request timeout.')
+            return
+        except requests.exceptions.HTTPError as error:
+            self.warning(f'Failed to detect public IP. Received HTTP '
+                         f'error: {error.response.status_code}')
             return
 
         self._public_ip = ip_address
