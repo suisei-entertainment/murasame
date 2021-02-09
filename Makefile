@@ -23,7 +23,11 @@ WORKSPACE_DIRECTORY =  ~/.murasame
 VIRTUALENV_DIRECTORY = ./.env
 
 SUBLIME_VERSION := $(shell subl --version 2> /dev/null)
+UNAME := $(shell uname)
 
+## ============================================================================
+##	Basic environment configuration
+## ============================================================================
 configure:
 	@echo Creating workspace directories...
 	mkdir -p $(WORKSPACE_DIRECTORY)
@@ -46,6 +50,22 @@ configure:
 	)
 	@echo
 
+## ============================================================================
+##	Installing full development environment, including development tools
+## ============================================================================
+environment:
+	@echo Installing development environment...
+
+#ifeq ('$(SUBLIME_VERSION)','')
+	@echo Sublime is not installed in the system, installing environment.
+	sudo ./scripts/envinstall
+#else
+	@echo $(SUBLIME_VERSION) is already installed in the system, nothing to do.
+#endif
+
+## ============================================================================
+##	Execute semgrep on the codebase with output set to the console
+## ============================================================================
 semgrep:
 	@echo Executing semgrep...
 	semgrep --config=p/python ./murasame
@@ -55,6 +75,9 @@ semgrep:
 	semgrep --config=p/r2c-security-audit ./murasame
 	@echo
 
+## ============================================================================
+##	Execute semgrep on the codebase with output set to SARIF files
+## ============================================================================
 semgrep-sarif:
 	@echo Executing semgrep with SARIF output...
 	semgrep --config=p/python -o ${WORKSPACE_DIRECTORY}/logs/semgrep-python.sarif --sarif ./murasame
@@ -64,6 +87,9 @@ semgrep-sarif:
 	semgrep --config=p/r2c-security-audit -o ${WORKSPACE_DIRECTORY}/logs/semgrep-security-audit.sarif --sarif ./murasame
 	@echo
 
+## ============================================================================
+##	Installs a version of Murasame on the local machine
+## ============================================================================
 install: build
 	@echo Uninstalling installed library...
 	pip uninstall -y murasame
@@ -73,36 +99,57 @@ install: build
 	pip install $(WORKSPACE_DIRECTORY)/dist/murasame-0.1.0-py3-none-any.whl
 	@echo
 
+## ============================================================================
+##	Uninstall the installed version of Murasame from the local machine
+## ============================================================================
 uninstall:
 	@echo Uninstalling installed library...
 	pip uninstall -y murasame
 	@echo
 
+## ============================================================================
+##	Builds the Python wheel of the framework
+## ============================================================================
 build:
 	@echo Executing project build...
 	./scripts/build --type=development
 	@echo
 
+## ============================================================================
+##	Builds the documentation of the framework
+## ============================================================================
 documentation:
 	@echo Building project documentation...
 	sphinx-build -E -a -b html ./doc/ $(WORKSPACE_DIRECTORY)/dist/documentation/
 	@echo
 
+## ============================================================================
+##	Executes the unit tests of the framework
+## ============================================================================
 unittest:
 	@echo Executing unit tests...
 	pytest -v --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
 	@echo
 
+## ============================================================================
+##	Executes the linter on the framework's source code
+## ============================================================================
 lint:
 	@echo Executing linter...
 	pylint --rcfile=./.pylintrc --exit-zero ./murasame
 	@echo
 
+## ============================================================================
+##	Measures the unit test coverage of the framework
+## ============================================================================
 coverage:
 	@echo Measuring unit test coverage...
 	pytest -v --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html --cov=./murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	@echo
 
+## ============================================================================
+##	Creates a new PyPi release of the framework
+## ============================================================================
 release:
 	@echo Releasing new version...
 	./scripts/build --type=release
