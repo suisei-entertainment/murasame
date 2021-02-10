@@ -55,13 +55,8 @@ configure:
 ## ============================================================================
 environment:
 	@echo Installing development environment...
-
-#ifeq ('$(SUBLIME_VERSION)','')
-	@echo Sublime is not installed in the system, installing environment.
 	sudo ./scripts/envinstall
-#else
-	@echo $(SUBLIME_VERSION) is already installed in the system, nothing to do.
-#endif
+	@echo Development environment installed.
 
 ## ============================================================================
 ##	Execute semgrep on the codebase with output set to the console

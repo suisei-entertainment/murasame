@@ -1,0 +1,32 @@
+{
+    "install_missing": true,
+    "installed_packages":
+    [
+        "A File Icon",
+        "Anaconda",
+        "AutoDocstring",
+        "AutoFileName",
+        "BracketHighlighter",
+        "Color Highlighter",
+        "ColorPicker",
+        "Dockerfile Syntax Highlighting",
+        "Emmet",
+        "Git",
+        "GitGutter",
+        "GutterColor",
+        "INI",
+        "Log Highlight",
+        "Markdown Extended",
+        "Material Theme",
+        "Package Control",
+        "Protobuf Syntax Highlighting",
+        "requirementstxt",
+        "SideBarEnhancements",
+        "SublimeCodeIntel",
+        "SublimeLinter",
+        "SublimeLinter-pylint",
+        "Terminus",
+        "TrailingSpaces",
+        "View In Browser"
+    ]
+}

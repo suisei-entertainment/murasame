@@ -47,6 +47,24 @@ Path to the log file of the install script.
 LOG_FILE_PATH = \
     os.path.abspath(os.path.expanduser('~/.murasame/logs/envinstall.log'))
 
+"""
+Path to the file containing the template for the Package Control settings.
+"""
+PACKAGE_CONTROL_SETTINGS_TEMPLATE_PATH = \
+    os.path.abspath(os.path.expanduser('./scripts/Package Control.sublime-settings.in'))
+
+"""
+Path to the directory where Sublime settings are stored.
+"""
+SUBLIME_USER_DIRECTORY_PATH = \
+    os.path.abspath(os.path.expanduser('~/.config/sublime-text-3/Packages/User'))
+
+"""
+Path to the Package Control settings file.
+"""
+PACKAGE_CONTROL_SETTINGS_PATH = \
+    os.path.abspath(os.path.expanduser(f'{SUBLIME_USER_DIRECTORY_PATH}/Package Control.sublime-settings'))
+
 def install_sublime() -> int:
 
     """
@@ -60,6 +78,20 @@ def install_sublime() -> int:
     """
 
     logger = logging.getLogger('murasame.environment')
+
+    try:
+        app_check = subprocess.check_output(
+            'dpkg -l sublime-text | grep sublime-text',
+            shell=True)
+        output = str(app_check, encoding='utf-8')
+        if 'Sublime Text is a sophisticated text editor for code' in output:
+            logger.debug('[STEP #1] Sublime Text is already installed on the local machine.')
+            return 0
+
+    except subprocess.CalledProcessError:
+        logger.debug('[STEP #6]     - Failed to check for the presence of Sublime Text.')
+        return -1
+
     logger.debug('[STEP #1] Installing Sublime on the local machine...')
 
     if sys.platform == 'linux':
@@ -91,10 +123,10 @@ def install_sublime() -> int:
     return 0
 
 
-def install_package_control() -> int:
+def install_fonts() -> int:
 
     """
-    Installs package control in Sublime.
+    Installs custom Sublime fonts to be used.
 
     Returns:
         '0' if execution was successful, or an error code otherwise.
@@ -104,9 +136,85 @@ def install_package_control() -> int:
     """
 
     logger = logging.getLogger('murasame.environment')
-    logger.debug('[STEP #2] Installing Package Control...')
 
-    logger.debug('[STEP #2] Package Control was installed successfully.')
+    try:
+        font_found = subprocess.check_output(
+            'fc-list | grep consolas',
+            shell=True)
+        output = str(font_found, encoding='utf-8')
+        if output is not "":
+            logger.debug('[STEP #2] Custom fonts are already installed.')
+            return 0
+
+    except subprocess.CalledProcessError:
+        logger.error('[STEP #2]     - Failed to check for custom font availability.')
+        return -1
+
+    logger.debug('[STEP #2] Installing custom fonts on the local machine...')
+
+    try:
+        subprocess.run(
+            'wget -O /tmp/YaHei.Consolas.1.12.zip https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/uigroupcode/YaHei.Consolas.1.12.zip',
+            shell=True)
+        subprocess.run(
+            'unzip /tmp/YaHei.Consolas.1.12.zip',
+            shell=True)
+        subprocess.run(
+            'sudo mkdir -p /usr/share/fonts/consolas',
+            shell=True)
+        subprocess.run(
+            'sudo mv YaHei.Consolas.1.12.ttf /usr/share/fonts/consolas/',
+            shell=True)
+        subprocess.run(
+            'sudo chmod 644 /usr/share/fonts/consolas/YaHei.Consolas.1.12.ttf',
+            shell=True)
+        subprocess.run(
+            'cd /usr/share/fonts/consolas',
+            shell=True)
+        subprocess.run(
+            'sudo mkfontscale && sudo mkfontdir && sudo fc-cache -fv',
+            shell=True)
+    except subprocess.CalledProcessError:
+        logger.error('[STEP #2]     - Failed to install custom fonts.')
+        return -1
+
+    logger.debug('[STEP #2] Custom fonts installed successfully.')
+    return 0
+
+def install_package_control() -> int:
+
+    """
+    Installs package control in Sublime.
+
+    Luckily PackageControl's latest verion has a permalink that can be used to
+    download it from their site.
+
+    Returns:
+        '0' if execution was successful, or an error code otherwise.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    logger = logging.getLogger('murasame.environment')
+    package_path = os.path.abspath(os.path.expanduser('~/.config/sublime-text-3/Installed Packages/Package Control.sublime-package'))
+
+    if os.path.isfile(package_path):
+        logger.debug('[STEP #3] Package Control is already installed.')
+        return 0
+
+    logger.debug('[STEP #3] Installing Package Control...')
+
+    package_dir = os.path.abspath(os.path.expanduser('~/.config/sublime-text-3/Installed Packages'))
+    try:
+        subprocess.run(
+            f'curl "https://packagecontrol.io/Package%20Control.sublime-package" > {package_dir}',
+            shell=True)
+    except subprocess.CalledProcessError:
+        logger.error('[STEP #3]     - Failed to install Package Control.')
+        return -1
+
+    logger.debug('[STEP #3] Package Control was installed successfully.')
     return 0
 
 def install_sublime_packages() -> int:
@@ -114,6 +222,10 @@ def install_sublime_packages() -> int:
     """
     Installs a couple of Sublime packages.
 
+    This works by providing a custom configuration file for PackageControl
+    listing all the packages that we want to have. This will force Sublime to
+    download and install these upon first start.
+
     Returns:
         '0' if execution was successful, or an error code otherwise.
 
@@ -122,12 +234,25 @@ def install_sublime_packages() -> int:
     """
 
     logger = logging.getLogger('murasame.environment')
-    logger.debug('[STEP #3] Installing Sublime packages...')
+    logger.debug('[STEP #4] Installing Sublime packages...')
 
-    logger.debug('[STEP #3] All Sublime packages were installed successfully.')
+    logger.debug('[STEP #4]     - Generating Package Control.sublime-settings...')
+
+    template_content = None
+    try:
+        with open(PACKAGE_CONTROL_SETTINGS_TEMPLATE_PATH, 'r') as template_file:
+            template_content = template_file.read()
+    except OSError:
+        logger.error('[STEP #4]     - Failed to load the Package Control settings template.')
+        return -1
+
+    logger.debug('[STEP #4] All Sublime packages were installed successfully.')
     return 0
 
-def install_configuration() -> int:
+    with open(PACKAGE_CONTROL_SETTINGS_PATH, 'w') as config_file:
+        config_file.write(template_content)
+
+def install_sublime_configuration() -> int:
 
     """
     Installs custom Sublime configuration.
@@ -140,9 +265,61 @@ def install_configuration() -> int:
     """
 
     logger = logging.getLogger('murasame.environment')
-    logger.debug('[STEP #4] Installing custom Sublime configuration...')
+    logger.debug('[STEP #5] Installing custom Sublime configuration...')
 
-    logger.debug('[STEP #2] Custom Sublime configuration was installed successfully.')
+    logger.debug('[STEP #5]     - Installing custom Sublime settings...')
+    logger.debug('[STEP #5]     - Installing custom settings for A File Icon...')
+    logger.debug('[STEP #5]     - Installing custom settings for Anaconda...')
+    logger.debug('[STEP #5]     - Installing custom settings for AutoDocString...')
+    logger.debug('[STEP #5]     - Installing custom settings for AutoFileName...')
+    logger.debug('[STEP #5]     - Installing custom settings for BracketHighlighter...')
+    logger.debug('[STEP #5]     - Installing custom settings for Color Highlighter...')
+    logger.debug('[STEP #5]     - Installing custom settings for ColorPicker...')
+    logger.debug('[STEP #5]     - Installing custom settings for Emmet...')
+    logger.debug('[STEP #5]     - Installing custom settings for Git...')
+    logger.debug('[STEP #5]     - Installing custom settings for GitGutter...')
+    logger.debug('[STEP #5]     - Installing custom settings for GutterColor...')
+    logger.debug('[STEP #5]     - Installing custom settings for Log Highlight...')
+    logger.debug('[STEP #5]     - Installing custom settings for Material Theme...')
+    logger.debug('[STEP #5]     - Installing custom settings for SideBarEnhancements...')
+    logger.debug('[STEP #5]     - Installing custom settings for SublimeCodeIntel...')
+    logger.debug('[STEP #5]     - Installing custom settings for SublimeLinter...')
+    logger.debug('[STEP #5]     - Installing custom settings for Terminus...')
+    logger.debug('[STEP #5]     - Installing custom settings for TrailingSpaces...')
+
+    logger.debug('[STEP #5] Custom Sublime configuration was installed successfully.')
+    return 0
+
+def install_docker() -> int:
+
+    """
+    Installs docker on the local machine unless it's already installed.
+
+    Returns:
+        '0' if execution was successful, or an error code otherwise.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    logger = logging.getLogger('murasame.environment')
+
+    try:
+        docker_check = subprocess.check_output(
+            'dpkg -l docker-ce | grep docker-ce',
+            shell=True)
+        output = str(docker_check, encoding='utf-8')
+        if 'Docker: the open-source application container engine' in output:
+            logger.debug('[STEP #6] Docker is already installed on the local machine.')
+            return 0
+
+    except subprocess.CalledProcessError:
+        logger.debug('[STEP #6]     - Failed to check for the presence of Docker.')
+        return -1
+
+    logger.debug('[STEP #6] Installing Docker on the local machine...')
+
+    logger.debug('[STEP #6] Docker was installed successfully.')
     return 0
 
 ## ============================================================================
@@ -167,13 +344,19 @@ def main() -> None:
     result = install_sublime()
 
     if result == 0:
+        result = install_fonts()
+
+    if result == 0:
         result = install_package_control()
 
     if result == 0:
         result = install_sublime_packages()
 
     if result == 0:
-        result = install_configuration()
+        result = install_sublime_configuration()
+
+    if result == 0:
+        result = install_docker()
 
     return result
 
