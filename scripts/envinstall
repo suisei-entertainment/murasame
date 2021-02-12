@@ -37,6 +37,7 @@ import os
 import sys
 import logging
 import subprocess
+from typing import Callable
 
 # Dependency Imports
 import coloredlogs
@@ -48,10 +49,15 @@ LOG_FILE_PATH = \
     os.path.abspath(os.path.expanduser('~/.murasame/logs/envinstall.log'))
 
 """
+Path to the directory where the templates are stored.
+"""
+SCRIPT_DIRECTORY_PATH = os.path.abspath(os.path.expanduser('./scripts'))
+
+"""
 Path to the file containing the template for the Package Control settings.
 """
 PACKAGE_CONTROL_SETTINGS_TEMPLATE_PATH = \
-    os.path.abspath(os.path.expanduser('./scripts/Package Control.sublime-settings.in'))
+    os.path.abspath(os.path.expanduser(f'{SCRIPT_DIRECTORY_PATH}/Package Control.sublime-settings.in'))
 
 """
 Path to the directory where Sublime settings are stored.
@@ -64,6 +70,49 @@ Path to the Package Control settings file.
 """
 PACKAGE_CONTROL_SETTINGS_PATH = \
     os.path.abspath(os.path.expanduser(f'{SUBLIME_USER_DIRECTORY_PATH}/Package Control.sublime-settings'))
+
+"""
+Mapping for various sublime packages to their configuration templates and
+config files.
+"""
+CONFIG_FILE_MAP = \
+{
+    'sublime':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/Preferences.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/Preferences.sublime-settings'
+    },
+    'a_file_icon':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/A File Icon.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/A File Icon.sublime-settings'
+    },
+    'anaconda':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/Anaconda.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/Anaconda.sublime-settings'
+    },
+    'autodocscring':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/AutoDocString.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/AutoDocString.sublime-settings'
+    },
+    'emmet':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/Emmet.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/Emmet.sublime-settings'
+    },
+    'log_highlight':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/Log Highlight.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/Log Highlight.sublime-settings'
+    },
+    'trailing_spaces':
+    {
+        'template': f'{SCRIPT_DIRECTORY_PATH}/trailing_spaces.sublime-settings.in',
+        'config': f'{SUBLIME_USER_DIRECTORY_PATH}/trailing_spaces.sublime-settings'
+    }
+}
 
 def install_sublime() -> int:
 
@@ -246,11 +295,61 @@ def install_sublime_packages() -> int:
         logger.error('[STEP #4]     - Failed to load the Package Control settings template.')
         return -1
 
-    logger.debug('[STEP #4] All Sublime packages were installed successfully.')
-    return 0
-
     with open(PACKAGE_CONTROL_SETTINGS_PATH, 'w') as config_file:
         config_file.write(template_content)
+
+def generate_file_from_template(
+    step: int,
+    template_path: str,
+    destination_path: str,
+    cb_template_transform: Callable = None) -> int:
+
+    """
+    Generatesa config file from a template. By providing an optional callback
+    it is also possible to apply a transformation to the template before it
+    is written to the file.
+
+    Args:
+        step:                   The install step the function is called from.
+        template_path:          Path to the template file.
+        destination_path:       Path to the configuration file.
+        cb_template_transform:  Optional callback that can be used to transform
+                                the content of the template before it's written
+                                to the config file.
+
+    Returns:
+        '0' if execution was successful, or an error code otherwise.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    logger = logging.getLogger('murasame.environment')
+
+    logger.debug(f'[STEP #{step}]          - Reading template file...')
+
+    template_content = None
+    try:
+        with open(template_path, 'r') as template_file:
+            template_content = template_file.read(template_content)
+    except OSError:
+        logger.error(f'[STEP #{step}]          - Failed to read template file {template_path}.')
+        return -1
+
+    if cb_template_transform is not None:
+        logger.debug(f'[STEP #{step}]          - Applying template transformation...')
+        template_content = cb_template_transform(template_content)
+        logger.debug(f'[STEP #{step}]          - Transformation applied.')
+
+    logger.debug(f'[STEP #{step}]          - Writing configuration file...')
+    try:
+        with open(destination_path, 'w') as config_file:
+            config_file.write(template_content)
+    except OSError:
+        logger.error(f'[STEP #{step}]          - Failed to write config file {destination_path}.')
+        return -2
+
+    return 0
 
 def install_sublime_configuration() -> int:
 
@@ -268,24 +367,46 @@ def install_sublime_configuration() -> int:
     logger.debug('[STEP #5] Installing custom Sublime configuration...')
 
     logger.debug('[STEP #5]     - Installing custom Sublime settings...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['sublime']['template'],
+        destination_path=CONFIG_FILE_MAP['sublime']['config'])
+
     logger.debug('[STEP #5]     - Installing custom settings for A File Icon...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['a_file_icon']['template'],
+        destination_path=CONFIG_FILE_MAP['a_file_icon']['config'])
+
     logger.debug('[STEP #5]     - Installing custom settings for Anaconda...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['anaconda']['template'],
+        destination_path=CONFIG_FILE_MAP['anaconda']['config'])
+
     logger.debug('[STEP #5]     - Installing custom settings for AutoDocString...')
-    logger.debug('[STEP #5]     - Installing custom settings for AutoFileName...')
-    logger.debug('[STEP #5]     - Installing custom settings for BracketHighlighter...')
-    logger.debug('[STEP #5]     - Installing custom settings for Color Highlighter...')
-    logger.debug('[STEP #5]     - Installing custom settings for ColorPicker...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['autodocscring']['template'],
+        destination_path=CONFIG_FILE_MAP['autodocscring']['config'])
+
     logger.debug('[STEP #5]     - Installing custom settings for Emmet...')
-    logger.debug('[STEP #5]     - Installing custom settings for Git...')
-    logger.debug('[STEP #5]     - Installing custom settings for GitGutter...')
-    logger.debug('[STEP #5]     - Installing custom settings for GutterColor...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['emmet']['template'],
+        destination_path=CONFIG_FILE_MAP['emmet']['config'])
+
     logger.debug('[STEP #5]     - Installing custom settings for Log Highlight...')
-    logger.debug('[STEP #5]     - Installing custom settings for Material Theme...')
-    logger.debug('[STEP #5]     - Installing custom settings for SideBarEnhancements...')
-    logger.debug('[STEP #5]     - Installing custom settings for SublimeCodeIntel...')
-    logger.debug('[STEP #5]     - Installing custom settings for SublimeLinter...')
-    logger.debug('[STEP #5]     - Installing custom settings for Terminus...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['log_highlight']['template'],
+        destination_path=CONFIG_FILE_MAP['log_highlight']['config'])
+
     logger.debug('[STEP #5]     - Installing custom settings for TrailingSpaces...')
+    generate_file_from_template(
+        step=5,
+        template_path=CONFIG_FILE_MAP['trailing_spaces']['template'],
+        destination_path=CONFIG_FILE_MAP['trailing_spaces']['config'])
 
     logger.debug('[STEP #5] Custom Sublime configuration was installed successfully.')
     return 0
@@ -318,6 +439,21 @@ def install_docker() -> int:
         return -1
 
     logger.debug('[STEP #6] Installing Docker on the local machine...')
+
+    try:
+        subprocess.run('apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common',
+                       shell=True)
+        subprocess.run('curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -',
+                       shell=True)
+        subprocess.run('add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"',
+                       shell=True)
+        subprocess.run('apt-get update',
+                       shell=True)
+        subprocess.run('apt-get install docker-ce docker-ce-cli containerd.io',
+                       shell=True)
+    except subprocess.CalledProcessError:
+        logger.error(f'[STEP #6]     - Failed to install Docker.')
+        return -2
 
     logger.debug('[STEP #6] Docker was installed successfully.')
     return 0

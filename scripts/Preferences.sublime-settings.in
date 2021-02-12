@@ -1,0 +1,43 @@
+{
+    "theme": "Material-Theme.sublime-theme",
+    "color-scheme": "Packages/Material Theme/schemes/Material-Theme.tmTheme",
+    "font_face": "YaHei Consolas Hybrid",
+    "font_size": 12,
+    "bold_folder_labels": true,
+    "ensure_newline_at_eof_on_save": true,
+    "translate_tabs_to_spaces": true,
+    "trim_trailing_white_space_on_save": true,
+    "word_wrap": false,
+    "scroll_past_end": true,
+    "show_encoding": true,
+    "highlight_line": true,
+    "highlight_modified_tabs": true,
+    "material_theme_accent_graphite": true,
+    "material_theme_compact_sidebar": true,
+    "file_exclude_patterns":
+    [
+        "*.pyc",
+        "*.pyo",
+        "*.exe",
+        "*.dll",
+        "*.obj",
+        "*.o",
+        "*.a",
+        "*.lib",
+        "*.so",
+        "*.dylib",
+        "*.ncb",
+        "*.sdf",
+        "*.suo",
+        "*.pdb",
+        "*.idb",
+        ".DS_Store",
+        "*.class",
+        "*.psd",
+        "*.sublime-workspace"
+    ],
+    "ignored_packages":
+    [
+        "Vintage"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "python_interpreter": "python",
+    "anaconda_linting": true,
+    "anaconda_linter_mark_style": "none",
+    "anaconda_gutter_marks": true,
+    "pep8": false,
+    "anaconda_gutter_theme": "hard",
+    "anaconda_linter_phantoms": true
+}

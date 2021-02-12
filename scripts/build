@@ -482,7 +482,7 @@ def main() -> None:
     args = parse_command_line()
 
     if args.release_type == 'release':
-        build_type == BuildTypes.RELEASE
+        build_type = BuildTypes.RELEASE
 
     # Execute the build
     bump_version_number()

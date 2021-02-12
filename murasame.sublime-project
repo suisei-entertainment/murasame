@@ -1,42 +1,42 @@
 {
-    "build_systems":
-    [
-        {
-            "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-            "name": "Anaconda Python Builder",
-            "selector": "source.python",
-            "shell_cmd": "\"python\" -u \"$file\""
-        }
-    ],
-    "folders":
-    [
-        {
-            "path": ".",
-            "folder_exclude_patterns":
-            [
-                ".git",
-                "__pycache__",
-                ".scannerwork",
-                ".env",
-                "*.egg-info",
-                ".pytest_cache"
-            ]
-        }
-    ],
-    "settings":
-    {
-        "SublimeLinter.linters.pylint.args": "--rcfile=./.pylintrc",
-        "SublimeLinter.linters.pylint.disable": false,
-        "SublimeLinter.linters.pylint.lint_mode": "background",
-        "detect_indentation": true,
-        "rulers":
-        [
-            80,
-            140
-        ],
-        "tab_size": 4,
-        "translate_tabs_to_spaces": true,
-        "word_wrap": true,
-        "wrap_width": 140
-    }
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "\"python\" -u \"$file\""
+		}
+	],
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				".git",
+				"__pycache__",
+				".scannerwork",
+				".env",
+				"*.egg-info",
+				".pytest_cache"
+			],
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"SublimeLinter.linters.pylint.args": "--rcfile=./.pylintrc",
+		"SublimeLinter.linters.pylint.disable": false,
+		"SublimeLinter.linters.pylint.lint_mode": "background",
+		"detect_indentation": true,
+		"rulers":
+		[
+			80,
+			140
+		],
+		"tab_size": 4,
+		"translate_tabs_to_spaces": true,
+		"word_wrap": true,
+		"wrap_width": 140
+	}
 }
