@@ -1,0 +1,143 @@
+#!/bin/bash
+
+## ============================================================================
+##             **** Murasame Application Development Framework ****
+##                Copyright (C) 2019-2021, Suisei Entertainment
+## ============================================================================
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##      http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+##
+## ============================================================================
+
+macos_install_dependencies()
+{
+    # Installs all required packages on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing package dependencies..."
+    echo "[MURASAME.SETUP] > Package dependencies installed."
+}
+
+macos_setup_directories()
+{
+    # Creates the necessary workspace directories inside the user's home
+    # directory.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Configuring workspace directories..."
+    echo "[MURASAME.SETUP] > Directories configured."
+}
+
+macos_install_python()
+{
+    # Installs Python 3.9 on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Python 3.9..."
+    echo "[MURASAME.SETUP] > Python 3.9 installed."
+}
+
+macos_install_sublime()
+{
+    # Installs the Sublime Text 3 on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Sublime Text 3..."
+    echo "[MURASAME.SETUP] > Sublime Text 3 installed."
+}
+
+macos_install_fonts()
+{
+    # Installs the custom editor fonts on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing custom editor fonts..."
+    echo "[MURASAME.SETUP] > Custom fonts installed."
+}
+
+macos_install_package_control()
+{
+    # Installs Package Control for Sublime Text 3.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Package Control..."
+    echo "[MURASAME.SETUP] > Package Control installed."
+}
+
+macos_install_sublime_packages()
+{
+    # Installs various Sublime packages.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Sublime packages..."
+    echo "[MURASAME.SETUP] > Sublime Packages installed."
+}
+
+macos_install_sublime_configuration()
+{
+    # Installs custom configuration for Sublime Text 3 and the installed
+    # packages.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing custom Sublime Text configuration..."
+    echo "[MURASAME.SETUP] > Custom Sublime configuration installed."
+}
+
+macos_install_docker()
+{
+    # Installs Docker on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Docker..."
+    echo "[MURASAME.SETUP] > Docker installed."
+}
+
+macos_install_portainer()
+{
+    # Installs a Portainer container for Docker.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Portainer..."
+    echo "[MURASAME.SETUP] > Portainer installed."
+}
+
+macos_create_virtualenv
+{
+    # Creates the virtualenv environment for development.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Creating virtualenv..."
+    echo "[MURASAME.SETUP] > Virtualenv has been created."
+}

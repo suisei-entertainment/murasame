@@ -1,0 +1,226 @@
+#!/bin/bash
+
+## ============================================================================
+##             **** Murasame Application Development Framework ****
+##                Copyright (C) 2019-2021, Suisei Entertainment
+## ============================================================================
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##      http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+##
+## ============================================================================
+
+# shellcheck disable=SC1091
+. ./utilities.lib
+
+WORKSPACE_DIRECTORY="${HOME}/.murasame"
+VIRTUALENV_DIRECTORY="./.env"
+PYTHON_VERSION=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
+SUBLIME_VERSION=$(subl -v 2>&1 | grep -Po '(?<=Sublime Text Build )(.+)')
+CUSTOM_FONT_FOUND=$(fc-list | grep consolas)
+PACKAGE_CONTROL_FILE="${HOME}/.config/sublime-text-3/Installed Packages/Package Control.sublime-package"
+SUBLIME_PACKAGE_INSTALL_DIR="${HOME}/.config/sublime-text-3/Installed Packages"
+
+linux_install_dependencies()
+{
+    # Installs all required packages on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing package dependencies..."
+
+    apt update
+    apt install -y \
+        htop \
+        mc \
+        git \
+        make \
+        wget \
+        curl \
+        build-essential \
+        virtualenv \
+        software-properties-common
+
+    echo "[MURASAME.SETUP] > Package dependencies installed."
+}
+
+linux_setup_directories()
+{
+
+    # Creates the necessary workspace directories inside the user's home
+    # directory.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Configuring workspace directories..."
+
+    if [ ! -d "${WORKSPACE_DIRECTORY}" ]
+    then
+        mkdir -p "${WORKSPACE_DIRECTORY}"
+        mkdir -p "${WORKSPACE_DIRECTORY}/build"
+        mkdir -p "${WORKSPACE_DIRECTORY}/dist"
+        mkdir -p "${WORKSPACE_DIRECTORY}/testfiles"
+        mkdir -p "${WORKSPACE_DIRECTORY}/logs"
+        mkdir -p "${WORKSPACE_DIRECTORY}/logs/unittest"
+    fi
+
+    echo "[MURASAME.SETUP] > Directories configured."
+}
+
+linux_install_python()
+{
+    # Installs Python 3.9 on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of Python 3.9..."
+
+    vercomp "${PYTHON_VERSION}" "3.9.1"
+
+    case $? in
+        0) op='=';;
+        1) op='>';;
+        2) op='<';;
+    esac
+
+    if [ "$op" == '<' ]
+    then
+        echo "[MURASAME.SETUP] > Python 3.9 is not installed, installing..."
+        add-apt-repository -y ppa:deadsnakes/ppa
+        apt install -y python3.9 python3.9-dev
+    fi
+
+    echo "[MURASAME.SETUP] > Python 3.9 installed."
+}
+
+linux_install_sublime()
+{
+    # Installs the Sublime Text 3 on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking installation of Sublime Text 3 on the host system..."
+
+    if [ "${SUBLIME_VERSION}" -lt 3211 ]
+    then
+        echo "[MURASAME.SETUP] > Installing Sublime Text 3..."
+        wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add
+        apt install -y apt-transport-https
+        echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+        apt update
+        apt install -y sublime-text
+    fi
+
+    echo "[MURASAME.SETUP] > Sublime Text 3 installed."
+}
+
+linux_install_fonts()
+{
+    # Installs the custom editor fonts on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Looking for custom editor fonts on the host system..."
+
+    if [ "${CUSTOM_FONT_FOUND}" == "" ]
+    then
+        echo "[MURASAME.SETUP] > Installing custom editor fonts..."
+        wget -O /tmp/YaHei.Consolas.1.12.zip https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/uigroupcode/YaHei.Consolas.1.12.zip
+        unzip /tmp/YaHei.Consolas.1.12.zip
+        mkdir -p /usr/share/fonts/consolas
+        mv YaHei.Consolas.1.12.ttf /usr/share/fonts/consolas/
+        chmod 644 /usr/share/fonts/consolas/YaHei.Consolas.1.12.ttf
+        current_dir=$PWD
+        cd /usr/share/fonts/consolas || exiit
+        mkfontscale && mkfontdir && fc-cache -fv
+        cd "${current_dir}" || exit
+    fi
+
+    echo "[MURASAME.SETUP] > Custom fonts installed."
+}
+
+linux_install_package_control()
+{
+    # Installs Package Control for Sublime Text 3.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for installation of Package Control..."
+    if [ ! -f "${PACKAGE_CONTROL_FILE}" ]
+    then
+        echo "[MURASAME.SETUP] > Installing Package Control..."
+        curl "https://packagecontrol.io/Package%20Control.sublime-package" > "${SUBLIME_PACKAGE_INSTALL_DIR}"
+    fi
+    echo "[MURASAME.SETUP] > Package Control installed."
+}
+
+linux_install_sublime_packages()
+{
+    # Installs various Sublime packages.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Sublime packages..."
+    echo "[MURASAME.SETUP] > Sublime Packages installed."
+}
+
+linux_install_sublime_configuration()
+{
+    # Installs custom configuration for Sublime Text 3 and the installed
+    # packages.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing custom Sublime Text configuration..."
+    echo "[MURASAME.SETUP] > Custom Sublime configuration installed."
+}
+
+linux_install_docker()
+{
+    # Installs Docker on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Docker..."
+    echo "[MURASAME.SETUP] > Docker installed."
+}
+
+linux_install_portainer()
+{
+    # Installs a Portainer container for Docker.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Installing Portainer..."
+    echo "[MURASAME.SETUP] > Portainer installed."
+}
+
+linux_create_virtualenv
+{
+    # Creates the virtualenv environment for development.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Creating virtualenv..."
+    echo "[MURASAME.SETUP] > Virtualenv has been created."
+}

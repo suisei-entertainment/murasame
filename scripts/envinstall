@@ -23,10 +23,14 @@
 Installs a development environment on the local machine.
 
 The setup process has the following steps:
+    - Create workspace directories
+    - Install dependency packages
+    - Install Python 3.9
     - Install Sublime on the local machine
     - Install Package Control
     - Install packages
     - Install custom Sublime configuration
+    - Install Docker
 
 Authors:
     Attila Kovacs

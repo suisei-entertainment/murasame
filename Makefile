@@ -28,6 +28,14 @@ UNAME := $(shell uname)
 ## ============================================================================
 ##	Basic environment configuration
 ## ============================================================================
+setup:
+	@echo Executing development environment setup...
+	sudo ./scripts/envinstall
+	@echo
+
+## ============================================================================
+##	Basic environment configuration
+## ============================================================================
 configure:
 	@echo Creating workspace directories...
 	mkdir -p $(WORKSPACE_DIRECTORY)
@@ -49,14 +57,6 @@ configure:
 		pip install -r requirements.txt; \
 	)
 	@echo
-
-## ============================================================================
-##	Installing full development environment, including development tools
-## ============================================================================
-environment:
-	@echo Installing development environment...
-	sudo ./scripts/envinstall
-	@echo Development environment installed.
 
 ## ============================================================================
 ##	Execute semgrep on the codebase with output set to the console

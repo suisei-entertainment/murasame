@@ -24,7 +24,9 @@
         "SideBarEnhancements",
         "SublimeCodeIntel",
         "SublimeLinter",
+        "SublimeLinter-contrib-checkmake",
         "SublimeLinter-pylint",
+        "SublimeLinter-shellcheck",
         "Terminus",
         "TrailingSpaces",
         "View In Browser"

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+## ============================================================================
+##             **** Murasame Application Development Framework ****
+##                Copyright (C) 2019-2021, Suisei Entertainment
+## ============================================================================
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##      http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+##
+## ============================================================================
+
+# Environment setup script for the Murasame Development Framework.
+#
+#   This script will install a development environment on the local machine.
+#   The process has the following steps:
+#       - Install package dependencies
+#       - Create workspace directories
+#       - Install Python 3.9
+#       - Install Sublime Text 3
+#       - Install fonts
+#       - Install Package Control
+#       - Install Sublime packages
+#       - Install custom sublime configuration
+#       - Install Docker
+#       - Install Portainer
+
+# shellcheck disable=SC1091
+. ./linux_setup.lib
+
+## ============================================================================
+##      MAIN LINUX SETUP LOGIC
+## ============================================================================
+linux_setup()
+{
+    echo "[MURASAME.SETUP] > Running environment setup on Linux..."
+    #linux_install_dependencies
+    #linux_setup_directories
+    #linux_install_python
+    #linux_install_sublime
+    linux_install_fonts
+    #linux_install_package_control
+    #linux_install_sublime_packages
+    #linux_install_sublime_configuration
+    #linux_install_docker
+    #linux_install_portainer
+    #linux_create_virtualenv
+}
+
+## ============================================================================
+##      MAIN MACOS SETUP LOGIC
+## ============================================================================
+macos_setup()
+{
+    echo "[MURASAME.SETUP] > Running environment setup on macOS..."
+}
+
+## ============================================================================
+##      MAIN
+## ============================================================================
+if [ "$EUID" -ne 0 ]
+then
+    echo "[MURASAME.SETUP] > The environment setup script has to be executed as root."
+    exit
+fi
+
+# Identify local machine
+uname_output="$(uname -s)"
+case "${uname_output}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN(${uname_output})"
+esac
+
+if [ "${machine}" == "Linux" ]
+then
+    linux_setup
+elif [ "${machine}" == "Mac" ]
+then
+    macos_setup
+else
+    echo "[MURASAME.SETUP] > Unsupported base operating system detected: ${machine}."
+    exit
+fi
