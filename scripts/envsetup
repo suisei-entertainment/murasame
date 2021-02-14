@@ -33,9 +33,10 @@
 #       - Install custom sublime configuration
 #       - Install Docker
 #       - Install Portainer
+#       - Setup virtualenv
 
 # shellcheck disable=SC1091
-. ./linux_setup.lib
+. ./scripts/linux_setup.lib
 
 ## ============================================================================
 ##      MAIN LINUX SETUP LOGIC
@@ -43,17 +44,20 @@
 linux_setup()
 {
     echo "[MURASAME.SETUP] > Running environment setup on Linux..."
-    #linux_install_dependencies
-    #linux_setup_directories
-    #linux_install_python
-    #linux_install_sublime
+
+    linux_install_dependencies
+    linux_setup_directories
+    linux_install_python
+    linux_install_sublime
     linux_install_fonts
-    #linux_install_package_control
-    #linux_install_sublime_packages
-    #linux_install_sublime_configuration
-    #linux_install_docker
-    #linux_install_portainer
-    #linux_create_virtualenv
+    linux_install_package_control
+    linux_install_sublime_packages
+    linux_install_sublime_configuration
+    linux_install_docker
+    linux_install_portainer
+    linux_create_virtualenv
+
+    echo "[MURASAME.SETUP] > Environment setup completed."
 }
 
 ## ============================================================================
@@ -62,6 +66,20 @@ linux_setup()
 macos_setup()
 {
     echo "[MURASAME.SETUP] > Running environment setup on macOS..."
+
+    macos_install_dependencies
+    macos_setup_directories
+    macos_install_python
+    macos_install_sublime
+    macos_install_fonts
+    macos_install_package_control
+    macos_install_sublime_packages
+    macos_install_sublime_configuration
+    macos_install_docker
+    macos_install_portainer
+    macos_create_virtualenv
+
+    echo "[MURASAME.SETUP] > Environment setup completed."
 }
 
 ## ============================================================================

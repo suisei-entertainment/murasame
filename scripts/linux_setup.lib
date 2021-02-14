@@ -20,15 +20,18 @@
 ## ============================================================================
 
 # shellcheck disable=SC1091
-. ./utilities.lib
+. ./scripts/utilities.lib
 
 WORKSPACE_DIRECTORY="${HOME}/.murasame"
-VIRTUALENV_DIRECTORY="./.env"
+VIRTUALENV_DIRECTORY="${WORKSPACE_DIRECTORY}/.env"
 PYTHON_VERSION=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
 SUBLIME_VERSION=$(subl -v 2>&1 | grep -Po '(?<=Sublime Text Build )(.+)')
+DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
 CUSTOM_FONT_FOUND=$(fc-list | grep consolas)
 PACKAGE_CONTROL_FILE="${HOME}/.config/sublime-text-3/Installed Packages/Package Control.sublime-package"
 SUBLIME_PACKAGE_INSTALL_DIR="${HOME}/.config/sublime-text-3/Installed Packages"
+SUBLIME_USER_DIR="${HOME}/'.config/sublime-text-3/Packages/User'"
+PORTAINER_INSTALLED=$(docker volume ls | grep portainer)
 
 linux_install_dependencies()
 {
@@ -50,6 +53,9 @@ linux_install_dependencies()
         build-essential \
         virtualenv \
         software-properties-common
+        apt-transport-https \
+        ca-certificates \
+        gnupg-agent
 
     echo "[MURASAME.SETUP] > Package dependencies installed."
 }
@@ -99,7 +105,7 @@ linux_install_python()
     then
         echo "[MURASAME.SETUP] > Python 3.9 is not installed, installing..."
         add-apt-repository -y ppa:deadsnakes/ppa
-        apt install -y python3.9 python3.9-dev
+        apt install -y python3.9 python3.9-dev python3.9-distutils
     fi
 
     echo "[MURASAME.SETUP] > Python 3.9 installed."
@@ -173,10 +179,17 @@ linux_install_sublime_packages()
 {
     # Installs various Sublime packages.
     #
+    # This works by providing a custom configuration file for PackageControl
+    # listing all the packages that we want to have. This will force Sublime to
+    # download and install these upon first start.
+    #
     # Authors:
     #   Attila Kovacs
 
     echo "[MURASAME.SETUP] > Installing Sublime packages..."
+
+    cp ./scripts/settings/Package Control.sublime-settings "${SUBLIME_USER_DIR}"
+
     echo "[MURASAME.SETUP] > Sublime Packages installed."
 }
 
@@ -189,6 +202,15 @@ linux_install_sublime_configuration()
     #   Attila Kovacs
 
     echo "[MURASAME.SETUP] > Installing custom Sublime Text configuration..."
+
+    cp ./scripts/settings/Preferences.sublime-settings "${SUBLIME_USER_DIR}"
+    cp ./scripts/settings/A File Icon.sublime-settings "${SUBLIME_USER_DIR}"
+    cp ./scripts/settings/Anaconda.sublime-settings "${SUBLIME_USER_DIR}"
+    cp ./scripts/settings/AutoDocString.sublime-settings "${SUBLIME_USER_DIR}"
+    cp ./scripts/settings/Emmet.sublime-settings "${SUBLIME_USER_DIR}"
+    cp ./scripts/settings/Log Highlight.sublime-settings "${SUBLIME_USER_DIR}"
+    cp ./scripts/settings/trailing_spaces.sublime-settings "${SUBLIME_USER_DIR}"
+
     echo "[MURASAME.SETUP] > Custom Sublime configuration installed."
 }
 
@@ -199,7 +221,17 @@ linux_install_docker()
     # Authors:
     #   Attila Kovacs
 
-    echo "[MURASAME.SETUP] > Installing Docker..."
+    echo "[MURASAME.SETUP] > Checking the local installation of Docker..."
+
+    if [ "${DOCKER_VERSION}" == "" ]
+    then
+        echo "[MURASAME.SETUP] > Installing Docker..."
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        apt update
+        apt install docker-ce docker-ce-cli containerd.io
+    fi
+
     echo "[MURASAME.SETUP] > Docker installed."
 }
 
@@ -210,11 +242,25 @@ linux_install_portainer()
     # Authors:
     #   Attila Kovacs
 
-    echo "[MURASAME.SETUP] > Installing Portainer..."
+    echo "[MURASAME.SETUP] > Checking for existence of a Portainer installation..."
+
+    if [ "${PORTAINER_INSTALLED}" == "" ]
+    then
+        echo "[MURASAME.SETUP] > Installing Portainer..."
+        docker volume create portainer_data
+        docker run -d \
+            -p 8000:8000 \
+            -p 9000:9000 \
+            --name=portainer \
+            --restart=always \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v portainer_data:/data portainer/portainer-ce
+    fi
+
     echo "[MURASAME.SETUP] > Portainer installed."
 }
 
-linux_create_virtualenv
+linux_create_virtualenv()
 {
     # Creates the virtualenv environment for development.
     #
@@ -222,5 +268,9 @@ linux_create_virtualenv
     #   Attila Kovacs
 
     echo "[MURASAME.SETUP] > Creating virtualenv..."
+
+    #virtualenv --python=python3.9 "${VIRTUALENV_DIRECTORY}"
+    #./scripts/configure_virtualenv.sh
+
     echo "[MURASAME.SETUP] > Virtualenv has been created."
 }
