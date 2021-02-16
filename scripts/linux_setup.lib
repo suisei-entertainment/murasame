@@ -31,7 +31,7 @@ CUSTOM_FONT_FOUND=$(fc-list | grep consolas)
 SUBLIME_CONFIG_DIR="${HOME}/.config/sublime-text-3"
 SUBLIME_PACKAGE_INSTALL_DIR="${SUBLIME_CONFIG_DIR}/Installed Packages"
 PACKAGE_CONTROL_FILE="${SUBLIME_PACKAGE_INSTALL_DIR}/Package Control.sublime-package"
-SUBLIME_USER_DIR="${HOME}/'.config/sublime-text-3/Packages/User'"
+SUBLIME_USER_DIR="${SUBLIME_CONFIG_DIR}/Packages/User"
 PORTAINER_INSTALLED=$(docker volume ls | grep portainer)
 
 linux_install_dependencies()
