@@ -28,8 +28,9 @@ PYTHON_VERSION=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
 SUBLIME_VERSION=$(subl -v 2>&1 | grep -Po '(?<=Sublime Text Build )(.+)')
 DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
 CUSTOM_FONT_FOUND=$(fc-list | grep consolas)
-PACKAGE_CONTROL_FILE="${HOME}/.config/sublime-text-3/Installed Packages/Package Control.sublime-package"
-SUBLIME_PACKAGE_INSTALL_DIR="${HOME}/.config/sublime-text-3/Installed Packages"
+SUBLIME_CONFIG_DIR="${HOME}/.config/sublime-text-3"
+SUBLIME_PACKAGE_INSTALL_DIR="${SUBLIME_CONFIG_DIR}/Installed Packages"
+PACKAGE_CONTROL_FILE="${SUBLIME_PACKAGE_INSTALL_DIR}/Package Control.sublime-package"
 SUBLIME_USER_DIR="${HOME}/'.config/sublime-text-3/Packages/User'"
 PORTAINER_INSTALLED=$(docker volume ls | grep portainer)
 
@@ -73,12 +74,12 @@ linux_setup_directories()
 
     if [ ! -d "${WORKSPACE_DIRECTORY}" ]
     then
-        mkdir -p "${WORKSPACE_DIRECTORY}"
-        mkdir -p "${WORKSPACE_DIRECTORY}/build"
-        mkdir -p "${WORKSPACE_DIRECTORY}/dist"
-        mkdir -p "${WORKSPACE_DIRECTORY}/testfiles"
-        mkdir -p "${WORKSPACE_DIRECTORY}/logs"
-        mkdir -p "${WORKSPACE_DIRECTORY}/logs/unittest"
+        mkdir -p -m 777 "${WORKSPACE_DIRECTORY}"
+        mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/build"
+        mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/dist"
+        mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/testfiles"
+        mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs"
+        mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs/unittest"
     fi
 
     echo "[MURASAME.SETUP] > Directories configured."
@@ -132,6 +133,7 @@ linux_install_sublime()
         # Create basic Sublime directories as they don't exist until Sublime
         # Text 3 is started at least once, but we have to copy contents to
         # them.
+        mkdir -p -m 777 "${SUBLIME_CONFIG_DIR}"
         mkdir -p -m 777 "${SUBLIME_PACKAGE_INSTALL_DIR}"
         mkdir -p -m 777 "${SUBLIME_USER_DIR}"
     fi
