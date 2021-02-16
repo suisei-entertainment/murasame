@@ -128,6 +128,12 @@ linux_install_sublime()
         echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
         apt update
         apt install -y sublime-text
+
+        # Start Sublime once to get the config directory structure created, then
+        # kill it after 10 seconds
+        subl
+        sleep 10
+        ps -ef | grep sublime | grep -v grep | awk '{print $2}' | xargs kill
     fi
 
     echo "[MURASAME.SETUP] > Sublime Text 3 installed."
@@ -229,7 +235,7 @@ linux_install_docker()
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
         add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         apt update
-        apt install docker-ce docker-ce-cli containerd.io
+        apt install -y docker-ce docker-ce-cli containerd.io
     fi
 
     echo "[MURASAME.SETUP] > Docker installed."
