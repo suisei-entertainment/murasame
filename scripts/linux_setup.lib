@@ -129,11 +129,11 @@ linux_install_sublime()
         apt update
         apt install -y sublime-text
 
-        # Start Sublime once to get the config directory structure created, then
-        # kill it after 10 seconds
-        subl
-        sleep 10
-        ps -ef | grep sublime | grep -v grep | awk '{print $2}' | xargs kill
+        # Create basic Sublime directories as they don't exist until Sublime
+        # Text 3 is started at least once, but we have to copy contents to
+        # them.
+        mkdir -p -m 777 "${SUBLIME_PACKAGE_INSTALL_DIR}"
+        mkdir -p -m 777 "${SUBLIME_USER_DIR}"
     fi
 
     echo "[MURASAME.SETUP] > Sublime Text 3 installed."
