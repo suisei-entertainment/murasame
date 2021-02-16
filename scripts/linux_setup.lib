@@ -194,7 +194,7 @@ linux_install_sublime_packages()
 
     echo "[MURASAME.SETUP] > Installing Sublime packages..."
 
-    cp ./scripts/settings/Package Control.sublime-settings "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/Package Control.sublime-settings" "${SUBLIME_USER_DIR}"
 
     echo "[MURASAME.SETUP] > Sublime Packages installed."
 }
@@ -275,8 +275,8 @@ linux_create_virtualenv()
 
     echo "[MURASAME.SETUP] > Creating virtualenv..."
 
-    #virtualenv --python=python3.9 "${VIRTUALENV_DIRECTORY}"
-    #./scripts/configure_virtualenv.sh
+    virtualenv --python=python3.9 "${VIRTUALENV_DIRECTORY}"
+    ./scripts/configure_virtualenv.sh
 
     echo "[MURASAME.SETUP] > Virtualenv has been created."
 }
