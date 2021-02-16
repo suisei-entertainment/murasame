@@ -176,7 +176,7 @@ linux_install_package_control()
     if [ ! -f "${PACKAGE_CONTROL_FILE}" ]
     then
         echo "[MURASAME.SETUP] > Installing Package Control..."
-        curl "https://packagecontrol.io/Package%20Control.sublime-package" > "${SUBLIME_PACKAGE_INSTALL_DIR}"
+        curl "https://packagecontrol.io/Package%20Control.sublime-package" > "${SUBLIME_PACKAGE_INSTALL_DIR}/Package Control.sublime-package"
     fi
     echo "[MURASAME.SETUP] > Package Control installed."
 }
@@ -209,13 +209,13 @@ linux_install_sublime_configuration()
 
     echo "[MURASAME.SETUP] > Installing custom Sublime Text configuration..."
 
-    cp ./scripts/settings/Preferences.sublime-settings "${SUBLIME_USER_DIR}"
-    cp ./scripts/settings/A File Icon.sublime-settings "${SUBLIME_USER_DIR}"
-    cp ./scripts/settings/Anaconda.sublime-settings "${SUBLIME_USER_DIR}"
-    cp ./scripts/settings/AutoDocString.sublime-settings "${SUBLIME_USER_DIR}"
-    cp ./scripts/settings/Emmet.sublime-settings "${SUBLIME_USER_DIR}"
-    cp ./scripts/settings/Log Highlight.sublime-settings "${SUBLIME_USER_DIR}"
-    cp ./scripts/settings/trailing_spaces.sublime-settings "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/Preferences.sublime-settings" "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/A File Icon.sublime-settings" "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/Anaconda.sublime-settings" "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/AutoDocString.sublime-settings" "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/Emmet.sublime-settings" "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/Log Highlight.sublime-settings" "${SUBLIME_USER_DIR}"
+    cp "./scripts/settings/trailing_spaces.sublime-settings" "${SUBLIME_USER_DIR}"
 
     echo "[MURASAME.SETUP] > Custom Sublime configuration installed."
 }
