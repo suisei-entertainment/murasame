@@ -80,6 +80,13 @@ linux_setup_directories()
         mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/testfiles"
         mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs"
         mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs/unittest"
+
+        chown "${SUDO_USER}" "${WORKSPACE_DIRECTORY}"
+        chown "${SUDO_USER}" "${WORKSPACE_DIRECTORY}/build"
+        chown "${SUDO_USER}" "${WORKSPACE_DIRECTORY}/dist"
+        chown "${SUDO_USER}" "${WORKSPACE_DIRECTORY}/testfiles"
+        chown "${SUDO_USER}" "${WORKSPACE_DIRECTORY}/logs"
+        chown "${SUDO_USER}" "${WORKSPACE_DIRECTORY}/logs/unittest"
     fi
 
     echo "[MURASAME.SETUP] > Directories configured."
@@ -197,6 +204,7 @@ linux_install_sublime_packages()
     echo "[MURASAME.SETUP] > Installing Sublime packages..."
 
     cp "./scripts/settings/Package Control.sublime-settings" "${SUBLIME_USER_DIR}"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/Package Control.sublime-settings"
 
     echo "[MURASAME.SETUP] > Sublime Packages installed."
 }
@@ -218,6 +226,14 @@ linux_install_sublime_configuration()
     cp "./scripts/settings/Emmet.sublime-settings" "${SUBLIME_USER_DIR}"
     cp "./scripts/settings/Log Highlight.sublime-settings" "${SUBLIME_USER_DIR}"
     cp "./scripts/settings/trailing_spaces.sublime-settings" "${SUBLIME_USER_DIR}"
+
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/Preferences.sublime-settings"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/A File Icon.sublime-settings"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/Anaconda.sublime-settings"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/AutoDocString.sublime-settings"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/Emmet.sublime-settings"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/Log Highlight.sublime-settings"
+    chown "${SUDO_USER}" "${SUBLIME_USER_DIR}/trailing_spaces.sublime-settings"
 
     echo "[MURASAME.SETUP] > Custom Sublime configuration installed."
 }
