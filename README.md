@@ -10,14 +10,14 @@
 
 <div align="center">
     <h4>
-        <a href="https://github.com/suisei-entertainment/stargazers">
-            <img src="https://img.shields.io/github/stars/suisei-entertainment/seed.svg?style=plasticr"/>
+        <a href="https://github.com/suisei-entertainment/murasame/stargazers">
+            <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=plasticr"/>
         </a>
-        <a href="https://github.com/suisei-entertainment/seed/commits/developmen">
-            <img src="https://img.shields.io/github/last-commit/suisei-entertainment/seed.svg?style=plasticr"/>
+        <a href="https://github.com/suisei-entertainment/murasame/commits/developmen">
+            <img src="https://img.shields.io/github/last-commit/suisei-entertainment/murasame.svg?style=plasticr"/>
         </a>
-        <a href="https://github.com/suisei-entertainment/seed/commits/development">
-            <img src="https://img.shields.io/github/license/suisei-entertainment/seed.svg?style=plasticr"/>
+        <a href="https://github.com/suisei-entertainment/murasame/commits/development">
+            <img src="https://img.shields.io/github/license/suisei-entertainment/murasame.svg?style=plasticr"/>
         </a>
     </h4>
 </div>
