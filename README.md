@@ -13,7 +13,7 @@
         <a href="https://github.com/suisei-entertainment/murasame/stargazers">
             <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=plasticr"/>
         </a>
-        <a href="https://github.com/suisei-entertainment/murasame/commits/developmen">
+        <a href="https://github.com/suisei-entertainment/murasame/commits/development">
             <img src="https://img.shields.io/github/last-commit/suisei-entertainment/murasame.svg?style=plasticr"/>
         </a>
         <a href="https://github.com/suisei-entertainment/murasame/commits/development">
