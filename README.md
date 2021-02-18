@@ -11,16 +11,16 @@
 <div align="center">
     <h4>
         <a href="https://travis-ci.org/suisei-entertainment/murasame">
-            <img src="https://travis-ci.org/suisei-entertainment/murasame.svg?branch=development"/>
+            <img alt="Travis (.org) branch" src="https://img.shields.io/travis/suisei-entertainment/murasame/development?style=for-the-badge">
         </a>
         <a href="https://github.com/suisei-entertainment/murasame/stargazers">
-            <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=plasticr"/>
+            <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=for-the-badge"/>
         </a>
         <a href="https://github.com/suisei-entertainment/murasame/commits/development">
-            <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/suisei-entertainment/murasame/development?style=flat-square">
+            <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/suisei-entertainment/murasame/development?style=for-the-badge">
         </a>
         <a href="https://github.com/suisei-entertainment/murasame/commits/development">
-            <img src="https://img.shields.io/github/license/suisei-entertainment/murasame.svg?style=plasticr"/>
+            <img src="https://img.shields.io/github/license/suisei-entertainment/murasame.svg?style=for-the-badge"/>
         </a>
     </h4>
 </div>
