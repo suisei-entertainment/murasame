@@ -10,6 +10,9 @@
 
 <div align="center">
     <h4>
+        <a href="https://travis-ci.org/suisei-entertainment/murasame">
+            <img src="https://travis-ci.org/suisei-entertainment/murasame.svg?branch=development"/>
+        </a>
         <a href="https://github.com/suisei-entertainment/murasame/stargazers">
             <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=plasticr"/>
         </a>
