@@ -18,3 +18,11 @@
 ##  limitations under the License.
 ##
 ## ============================================================================
+
+# Create workspace directories
+mkdir -p -m 777 "${WORKSPACE_DIRECTORY}"
+mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/build"
+mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/dist"
+mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/testfiles"
+mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs"
+mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs/unittest"
