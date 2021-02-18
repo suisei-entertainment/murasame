@@ -58,6 +58,10 @@ linux_install_dependencies()
         ca-certificates \
         gnupg-agent
 
+    # Scc is not available through apt, but there's a snap package, so use
+    # that to install it.
+    snap install scc
+
     echo "[MURASAME.SETUP] > Package dependencies installed."
 }
 

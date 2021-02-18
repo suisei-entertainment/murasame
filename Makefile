@@ -150,4 +150,17 @@ release:
 	./scripts/build --type=release
 	@echo
 
+## ============================================================================
+##	Executes SCC in CLI mode
+## ============================================================================
+loc:
+	scc -w .
+
+## ============================================================================
+##	Executes SCC with JSON output
+## ============================================================================
+loc-report:
+	scc -f json . > ${WORKSPACE_DIRECTORY}/logs/sccreport.json
+	scc -f html . > ${WORKSPACE_DIRECTORY}/logs/sccreport.html
+
 .PHONY: unittest build
