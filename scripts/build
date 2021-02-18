@@ -43,8 +43,14 @@ import subprocess
 from enum import IntEnum
 from string import Template
 
+COLOREDLOGS_AVAILABLE = False
+
 # Dependency Imports
-import coloredlogs
+try:
+    import coloredlogs
+    COLOREDLOGS_AVAILABLE = True
+except ImportError:
+    COLOREDLOGS_AVAILABLE = False
 
 ## ============================================================================
 ##      >>> CONSTANTS <<<
@@ -476,7 +482,8 @@ def main() -> None:
     logger = logging.getLogger('murasame.builder')
     logging.basicConfig(filename=LOG_FILE_PATH,
                         level=logging.DEBUG)
-    coloredlogs.install(level='DEBUG')
+    if COLOREDLOGS_AVAILABLE:
+        coloredlogs.install(level='DEBUG')
 
     # Process command line
     args = parse_command_line()

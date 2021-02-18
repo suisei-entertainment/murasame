@@ -35,4 +35,4 @@ pylint>=2.2.2
 semgrep>=0.39.1
 
 # Utilities
-coloredlogs
+coloredlogs>=15.0
