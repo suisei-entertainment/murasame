@@ -26,6 +26,10 @@ dist:
 
 language: python
 
+env:
+  global:
+    SNYK_TOKEN=b64e0bfa-e5da-4bb1-9e09-7b50a4d810b4
+
 python:
   - 3.9
 
