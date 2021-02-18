@@ -19,6 +19,8 @@
 ##
 ## ============================================================================
 
+WORKSPACE_DIRECTORY="${HOME}/.murasame"
+
 # Create workspace directories
 mkdir -p -m 777 "${WORKSPACE_DIRECTORY}"
 mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/build"
