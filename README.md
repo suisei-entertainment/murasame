@@ -22,6 +22,15 @@
         <a href="https://github.com/suisei-entertainment/murasame/commits/development">
             <img src="https://img.shields.io/github/license/suisei-entertainment/murasame.svg?style=for-the-badge"/>
         </a>
+        <a href="https://github.com/suisei-entertainment/murasame/commits/development">
+            <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/suisei-entertainment/murasame?style=for-the-badge">
+        </a>
+        <a href="https://github.com/suisei-entertainment/murasame/commits/development">
+            <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/suisei-entertainment/murasame?style=for-the-badge">
+        </a>
+        <a href="https://github.com/suisei-entertainment/murasame/commits/development">
+            <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/suisei-entertainment/murasame?style=for-the-badge">
+        </a>
     </h4>
 </div>
 
