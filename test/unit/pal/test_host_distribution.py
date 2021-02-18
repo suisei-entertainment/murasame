@@ -49,7 +49,9 @@ class TestHostDistribution:
         sut = HostDistribution()
         assert sut.ID == 'ubuntu'
         assert sut.Name == 'Ubuntu'
-        assert sut.FullName.startswith('Ubuntu 18.04') or sut.FullName.startswith('Ubuntu 19.04')
+        assert sut.FullName.startswith('Ubuntu 18.04') \
+               or sut.FullName.startswith('Ubuntu 19.04') \
+               or sut.FullName.startswith('Ubuntu 20.04')
         assert sut.MajorVersion in (18, 19)
         assert sut.MinorVersion == 4
         assert sut.BuildNumber == -1
