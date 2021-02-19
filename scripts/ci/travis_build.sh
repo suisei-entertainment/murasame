@@ -22,3 +22,5 @@
 make build
 make lint
 make coverage
+snyk monitor --all-projects
+snyk test --all-projects
