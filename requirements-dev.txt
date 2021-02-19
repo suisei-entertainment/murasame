@@ -35,4 +35,5 @@ pylint>=2.6.1
 semgrep>=0.39.1
 
 # Utilities
+py>=1.10
 coloredlogs>=15.0
