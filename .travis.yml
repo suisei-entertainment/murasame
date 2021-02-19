@@ -44,14 +44,18 @@ install:
 jobs:
   include:
     - stage: build
+      name: "Build Python Wheel"
       script: ./scripts/ci/travis_build.sh
     - stage: test
+      name: "Execute Tests"
       script: ./scripts/ci/travis_unittest.sh
     - stage: analyze
+      name: "Analyze Source Code"
       script: ./scripts/ci/travis_lint.sh
     - stage: analyze
       script: ./scripts/ci/travis_semgrep.sh
     - stage: analyze
       script: ./scripts/ci/travis_snyk.sh
     - stage: deploy
+      name: "Deploy Wheel to PyPi"
       script: ./scripts/ci/travis_deploy.sh
