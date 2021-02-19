@@ -28,7 +28,7 @@ language: python
 
 env:
   global:
-    SNYK_TOKEN=f8002338-7405-4aca-869d-25a532d4689f
+    SNYK_TOKEN=d7253b76-2d14-4ef7-9018-01bd8be5449f
 
 python:
   - 3.9
