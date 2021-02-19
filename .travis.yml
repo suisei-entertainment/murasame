@@ -17,6 +17,12 @@
 ##
 ## ============================================================================
 
+stages:
+  - build
+  - test
+  - analyze
+  - deploy
+
 arch:
   - amd64
   - arm64
@@ -43,7 +49,9 @@ jobs:
       script: ./scripts/ci/travis_unittest.sh
     - stage: analyze
       script: ./scripts/ci/travis_lint.sh
+    - stage: analyze
       script: ./scripts/ci/travis_semgrep.sh
+    - stage: analyze
       script: ./scripts/ci/travis_snyk.sh
     - stage: deploy
       script: ./scripts/ci/travis_deploy.sh
