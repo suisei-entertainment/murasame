@@ -31,7 +31,7 @@ pytest-html>=2.1.1
 pytest-reraise>=1.0.3
 codecov>=2.0.15
 coverage>=4.5.2
-pylint>=2.2.2
+pylint>=2.6.1
 semgrep>=0.39.1
 
 # Utilities
