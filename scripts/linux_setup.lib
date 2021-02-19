@@ -33,6 +33,9 @@ SUBLIME_PACKAGE_INSTALL_DIR="${SUBLIME_CONFIG_DIR}/Installed Packages"
 PACKAGE_CONTROL_FILE="${SUBLIME_PACKAGE_INSTALL_DIR}/Package Control.sublime-package"
 SUBLIME_USER_DIR="${SUBLIME_CONFIG_DIR}/Packages/User"
 PORTAINER_INSTALLED=$(docker volume ls | grep portainer)
+NODEJS_INSTALLED=$(which nodejs)
+NPM_INSTALLED=$(which npm)
+SNYK_INSTALLED=$(which snyk)
 
 linux_install_dependencies()
 {
@@ -295,4 +298,63 @@ linux_create_virtualenv()
     ./scripts/configure_virtualenv.sh
 
     echo "[MURASAME.SETUP] > Virtualenv has been created."
+}
+
+linux_install_nodejs()
+{
+    # Installs NodeJS on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of NodeJS..."
+
+    if [ "${NODEJS_INSTALLED}" == "" ]
+    then
+        echo "[MURASAME.SETUP] > Installing NodeJS..."
+        curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+        apt install -y nodejs
+    fi
+
+    echo "[MURASAME.SETUP] > NodeJS installed."
+}
+
+linux_install_npm()
+{
+    # Installs npm on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of npm..."
+
+    if [ "${NPM_INSTALLED}" == "" ]
+    then
+        echo "[MURASAME.SETUP] > Installing npm..."
+        apt install -y npm
+    fi
+
+    echo "[MURASAME.SETUP] > Npm installed."
+}
+
+linux_install_snyk()
+{
+    # Installs the Snyk CLI on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of snyk..."
+
+    if [ "${SNYK_INSTALLED}" == "" ]
+    then
+        echo "[MURASAME.SETUP] > Installing Snyk..."
+
+        linux_install_nodejs
+        linux_install_npm
+
+        npm install -g snyk
+    fi
+
+    echo "[MURASAME.SETUP] > Snyk installed."
 }
