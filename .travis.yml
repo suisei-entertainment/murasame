@@ -18,10 +18,14 @@
 ## ============================================================================
 
 stages:
-  - build: "Build Python Wheel"
-  - test: "Execute Tests"
-  - analyze: "Analyze Source Code"
-  - release: "Release Wheel on PyPi"
+  - build
+    name: "Build Python Wheel"
+  - test
+    name: "Execute Tests"
+  - analyze
+    name: "Analyze Source Code"
+  - release
+    name: "Release Wheel on PyPi"
 
 arch:
   - amd64
