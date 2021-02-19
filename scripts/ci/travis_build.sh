@@ -23,8 +23,8 @@ make build
 make lint
 make coverage
 
-snyk monitor --org=suisei-entertainment --file=./requirements.txt --package-manager=pip
-snyk test --org=suisei-entertainment --file=./requirements.txt --package-manager=pip
+snyk monitor --project-name=murasame --org=suisei-entertainment --file=./requirements.txt --package-manager=pip
+snyk test --project-name=murasame --org=suisei-entertainment --file=./requirements.txt --package-manager=pip
 
-snyk monitor --org=suisei-entertainment --file=./requirements-dev.txt --package-manager=pip
-snyk test --org=suisei-entertainment --file=./requirements-dev.txt --package-manager=pip
+snyk monitor --project-name=murasame-dev --org=suisei-entertainment --file=./requirements-dev.txt --package-manager=pip
+snyk test --project-name=murasame-dev --org=suisei-entertainment --file=./requirements-dev.txt --package-manager=pip
