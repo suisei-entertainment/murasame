@@ -28,6 +28,3 @@ mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/dist"
 mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/testfiles"
 mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs"
 mkdir -p -m 777 "${WORKSPACE_DIRECTORY}/logs/unittest"
-
-# Install Snyk
-npm install -g snyk

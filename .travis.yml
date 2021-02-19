@@ -17,28 +17,33 @@
 ##
 ## ============================================================================
 
+arch:
+  - amd64
+  - arm64
+
 os:
   - linux
 
-dist:
-  - focal
-  - bionic
+dist: focal
 
 language: python
-
 python:
   - "3.9"
-  - "3.9-dev"
+  - "nightly"
 
 install:
   - pip install -r requirements-dev.txt
   - pip install -r requirements.txt
 
-before_script:
-  - ./scripts/ci/before.sh
-
-script:
-  - ./scripts/ci/travis_build.sh
-
-after_success:
-  - ./scripts/ci/after_success.sh
+jobs:
+  include:
+    - stage: build
+      script: ./scripts/ci/travis_build.sh
+    - stage: test
+      script: ./scripts/ci/travis_unittest.sh
+    - stage: analyze
+      script: ./scripts/ci/travis_lint.sh
+      script: ./scripts/ci/travis_semgrep.sh
+      script: ./scripts/ci/travis_snyk.sh
+    - stage: deploy
+      script: ./scripts/ci/travis_deploy.sh

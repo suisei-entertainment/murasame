@@ -21,4 +21,4 @@
 
 . ./before.sh
 
-make build
+make lint
