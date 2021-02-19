@@ -141,3 +141,36 @@ macos_create_virtualenv
     echo "[MURASAME.SETUP] > Creating virtualenv..."
     echo "[MURASAME.SETUP] > Virtualenv has been created."
 }
+
+linux_install_nodejs()
+{
+    # Installs NodeJS on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of NodeJS..."
+    echo "[MURASAME.SETUP] > NodeJS installed."
+}
+
+linux_install_npm()
+{
+    # Installs npm on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of npm..."
+    echo "[MURASAME.SETUP] > Npm installed."
+}
+
+linux_install_snyk()
+{
+    # Installs the Snyk CLI on the host system.
+    #
+    # Authors:
+    #   Attila Kovacs
+
+    echo "[MURASAME.SETUP] > Checking for local installation of snyk..."
+    echo "[MURASAME.SETUP] > Snyk installed."
+}

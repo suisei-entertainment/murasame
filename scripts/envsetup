@@ -56,6 +56,7 @@ linux_setup()
     linux_install_docker
     linux_install_portainer
     linux_create_virtualenv
+    linux_install_snyk
 
     echo "[MURASAME.SETUP] > Environment setup completed."
 }
@@ -78,6 +79,7 @@ macos_setup()
     macos_install_docker
     macos_install_portainer
     macos_create_virtualenv
+    macos_install_snyk
 
     echo "[MURASAME.SETUP] > Environment setup completed."
 }
