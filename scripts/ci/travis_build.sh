@@ -22,5 +22,5 @@
 make build
 make lint
 make coverage
-snyk monitor --all-projects
-snyk test --all-projects --dev
+snyk monitor --all-projects --dev --org=suisei-entertainment
+snyk test --all-projects --dev --org=suisei-entertainment
