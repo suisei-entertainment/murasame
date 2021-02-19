@@ -18,10 +18,10 @@
 ## ============================================================================
 
 stages:
-  - build
-  - test
-  - analyze
-  - deploy
+  - build: "Build Python Wheel"
+  - test: "Execute Tests"
+  - analyze: "Analyze Source Code"
+  - release: "Release Wheel on PyPi"
 
 arch:
   - amd64
@@ -33,9 +33,6 @@ os:
 dist: focal
 
 language: python
-python:
-  - "3.9"
-  - "nightly"
 
 install:
   - pip install -r requirements-dev.txt
@@ -44,18 +41,20 @@ install:
 jobs:
   include:
     - stage: build
-      name: "Build Python Wheel"
       script: ./scripts/ci/travis_build.sh
+      python:
+        - "3.9"
+        - "nightly"
     - stage: test
-      name: "Execute Tests"
       script: ./scripts/ci/travis_unittest.sh
+      python:
+        - "3.9"
+        - "nightly"
     - stage: analyze
-      name: "Analyze Source Code"
       script: ./scripts/ci/travis_lint.sh
     - stage: analyze
       script: ./scripts/ci/travis_semgrep.sh
     - stage: analyze
       script: ./scripts/ci/travis_snyk.sh
-    - stage: deploy
-      name: "Deploy Wheel to PyPi"
+    - stage: release
       script: ./scripts/ci/travis_deploy.sh
