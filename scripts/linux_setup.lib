@@ -56,7 +56,7 @@ linux_install_dependencies()
         curl \
         build-essential \
         virtualenv \
-        software-properties-common
+        software-properties-common \
         apt-transport-https \
         ca-certificates \
         gnupg-agent
