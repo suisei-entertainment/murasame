@@ -23,10 +23,6 @@ stages:
   - analyze
   - release
 
-arch:
-  - amd64
-  - arm64
-
 os:
   - linux
 
@@ -41,17 +37,18 @@ install:
 jobs:
   include:
     - stage: build
-      name: "Building Python Wheel"
+      name: "Building Python Wheel - Python 3.9"
+      python: "3.9"
       script: ./scripts/ci/travis_build.sh
-      python:
-        - "3.9"
-        - "nightly"
+    - script: ./scripts/ci/travis_build.sh
+      name: "Building Python Wheel - Python Nightly Build"
+      python: "nightly"
     - stage: test
-      name: "Unit Tests"
+      name: "Unit Tests - Python 3.9"
       script: ./scripts/ci/travis_unittest.sh
-      python:
-        - "3.9"
-        - "nightly"
+    - script: ./scripts/ci/travis_unittest.sh
+      name: "Unit Tests - Python Nightly Build"
+      python: "nightly"
     - stage: analyze
       name: "PyLint"
       script: ./scripts/ci/travis_lint.sh
