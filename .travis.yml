@@ -46,16 +46,21 @@ jobs:
     - stage: test
       name: "Unit Tests - Python 3.9"
       script: ./scripts/ci/travis_unittest.sh
+      python: "3.9"
     - script: ./scripts/ci/travis_unittest.sh
       name: "Unit Tests - Python Nightly Build"
       python: "nightly"
     - stage: analyze
       name: "PyLint"
       script: ./scripts/ci/travis_lint.sh
+      python: "3.9"
     - script: ./scripts/ci/travis_semgrep.sh
       name: "SemGrep"
+      python: "3.9"
     - script: ./scripts/ci/travis_snyk.sh
       name: "Snyk"
+      python: "3.9"
     - stage: release
       name: "Release Wheel on PyPi"
       script: ./scripts/ci/travis_deploy.sh
+      python: "3.9"
