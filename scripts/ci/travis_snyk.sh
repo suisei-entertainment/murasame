@@ -19,7 +19,8 @@
 ##
 ## ============================================================================
 
-. ./before.sh
+#shellcheck disable=SC1091
+. ./scripts/ci/before.sh
 
 # Install Snyk
 npm install -g snyk

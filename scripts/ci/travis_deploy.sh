@@ -18,3 +18,6 @@
 ##  limitations under the License.
 ##
 ## ============================================================================
+
+#shellcheck disable=SC1091
+. ./scripts/ci/before.sh
