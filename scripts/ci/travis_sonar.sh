@@ -19,6 +19,9 @@
 ##
 ## ============================================================================
 
+#shellcheck disable=SC1091
+. ./scripts/ci/before.sh
+
 pytest -v --cov=./murasame --cov-report=xml:~/.murasame/logs/coverage.xml --cov-config=./.coveragerc
 
 sonar-scanner
