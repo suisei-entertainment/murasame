@@ -18,10 +18,10 @@
 ## ============================================================================
 
 stages:
-  - build
-  - test
-  - analyze
-  - release
+  - Build
+  - Test
+  - Analyze
+  - Release
 
 os:
   - linux
@@ -36,23 +36,26 @@ install:
 
 jobs:
   include:
-    - stage: build
-      name: "Building Python Wheel - Python 3.9"
+    - stage: Build
+      name: "Building Python Wheel [Python 3.9]"
       python: "3.9"
       script: ./scripts/ci/travis_build.sh
     - script: ./scripts/ci/travis_build.sh
-      name: "Building Python Wheel - Python Nightly Build"
+      name: "Building Python Wheel [Python Nightly Build]"
       python: "nightly"
-    - stage: test
-      name: "Unit Tests - Python 3.9"
+    - stage: Test
+      name: "Unit Tests [Python 3.9]"
       script: ./scripts/ci/travis_unittest.sh
       python: "3.9"
     - script: ./scripts/ci/travis_unittest.sh
-      name: "Unit Tests - Python Nightly Build"
+      name: "Unit Tests [Python Nightly Build]"
       python: "nightly"
-    - stage: analyze
+    - stage: Analyze
       name: "PyLint"
       script: ./scripts/ci/travis_lint.sh
+      python: "3.9"
+    - script: ./scripts/ci/travis_coverage.sh
+      name: "Unit Test Coverage"
       python: "3.9"
     - script: ./scripts/ci/travis_semgrep.sh
       name: "SemGrep"
@@ -60,7 +63,7 @@ jobs:
     - script: ./scripts/ci/travis_snyk.sh
       name: "Snyk"
       python: "3.9"
-    - stage: release
+    - stage: Release
       name: "Release Wheel on PyPi"
       script: ./scripts/ci/travis_deploy.sh
       python: "3.9"
