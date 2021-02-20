@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## ============================================================================
 ##             **** Murasame Application Development Framework ****
 ##                Copyright (C) 2019-2021, Suisei Entertainment
@@ -17,24 +19,4 @@
 ##
 ## ============================================================================
 
-# Documentation
-sphinx>=2.3.1
-sphinx-pdj-theme
-
-# Tools
-pyinstaller>=3.4
-
-# Testing
-pytest>=5.4.1
-pytest-cov>=2.7.1
-pytest-html>=2.1.1
-pytest-reraise>=1.0.3
-codecov>=2.0.15
-coverage>=4.5.2
-pylint>=2.6.1
-pylint-exit>=1.2.0
-semgrep>=0.39.1
-
-# Utilities
-py>=1.10
-coloredlogs>=15.0
+pylint --rcfile=./.pylintrc ./murasame || pylint-exit -efail $?
