@@ -19,4 +19,6 @@
 ##
 ## ============================================================================
 
+pytest -v --cov=./murasame --cov-report=xml:~/.murasame/logs/coverage.xml --cov-config=./.coveragerc
+
 sonar-scanner
