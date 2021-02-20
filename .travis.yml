@@ -17,6 +17,10 @@
 ##
 ## ============================================================================
 
+addons:
+  sonarcloud:
+    organization: 'suisei-entertainment'
+
 stages:
   - Build
   - Test
@@ -72,6 +76,9 @@ jobs:
       python: "3.9"
     - script: ./scripts/ci/travis_snyk.sh
       name: "Snyk"
+      python: "3.9"
+    - script: ./scripts/ci/travis_sonar.sh
+      name: "SonarCloud"
       python: "3.9"
     - stage: Release
       name: "Release Wheel on PyPi"
