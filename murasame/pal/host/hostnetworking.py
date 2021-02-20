@@ -394,7 +394,7 @@ class HostNetworking(LogWriter):
         """
 
         try:
-            response = requests.get('https://api.ipify.org', timeout=1)
+            response = requests.get('https://api.ipify.org', timeout=5)
             response.raise_for_status()
             ip_address = response.text
         except requests.exceptions.Timeout:
