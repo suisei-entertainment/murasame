@@ -61,15 +61,14 @@ class TestSecrets:
         """
 
         # Create the test file
-        if not os.path.isfile('{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY)):
-            config_file = JsonFile(
-                path='{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY),
-                cb_retrieve_key=get_password)
-            config_file.overwrite_content(content=TEST_DATA)
-            config_file.save()
+        config_file = JsonFile(
+            path='{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY),
+            cb_retrieve_key=get_password)
+        config_file.overwrite_content(content=TEST_DATA)
+        config_file.save()
 
         # Set the environment variable
-        os.environ['SEED_SECRETS_KEY'] = TEST_PASSWORD
+        os.environ['MURASAME_SECRETS_KEY'] = TEST_PASSWORD
 
         sut = Secrets(config_directory=TEST_CONFIG_DIRECTORY)
 
@@ -80,15 +79,14 @@ class TestSecrets:
         """
 
         # Create the test file
-        if not os.path.isfile('{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY)):
-            config_file = JsonFile(
-                path='{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY),
-                cb_retrieve_key=get_password)
-            config_file.overwrite_content(content=TEST_DATA)
-            config_file.save()
+        config_file = JsonFile(
+            path='{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY),
+            cb_retrieve_key=get_password)
+        config_file.overwrite_content(content=TEST_DATA)
+        config_file.save()
 
         # Set the environment variable
-        os.environ['SEED_SECRETS_KEY'] = TEST_PASSWORD
+        os.environ['MURASAME_SECRETS_KEY'] = TEST_PASSWORD
 
         sut = Secrets(config_directory=TEST_CONFIG_DIRECTORY)
         assert sut.get_secret(key='testkey') == 'testvalue'

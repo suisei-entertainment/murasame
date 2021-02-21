@@ -72,7 +72,7 @@ class Secrets:
             Attila Kovacs
         """
 
-        pwd = os.getenv('SEED_SECRETS_KEY')
+        pwd = os.getenv('MURASAME_SECRETS_KEY')
         if not pwd:
             return None
 
@@ -93,8 +93,8 @@ class Secrets:
             Attila Kovacs
         """
 
-        file_path = os.path.abspath(os.path.expanduser(
-            '{}/secrets.conf').format(self._config_directory))
+        file_path = os.path.abspath(
+            os.path.expanduser(f'{self._config_directory}/secrets.conf'))
 
         # Check whether or not the file exists
         if not os.path.isfile(file_path):

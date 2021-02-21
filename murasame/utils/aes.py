@@ -30,10 +30,24 @@ import binascii
 # Dependency Imports
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.backends import default_backend
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
+
+IV_SIZE = 16
+"""
+Size of the initialization vector.
+"""
+
+TAG_SIZE = 16
+"""
+Size of the GCM tag.
+"""
+
+BLCOK_SIZE = 128
+"""
+AES block size.
+"""
 
 class AESCipher:
 
@@ -74,25 +88,25 @@ class AESCipher:
         """
 
         # Create initialization vector
-        #initialization_vector = get_random_bytes(AES.block_size)
-        initialization_vector = os.urandom(16)
+        initialization_vector = os.urandom(IV_SIZE)
 
         # Make sure that the input is properly encoded
         content = content.encode('utf-8')
 
         # Pad the input to the proper block size
-        #content = pad(data_to_pad=content, block_size=AES.block_size)
-        padder = padding.PKCS7(128).padder()
+        padder = padding.PKCS7(BLCOK_SIZE).padder()
         content = padder.update(content)
         content += padder.finalize()
 
         # Encrypt the data
-        cipher = self._create_cipher(initialization_vector)
+        cipher = Cipher(
+            algorithms.AES(self._key),
+            modes.GCM(initialization_vector))
         encryptor = cipher.encryptor()
         content = encryptor.update(content) + encryptor.finalize()
 
-        # Append the initialization vector to the data
-        content = initialization_vector + content
+        # Append the initialization vector and the tag to the data
+        content = initialization_vector + encryptor.tag + content
 
         # Base64 encode the result
         content = base64.b64encode(content)
@@ -127,18 +141,26 @@ class AESCipher:
                 from error
 
         # Retrieve the initialization vector
-        initialization_vector = content[:16]
+        initialization_vector = content[:IV_SIZE]
 
         # Remove the initialization vector from the content
-        content = content[16:]
+        content = content[IV_SIZE:]
+
+        # Retrieve the tag
+        tag = content[:TAG_SIZE]
+
+        # Remove the tag from the content
+        content = content[TAG_SIZE:]
 
         # Decrypt the data
-        cipher = self._create_cipher(initialization_vector)
+        cipher = Cipher(
+            algorithms.AES(self._key),
+            modes.GCM(initialization_vector, tag))
         decryptor = cipher.decryptor()
         content = decryptor.update(content) + decryptor.finalize()
 
         # Unpad the data
-        unpadder = padding.PKCS7(128).unpadder()
+        unpadder = padding.PKCS7(BLCOK_SIZE).unpadder()
         content = unpadder.update(content)
         content += unpadder.finalize()
 
@@ -146,23 +168,3 @@ class AESCipher:
         content = content.decode('utf-8')
 
         return content
-
-    def _create_cipher(self, initialization_vector: bytes) -> bytes:
-
-        """
-        Creates the Cipher object that will be used.
-
-        Args:
-            initialization_vector:      The initialization vector to be used to
-                                        create the AES cipher.
-
-        Returns:
-            The created cipher object.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        return Cipher(algorithms.AES(self._key),
-                      modes.CBC(initialization_vector),
-                      backend=default_backend())
