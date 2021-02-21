@@ -13,11 +13,14 @@
         <a href="https://travis-ci.org/suisei-entertainment/murasame">
             <img alt="Travis (.org) branch" src="https://img.shields.io/travis/suisei-entertainment/murasame/development?style=for-the-badge">
         </a>
-        <a href="https://github.com/suisei-entertainment/murasame/stargazers">
-            <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=for-the-badge"/>
+        <a href="https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame">
+            <img src="https://sonarcloud.io/api/project_badges/measure?project=suisei-entertainment_murasame&branch=development">
         </a>
         <a href="https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame">
-            <img src="https://sonarcloud.io/api/project_badges/measure?project=suisei-entertainment_murasame">
+            <img src="https://sonarcloud.io/api/project_badges/quality_gate?project=suisei-entertainment_murasame&branch=development">
+        </a>
+        <a href="https://github.com/suisei-entertainment/murasame/stargazers">
+            <img src="https://img.shields.io/github/stars/suisei-entertainment/murasame.svg?style=for-the-badge"/>
         </a>
         <a href="https://github.com/suisei-entertainment/murasame/commits/development">
             <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/suisei-entertainment/murasame/development?style=for-the-badge">
