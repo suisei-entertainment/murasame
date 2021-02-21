@@ -25,6 +25,7 @@ Contains the implementation of the HostLocation class.
 import os
 import tarfile
 import shutil
+import uuid
 
 # Dependency Imports
 import geoip2
@@ -35,6 +36,8 @@ import wget
 from murasame.exceptions import InvalidInputError
 from murasame.utils import GeoIP
 from murasame.logging import LogWriter
+
+PACKAGE_DOWNLOAD_LOCATION = '/tmp'
 
 class HostLocation(LogWriter):
 
@@ -162,21 +165,30 @@ class HostLocation(LogWriter):
                     f'download?edition_id=GeoLite2-City&license_key='\
                     f'{geoip_license_key}&suffix=tar.gz'
 
+                # Use a random generated UUID as a temporary filename for the
+                # downloaded GeoIP database to avoid it being used as a
+                # potential attack vector by forcing the application to open a
+                # file with malicious content if the downloaded file has been
+                # compromised.
+                package_temp_name = str(uuid.uuid4())
+                package_filename = f'{PACKAGE_DOWNLOAD_LOCATION}/{package_temp_name}.tar.gz'
+
                 # Download the update package
                 wget.download(url=update_link,
-                              out='/tmp/GeoLite2-City.tar.gz')
+                              out=package_filename)
 
                 # Extract the update package
-                tar = tarfile.open('/tmp/GeoLite2-City.tar.gz')
-                tar.extractall(path='/tmp', members=GeoIP._find_mmdb(tar))
+                tar = tarfile.open(package_filename)
+                tar.extractall(path=PACKAGE_DOWNLOAD_LOCATION,
+                               members=GeoIP._find_mmdb(tar))
                 tar.close()
 
                 # Move the database to the requested location
-                shutil.move(src='/tmp/GeoLite2-City.mmdb',
+                shutil.move(src=f'{PACKAGE_DOWNLOAD_LOCATION}/GeoLite2-City.mmdb',
                             dst=f'{database_path}/GeoLite2-City.mmdb')
 
                 # Delete the update package
-                os.remove('/tmp/GeoLite2-City.tar.gz')
+                os.remove(package_filename)
             else:
                 raise InvalidInputError('GeoIP database was not found.')
 
