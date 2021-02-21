@@ -14,7 +14,7 @@
             <img alt="Travis (.org) branch" src="https://img.shields.io/travis/suisei-entertainment/murasame/development?style=for-the-badge">
         </a>
         <a href="https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame">
-            <img src="https://img.shields.io/badge/dynamic/json?color=blue&label=Coverage&query=component.measures%5B0%5D.value&suffix=%20%25&url=https%3A%2F%2Fsonarcloud.io%2Fapi%2Fmeasures%2Fcomponent%3Fcomponent%3Dsuisei-entertainment_murasame%26metricKeys%3Dcoverage%26branch%3Ddevelopment&stlye=for-the-badge">
+            <img src="https://img.shields.io/badge/dynamic/json?color=blue&stlye=for-the-badge&label=COVERAGE&query=component.measures%5B0%5D.value&suffix=%20%25&url=https%3A%2F%2Fsonarcloud.io%2Fapi%2Fmeasures%2Fcomponent%3Fcomponent%3Dsuisei-entertainment_murasame%26metricKeys%3Dcoverage%26branch%3Ddevelopment">
         </a>
         <!--
         <a href="https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame">
