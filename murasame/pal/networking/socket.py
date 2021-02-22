@@ -33,6 +33,11 @@ from typing import Any
 from murasame.exceptions import InvalidInputError, MissingRequirementError
 from murasame.logging import LogWriter
 
+SOCKET_LOG_CHANNEL = 'murasame.pal.networking.socket'
+"""
+Name of the log channel all socket implementations should use.
+"""
+
 class BaseSocket(LogWriter):
 
     """
@@ -137,7 +142,7 @@ class BaseSocket(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.networking.socket',
+        super().__init__(channel_name=SOCKET_LOG_CHANNEL,
                          cache_entries=True)
 
         self._name = '' if name is None else name
@@ -339,7 +344,7 @@ class SocketMessageTransformer(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.networking.socket',
+        super().__init__(channel_name=SOCKET_LOG_CHANNEL,
                          cache_entries=True)
 
     def transform(self, message: Any) -> bytes:
@@ -699,7 +704,7 @@ class ClientThread(Thread):
         """
 
         self._logger = LogWriter(
-            channel_name='murasame.pal.networking.socket',
+            channel_name=SOCKET_LOG_CHANNEL,
             cache_entries=True)
 
         self._logger.debug(
@@ -765,13 +770,17 @@ class ClientThread(Thread):
         Args:
             message:        The message that was received on the socket.
 
+        Raises:
+            NotImplementedError:        Raised if the function is not
+                                        implemented by the derived class.
+
         Authors:
             Attila Kovacs
         """
 
         del message
 
-        return NotImplementedError(
+        raise NotImplementedError(
             f'ClientThread.handle_message() has to be implemented in '
             f'{self.__class__.__name__}.')
 
@@ -788,8 +797,6 @@ class ClientThread(Thread):
         # Disable no self use warning as this is only an interface definition
         #pylint: disable=no-self-use
 
-        return
-
     def on_abort(self) -> None:
 
         """
@@ -802,8 +809,6 @@ class ClientThread(Thread):
 
         # Disable no self use warning as this is only an interface definition
         #pylint: disable=no-self-use
-
-        return
 
 class ServerSocket(BaseSocket):
 

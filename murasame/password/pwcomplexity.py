@@ -198,9 +198,8 @@ class PasswordComplexity:
             Attila Kovacs
         """
 
-        if self._not_common:
-            if password in self._common_passwords:
-                return False
+        if self._not_common and password in self._common_passwords:
+            return False
 
         return True
 

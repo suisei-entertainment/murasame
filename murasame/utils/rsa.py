@@ -107,7 +107,7 @@ class RSAPublic:
     def verify(self,
                message: str,
                signature: str,
-               hashing_algorithm: object = hashes.SHA512,
+               hashing_algorithm: Callable = hashes.SHA512,
                encoded: bool = False) -> bool:
 
         """
@@ -141,7 +141,7 @@ class RSAPublic:
 
     def encrypt(self,
                 message: str,
-                hashing_algorithm: object = hashes.SHA512) -> str:
+                hashing_algorithm: Callable = hashes.SHA512) -> str:
 
         """
         Encrypts the given message using the public key.
@@ -234,7 +234,7 @@ class RSAPrivate:
 
     def sign(self,
              message: str,
-             hashing_algorithm: object = hashes.SHA512,
+             hashing_algorithm: Callable = hashes.SHA512,
              encode: bool = False) -> str:
 
         """
@@ -269,7 +269,7 @@ class RSAPrivate:
 
     def decrypt(self,
                 message: str,
-                hashing_algorithm: object = hashes.SHA512) -> str:
+                hashing_algorithm: Callable = hashes.SHA512) -> str:
 
         """
         Decrypts the given message using the private key.
@@ -438,7 +438,7 @@ class RSASigner:
                  private_key_path: str = None,
                  private_key: RSAPrivate = None,
                  cb_retrieve_password: str = None,
-                 hashing_algorithm: object = hashes.SHA512) -> None:
+                 hashing_algorithm: Callable = hashes.SHA512) -> None:
 
         """
         Creates a new RSASigner instance.
@@ -505,7 +505,7 @@ class RSAVerifier:
             self,
             public_key_path: str = None,
             public_key: str = None,
-            hashing_algorithm: object = hashes.SHA512) -> None:
+            hashing_algorithm: Callable = hashes.SHA512) -> None:
 
         """
         Creates a new RSAVerifier instance.
@@ -570,7 +570,7 @@ class RSAEncryptor:
             self,
             public_key_path: str = None,
             public_key: RSAPublic = None,
-            hashing_algorithm: object = hashes.SHA512) -> None:
+            hashing_algorithm: Callable = hashes.SHA512) -> None:
 
         """
         Creates a new RSAEncryptor instance.
@@ -635,7 +635,7 @@ class RSADecryptor:
             private_key_path: str = None,
             private_key: RSAPublic = None,
             cb_retrieve_password: Callable = None,
-            hashing_algorithm: object = hashes.SHA512) -> None:
+            hashing_algorithm: Callable = hashes.SHA512) -> None:
 
         """
         Creates a new RSADecryptor instance.
