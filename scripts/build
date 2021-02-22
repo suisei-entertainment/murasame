@@ -166,7 +166,7 @@ def bump_version_number() -> None:
     if is_travis:
         logger.debug('[STEP #1]     - Build is running in Travis, using Travis build number.')
         try:
-            build_num = int(os.environb['TRAVIS_BUILD_NUMBER'])
+            build_num = int(os.environ['TRAVIS_BUILD_NUMBER'])
         except KeyError as error:
             logger.error('[STEP #1]     - Travis build number cannot be determined.')
             raise SystemExit from error
