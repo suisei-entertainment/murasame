@@ -89,7 +89,7 @@ class ResourceVersion(LogWriter):
         """
 
         if not isinstance(other, ResourceVersion):
-            raise NotImplementedError
+            return NotImplemented
 
         return self.is_equal(other)
 
@@ -110,7 +110,7 @@ class ResourceVersion(LogWriter):
         """
 
         if not isinstance(other, ResourceVersion):
-            raise NotImplementedError
+            return NotImplemented
 
         return not self.is_equal(other)
 
@@ -131,7 +131,7 @@ class ResourceVersion(LogWriter):
         """
 
         if not isinstance(other, ResourceVersion):
-            raise NotImplementedError
+            return NotImplemented
 
         return self.is_older(other)
 
@@ -152,7 +152,7 @@ class ResourceVersion(LogWriter):
         """
 
         if not isinstance(other, ResourceVersion):
-            raise NotImplementedError
+            return NotImplemented
 
         return self.is_older(other) or self.is_equal(other)
 
@@ -173,7 +173,7 @@ class ResourceVersion(LogWriter):
         """
 
         if not isinstance(other, ResourceVersion):
-            raise NotImplementedError
+            return NotImplemented
 
         return self.is_newer(other)
 
@@ -194,7 +194,7 @@ class ResourceVersion(LogWriter):
         """
 
         if not isinstance(other, ResourceVersion):
-            raise NotImplementedError
+            return NotImplemented
 
         return self.is_newer(other) or self.is_equal(other)
 

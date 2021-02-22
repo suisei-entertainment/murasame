@@ -78,23 +78,20 @@ class TestResourceVersion:
         assert sut1 <= sut3
         assert sut3 >= sut1
 
-        with pytest.raises(NotImplementedError):
-            assert sut1 == 1
+        assert not sut1 == 1
+        assert sut1 != 1
 
-        with pytest.raises(NotImplementedError):
-            assert sut1 != 1
+        with pytest.raises(TypeError):
+            assert not sut1 <= 1
 
-        with pytest.raises(NotImplementedError):
-            assert sut1 <= 1
+        with pytest.raises(TypeError):
+            assert not sut1 >= 1
 
-        with pytest.raises(NotImplementedError):
-            assert sut1 >= 1
+        with pytest.raises(TypeError):
+            assert not sut1 < 1
 
-        with pytest.raises(NotImplementedError):
-            assert sut1 < 1
-
-        with pytest.raises(NotImplementedError):
-            assert sut1 > 1
+        with pytest.raises(TypeError):
+            assert not sut1 > 1
 
     def test_string_representations(self):
 
