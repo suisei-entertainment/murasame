@@ -29,6 +29,7 @@ MURASAME_MAJOR_VERSION = ${major_version}
 MURASAME_MINOR_VERSION = ${minor_version}
 MURASAME_PATCH_LEVEL = ${patch_level}
 MURASAME_BUILD = ${build_num}
+MURASAME_BUILD_TYPE = '${build_type}'
 MURASAME_RELEASE_LEVEL = '${release_level}'
 MURASAME_RELEASE_CODENAME = '${release_codename}'
 MURASAME_SCM_ID = '${scm_id}'

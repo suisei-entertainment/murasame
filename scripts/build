@@ -146,18 +146,44 @@ def bump_version_number() -> None:
                        'creating it with default parameters..')
         with open(VERSION_TEMPLATE_PATH, 'r') as config_file:
             version_data = json.load(config_file)
-    except OSError:
+    except OSError as error:
         logger.error('[STEP #1]     - Failed to read the contents of version.conf.')
-        raise SystemExit
-    except json.JSONDecodeError:
+        raise SystemExit from error
+    except json.JSONDecodeError as error:
         logger.error('[STEP #1]     - Failed to parse the content of version.conf.')
-        raise SystemExit
+        raise SystemExit from error
 
-    # Bump the build number
-    build_num = int(version_data['meta']['build'])
-    build_num = build_num + 1
+    # Bump the build number in regular builds, use the Travis build number if
+    # the building is running in Travis CI
+    is_travis = False
+    try:
+        temp = os.environ['TRAVIS']
+        del temp
+        is_travis = True
+    except KeyError:
+        is_travis = False
+
+    if is_travis:
+        logger.debug('[STEP #1]     - Build is running in Travis, using Travis build number.')
+        try:
+            build_num = int(os.environb['TRAVIS_BUILD_NUMBER'])
+        except KeyError as error:
+            logger.error('[STEP #1]     - Travis build number cannot be determined.')
+            raise SystemExit from error
+    else:
+        logger.debug('[STEP #1]     - Running local build, bumping existing version number.')
+        build_num = int(version_data['meta']['build'])
+        build_num = build_num + 1
+
+    # Set the new version number in the version configuration
     version_data['meta']['build'] = str(build_num)
-    logger.debug(f'[STEP #1]    - New build number is {build_num}.')
+    logger.debug(f'[STEP #1]     - New build number is {build_num}.')
+
+    # Set the build type in the version configuration
+    if is_travis:
+        version_data['meta']['build_type'] = 'CI'
+    else:
+        version_data['meta']['build_type'] = 'local'
 
     # Save the version configuration
     try:
@@ -166,9 +192,9 @@ def bump_version_number() -> None:
                       config_file,
                       indent=4,
                       separators=(',', ': '))
-    except OSError:
+    except OSError as error:
         logger.error('[STEP #1]     - Failed to update version.conf.')
-        raise SystemExit
+        raise SystemExit from error
 
     logger.debug('[STEP #1] Build number has been updated.')
 
@@ -190,6 +216,7 @@ def create_constants_file() -> None:
     minor_version = None
     patch_level = None
     build_num = None
+    build_type = None
     release_level = None
     release_codename = None
     scm_id = None
@@ -198,72 +225,79 @@ def create_constants_file() -> None:
     try:
         with open(VERSION_FILE_PATH, 'r') as config_file:
             version_data = json.load(config_file)
-    except OSError:
+    except OSError as error:
         logger.error('[STEP #2]     - Failed to read the contents of version.conf.')
-        raise SystemExit
-    except json.JSONDecodeError:
+        raise SystemExit from error
+    except json.JSONDecodeError as error:
         logger.error('[STEP #2]     - Failed to parse the content of version.conf.')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         major_version = version_data['major']
         logger.debug(f'[STEP #2]     - Major version: {major_version}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #2]     - No major version was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         minor_version = version_data['minor']
         logger.debug(f'[STEP #2]     - Minor version: {minor_version}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #2]     - No minor version was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         patch_level = version_data['patch']
         logger.debug(f'[STEP #2]     - Patch level: {patch_level}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #2]     - No patch level was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         build_num = version_data['meta']['build']
         logger.debug(f'[STEP #2]     - Build: {build_num}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #2]     - No build number was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
+
+    try:
+        build_type = version_data['meta']['build_type']
+        logger.debug(f'[STEP #2]     - Build type: {build_type}')
+    except KeyError as error:
+        logger.error('[STEP #2]     - No build type was found in version.conf')
+        raise SystemExit from error
 
     try:
         release_level = version_data['release']
         logger.debug(f'[STEP #2]     - Release level: {release_level}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #2]     - No release level was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         release_codename = version_data['meta']['codename']
         logger.debug(f'[STEP #2]     - Release codename: {release_codename}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #2]     - No release codename was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     # Retrieving SCM version
     try:
         scm_id = subprocess.check_output(
             ['git', 'rev-parse', 'HEAD']).strip().decode('ascii')
         logger.debug(f'[STEP #2]     - Git commit hash: {scm_id}')
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as error:
         logger.error('Failed to determine the git commit hash.')
-        raise SystemExit
+        raise SystemExit from error
 
     # Load the constats file template
     template_content = None
     try:
         with open(VERSION_CONSTANTS_TEMPLATE_PATH, 'r') as template_file:
             template_content = template_file.read()
-    except OSError:
+    except OSError as error:
         logger.error('[STEP #2]     - Failed to read the contents of version.py.in')
-        raise SystemExit
+        raise SystemExit from error
 
     # Create file content
     template = Template(template_content)
@@ -272,6 +306,7 @@ def create_constants_file() -> None:
         minor_version=minor_version,
         patch_level=patch_level,
         build_num=build_num,
+        build_type=build_type,
         release_level=release_level,
         release_codename=release_codename,
         scm_id=scm_id)
@@ -300,11 +335,11 @@ def collect_packages() -> list:
 
     for obj in objects:
         if obj.is_dir() and obj.name != '__pycache__':
-                result.append(f'murasame.{obj.name}')
-                subdirs = os.scandir(f'./murasame/{obj.name}')
-                for subdir in subdirs:
-                    if subdir.is_dir() and subdir.name != '__pycache__':
-                        result.append(f'murasame.{obj.name}.{subdir.name}')
+            result.append(f'murasame.{obj.name}')
+            subdirs = os.scandir(f'./murasame/{obj.name}')
+            for subdir in subdirs:
+                if subdir.is_dir() and subdir.name != '__pycache__':
+                    result.append(f'murasame.{obj.name}.{subdir.name}')
 
     return result
 
@@ -326,12 +361,14 @@ def collect_dependencies() -> list:
     result = []
     lines = None
 
+    logger = logging.getLogger('murasame.builder')
+
     try:
         with open('./requirements.txt', 'r') as requirements:
             lines = requirements.readlines()
-    except OSError:
+    except OSError as error:
         logger.error('[STEP #3]     - Failed to read the contents of requirements.txt')
-        raise SystemExit
+        raise SystemExit from error
 
     for line in lines:
         if not line.startswith('#') and not line.startswith('\n'):
@@ -351,7 +388,7 @@ def create_wheel() -> None:
     logger = logging.getLogger('murasame.builder')
     logger.debug('[STEP #3] Creating Python wheel...')
 
-    logger.debug('[STEP #3]     Creating setup.py...')
+    logger.debug('[STEP #3]     - Creating setup.py...')
 
     template = None
 
@@ -365,42 +402,42 @@ def create_wheel() -> None:
     try:
         with open(VERSION_FILE_PATH, 'r') as config_file:
             version_data = json.load(config_file)
-    except OSError:
+    except OSError as error:
         logger.error('[STEP #3]     - Failed to read the contents of version.conf.')
-        raise SystemExit
-    except json.JSONDecodeError:
+        raise SystemExit from error
+    except json.JSONDecodeError as error:
         logger.error('[STEP #3]     - Failed to parse the content of version.conf.')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         major_version = version_data['major']
         logger.debug(f'[STEP #3]     - Major version: {major_version}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #3]     - No major version was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         minor_version = version_data['minor']
         logger.debug(f'[STEP #3]     - Minor version: {minor_version}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #3]     - No minor version was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     try:
         patch_level = version_data['patch']
         logger.debug(f'[STEP #3]     - Patch level: {patch_level}')
-    except KeyError:
+    except KeyError as error:
         logger.error('[STEP #3]     - No patch level was found in version.conf')
-        raise SystemExit
+        raise SystemExit from error
 
     # Load setup.py template
     try:
         with open(SETUP_SCRIPT_TEMPLATE_PATH, 'r') as setup_template:
             template = setup_template.read()
-    except OSError:
+    except OSError as error:
         logger.error(f'[STEP #3]     - Failed to load the setup script '
                      f'template from {SETUP_SCRIPT_TEMPLATE_PATH}')
-        raise SystemExit
+        raise SystemExit from error
 
 
     # Create file content
@@ -416,7 +453,7 @@ def create_wheel() -> None:
     with open('./setup.py', 'w+') as setup_file:
         setup_file.write(setup_string)
 
-    logger.debug('[STEP #3]     Running setup.py...')
+    logger.debug('[STEP #3]     - Running setup.py...')
     try:
         subprocess.check_call(
             [\
@@ -425,9 +462,9 @@ def create_wheel() -> None:
                 'bdist_wheel',
                 '--dist-dir', DIST_PATH,
                 'clean'])
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as error:
         logger.error('Failed to create wheel.')
-        raise SystemExit
+        raise SystemExit from error
 
     logger.debug('[STEP #3] Python wheel created.')
 
