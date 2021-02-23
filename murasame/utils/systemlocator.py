@@ -25,6 +25,7 @@ Contains the implementation of the system locator design pattern.
 import os
 import glob
 import importlib
+from typing import Callable
 
 # Murasame Imports
 from .singleton import Singleton
@@ -349,7 +350,7 @@ def System(*systems):
         Attila Kovacs
     """
 
-    def real_decorator(system_class: object) -> object:
+    def real_decorator(system_class: Callable) -> object:
 
         """
         Creates the decorated class.

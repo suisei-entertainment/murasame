@@ -23,6 +23,7 @@ Contains the implementation of the Secrets class.
 
 # Platform Imports
 import os
+from typing import Union
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
@@ -41,6 +42,10 @@ class Secrets:
         Attila Kovacs
     """
 
+    # Pylint with Python 3.9 seems to trigger a falso positive thinking the
+    # Union type is unsubscriptable., so disable that check here for now.
+    #pylint: disable=unsubscriptable-object
+
     def __init__(self, config_directory: str) -> None:
 
         """
@@ -58,7 +63,7 @@ class Secrets:
         self._config_directory = config_directory
 
     @staticmethod
-    def retrieve_key() -> str:
+    def retrieve_key() -> Union[str, None]:
 
         """
         Callback function to retrieve the decryption key for the secrets.conf
@@ -78,7 +83,7 @@ class Secrets:
 
         return pwd
 
-    def get_secret(self, key: str) -> str:
+    def get_secret(self, key: str) -> Union[str, None]:
 
         """
         Loads the secrets file to memory and reads the given key from it.
