@@ -137,6 +137,34 @@ class HostNetworking(LogWriter):
 
         return False
 
+    def _has_netifaces(self) -> bool:
+
+        """
+        Checks whether or not the netifaces package is available on the host
+        system.
+
+        Returns:
+            'True' if the package is available, 'False' otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # Disable pylint warnings as this is intentional here to allow
+        # checking for package availability
+        #pylint: disable=unused-import
+        #pylint: disable=import-outside-toplevel
+
+        try:
+            import netifaces
+        except ImportError:
+            self.warning('The netifaces package is not available on '
+                         'the host system. Network interfaces cannot be '
+                         'retrieved.')
+            return False
+
+        return True
+
     def _get_interfaces(self) -> list:
 
         """
@@ -151,7 +179,7 @@ class HostNetworking(LogWriter):
 
         interfaces = []
 
-        try:
+        if self._has_netifaces():
             self.debug('Attempting to retrieve network interfaces by using '
                        'netifaces...')
             # Imported here so detection works even without the package
@@ -160,10 +188,6 @@ class HostNetworking(LogWriter):
             import netifaces
             interfaces = netifaces.interfaces()
             self.debug('Network interfaces retrieved successfully.')
-        except ImportError:
-            self.warning('The netifaces package is not available on '
-                         'the host system. Network interfaces cannot be '
-                         'retrieved.')
 
         return interfaces
 
@@ -199,22 +223,19 @@ class HostNetworking(LogWriter):
             Attila Kovacs
         """
 
-        try:
-            self.debug(f'Adding link layer addresses to interface '
-                       f'{physical_interface.Name}')
-            # Imported here so detection works even without the package
-            # installed.
-            #pylint: disable=import-outside-toplevel
-            import netifaces
-            for address in addresses[netifaces.AF_LINK]:
-                physical_interface.add_link_address(address['addr'])
-        except KeyError:
-            self.debug(f'No link layer addresses found for interface '
-                       f'{physical_interface.Name}')
-        except ImportError:
-            self.warning('The netifaces package is not available on '
-                         'the host system. Network interfaces cannot be '
-                         'retrieved.')
+        if self._has_netifaces():
+            try:
+                self.debug(f'Adding link layer addresses to interface '
+                           f'{physical_interface.Name}')
+                # Imported here so detection works even without the package
+                # installed.
+                #pylint: disable=import-outside-toplevel
+                import netifaces
+                for address in addresses[netifaces.AF_LINK]:
+                    physical_interface.add_link_address(address['addr'])
+            except KeyError:
+                self.debug(f'No link layer addresses found for interface '
+                           f'{physical_interface.Name}')
 
     def _add_ipv4_addresses(self,
                             physical_interface: PhysicalInterfaces,
@@ -231,38 +252,35 @@ class HostNetworking(LogWriter):
             Attila Kovacs
         """
 
-        try:
-            self.debug(f'Adding IPv4 addresses to interface '
-                       f'{physical_interface.Name}')
-            # Imported here so detection works even without the package
-            # installed.
-            #pylint: disable=import-outside-toplevel
-            import netifaces
-            for address in addresses[netifaces.AF_INET]:
+        if self._has_netifaces():
+            try:
+                self.debug(f'Adding IPv4 addresses to interface '
+                           f'{physical_interface.Name}')
+                # Imported here so detection works even without the package
+                # installed.
+                #pylint: disable=import-outside-toplevel
+                import netifaces
+                for address in addresses[netifaces.AF_INET]:
 
-                # Identify localhost
-                is_locahost = False
-                if address['addr'].startswith('127.0.0.'):
-                    is_locahost = True
+                    # Identify localhost
+                    is_locahost = False
+                    if address['addr'].startswith('127.0.0.'):
+                        is_locahost = True
 
-                # Identify link local address, according to RFC 3927
-                is_link_local = False
-                if address['addr'].startswith('169.254'):
-                    is_link_local = True
+                    # Identify link local address, according to RFC 3927
+                    is_link_local = False
+                    if address['addr'].startswith('169.254'):
+                        is_link_local = True
 
-                physical_interface.add_ipv4_address(
-                    address=address['addr'],
-                    netmask=address['netmask'],
-                    broadcast_address=address['broadcast'],
-                    is_localhost=is_locahost,
-                    is_link_local_address=is_link_local)
-        except KeyError:
-            self.debug(f'No IPv4 addresses found for interface '
-                       f'{physical_interface.Name}')
-        except ImportError:
-            self.warning('The netifaces package is not available on '
-                         'the host system. Network interfaces cannot be '
-                         'retrieved.')
+                    physical_interface.add_ipv4_address(
+                        address=address['addr'],
+                        netmask=address['netmask'],
+                        broadcast_address=address['broadcast'],
+                        is_localhost=is_locahost,
+                        is_link_local_address=is_link_local)
+            except KeyError:
+                self.debug(f'No IPv4 addresses found for interface '
+                           f'{physical_interface.Name}')
 
     def _add_ipv6_addresses(self,
                             physical_interface: PhysicalInterfaces,
@@ -279,38 +297,35 @@ class HostNetworking(LogWriter):
             Attila Kovacs
         """
 
-        try:
-            self.debug(f'Adding IPv6 addresses to interface '
-                       f'{physical_interface.Name}')
-            # Imported here so detection works even without the package
-            # installed.
-            #pylint: disable=import-outside-toplevel
-            import netifaces
-            for address in addresses[netifaces.AF_INET6]:
+        if self._has_netifaces():
+            try:
+                self.debug(f'Adding IPv6 addresses to interface '
+                           f'{physical_interface.Name}')
+                # Imported here so detection works even without the package
+                # installed.
+                #pylint: disable=import-outside-toplevel
+                import netifaces
+                for address in addresses[netifaces.AF_INET6]:
 
-                # Identify localhost
-                is_locahost = False
-                if address['addr'] == '::1':
-                    is_locahost = True
+                    # Identify localhost
+                    is_locahost = False
+                    if address['addr'] == '::1':
+                        is_locahost = True
 
-                # Identify link local address, according to RFC 3927
-                is_link_local = False
-                if address['addr'].startswith('fe80'):
-                    is_link_local = True
+                    # Identify link local address, according to RFC 3927
+                    is_link_local = False
+                    if address['addr'].startswith('fe80'):
+                        is_link_local = True
 
-                physical_interface.add_ipv6_address(
-                    address=address['addr'],
-                    netmask=address['netmask'],
-                    broadcast_address=address['broadcast'],
-                    is_localhost=is_locahost,
-                    is_link_local_address=is_link_local)
-        except KeyError:
-            self.debug(f'No IPv6 addresses found for interface '
-                       f'{physical_interface.Name}')
-        except ImportError:
-            self.warning('The netifaces package is not available on '
-                         'the host system. Network interfaces cannot be '
-                         'retrieved.')
+                    physical_interface.add_ipv6_address(
+                        address=address['addr'],
+                        netmask=address['netmask'],
+                        broadcast_address=address['broadcast'],
+                        is_localhost=is_locahost,
+                        is_link_local_address=is_link_local)
+            except KeyError:
+                self.debug(f'No IPv6 addresses found for interface '
+                           f'{physical_interface.Name}')
 
     def _detect_networking(self, interfaces: list) -> None:
 
@@ -331,16 +346,12 @@ class HostNetworking(LogWriter):
 
             # Collect all addresses on the interface
             addresses = []
-            try:
+            if self._has_netifaces():
                 # Imported here so detection works even without the package
                 # installed.
                 #pylint: disable=import-outside-toplevel
                 import netifaces
                 addresses = netifaces.ifaddresses(nwif)
-            except ImportError:
-                self.warning('The netifaces package is not available on '
-                             'the host system. Network addresses cannot be '
-                             'retrieved.')
                 return
 
             # Link layer addresses
