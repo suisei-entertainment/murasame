@@ -163,4 +163,10 @@ loc-report:
 	scc -f json . > ${WORKSPACE_DIRECTORY}/logs/sccreport.json
 	scc -f html . > ${WORKSPACE_DIRECTORY}/logs/sccreport.html
 
+## ============================================================================
+##	Creates a dependency graph of current Python dependencies
+## ============================================================================
+depgraph:
+	pydeps --max-bacon=4 --cluster -o ${WORKSPACE_DIRECTORY}/murasame.svg ./murasame
+
 .PHONY: unittest build
