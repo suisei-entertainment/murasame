@@ -21,10 +21,6 @@
 Contains the implementation of the ResourceVersion class.
 """
 
-# Used to postpone evalutation of annotations so that type hints of a class
-# can be used while declaring that class
-from __future__ import annotations
-
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.logging import LogWriter
@@ -73,7 +69,7 @@ class ResourceVersion(LogWriter):
         The actual version number associated with the resource.
         """
 
-    def __eq__(self, other: ResourceVersion) -> bool:
+    def __eq__(self, other: 'ResourceVersion') -> bool:
 
         """
         Equality operator.
@@ -93,7 +89,7 @@ class ResourceVersion(LogWriter):
 
         return self.is_equal(other)
 
-    def __ne__(self, other: ResourceVersion) -> bool:
+    def __ne__(self, other: 'ResourceVersion') -> bool:
 
         """
         Inequality operator.
@@ -114,7 +110,7 @@ class ResourceVersion(LogWriter):
 
         return not self.is_equal(other)
 
-    def __lt__(self, other: ResourceVersion) -> bool:
+    def __lt__(self, other: 'ResourceVersion') -> bool:
 
         """
         Less-than operator.
@@ -135,7 +131,7 @@ class ResourceVersion(LogWriter):
 
         return self.is_older(other)
 
-    def __le__(self, other: ResourceVersion) -> bool:
+    def __le__(self, other: 'ResourceVersion') -> bool:
 
         """
         Less-than or equal operator.
@@ -156,7 +152,7 @@ class ResourceVersion(LogWriter):
 
         return self.is_older(other) or self.is_equal(other)
 
-    def __gt__(self, other: ResourceVersion) -> bool:
+    def __gt__(self, other: 'ResourceVersion') -> bool:
 
         """
         Greater-than operator.
@@ -177,7 +173,7 @@ class ResourceVersion(LogWriter):
 
         return self.is_newer(other)
 
-    def __ge__(self, other: ResourceVersion) -> bool:
+    def __ge__(self, other: 'ResourceVersion') -> bool:
 
         """
         Greater-than or equal operator.
@@ -220,7 +216,7 @@ class ResourceVersion(LogWriter):
 
         return f'{self.Version}'
 
-    def is_equal(self, other: ResourceVersion) -> bool:
+    def is_equal(self, other: 'ResourceVersion') -> bool:
 
         """
         Returns whether or not this resource version equals to the given one.
@@ -240,7 +236,7 @@ class ResourceVersion(LogWriter):
 
         return False
 
-    def is_newer(self, other: ResourceVersion) -> bool:
+    def is_newer(self, other: 'ResourceVersion') -> bool:
 
         """
         Returns whether or not this resource is newer than an other one.
@@ -260,7 +256,7 @@ class ResourceVersion(LogWriter):
 
         return False
 
-    def is_older(self, other: ResourceVersion) -> bool:
+    def is_older(self, other: 'ResourceVersion') -> bool:
 
         """
         Returns whether or not this resource is older than an other one.
