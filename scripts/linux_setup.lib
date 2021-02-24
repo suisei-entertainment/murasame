@@ -59,7 +59,8 @@ linux_install_dependencies()
         software-properties-common \
         apt-transport-https \
         ca-certificates \
-        gnupg-agent
+        gnupg-agent \
+        graphviz
 
     # Scc is not available through apt, but there's a snap package, so use
     # that to install it.
