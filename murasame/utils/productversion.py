@@ -21,10 +21,6 @@
 Contains the implementation of the ProductVersion class.
 """
 
-# Used to postpone evalutation of annotations so that type hints of a class
-# can be used while declaring that class
-from __future__ import annotations
-
 # Platform Imports
 from enum import IntEnum
 
@@ -244,7 +240,7 @@ class ProductVersion:
 
         self.load(version_data)
 
-    def __eq__(self, other: ProductVersion) -> bool:
+    def __eq__(self, other: 'ProductVersion') -> bool:
 
         """
         Equality operator.
@@ -264,7 +260,7 @@ class ProductVersion:
 
         return self.is_equal(other)
 
-    def __ne__(self, other: ProductVersion) -> bool:
+    def __ne__(self, other: 'ProductVersion') -> bool:
 
         """
         Inequality operator.
@@ -285,7 +281,7 @@ class ProductVersion:
 
         return not self.is_equal(other)
 
-    def __lt__(self, other: ProductVersion) -> bool:
+    def __lt__(self, other: 'ProductVersion') -> bool:
 
         """
         Less-than operator.
@@ -306,7 +302,7 @@ class ProductVersion:
 
         return self.is_older(other)
 
-    def __le__(self, other: ProductVersion) -> bool:
+    def __le__(self, other: 'ProductVersion') -> bool:
 
         """
         Less-than or equal operator.
@@ -327,7 +323,7 @@ class ProductVersion:
 
         return self.is_older(other) or self.is_equal(other)
 
-    def __gt__(self, other: ProductVersion) -> bool:
+    def __gt__(self, other: 'ProductVersion') -> bool:
 
         """
         Greater-than operator.
@@ -348,7 +344,7 @@ class ProductVersion:
 
         return self.is_newer(other)
 
-    def __ge__(self, other: ProductVersion) -> bool:
+    def __ge__(self, other: 'ProductVersion') -> bool:
 
         """
         Greater-than or equal operator.
@@ -420,7 +416,7 @@ class ProductVersion:
         self._load_release_level(version_data)
         self._load_metadata(version_data)
 
-    def is_equal(self, other: ProductVersion) -> bool:
+    def is_equal(self, other: 'ProductVersion') -> bool:
 
         """
         Returns whether or not this product version equals to the given one.
@@ -442,7 +438,7 @@ class ProductVersion:
 
         return False
 
-    def is_newer(self, other: ProductVersion) -> bool:
+    def is_newer(self, other: 'ProductVersion') -> bool:
 
         """
         Returns whether or not this ProductVersion is newer than an other one.
@@ -470,7 +466,7 @@ class ProductVersion:
 
         return result
 
-    def is_older(self, other: ProductVersion) -> bool:
+    def is_older(self, other: 'ProductVersion') -> bool:
 
         """
         Returns whether or not this ProductVersion is older than an other one.
