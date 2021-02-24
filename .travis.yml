@@ -45,6 +45,9 @@ jobs:
       python: "3.9"
       script: ./scripts/ci/travis_build.sh
     - script: ./scripts/ci/travis_build.sh
+      name: "Building Python Wheel [Python 3.10]"
+      python: "3.10-dev"
+    - script: ./scripts/ci/travis_build.sh
       name: "Building Python Wheel [Python Nightly Build]"
       python: "nightly"
     - stage: Test
@@ -57,8 +60,16 @@ jobs:
       python: "nightly"
       arch: "amd64"
     - script: ./scripts/ci/travis_unittest.sh
+      name: "Unit Tests [Python 3.10][x64]"
+      python: "3.10-dev"
+      arch: "amd64"
+    - script: ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python 3.9][ARM64]"
       python: "3.9"
+      arch: "arm64"
+    - script: ./scripts/ci/travis_unittest.sh
+      name: "Unit Tests [Python 3.10][ARM64]"
+      python: "3.10-dev"
       arch: "arm64"
     - script: ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python Nightly Build][ARM64]"
