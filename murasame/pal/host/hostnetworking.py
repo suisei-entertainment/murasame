@@ -352,7 +352,6 @@ class HostNetworking(LogWriter):
                 #pylint: disable=import-outside-toplevel
                 import netifaces
                 addresses = netifaces.ifaddresses(nwif)
-                return
 
             # Link layer addresses
             self._add_link_addresses(physical_interface, addresses)
