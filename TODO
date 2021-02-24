@@ -1,0 +1,231 @@
+0.1 - Fujin:
+
+  Application:
+    ☐ Support for Unix daemon applications.
+    ☐ Support for Unix CLI applications.
+  Build System:
+    ✔ Basic makefile based build tools.
+    ✔ Support for builds and Travis CI.
+    ☐ Support for PyPi releases.
+  Configuration Management:
+    ☐ Support for configuration files in VFS.
+  Debugging:
+    ✔ Support for basic debugging decorators.
+  Entity-Component Management:
+  Exceptions:
+    ✔ Basic exception support.
+  Licensing:
+    ✔ Support for managing file based licenses.
+  Logging:
+    ✔ Basic logging support using the built-in Python logging infrastructure.
+  Managed Object Management:
+  Platform Abstraction Layer:
+    ✔ Support for basic host detection.
+    ✔ Support for socket based network communication.
+  Password Management:
+    ✔ Basic password generation support.
+    ✔ Basic password validation support.
+  Service:
+  Utilities:
+    ✔ Content encryption support with AES-GCM.
+    ✔ RSA encryption and validation.
+    ✔ Basic command line argument parsing support.
+    ✔ GeoIP support.
+    ✔ Support for encrypted and non-encrypted JSON and YAML files.
+    ✔ Support for parsing and managing version numbers following the semantic versioning pattern.
+    ✔ Support for storing secrets in encrypted format on disk.
+    ✔ Support for singletons.
+    ✔ Support for the system locator design pattern.
+    ✔ Support for certificate management.
+  Virtual File System:
+    ☐ Basic virtual file system support based on directories.
+    ☐ Support for extending the virtual file system with packages.
+
+0.2 - Raijin:
+
+  Application:
+  Build System:
+    ☐ Support for macOS builds.
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+    ☐ Support for local entity-component system.
+  Exceptions:
+  Licensing:
+  Logging:
+    ☐ Support for gRPC log target.
+    ☐ Support for syslog log target.
+    ☐ Support for structured log target.
+  Managed Object Management:
+  Platform Abstraction Layer:
+    ☐ Basic gRPC support.
+    ☐ Basic SQL database support.
+    ☐ Basic Redis support.
+    ☐ Basic InfluxDB support.
+    ☐ Basic MongoDB support.
+    ☐ Basic JIRA support.
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+0.3 - Ryujin:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+    ☐ Support for distributed entity-component system.
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+    ☐ Basic service support.
+  Utilities:
+  Virtual File System:
+
+0.4 - Suijin:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+    ☐ Basic managed object model support.
+    ☐ Support for performance counters.
+    ☐ Support for alarms.
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+0.5 - Susano:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+    ☐ Support for AWS EC2 management.
+    ☐ Support for AWS ECS management.
+    ☐ Support for AWS S3 management.
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+0.6 - Inari:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+0.7 - Izanagi:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+0.8 - Izanami:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+0.9 - Hachiman:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+1.0 - Amaterasu:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
+
+FUTURE:
+
+  Application:
+  Build System:
+  Configuration Management:
+  Debugging:
+  Entity-Component Management:
+  Exceptions:
+  Licensing:
+  Logging:
+  Managed Object Management:
+  Platform Abstraction Layer:
+  Password Management:
+  Service:
+  Utilities:
+  Virtual File System:
