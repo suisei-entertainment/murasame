@@ -106,3 +106,6 @@ jobs:
       name: "Release Wheel on PyPi"
       script: ./scripts/ci/travis_deploy.sh
       python: "3.9"
+  allow_failures:
+    - python: "pypy3"
+  fast_finish: true
