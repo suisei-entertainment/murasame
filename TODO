@@ -3,6 +3,7 @@
   Application:
     ☐ Support for Unix daemon applications.
     ☐ Support for Unix CLI applications.
+    ☐ Support for Sentry.IO reports.
   Build System:
     ✔ Basic makefile based build tools.
     ✔ Support for builds and Travis CI.
@@ -83,6 +84,7 @@
   Logging:
   Managed Object Management:
   Platform Abstraction Layer:
+    ☐ Basic Docker support.
   Password Management:
   Service:
     ☐ Basic service support.
