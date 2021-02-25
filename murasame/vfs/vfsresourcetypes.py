@@ -18,8 +18,21 @@
 ## ============================================================================
 
 """
-Contains the implementation of the virtual file system.
+Contains the implementation of the VFSResourceTypes class.
 """
 
-from murasame.vfs.vfs import VFS, DefaultVFS
-from murasame.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+# Platform Imports
+from enum import IntEnum
+
+class VFSResourceTypes(IntEnum):
+
+    """
+    List of supported VFS resource types.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    UNKNOWN = 0 # Unknown resource type
+    LOCAL_FILE = 1 # File in the local file system
+    PACKAGE_FILE = 2 # File in a resource package

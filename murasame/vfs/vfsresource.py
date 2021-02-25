@@ -23,6 +23,7 @@ Contains the implementation of the VFSResource class.
 
 # Murasame Imports
 from murasame.logging import LogWriter
+from murasame.vfs.vfsresourcetypes import VFSResourceTypes
 
 class VFSResource(LogWriter):
 
@@ -35,16 +36,52 @@ class VFSResource(LogWriter):
     """
 
     @property
-    def Version(self) -> 'ContentVersion':
+    def Version(self) -> 'ResourceVersion':
 
         """
-        Provides access to the version of the VFS content.
+        Provides access to the version of the VFS resource.
 
         Authors:
             Attila Kovacs
         """
 
         return self._version
+
+    @property
+    def Resource(self) -> object:
+
+        """
+        Provides access to the actual resource.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._resource
+
+    @property
+    def Descriptor(self) -> object:
+
+        """
+        The descriptor of the underlying resource.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._descriptor
+
+    @property
+    def Type(self) -> 'VFSResourceTypes':
+
+        """
+        The type of the underlying resource.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._type
 
     def __init__(self) -> None:
 
@@ -60,4 +97,19 @@ class VFSResource(LogWriter):
         self._version = None
         """
         The version of the content.
+        """
+
+        self._descriptor = None
+        """
+        The resource descriptor of the underlying resource.
+        """
+
+        self._resource = None
+        """
+        The actual resource embedded in this VFS resource.
+        """
+
+        self._type = VFSResourceTypes.UNKNOWN
+        """
+        The type of the underlying resource.
         """

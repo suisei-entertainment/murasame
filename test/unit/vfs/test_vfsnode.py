@@ -32,7 +32,8 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
-from murasame.vfs.vfsnode import VFSNode
+from murasame.exceptions import InvalidInputError
+from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
 
 class TestVFSNode:
 
@@ -46,5 +47,56 @@ class TestVFSNode:
         Tests that a VFSNode object can be created.
         """
 
-        sut = VFSNode()
+        # STEP #1 - Create root node
+        sut = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
+        assert sut.isroot()
+        assert sut.Name == ''
+
+        # STEP #2 - Create non-root node
+        sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
+        assert sut is not None
+        assert not sut.isroot()
+        assert sut.Name == 'TEST'
+        assert not sut.Files
+        assert not sut.Subdirectories
+        assert not sut.Resources
+        assert not sut.Latest
+
+        # STEP #3 - Root node can only be a directory node
+        with pytest.raises(InvalidInputError):
+            sut = VFSNode(node_name='', node_type=VFSNodeTypes.FILE)
+
+    def test_type_checking(self):
+
+        """
+        Tests that the type of the node can be checked.
+        """
+
+        # STEP #1 - Directory node
+        sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
+        assert sut.Type == VFSNodeTypes.DIRECTORY
+        assert sut.isdir()
+        assert not sut.isfile()
+
+        # STEP #2 - File node
+        sut = VFSNode(node_name='test', node_type=VFSNodeTypes.FILE)
+        assert sut.Type == VFSNodeTypes.FILE
+        assert not sut.isdir()
+        assert sut.isfile()
+
+    def test_adding_resource(self):
+
+        """
+        Tests that resources can be added to the node.
+        """
+
+        pass
+
+    def test_removing_resource(self):
+
+        """
+        Tests that resources can be removed from the node.
+        """
+
+        pass

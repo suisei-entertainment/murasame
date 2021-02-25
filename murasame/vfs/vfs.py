@@ -27,8 +27,9 @@ from typing import Any
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.utils import System
+from murasame.utils import System, JsonFile
 from murasame.logging import LogWriter
+from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
 
 class VFS:
 
@@ -129,7 +130,7 @@ class DefaultVFS(LogWriter):
 
         super().__init__(channel_name='murasame.vfs', cache_entries=True)
 
-        self._root = None
+        self._root = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         """
         The root node of the virtual file system.
         """
@@ -201,6 +202,37 @@ class DefaultVFS(LogWriter):
                 f'Failed to register VFS data source {path}. A VFS data '
                 f'source has to be a directory or a resource package.')
 
+    def has_node(self, name: str) -> bool:
+
+        """
+        Returns whether or not there is a VFS node with a given name in the
+        VFS tree.
+
+        Args:
+            name:       The name of the node to check for.
+
+        Returns:
+            'True' if the there is a node with the given name in the VFS,
+            ' False' otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Checking the existence of node {name}...')
+
+        if '.' not in name:
+            # Checking for a root level node
+            return self._root.has_node(name)
+
+        # Checking for a non-root level node
+        parts = str.split(name, '.', 1)
+        if self._root.has_node(parts[0]):
+            return self._root.get_node(parts[0]).has_node(parts[1])
+
+        self.debug(f'Node {name} doesn\'t exist in the virtual file system.')
+        return False
+
     def _register_directory(self, path: str) -> None:
 
         """
@@ -216,6 +248,23 @@ class DefaultVFS(LogWriter):
         self.debug(
             'Registering new data source from file system directory...')
 
+        path = os.path.abspath(os.path.expanduser(path))
+
+        # Abort if the directory doesn't exist
+        if not os.path.isdir(path):
+            self.warning(
+                f'Trying to add a non-existent directory({path}) as a VFS '
+                f'data source.')
+            return
+
+        # Check if the directory contains a VFS configuration
+        vfs_config_file = f'{path}/.vfs'
+        if os.path.isfile(vfs_config_file):
+            vfs_config = JsonFile(path=vfs_config_file)
+            self._load_from_vfs_config(vfs_config=vfs_config.Content)
+        else:
+            self._load_from_directory_contents(path=path)
+
     def _register_package(self, path: str) -> None:
 
         """
@@ -229,3 +278,74 @@ class DefaultVFS(LogWriter):
         """
 
         self.debug('Registering new data source from resource package...')
+
+    def _load_from_vfs_config(self, vfs_config: dict) -> None:
+
+        """
+        Loads the contents of a VFS data source based on a VFS configuration
+        file.
+
+        Args:
+            vfs_config:     THe contents of the VFS configuration file.
+
+        Authors:
+            Attila Kovcs
+        """
+
+        self.debug('Registering directory contents from VFS configuration '
+                   'file...')
+
+    def _load_from_directory_contents(self, path: str) -> None:
+
+        """
+        Loads the contents of a directory and creates a VFS tree out of it.
+
+        Args:
+            path:       Path to the directory to add.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Adding the contents of directory {path} to the VFS...')
+
+        directory_content = os.listdir(path)
+
+        for element in directory_content:
+            full_path = f'{path}/{element}'
+            if os.path.isdir(full_path):
+                self._add_subdirectory_from_directory(full_path)
+            else:
+                self._add_file_from_directory(full_path)
+
+        self.debug(f'Contents of directory {path} has been added to VFS.')
+
+    def _add_subdirectory_from_directory(self, path: str) -> None:
+
+        """
+        Adds a new subdirectory node from a file system directory.
+
+        Args:
+            path:       Path to the subdirectory to add.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Adding subdirectory {path} under the root node...')
+        self.debug(f'Subdirectory {path} has been added.')
+
+    def _add_file_from_directory(self, path: str) -> None:
+
+        """
+        Adds a new file node from file system directory.
+
+        Args:
+            path:       Path to the file to add.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Adding file {path} to the root node...')
+        self.debug(f'File {path} has been added to the root node.')
