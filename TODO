@@ -9,7 +9,7 @@
   Build System:
     ✔ Basic makefile based build tools.
     ✔ Support for builds and Travis CI.
-    ☐ Support for PyPy builds in Travis
+    ✔ Support for PyPy builds in Travis
     ☐ Support for PyPi releases through Travis.
   Configuration Management:
     ☐ Support for configuration files in VFS.
@@ -91,6 +91,8 @@
   Utilities:
 
   Virtual File System:
+    ☐ Add support for network objects as VFS resources.
+    ☐ Add support for database objects as VFS resources.
 
 ===============================================================================
 0.3 - Ryujin:
