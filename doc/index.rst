@@ -23,8 +23,12 @@ On a high level Murasame provides the following features:
   implement Linux CLI and daemon applications.
 * **Configuration Management**: Configuration management is supported with
   multiple configuration sources and storage formats.
+* **Debugging**: The framework provides utilities for debugging applications
+  developed using the framework.
 * **Entity-Component System**: There is a simple entity-component system to
   represent and update the state of a virtual world.
+* **Exceptions**: The framework provides a set of exceptions for error handling
+  purposes.
 * **License Management**: The framework supports a simple encrypted file based
   licensing model.
 * **Logging**: There is support for customized logging mainly based on the
@@ -34,16 +38,20 @@ On a high level Murasame provides the following features:
   applications implemented with the framework.
 * **Platform Abstraction Layer**: The PAL layer offers support for platform
   detection, monitoring and database management.
+* **Password Management**: The framework provides utilities for generating and
+  validating passwords.
+* **Service Management**: The framework provides support for running
+  microservice based applications in a cloud environment.
 * **Application Utilities**:  There are various utilities to simplify
   application development. Examples:
 
   * AES and RSA encryption support
   * CLI command processing
   * GeoIP support
-  * JSON file support
+  * JSON and YAML file support
   * Product versioning with Semantic Versioning 2.0 support
-  * Strong password generation
-  * Support for global services
+  * Support for global systems and singletons
+  * Certificate support
 
 Getting Started
 =========================================
@@ -93,12 +101,12 @@ Directory Structure
 
 The top level directory structure of the Murasame repository is the following:
 
-* **.env**: The directory containing the virtual Python environment created by
-  virtualenv. Only present when working in a virtual environment.
 * **.git**: The directory containing Git internals. Do not touch, unless you
   absolutely know what you are doing.
 * **assets**: Contains all binary assets, typically images and other media.
 * **doc**: Contains the documentation of the framework.
+* **examples**: Contains various example applications demonstrating the
+  features of the framework.
 * **murasame**: Contains the Python source code of the various components of
   the framework.
 * **scripts**: Contains various utility scripts mainly utilized by CI.
