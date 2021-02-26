@@ -409,10 +409,12 @@ class HostNetworking(LogWriter):
             ip_address = response.text
         except requests.exceptions.Timeout:
             self.warning('Failed to detect public IP. Request timeout.')
+            self._public_ip = 'UNKNOWN'
             return
         except requests.exceptions.HTTPError as error:
             self.warning(f'Failed to detect public IP. Received HTTP '
                          f'error: {error.response.status_code}')
+            self._public_ip = 'UNKNOWN'
             return
 
         self._public_ip = ip_address

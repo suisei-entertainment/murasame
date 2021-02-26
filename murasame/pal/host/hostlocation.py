@@ -153,6 +153,12 @@ class HostLocation(LogWriter):
         # The postal code where the IP address is located
         self._postal_code = 'UNKNOWN'
 
+        if public_ip == 'UNKNOWN':
+            self.error(
+                'Unknown public IP has been provided, cannot determine'
+                'location.')
+            return
+
         full_path = os.path.abspath(os.path.expanduser(
             f'{database_path}/GeoLite2-City.mmdb'))
         self.debug(f'Loading GeoIP database from {full_path}')
