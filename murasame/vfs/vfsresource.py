@@ -83,10 +83,13 @@ class VFSResource(LogWriter):
 
         return self._type
 
-    def __init__(self) -> None:
+    def __init__(self, descriptor: 'VFSResourceDescriptor') -> None:
 
         """
         Creates a new VFSResource instance.
+
+        Args:
+            descriptor:     The resource descriptor of the resource.
 
         Authors:
             Attila Kovacs
@@ -99,7 +102,7 @@ class VFSResource(LogWriter):
         The version of the content.
         """
 
-        self._descriptor = None
+        self._descriptor = descriptor
         """
         The resource descriptor of the underlying resource.
         """

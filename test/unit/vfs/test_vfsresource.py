@@ -46,5 +46,5 @@ class TestPackageContent:
         Tests that a VFSResource object can be created.
         """
 
-        sut = VFSResource()
+        sut = VFSResource(descriptor=None)
         assert sut is not None

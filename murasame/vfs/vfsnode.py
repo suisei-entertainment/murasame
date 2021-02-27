@@ -257,6 +257,99 @@ class VFSNode(LogWriter):
 
         return False
 
+    def add_node(self, node: 'VFSNode') -> None:
+
+        """
+        Adds a new VFS child node to this node.
+
+        Args:
+            node:       The node to add.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        if not node:
+            self.error(f'Trying to add an invalid child node to VFS '
+                       f'node {self.Name}')
+            return
+
+        if self.has_node(node.Name):
+            self.debug(f'Node {self.Name} already has a child with name '
+                       f'{node.Name}, attempting to merge...')
+            self.get_node(node.Name).merge_with(node)
+        elif node.Type == VFSNodeTypes.DIRECTORY:
+            self.debug(f'Adding new subdirectory node {node.Name} to '
+                       f'node {self.Name}.')
+            self._directories[node.Name] = node
+        else:
+            self.debug(f'Adding new file node {node.Name} to '
+                       f'node {self.Name}.')
+            self._files[node.Name] = node
+
+    def remove_node(self, name: str) -> None:
+
+        """
+        Removes a child node with the given name.
+
+        Args:
+            name:       The name of the node to remove.
+        """
+
+        self.debug(f'Removing child node {name} from node {self.Name}...')
+
+        if not self.has_node(name=name):
+            self.debug(f'Node {self.Name} doesn\'t have a child node named '
+                       f'{name}, nothing to remove.')
+            return
+
+        if name in self._directories:
+            self.remove_subdirectory(name=name)
+        else:
+            self.remove_file(name=name)
+
+    def remove_subdirectory(self, name: str) -> None:
+
+        """
+        Removes a subdirectory with the given name.
+
+        Args:
+            name:       Name of the subdirectory to remove.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Removing subdirectory {name} from node {self.Name}...')
+
+        try:
+            del self._directories[name]
+            self.debug(f'Subdirectory {name} has been deleted from node '
+                       f'{self.Name}.')
+        except KeyError:
+            self.debug(f'Node {self.Name} doesn\'t have a subdirectory named '
+                      f'{name}, nothing to do.')
+
+    def remove_file(self, name: str) -> None:
+
+        """
+        Removes a file wit the given name.
+
+        Args:
+            name:       The name of the file to remove.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Removing file {name} from node {self.Name}...')
+
+        try:
+            del self._files[name]
+            self.debug(f'File {name} has been deleted from node {self.Name}.')
+        except KeyError:
+            self.debug(f'Node {self.Name} doesn\'t have a file named {name}, '
+                       f'nothing to do.')
 
     def get_node(self, name: str) -> Union['VFSNode', None]:
 
@@ -287,6 +380,20 @@ class VFSNode(LogWriter):
             return self._files[name]
 
         return None
+
+    def merge_with(self, node: 'VFSNode') -> None:
+
+        """
+        Merges the other VFS node into this one.
+
+        Args:
+            node:       The VFS node to merge into this one.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return
 
     def get_resource(self, version: int = None) -> Union[VFSResource, None]:
 

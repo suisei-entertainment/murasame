@@ -137,7 +137,7 @@ class DefaultVFS(LogWriter):
 
         self.info('VFS has been created.')
 
-    def get(self, key: str) -> 'VFSNode':
+    def get_node(self, key: str) -> 'VFSNode':
 
         """
         Retrieves a VFS node by its key.
@@ -153,6 +153,7 @@ class DefaultVFS(LogWriter):
         """
 
         self.debug(f'Retrieving VFS node {key}...')
+        return self._root.get_node(name=key)
 
     def get_content(self, key: str, version: 'ContentVersion' = None) -> Any:
 
@@ -163,13 +164,31 @@ class DefaultVFS(LogWriter):
             key:        The key of the VFS node to retrieve.
 
         Returns:
-            The content of the file associated with the VFS key.
+            The content of the file associated with the VFS key, or None if
+            it was not found.
 
         Authors:
             Attila Kovacs
         """
 
         self.debug(f'Retrieving VFS resource {key}({version})...')
+
+        node = self._root.get_node(name=key)
+
+        if not node:
+            self.error(f'Trying to retrieve resource from non-existend '
+                       f'VFS node: {key}.')
+            return None
+
+        resource = node.get_resource(version=version)
+
+        if not resource:
+            self.error(f'There is no resource matching the requested '
+                       f'version for {key}(version {version}).')
+            return None
+
+        self.debug(f'Found resource for {key}(version {version}).')
+        return resource.Resource
 
     def register_source(self, path: str) -> None:
 
@@ -314,38 +333,43 @@ class DefaultVFS(LogWriter):
         for element in directory_content:
             full_path = f'{path}/{element}'
             if os.path.isdir(full_path):
-                self._add_subdirectory_from_directory(full_path)
+                self._add_subdirectory_from_directory(element, full_path)
             else:
-                self._add_file_from_directory(full_path)
+                self._add_file_from_directory(element, full_path)
 
         self.debug(f'Contents of directory {path} has been added to VFS.')
 
-    def _add_subdirectory_from_directory(self, path: str) -> None:
+    def _add_subdirectory_from_directory(self, name:str, path: str) -> None:
 
         """
         Adds a new subdirectory node from a file system directory.
 
         Args:
+            name:       The name of the subdirectory to add.
             path:       Path to the subdirectory to add.
 
         Authors:
             Attila Kovacs
         """
 
-        self.debug(f'Adding subdirectory {path} under the root node...')
-        self.debug(f'Subdirectory {path} has been added.')
+        self.debug(f'Adding subdirectory {name}({path}) under the root node...')
 
-    def _add_file_from_directory(self, path: str) -> None:
+        self._root.add_node(VFSNode(node_name=name))
+
+        self.debug(f'Subdirectory {name} has been added.')
+
+    def _add_file_from_directory(self, name: str, path: str) -> None:
 
         """
         Adds a new file node from file system directory.
 
         Args:
+            name:       The name of the file to add.
             path:       Path to the file to add.
 
         Authors:
             Attila Kovacs
         """
 
-        self.debug(f'Adding file {path} to the root node...')
-        self.debug(f'File {path} has been added to the root node.')
+        self.debug(f'Adding file {name}({path}) to the root node...')
+        self.debug(f'File {name} has been added to the root node.')
