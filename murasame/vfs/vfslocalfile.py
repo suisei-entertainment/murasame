@@ -75,7 +75,7 @@ class VFSLocalFile(VFSResourceDescriptor):
         result['path'] = self._path
         return result
 
-    def deserialize(self, data: dict) -> bool:
+    def deserialize(self, data: dict) -> None:
 
         """
         Function prototype for the deserialization function of the descriptor.
@@ -83,11 +83,23 @@ class VFSLocalFile(VFSResourceDescriptor):
         Args:
             data:       The descriptor serialized as a dictionary.
 
+        Raises:
+            InvalidInputError:      Raised if the data doesn't contain the
+                                    data of a VFSResourceDescriptor.
+            InvalidInputError:      Raised if the descriptor cannot be parsed
+                                    as a VFSLocalFile object.
+
         Authors:
             Attila Kovacs
         """
 
         try:
+
+            if data['type'] != 'localfile':
+                raise InvalidInputError(
+                    f'The descriptor does not contain the data of a '
+                    f'VFSResourceDescriptor object. Data: {data}')
+
             self._path = data['path']
         except KeyError as error:
             raise InvalidInputError(f'Failed to parse VFSLocalFile from input '

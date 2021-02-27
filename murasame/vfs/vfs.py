@@ -319,6 +319,8 @@ class DefaultVFS(LogWriter):
         self.debug('Registering directory contents from VFS configuration '
                    'file...')
 
+        self._root.deserialize(vfs_config)
+
     def _load_from_directory_contents(self, path: str) -> None:
 
         """
@@ -383,7 +385,7 @@ class DefaultVFS(LogWriter):
         # from a resource package.
         node = VFSNode(node_name=name, node_type=VFSNodeTypes.FILE)
         descriptor = VFSLocalFile()
-        descriptor.deserialize(data={'path': f'{path}'})
+        descriptor.deserialize(data={'type': 'localfile', 'path': f'{path}'})
         resource = VFSResource(
             resource_type=VFSResourceTypes.LOCAL_FILE,
             descriptor=descriptor,

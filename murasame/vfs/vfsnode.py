@@ -502,3 +502,72 @@ class VFSNode(LogWriter):
         resource = self.get_resource(version=version)
         if resource:
             self._resources.remove(resource)
+
+    def serialize(self) -> dict:
+
+        """
+        Serializes the content of the VFS node into a dictionary.
+
+        Returns:
+            The content of the node as a dictionary.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Serializing VFS node {self.Name}...')
+
+        result = {}
+        result['name'] = self.Name
+
+        if self.Type == VFSNodeTypes.DIRECTORY:
+
+            # Serialize the node as a directory
+            result['type'] = 'directory'
+
+            # Serialize all subdirectories
+            subdirectories = {}
+
+            for subdirectory in self._directories.items():
+                subdirectories[subdirectory.Name] = subdirectory.serialize()
+
+            result['subdirectories'] = subdirectories
+
+            # Serialize all files
+            files = {}
+
+            for file in self._files.items():
+                files[file.Name] = file.serialize()
+
+            result['files'] = files
+
+        else:
+
+            # Serialize the node as a file
+            result['type'] = 'file'
+
+            resources = {}
+
+            for resource in self._resources:
+                resources[resource.Name] = resource.Descriptor.serialize()
+
+            result['resources'] = resources
+
+        self.debug(f'Node {self.Name} has been serialized.')
+        self.trace(f'Node {self.Name}: {result}')
+
+        return result
+
+    def deserialize(self, data: dict) -> None:
+
+        """
+        Loads the content of the node from its serialized format.
+
+        Args:
+            data:       The dictionary containing the serialized node data.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return

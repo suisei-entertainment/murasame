@@ -23,7 +23,6 @@ Contains the implementation of the VFSResource class.
 
 # Murasame Imports
 from murasame.logging import LogWriter
-from murasame.vfs.vfsresourcetypes import VFSResourceTypes
 
 class VFSResource(LogWriter):
 
