@@ -21,7 +21,7 @@
 Contains the implementation of the PasswordComplexity class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import re
 

@@ -21,7 +21,7 @@
 Contains the implementation of the FileLogTarget class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import logging
 from logging.handlers import RotatingFileHandler

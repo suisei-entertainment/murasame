@@ -21,7 +21,7 @@
 Contains the implementation of the PasswordGenerator class.
 """
 
-# Platform Imports
+# Runtime Imports
 import string
 import random
 

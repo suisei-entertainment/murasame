@@ -21,7 +21,7 @@
 Contains the implementation of the VFSNode class.
 """
 
-# Platform Imports
+# Runtime Imports
 from enum import IntEnum
 from typing import Union
 

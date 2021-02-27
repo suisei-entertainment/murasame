@@ -21,7 +21,7 @@
 Contains the implementation of the Secrets class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 from typing import Union
 

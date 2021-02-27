@@ -21,7 +21,7 @@
 Contains the implementation of the LicenseTypes class.
 """
 
-# Platform Imports
+# Runtime Imports
 from enum import IntEnum
 
 class LicenseTypes(IntEnum):

@@ -21,7 +21,7 @@
 Contains the unit tests of HostUser class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 import platform

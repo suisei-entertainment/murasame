@@ -21,7 +21,7 @@
 Contains the unit tests of the RSA handling utilities.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 

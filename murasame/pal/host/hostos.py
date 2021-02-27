@@ -21,7 +21,7 @@
 Contains the implementation of the HostOS class.
 """
 
-# Platform Imports
+# Runtime Imports
 import platform
 
 # Murasame Imports

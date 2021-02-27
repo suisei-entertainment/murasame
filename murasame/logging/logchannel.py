@@ -20,7 +20,7 @@
 Contains implementation of the LogChannel class.
 """
 
-# Platform Imports
+# Runtime Imports
 import logging
 
 # Murasame Imports

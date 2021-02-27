@@ -21,7 +21,7 @@
 Contains the unit tests of the basic AES encryption and decryption functions.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 

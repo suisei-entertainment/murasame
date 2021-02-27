@@ -21,7 +21,7 @@
 Contains the implementation of the LicenseGenerator class.
 """
 
-# Platform Imports
+# Runtime Imports
 import json
 
 # Murasame Imports

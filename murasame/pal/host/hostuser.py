@@ -21,7 +21,7 @@
 Contains the implementation of the HostUser class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import getpass
 import pwd

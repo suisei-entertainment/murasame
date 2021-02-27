@@ -21,7 +21,7 @@
 Contains the unit tests of the Package class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 

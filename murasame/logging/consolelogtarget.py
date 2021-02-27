@@ -22,7 +22,7 @@
 Contains the implementation of the ConsoleLogTarget class.
 """
 
-# Platform Imports
+# Runtime Imports
 import logging
 
 # Dependency Imports

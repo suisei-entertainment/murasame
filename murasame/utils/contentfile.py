@@ -21,7 +21,7 @@
 Utility class to help in parsing and handling content files.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 from typing import Callable
 

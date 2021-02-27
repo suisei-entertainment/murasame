@@ -21,7 +21,7 @@
 Contains the implementation of the VFSResourceTypes class.
 """
 
-# Platform Imports
+# Runtime Imports
 from enum import IntEnum
 
 class VFSResourceTypes(IntEnum):

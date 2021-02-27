@@ -21,7 +21,7 @@
 Contains the implementation of the LogLevels class.
 """
 
-# Platform Imports
+# Runtime Imports
 from enum import IntEnum
 
 class LogLevels(IntEnum):

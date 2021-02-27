@@ -21,7 +21,7 @@
 Contains the unit tests of socket wrappers.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 import shutil

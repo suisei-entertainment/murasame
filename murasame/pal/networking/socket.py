@@ -21,7 +21,7 @@
 Contains the socket wrappers of the framework.
 """
 
-# Platform Imports
+# Runtime Imports
 import socket
 import ssl
 

@@ -21,7 +21,7 @@
 Contains the unit tests of the Singleton class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 

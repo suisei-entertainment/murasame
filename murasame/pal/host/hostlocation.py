@@ -21,7 +21,7 @@
 Contains the implementation of the HostLocation class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import tarfile
 import shutil

@@ -21,7 +21,7 @@
 Contains the list of error codes supported by the framework.
 """
 
-# Platform Imports
+# Runtime Imports
 from enum import IntEnum
 
 class ErrorCodes(IntEnum):

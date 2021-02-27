@@ -21,7 +21,7 @@
 Contains the implementation of the AESCipher class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import base64
 import hashlib

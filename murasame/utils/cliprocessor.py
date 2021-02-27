@@ -21,7 +21,7 @@
 Contains the implementation of the CliProcessor class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import argparse
 from typing import Callable

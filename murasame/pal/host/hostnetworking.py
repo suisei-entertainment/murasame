@@ -21,7 +21,7 @@
 Contains the implementation of the HostNetworking class.
 """
 
-# Platform Imports
+# Runtime Imports
 import requests
 
 # SEED Imports

@@ -21,7 +21,7 @@
 Contains the implementation of the ProductVersion class.
 """
 
-# Platform Imports
+# Runtime Imports
 from enum import IntEnum
 
 # Murasame Imports

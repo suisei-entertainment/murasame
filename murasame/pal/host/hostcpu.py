@@ -21,7 +21,7 @@
 Contains the implementation of the HostCPU class.
 """
 
-# Platform Imports
+# Runtime Imports
 import platform
 import multiprocessing
 

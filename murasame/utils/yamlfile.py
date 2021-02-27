@@ -21,7 +21,7 @@
 Utility class to help in parsing and handling YAML files.
 """
 
-# Platform Imports
+# Runtime Imports
 from typing import Callable
 
 # Dependency Imports

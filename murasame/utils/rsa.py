@@ -21,7 +21,7 @@
 Contains the implementation of the RSA class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import base64
 

@@ -21,7 +21,7 @@
 Contains the implementation of the LogWriter class.
 """
 
-# Platform Imports
+# Runtime Imports
 from datetime import datetime
 
 # Murasame Imports

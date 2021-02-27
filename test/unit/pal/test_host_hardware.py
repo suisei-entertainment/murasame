@@ -21,7 +21,7 @@
 Contains the unit tests of HostHardware class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 

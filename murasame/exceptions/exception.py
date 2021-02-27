@@ -21,7 +21,7 @@
 Contains the implementation of the basic exception class.
 """
 
-# Platform Imports
+# Runtime Imports
 import logging
 import inspect
 

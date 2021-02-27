@@ -21,7 +21,7 @@
 Contains the implementation of the GeoIP class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import tarfile
 import shutil

@@ -21,7 +21,7 @@
 Utility class to help in parsing and handling JSON files.
 """
 
-# Platform Imports
+# Runtime Imports
 import json
 from typing import Callable
 

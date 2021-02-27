@@ -21,7 +21,7 @@
 Contains the implementation of the HostPython class.
 """
 
-# Platform Imports
+# Runtime Imports
 import sys
 
 class HostPython:

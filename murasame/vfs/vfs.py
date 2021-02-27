@@ -21,7 +21,7 @@
 Contains the implementation of the VFS class.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import sys
 from typing import Any

@@ -21,7 +21,7 @@
 Contains the implementation of debug decorators.
 """
 
-# Platform Imports
+# Runtime Imports
 from typing import Any, Callable
 from time import perf_counter
 

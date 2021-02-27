@@ -21,7 +21,7 @@
 Contains the implementation of the system locator design pattern.
 """
 
-# Platform Imports
+# Runtime Imports
 import os
 import glob
 import importlib
