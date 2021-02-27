@@ -27,6 +27,8 @@ import tarfile
 import shutil
 import uuid
 
+from urllib.error import ContentTooShortError
+
 # Dependency Imports
 import wget
 import geoip2
@@ -249,8 +251,12 @@ class GeoIP:
         package_filename = f'{PACKAGE_DOWNLOAD_LOCATION}/{package_temp_name}.tar.gz'
 
         # Download the update package
-        wget.download(url=self._update_link,
-                      out=package_filename)
+        try:
+            wget.download(url=self._update_link,
+                          out=package_filename)
+        except ContentTooShortError:
+            # Failed to download the whole package.
+            return
 
         # Extract the update package
         tar = tarfile.open(package_filename)

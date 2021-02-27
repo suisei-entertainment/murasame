@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the implementation of the VFSSystemFile class.
+Contains the implementation of the VFSLocalFile class.
 """
 
 # Murasame Imports

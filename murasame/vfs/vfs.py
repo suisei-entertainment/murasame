@@ -23,6 +23,7 @@ Contains the implementation of the VFS class.
 
 # Platform Imports
 import os
+import sys
 from typing import Any
 
 # Murasame Imports
@@ -30,6 +31,10 @@ from murasame.exceptions import InvalidInputError
 from murasame.utils import System, JsonFile
 from murasame.logging import LogWriter
 from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
+from murasame.vfs.vfsresourcetypes import VFSResourceTypes
+from murasame.vfs.vfsresource import VFSResource
+from murasame.vfs.vfslocalfile import VFSLocalFile
+from murasame.vfs.resourceversion import ResourceVersion
 
 class VFS:
 
@@ -372,4 +377,19 @@ class DefaultVFS(LogWriter):
         """
 
         self.debug(f'Adding file {name}({path}) to the root node...')
+
+        # Create a file node based on the file path and mark it as the latest
+        # version of that file so it won't be overwritten by anything coming
+        # from a resource package.
+        node = VFSNode(node_name=name, node_type=VFSNodeTypes.FILE)
+        descriptor = VFSLocalFile()
+        descriptor.deserialize(data={'path': f'{path}'})
+        resource = VFSResource(
+            resource_type=VFSResourceTypes.LOCAL_FILE,
+            descriptor=descriptor,
+            version=ResourceVersion(version=sys.maxsize))
+        node.add_resource(resource)
+
+        self._root.add_node(node)
+
         self.debug(f'File {name} has been added to the root node.')

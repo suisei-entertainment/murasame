@@ -83,13 +83,19 @@ class VFSResource(LogWriter):
 
         return self._type
 
-    def __init__(self, descriptor: 'VFSResourceDescriptor') -> None:
+    def __init__(
+        self,
+        resource_type: 'VFSResourceTypes',
+        descriptor: 'VFSResourceDescriptor',
+        version: 'ResourceVersion') -> None:
 
         """
         Creates a new VFSResource instance.
 
         Args:
+            resource_type:  The type of the resource.
             descriptor:     The resource descriptor of the resource.
+            version:        The version of the resource.
 
         Authors:
             Attila Kovacs
@@ -97,7 +103,7 @@ class VFSResource(LogWriter):
 
         super().__init__(channel_name='murasame.vfs', cache_entries=True)
 
-        self._version = None
+        self._version = version
         """
         The version of the content.
         """
@@ -112,7 +118,7 @@ class VFSResource(LogWriter):
         The actual resource embedded in this VFS resource.
         """
 
-        self._type = VFSResourceTypes.UNKNOWN
+        self._type = resource_type
         """
         The type of the underlying resource.
         """
