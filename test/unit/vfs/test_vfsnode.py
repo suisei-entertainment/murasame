@@ -51,13 +51,13 @@ class TestVFSNode:
         sut = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
         assert sut.isroot()
-        assert sut.Name == ''
+        assert sut.Name == 'ROOT'
 
         # STEP #2 - Create non-root node
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
         assert not sut.isroot()
-        assert sut.Name == 'TEST'
+        assert sut.Name == 'test'
         assert not sut.Files
         assert not sut.Subdirectories
         assert not sut.Resources

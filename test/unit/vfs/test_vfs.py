@@ -24,6 +24,7 @@ Contains the unit tests of the VFS class.
 # Runtime Imports
 import os
 import sys
+import shutil
 
 # Dependency Imports
 import pytest
@@ -34,6 +35,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.vfs.vfs import VFS, DefaultVFS
 from murasame.utils import SystemLocator
+
+VFS_ROOT_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfs'))
 
 class TestVFS:
 
@@ -50,3 +53,49 @@ class TestVFS:
         SystemLocator.instance().register_provider(VFS, DefaultVFS())
         sut = SystemLocator.instance().get_provider(VFS)
         assert sut is not None
+
+        SystemLocator.instance().unregister_all_providers(VFS)
+
+    def test_adding_directories(self):
+
+        """
+        Tests that file system directories can be added to the VFS.
+        """
+
+        # Create test directories
+        if os.path.isdir(VFS_ROOT_PATH):
+            shutil.rmtree(VFS_ROOT_PATH)
+
+        os.mkdir(VFS_ROOT_PATH)
+        os.mkdir(f'{VFS_ROOT_PATH}/subdirectory1')
+
+        with open(f'{VFS_ROOT_PATH}/subdirectory1/file1', 'w') as file:
+            file.write('{\"attribute1\": \"value1\"}')
+
+        os.mkdir(f'{VFS_ROOT_PATH}/subdirectory2')
+
+        with open(f'{VFS_ROOT_PATH}/subdirectory2/file2', 'w') as file:
+            file.write('{\"attribute2\": \"value2\"}')
+
+        with open(f'{VFS_ROOT_PATH}/subdirectory2/file3', 'w') as file:
+            file.write('{\"attribute3\": \"value3\"}')
+
+        os.mkdir(f'{VFS_ROOT_PATH}/subdirectory2/subdirectory3')
+
+        with open(f'{VFS_ROOT_PATH}/subdirectory2/subdirectory3/file4', 'w') as file:
+            file.write('{\"attribute4\": \"value4\"}')
+
+        SystemLocator.instance().register_provider(VFS, DefaultVFS())
+        sut = SystemLocator.instance().get_provider(VFS)
+
+        sut.register_source(path=VFS_ROOT_PATH)
+
+        assert sut.has_node('subdirectory1')
+        assert sut.has_node('subdirectory1.file1')
+        assert sut.has_node('subdirectory2')
+        assert sut.has_node('subdirectory2.file2')
+        assert sut.has_node('subdirectory2.file3')
+        assert sut.has_node('subdirectory2.subdirectory3')
+        assert sut.has_node('subdirectory2.subdirectory3.file4')
+
+        SystemLocator.instance().unregister_all_providers(VFS)

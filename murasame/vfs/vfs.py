@@ -23,7 +23,7 @@ Contains the implementation of the VFS class.
 
 # Runtime Imports
 import os
-import sys
+
 from typing import Any
 
 # Murasame Imports
@@ -31,10 +31,7 @@ from murasame.exceptions import InvalidInputError
 from murasame.utils import System, JsonFile
 from murasame.logging import LogWriter
 from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
-from murasame.vfs.vfsresourcetypes import VFSResourceTypes
-from murasame.vfs.vfsresource import VFSResource
-from murasame.vfs.vfslocalfile import VFSLocalFile
-from murasame.vfs.resourceversion import ResourceVersion
+
 
 class VFS:
 
@@ -334,64 +331,5 @@ class DefaultVFS(LogWriter):
         """
 
         self.debug(f'Adding the contents of directory {path} to the VFS...')
-
-        directory_content = os.listdir(path)
-
-        for element in directory_content:
-            full_path = f'{path}/{element}'
-            if os.path.isdir(full_path):
-                self._add_subdirectory_from_directory(element, full_path)
-            else:
-                self._add_file_from_directory(element, full_path)
-
+        self._root.populate_from_directory(path=path)
         self.debug(f'Contents of directory {path} has been added to VFS.')
-
-    def _add_subdirectory_from_directory(self, name:str, path: str) -> None:
-
-        """
-        Adds a new subdirectory node from a file system directory.
-
-        Args:
-            name:       The name of the subdirectory to add.
-            path:       Path to the subdirectory to add.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        self.debug(f'Adding subdirectory {name}({path}) under the root node...')
-
-        self._root.add_node(VFSNode(node_name=name))
-
-        self.debug(f'Subdirectory {name} has been added.')
-
-    def _add_file_from_directory(self, name: str, path: str) -> None:
-
-        """
-        Adds a new file node from file system directory.
-
-        Args:
-            name:       The name of the file to add.
-            path:       Path to the file to add.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        self.debug(f'Adding file {name}({path}) to the root node...')
-
-        # Create a file node based on the file path and mark it as the latest
-        # version of that file so it won't be overwritten by anything coming
-        # from a resource package.
-        node = VFSNode(node_name=name, node_type=VFSNodeTypes.FILE)
-        descriptor = VFSLocalFile()
-        descriptor.deserialize(data={'type': 'localfile', 'path': f'{path}'})
-        resource = VFSResource(
-            resource_type=VFSResourceTypes.LOCAL_FILE,
-            descriptor=descriptor,
-            version=ResourceVersion(version=sys.maxsize))
-        node.add_resource(resource)
-
-        self._root.add_node(node)
-
-        self.debug(f'File {name} has been added to the root node.')
