@@ -53,7 +53,7 @@ class VFSNode(LogWriter):
         Attila Kovacs
     """
 
-    # Pylint with Python 3.9 seems to trigger a falso positive thinking the
+    # Pylint with Python 3.9 seems to trigger a false positive thinking the
     # Union type is unsubscriptable., so disable that check here for now.
     #pylint: disable=unsubscriptable-object
 
