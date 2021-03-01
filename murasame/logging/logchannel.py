@@ -109,9 +109,7 @@ class LogChannel:
         """
 
         # Send the message to the central logger
-        if entry.LogLevel == LogLevels.TRACE:
-            self._logger.trace(entry.Message)
-        elif entry.LogLevel == LogLevels.DEBUG:
+        if entry.LogLevel in (LogLevels.TRACE, LogLevels.DEBUG):
             self._logger.debug(entry.Message)
         elif entry.LogLevel in (LogLevels.INFO, LogLevels.NOTICE):
             self._logger.info(entry.Message)
