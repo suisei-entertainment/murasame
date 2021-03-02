@@ -458,7 +458,7 @@ class VFSNode(LogWriter):
             self.error(f'The type of {node.Name} doesn\'t match the type of '
                        f'{self.Name}, they cannot be merged.')
             raise InvalidInputError(
-                f'Trying to merge two VFS nodes with different types.')
+                'Trying to merge two VFS nodes with different types.')
 
         if self.Type == VFSNodeTypes.FILE:
             self.debug(
@@ -705,7 +705,7 @@ class VFSNode(LogWriter):
             for name, subdirectory in subdirectories.items():
                 node = VFSNode(node_name=name)
                 node.deserialize(data=subdirectory)
-                self.add_subdirectory(node)
+                self.add_node(node)
 
             # Retrieve files
             try:
@@ -716,7 +716,7 @@ class VFSNode(LogWriter):
             for name, file in files.items():
                 node = VFSNode(node_name=name)
                 node.deserialize(data=file)
-                self.add_file(file)
+                self.add_node(file)
 
         else:
 
