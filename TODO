@@ -28,6 +28,7 @@
   Platform Abstraction Layer:
     ✔ Support for basic host detection.
     ✔ Support for socket based network communication.
+    ☐ Support for measuring traffic sent or received through sockets.
   Password Management:
     ✔ Basic password generation support.
     ✔ Basic password validation support.
