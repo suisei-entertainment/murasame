@@ -396,7 +396,30 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
-        return
+        self.debug(f'Attempting to merge {node.Name} into {self.Name}...')
+
+        if self.Type != node.Type:
+            self.error(f'The type of {node.Name} doesn\'t match the type of '
+                       f'{self.Name}, they cannot be merged.')
+            raise InvalidInputError(
+                f'Trying to merge two VFS nodes with different types.')
+
+        if self.Type == VFSNodeTypes.FILE:
+            self.debug(
+                f'Merging resources from {node.Name} into {self.Name}...')
+            for dummy, resource in node.Resources.items():
+                self.add_resource(resource)
+        else:
+            self.debug(
+                f'Merging subdirectories from {node.Name} into {self.Name}...')
+            for dummy, directory in node.Subdirectories.items():
+                self.add_node(directory)
+            self.debug(
+                f'Merging files from {node.Name} into {self.Name}...')
+            for dummy, file in node.Files.items():
+                self.add_node(file)
+
+        self.debug(f'{node.Name} has been merged into {self.Name}.')
 
     def get_resource(self, version: int = None) -> Union[VFSResource, None]:
 
@@ -531,7 +554,7 @@ class VFSNode(LogWriter):
             # Serialize all subdirectories
             subdirectories = {}
 
-            for subdirectory in self._directories.items():
+            for dummy, subdirectory in self._directories.items():
                 subdirectories[subdirectory.Name] = subdirectory.serialize()
 
             result['subdirectories'] = subdirectories
@@ -539,7 +562,7 @@ class VFSNode(LogWriter):
             # Serialize all files
             files = {}
 
-            for file in self._files.items():
+            for dummy, file in self._files.items():
                 files[file.Name] = file.serialize()
 
             result['files'] = files
@@ -551,7 +574,7 @@ class VFSNode(LogWriter):
 
             resources = {}
 
-            for resource in self._resources:
+            for dummy, resource in self._resources:
                 resources[resource.Name] = resource.Descriptor.serialize()
 
             result['resources'] = resources

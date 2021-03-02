@@ -34,6 +34,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.vfs.vfs import VFS, DefaultVFS
+from murasame.vfs.vfsnode import VFSNode
 from murasame.utils import SystemLocator
 
 VFS_ROOT_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfs'))
@@ -53,6 +54,76 @@ class TestVFS:
         SystemLocator.instance().register_provider(VFS, DefaultVFS())
         sut = SystemLocator.instance().get_provider(VFS)
         assert sut is not None
+
+        SystemLocator.instance().unregister_all_providers(VFS)
+
+    def test_adding_nodes(self):
+
+        """
+        Tests that nodes can be added to the VFS.
+        """
+
+        # STEP #1 - Normal addition
+        SystemLocator.instance().register_provider(VFS, DefaultVFS())
+        sut = SystemLocator.instance().get_provider(VFS)
+
+        assert not sut.has_node('test')
+
+        sut.add_node(VFSNode(node_name='test'))
+
+        assert sut.has_node('test')
+
+        SystemLocator.instance().unregister_all_providers(VFS)
+
+        # STEP #2 - Adding a node with the same name twice results in a merge
+        SystemLocator.instance().register_provider(VFS, DefaultVFS())
+        sut = SystemLocator.instance().get_provider(VFS)
+
+        node1 = VFSNode(node_name='test1')
+        node2 = VFSNode(node_name='test2')
+        node3 = VFSNode(node_name='test1')
+        node4 = VFSNode(node_name='test4')
+        node1.add_node(node2)
+        node3.add_node(node4)
+
+        sut.add_node(node1)
+        sut.add_node(node3)
+
+        assert sut.has_node('test1')
+        assert sut.has_node('test1.test2')
+        assert sut.has_node('test1.test4')
+
+        SystemLocator.instance().unregister_all_providers(VFS)
+
+        # STEP #3 - Node can be added to existing parent
+        SystemLocator.instance().register_provider(VFS, DefaultVFS())
+        sut = SystemLocator.instance().get_provider(VFS)
+
+        node1 = VFSNode(node_name='test1')
+        node2 = VFSNode(node_name='test2')
+        node3 = VFSNode(node_name='test3')
+
+        node1.add_node(node2)
+        sut.add_node(node1)
+        sut.add_node(node=node3, parent='test1.test2')
+
+        assert sut.has_node('test1.test2.test3')
+
+        SystemLocator.instance().unregister_all_providers(VFS)
+
+    def test_removing_nodes(self):
+
+        """
+        Tests that nodes can be removed from the VFS.
+        """
+
+        SystemLocator.instance().register_provider(VFS, DefaultVFS())
+        sut = SystemLocator.instance().get_provider(VFS)
+
+        sut.add_node(VFSNode(node_name='test'))
+        assert sut.has_node('test')
+        sut.remove_node(node_name='test')
+        assert not sut.has_node('test')
 
         SystemLocator.instance().unregister_all_providers(VFS)
 

@@ -139,6 +139,71 @@ class DefaultVFS(LogWriter):
 
         self.info('VFS has been created.')
 
+    def add_node(self, node: 'VFSNode', parent: str = '') -> None:
+
+        """
+        Adds a new node to the VFS. By default the new node will be added to
+        the root node unless a different parent node is specified.
+
+        Args:
+            node:       The node to add.
+            parent:     Name of the parent node to add the new node to.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        if not node or not isinstance(node, VFSNode):
+            self.error('Trying to add an invalid node to the virtual file '
+                       'system.')
+            return
+
+        self.debug(f'Adding node {node.Name} to the virtual file system...')
+
+        if parent != '':
+            self.debug(f'Adding node {node.Name} to parent {parent}...')
+            parent = self.get_node(key=parent)
+            if not parent:
+                self.error(f'The virtual file system doesn\'t have a not with '
+                           f'name {parent}, cannot add node {node.Name} under '
+                           f'it.')
+                return
+            parent.add_node(node=node)
+        elif self.has_node(name=node.Name):
+            self.debug(f'The virtual file system already has a node with name '
+                       f'{node.Name}, merging the new node into it.')
+            existing_node = self.get_node(key=node.Name)
+            existing_node.merge_with(node=node)
+        else:
+            self.debug(f'Adding node {node.Name} to the root of the virtual '
+                       f'file system.')
+            self._root.add_node(node=node)
+
+        self.debug(f'Node {node.Name} has been added to the virtual file '
+                   f'system.')
+
+    def remove_node(self, node_name: str) -> None:
+
+        """
+        Removes an existing VFS node from the node tree.
+
+        Args:
+            node_name:      Name of the node to remove.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(
+            f'Removing node {node_name} from the virtual file system...')
+
+        if not self.has_node(node_name):
+            self.debug(f'The virtual file system doesn\'t have a node with '
+                       f'name {node_name}.')
+            return
+
+        self._root.remove_node(name=node_name)
+
     def get_node(self, key: str) -> 'VFSNode':
 
         """
