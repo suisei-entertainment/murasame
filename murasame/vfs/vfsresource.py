@@ -84,9 +84,10 @@ class VFSResource(LogWriter):
 
     def __init__(
         self,
-        resource_type: 'VFSResourceTypes',
-        descriptor: 'VFSResourceDescriptor',
-        version: 'ResourceVersion') -> None:
+        resource_type: 'VFSResourceTypes' = None,
+        descriptor: 'VFSResourceDescriptor' = None,
+        version: 'ResourceVersion' = None,
+        data: dict = None) -> None:
 
         """
         Creates a new VFSResource instance.
@@ -95,6 +96,7 @@ class VFSResource(LogWriter):
             resource_type:  The type of the resource.
             descriptor:     The resource descriptor of the resource.
             version:        The version of the resource.
+            data:           Optional data to be deserialized.
 
         Authors:
             Attila Kovacs
@@ -121,3 +123,35 @@ class VFSResource(LogWriter):
         """
         The type of the underlying resource.
         """
+
+        if data is not None:
+            self.deserialize(data=data)
+
+    def serialize(self) -> dict:
+
+        """
+        Serializes the contents of the resource into a dictionary.
+
+        Returns:
+            The resource serialized as a dictionary.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        result = {}
+        return result
+
+    def deserialize(self, data: dict) -> None:
+
+        """
+        Deserializes the resource from a dictionary.
+
+        Args:
+            data:       The resources serialized as a dictionary.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return

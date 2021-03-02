@@ -183,6 +183,35 @@ class VFSNode(LogWriter):
         The actual resources attached to the node.
         """
 
+    def __del__(self) -> None:
+
+        """
+        Destroys the VFSNode instance.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        del self._name
+        del self._type
+        self.reset()
+
+    def reset(self) -> None:
+
+        """
+        Allows resetting the node to initial state.
+
+        This function will not change the name or the type of the node, it
+        will only clean any resources or child nodes from it.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.remove_all_subdirectories()
+        self.remove_all_files()
+        self.remove_all_resources()
+
     def isdir(self) -> bool:
 
         """
@@ -297,6 +326,9 @@ class VFSNode(LogWriter):
 
         Args:
             name:       The name of the node to remove.
+
+        Authors:
+            Attila Kovacs
         """
 
         self.debug(f'Removing child node {name} from node {self.Name}...')
@@ -333,6 +365,18 @@ class VFSNode(LogWriter):
             self.debug(f'Node {self.Name} doesn\'t have a subdirectory named '
                       f'{name}, nothing to do.')
 
+    def remove_all_subdirectories(self) -> None:
+
+        """
+        Removes all subdirectories from this node.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        del self._directories
+        self._directories = {}
+
     def remove_file(self, name: str) -> None:
 
         """
@@ -353,6 +397,18 @@ class VFSNode(LogWriter):
         except KeyError:
             self.debug(f'Node {self.Name} doesn\'t have a file named {name}, '
                        f'nothing to do.')
+
+    def remove_all_files(self) -> None:
+
+        """
+        Removes all files from the node.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        del self._files
+        self._files = {}
 
     def get_node(self, name: str) -> Union['VFSNode', None]:
 
@@ -529,6 +585,18 @@ class VFSNode(LogWriter):
         if resource:
             self._resources.remove(resource)
 
+    def remove_all_resources(self) -> None:
+
+        """
+        Removes all resources from the node.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        del self._resources
+        self._resources = []
+
     def serialize(self) -> dict:
 
         """
@@ -596,7 +664,78 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
-        return
+        self.debug('Deserializing node...')
+        self.trace(f'Data: {data}')
+
+        if not isinstance(data, dict):
+            raise InvalidInputError('Trying to deserialize invalid data.')
+
+        # Reset the node before loading the new content
+        self.reset()
+
+        # Retrieve node name
+        try:
+            self._name = data['name']
+        except KeyError:
+            raise InvalidInputError(
+                'Node name was not found in the serialized data.')
+
+        # Retrieve node type
+        node_type = None
+        try:
+            node_type = data['type']
+        except KeyError:
+            raise InvalidInputError(
+                'Node type was not found in the serialized data.')
+
+        if node_type == 'directory':
+
+            self.debug(f'Deserializing {self.Name} as a directory node...')
+            self._type = VFSNodeTypes.DIRECTORY
+
+            subdirectories = None
+            files = None
+
+            # Retrieve subdirectories
+            try:
+                subdirectories = data['subdirectories']
+            except KeyError:
+                self.debug(f'No subdirectories found for {self.Name}.')
+
+            for name, subdirectory in subdirectories.items():
+                node = VFSNode(node_name=name)
+                node.deserialize(data=subdirectory)
+                self.add_subdirectory(node)
+
+            # Retrieve files
+            try:
+                files = data['files']
+            except KeyError:
+                self.debug(f'No files found for {self.Name}.')
+
+            for name, file in files.items():
+                node = VFSNode(node_name=name)
+                node.deserialize(data=file)
+                self.add_file(file)
+
+        else:
+
+            self.debug(f'Deserializing {self.Name} as a file node...')
+            self._type = VFSNodeTypes.FILE
+
+            resources = None
+
+            # Retrieve resources
+            try:
+                resources = data['resources']
+            except KeyError:
+                self.debug(f'No resources found for {self.Name}.')
+
+            for resource in resources:
+                res = VFSResource(data=resource)
+                self.add_resource(res)
+
+        self.debug(f'Node deserialization complete for {self.Name}.')
 
     def populate_from_directory(self, path: str) -> None:
 
