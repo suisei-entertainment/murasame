@@ -30,7 +30,7 @@ aiohttp>=3.7.4 # CVE-2021-21330
 geoip2
 
 # Cryptography
-cryptography>=3.4.6 # CVE-2020-25659
+cryptography>=3.4.6 # CVE-2020-25659 mitigation
 bcrypt>=3.1.7
 
 # Tools
