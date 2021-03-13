@@ -58,6 +58,8 @@ class TestGeoIP:
         sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
                     database_path=DATABASE_PATH)
 
+
+        assert sut is not None
         assert os.path.isfile(
             '{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
 
@@ -78,8 +80,8 @@ class TestGeoIP:
         assert result.Country == 'Hungary'
         assert result.City == 'God'
         assert result.PostalCode in ('2131', '2132')
-        assert result.Latitude == 47.6832
-        assert result.Longitude == 19.1342
+        assert result.Latitude == 47.6838
+        assert result.Longitude == 19.1401
 
         # STEP #2 - Query internal IP address
         result = sut.query('192.168.0.1')
