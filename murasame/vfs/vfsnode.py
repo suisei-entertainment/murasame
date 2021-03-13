@@ -192,9 +192,9 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        self.reset()
         del self._name
         del self._type
-        self.reset()
 
     def reset(self) -> None:
 
@@ -208,9 +208,13 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        self.debug(f'Resetting node {self.Name}...')
+
         self.remove_all_subdirectories()
         self.remove_all_files()
         self.remove_all_resources()
+
+        self.debug(f'Reset of node {self.Name} was completed.')
 
     def isdir(self) -> bool:
 
@@ -374,8 +378,13 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        self.debug(f'Removing all directory nodes from node {self.Name}...')
+
         del self._directories
         self._directories = {}
+
+        self.debug(
+            f'All directory nodes has been removed from node {self.Name}.')
 
     def remove_file(self, name: str) -> None:
 
@@ -407,8 +416,12 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        self.debug(f'Removing all file nodes from node {self.Name}...')
+
         del self._files
         self._files = {}
+
+        self.debug(f'All file nodes has been removed from node {self.Name}.')
 
     def get_node(self, name: str) -> Union['VFSNode', None]:
 
@@ -477,7 +490,9 @@ class VFSNode(LogWriter):
 
         self.debug(f'{node.Name} has been merged into {self.Name}.')
 
-    def get_resource(self, version: int = None) -> Union[VFSResource, None]:
+    def get_resource(
+        self,
+        version: Union[int, None] = None) -> Union[VFSResource, None]:
 
         """
         Returns the resource stored in the node.
@@ -552,12 +567,18 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
-        # Directory nodes doesn't have resources
+        self.debug(f'Adding new resource to VFS node {self.Name}...')
+        self.trace(f'VFS resource: {resource.Descriptor}')
+
+        # Directory nodes don't have resources
         if self._type == VFSNodeTypes.DIRECTORY:
+            self.error(f'Directory node {self.Name} cannot have resources.')
             return
 
         # Do not add a resource with the same version twice
-        if not self.has_resource(version=resource.Version):
+        if self._resources and self.has_resource(version=resource.Version):
+            self.warning(f'Node {self.Name} already has a resource with the '
+                         f'given version.')
             return
 
         # Add the resource and sort the list
@@ -568,6 +589,8 @@ class VFSNode(LogWriter):
         if not skip_sorting:
             self._resources.sort(key=lambda x: x.Version,
                              reverse=True)
+
+        self.debug(f'New VFS resource has been added to node {self.Name}.')
 
     def remove_resource(self, version: int = None) -> None:
 
@@ -581,9 +604,16 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        self.debug(
+            f'Removing resource version {version} from node {self.Name}...')
+
         resource = self.get_resource(version=version)
         if resource:
             self._resources.remove(resource)
+            self.debug(f'Resource v{version} was removed from {self.Name}.')
+        else:
+            self.debug(f'Node {self.Name} doesn\'t have a resource with '
+                       f'version {version}, nothing to remove.')
 
     def remove_all_resources(self) -> None:
 
@@ -594,8 +624,12 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        self.debug(f'Removing all resources from node {self.Name}...')
+
         del self._resources
         self._resources = []
+
+        self.debug(f'All resources removed from node {self.Name}.')
 
     def serialize(self) -> dict:
 
@@ -640,12 +674,12 @@ class VFSNode(LogWriter):
             # Serialize the node as a file
             result['type'] = 'file'
 
-            resources = {}
+            resources = []
 
-            for dummy, resource in self._resources:
-                resources[resource.Name] = resource.Descriptor.serialize()
+            for resource in self._resources:
+                resources.append(resource.Descriptor.serialize())
 
-            result['resources'] = resources
+            result['resource'] = resources
 
         self.debug(f'Node {self.Name} has been serialized.')
         self.trace(f'Node {self.Name}: {result}')
@@ -716,7 +750,7 @@ class VFSNode(LogWriter):
             for name, file in files.items():
                 node = VFSNode(node_name=name)
                 node.deserialize(data=file)
-                self.add_node(file)
+                self.add_node(node)
 
         else:
 
@@ -727,7 +761,7 @@ class VFSNode(LogWriter):
 
             # Retrieve resources
             try:
-                resources = data['resources']
+                resources = data['resource']
             except KeyError:
                 self.debug(f'No resources found for {self.Name}.')
 

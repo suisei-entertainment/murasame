@@ -34,6 +34,45 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
+from murasame.vfs.vfsresource import VFSResource
+from murasame.vfs.vfsresourcetypes import VFSResourceTypes
+from murasame.vfs.resourceversion import ResourceVersion
+
+# Test data
+SERIALIZED_NODE_DATA = \
+        {
+            'name': 'test1',
+            'type': 'directory',
+            'subdirectories':
+            {
+                'test2':
+                {
+                    'name': 'test2',
+                    'type': 'directory',
+                    'subdirectories': {},
+                    'files': {}
+                },
+                'test3':
+                {
+                    'name': 'test3',
+                    'type': 'directory',
+                    'subdirectories': {},
+                    'files':
+                    {
+                        'test4':
+                        {
+                            'name': 'test4',
+                            'type': 'file',
+                            'resource': []
+                        }
+                    }
+                }
+            },
+            'files':
+            {
+
+            }
+        }
 
 class TestVFSNode:
 
@@ -91,7 +130,19 @@ class TestVFSNode:
         Tests that resources can be added to the node.
         """
 
-        pass
+        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=2))
+
+        sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
+        sut.add_resource(resource1)
+        sut.add_resource(resource2)
+
+        assert sut.Latest == resource2
 
     def test_removing_resource(self):
 
@@ -100,3 +151,37 @@ class TestVFSNode:
         """
 
         pass
+
+    def test_serialization(self):
+
+        """
+        Tests that a VFS node can be serialized to a dictionary.
+        """
+
+        sut = VFSNode(node_name='test1')
+        node2 = VFSNode(node_name='test2')
+        node3 = VFSNode(node_name='test3')
+        node4 = VFSNode(node_name='test4', node_type=VFSNodeTypes.FILE)
+
+        node3.add_node(node4)
+
+        sut.add_node(node2)
+        sut.add_node(node3)
+
+        data = sut.serialize()
+
+        assert data == SERIALIZED_NODE_DATA
+
+    def test_deserialization(self):
+
+        """
+        Tests that a VFS node can be deserialized from a dictionary.
+        """
+
+        sut = VFSNode(node_name='whatever')
+        sut.deserialize(data=SERIALIZED_NODE_DATA)
+
+        assert sut.Name == 'test1'
+        assert sut.has_node('test2')
+        assert sut.has_node('test3')
+        assert sut.has_node('test3.test4')
