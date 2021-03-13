@@ -130,6 +130,18 @@ class TestVFSNode:
         Tests that resources can be added to the node.
         """
 
+        # STEP #1 - Single resource can be added
+        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
+        sut.add_resource(resource1)
+
+        assert sut.Latest == resource1
+        assert sut.NumResources == 1
+
+        # STEP #2 - Multiple resources with different versions can be added
         resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
                                 descriptor=None,
                                 version=ResourceVersion(version=1))
@@ -143,6 +155,49 @@ class TestVFSNode:
         sut.add_resource(resource2)
 
         assert sut.Latest == resource2
+        assert sut.NumResources == 2
+
+        # STEP #3 - Resource with an existing version number is not added
+        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
+        sut.add_resource(resource1)
+        sut.add_resource(resource2)
+
+        assert sut.Latest == resource1
+        assert sut.NumResources == 1
+
+        # STEP #4 - Resources can be added in any order
+        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=2))
+
+        resource3 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=3))
+
+        resource4 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=4))
+
+        sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
+        sut.add_resource(resource1)
+        sut.add_resource(resource3)
+        sut.add_resource(resource4)
+        sut.add_resource(resource2)
+
+        assert sut.NumResources == 4
+        assert sut.Latest == resource4
 
     def test_removing_resource(self):
 
@@ -150,7 +205,37 @@ class TestVFSNode:
         Tests that resources can be removed from the node.
         """
 
-        pass
+        # STEP #1 - A single resource can be removed
+        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
+        sut.add_resource(resource1)
+        sut.remove_resource(version=1)
+
+        assert sut.NumResources == 0
+
+        # STEP #2 - A resource from multiple resources can be removed
+        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=1))
+
+        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=2))
+
+        resource3 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                                descriptor=None,
+                                version=ResourceVersion(version=3))
+
+        sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
+        sut.add_resource(resource1)
+        sut.add_resource(resource2)
+        sut.add_resource(resource3)
+        sut.remove_resource(version=1)
+
+        assert sut.NumResources == 2
 
     def test_serialization(self):
 

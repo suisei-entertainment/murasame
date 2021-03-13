@@ -138,6 +138,18 @@ class VFSNode(LogWriter):
 
         return None
 
+    @property
+    def NumResources(self) -> int:
+
+        """
+        The amount of resources contained in this node.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return len(self._resources)
+
     def __init__(self,
                  node_name: str,
                  node_type: 'VFSNodeTypes'= VFSNodeTypes.DIRECTORY) -> None:
@@ -520,7 +532,7 @@ class VFSNode(LogWriter):
 
         # Try to find the requested resource version
         for resource in self._resources:
-            if resource.Version == version:
+            if resource.Version.Version == version:
                 return resource
 
         return None
@@ -576,7 +588,7 @@ class VFSNode(LogWriter):
             return
 
         # Do not add a resource with the same version twice
-        if self._resources and self.has_resource(version=resource.Version):
+        if self._resources and self.has_resource(version=resource.Version.Version):
             self.warning(f'Node {self.Name} already has a resource with the '
                          f'given version.')
             return
