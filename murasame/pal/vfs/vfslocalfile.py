@@ -23,7 +23,7 @@ Contains the implementation of the VFSLocalFile class.
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
 
 class VFSLocalFile(VFSResourceDescriptor):
 

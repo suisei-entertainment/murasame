@@ -18,8 +18,37 @@
 ## ============================================================================
 
 """
-Contains the implementation of the virtual file system.
+Contains the unit tests of the VFSResource class.
 """
 
-from murasame.vfs.vfs import VFS, DefaultVFS
-from murasame.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+# Runtime Imports
+import os
+import sys
+
+# Dependency Imports
+import pytest
+
+# Fix paths to make framework modules accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+
+# Murasame Imports
+from murasame.pal.vfs.vfsresource import VFSResource
+from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
+from murasame.pal.vfs.resourceversion import ResourceVersion
+
+class TestPackageContent:
+
+    """
+    Contains the unit tests for the VFSResource class.
+    """
+
+    def test_creation(self):
+
+        """
+        Tests that a VFSResource object can be created.
+        """
+
+        sut = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
+                          descriptor=None,
+                          version=ResourceVersion(version=1))
+        assert sut is not None

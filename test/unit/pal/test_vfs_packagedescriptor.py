@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the PackageFileDescriptor class.
+Contains the unit tests of the PackageDescriptor class.
 """
 
 # Runtime Imports
@@ -32,19 +32,19 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
-from murasame.vfs.packagefiledescriptor import PackageFileDescriptor
+from murasame.pal.vfs.packagedescriptor import PackageDescriptor
 
-class TestPackageFileDescriptor:
+class TestPackageDescriptor:
 
     """
-    Contains the unit tests for the PackageFileDescriptor class.
+    Contains the unit tests for the PackageDescriptor class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a PackageFileDescriptor object can be created.
+        Tests that a PackageDescriptor object can be created.
         """
 
-        sut = PackageFileDescriptor(path='/test/path')
+        sut = PackageDescriptor()
         assert sut is not None

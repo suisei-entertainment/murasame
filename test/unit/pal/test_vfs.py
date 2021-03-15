@@ -33,8 +33,8 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
-from murasame.vfs.vfs import VFS, DefaultVFS
-from murasame.vfs.vfsnode import VFSNode
+from murasame.pal.vfs.vfs import VFS, DefaultVFS
+from murasame.pal.vfs.vfsnode import VFSNode
 from murasame.utils import SystemLocator
 
 VFS_ROOT_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfs'))
@@ -90,8 +90,8 @@ class TestVFS:
         sut.add_node(node3)
 
         assert sut.has_node('test1')
-        assert sut.has_node('test1.test2')
-        assert sut.has_node('test1.test4')
+        assert sut.has_node('test1/test2')
+        assert sut.has_node('test1/test4')
 
         SystemLocator.instance().unregister_all_providers(VFS)
 
@@ -105,9 +105,9 @@ class TestVFS:
 
         node1.add_node(node2)
         sut.add_node(node1)
-        sut.add_node(node=node3, parent='test1.test2')
+        sut.add_node(node=node3, parent='test1/test2')
 
-        assert sut.has_node('test1.test2.test3')
+        assert sut.has_node('test1/test2/test3')
 
         SystemLocator.instance().unregister_all_providers(VFS)
 
@@ -162,11 +162,11 @@ class TestVFS:
         sut.register_source(path=VFS_ROOT_PATH)
 
         assert sut.has_node('subdirectory1')
-        assert sut.has_node('subdirectory1.file1')
+        assert sut.has_node('subdirectory1/file1')
         assert sut.has_node('subdirectory2')
-        assert sut.has_node('subdirectory2.file2')
-        assert sut.has_node('subdirectory2.file3')
-        assert sut.has_node('subdirectory2.subdirectory3')
-        assert sut.has_node('subdirectory2.subdirectory3.file4')
+        assert sut.has_node('subdirectory2/file2')
+        assert sut.has_node('subdirectory2/file3')
+        assert sut.has_node('subdirectory2/subdirectory3')
+        assert sut.has_node('subdirectory2/subdirectory3/file4')
 
         SystemLocator.instance().unregister_all_providers(VFS)

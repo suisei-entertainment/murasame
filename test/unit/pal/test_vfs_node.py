@@ -33,10 +33,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
-from murasame.vfs.vfsresource import VFSResource
-from murasame.vfs.vfsresourcetypes import VFSResourceTypes
-from murasame.vfs.resourceversion import ResourceVersion
+from murasame.pal.vfs.vfsnode import VFSNode, VFSNodeTypes
+from murasame.pal.vfs.vfsresource import VFSResource
+from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
+from murasame.pal.vfs.resourceversion import ResourceVersion
 
 # Test data
 SERIALIZED_NODE_DATA = \
@@ -269,4 +269,4 @@ class TestVFSNode:
         assert sut.Name == 'test1'
         assert sut.has_node('test2')
         assert sut.has_node('test3')
-        assert sut.has_node('test3.test4')
+        assert sut.has_node('test3/test4')

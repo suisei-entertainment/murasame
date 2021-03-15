@@ -16,3 +16,35 @@
 ##  limitations under the License.
 ##
 ## ============================================================================
+
+"""
+Contains the unit tests of the PackageFileDescriptor class.
+"""
+
+# Runtime Imports
+import os
+import sys
+
+# Dependency Imports
+import pytest
+
+# Fix paths to make framework modules accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+
+# Murasame Imports
+from murasame.pal.vfs.packagefiledescriptor import PackageFileDescriptor
+
+class TestPackageFileDescriptor:
+
+    """
+    Contains the unit tests for the PackageFileDescriptor class.
+    """
+
+    def test_creation(self):
+
+        """
+        Tests that a PackageFileDescriptor object can be created.
+        """
+
+        sut = PackageFileDescriptor(path='/test/path')
+        assert sut is not None

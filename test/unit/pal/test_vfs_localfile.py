@@ -33,7 +33,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.vfs.vfslocalfile import VFSLocalFile
+from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
 class TestVFSLocalFile:
 

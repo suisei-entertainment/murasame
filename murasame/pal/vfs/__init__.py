@@ -18,33 +18,8 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the Package class.
+Contains the implementation of the virtual file system.
 """
 
-# Runtime Imports
-import os
-import sys
-
-# Dependency Imports
-import pytest
-
-# Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
-
-# Murasame Imports
-from murasame.vfs.package import Package
-
-class TestPackage:
-
-    """
-    Contains the unit tests for the Package class.
-    """
-
-    def test_creation(self):
-
-        """
-        Tests that a Package object can be created.
-        """
-
-        sut = Package()
-        assert sut is not None
+from murasame.pal.vfs.vfs import VFS, DefaultVFS
+from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor

@@ -30,10 +30,10 @@ from typing import Union
 # Murasame Imports
 from murasame.logging import LogWriter
 from murasame.exceptions import InvalidInputError
-from murasame.vfs.vfsresource import VFSResource
-from murasame.vfs.vfsresourcetypes import VFSResourceTypes
-from murasame.vfs.vfslocalfile import VFSLocalFile
-from murasame.vfs.resourceversion import ResourceVersion
+from murasame.pal.vfs.vfsresource import VFSResource
+from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
+from murasame.pal.vfs.vfslocalfile import VFSLocalFile
+from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class VFSNodeTypes(IntEnum):
 
@@ -288,11 +288,11 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
-        if '.' in name:
+        if '/' in name:
             # Looking for a node attached to a child node
 
             # Find parent
-            parts = str.split(name, '.', 1)
+            parts = str.split(name, '/', 1)
             try:
                 parent = self._directories[parts[0]]
                 return parent.has_node(parts[1])
@@ -451,8 +451,8 @@ class VFSNode(LogWriter):
         """
 
         # Looking for a node attached to a child node
-        if '.' in name:
-            parts = str.split(name, '.', 1)
+        if '/' in name:
+            parts = str.split(name, '/', 1)
             parent = self._directories[parts[0]]
             return parent.get_node(parts[1])
 

@@ -30,7 +30,7 @@ from typing import Any
 from murasame.exceptions import InvalidInputError
 from murasame.utils import System, JsonFile
 from murasame.logging import LogWriter
-from murasame.vfs.vfsnode import VFSNode, VFSNodeTypes
+from murasame.pal.vfs.vfsnode import VFSNode, VFSNodeTypes
 
 
 class VFS:
@@ -307,12 +307,12 @@ class DefaultVFS(LogWriter):
 
         self.debug(f'Checking the existence of node {name}...')
 
-        if '.' not in name:
+        if '/' not in name:
             # Checking for a root level node
             return self._root.has_node(name)
 
         # Checking for a non-root level node
-        parts = str.split(name, '.', 1)
+        parts = str.split(name, '/', 1)
         if self._root.has_node(parts[0]):
             return self._root.get_node(parts[0]).has_node(parts[1])
 

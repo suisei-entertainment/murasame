@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the PackageFile class.
+Contains the unit tests of the Package class.
 """
 
 # Runtime Imports
@@ -32,19 +32,19 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
-from murasame.vfs.packagefile import PackageFile
+from murasame.pal.vfs.package import Package
 
-class TestPackageFile:
+class TestPackage:
 
     """
-    Contains the unit tests for the PackageFile class.
+    Contains the unit tests for the Package class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a PackageFile object can be created.
+        Tests that a Package object can be created.
         """
 
-        sut = PackageFile()
+        sut = Package()
         assert sut is not None
