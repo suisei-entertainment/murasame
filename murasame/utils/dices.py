@@ -35,64 +35,57 @@ class Dices:
 
     @staticmethod
     def roll(
-        d4: int = 0,
-        d6: int = 0,
-        d8: int = 0,
-        d10: int = 0,
-        d12: int = 0,
-        d20: int = 0,
-        d100: int = 0,
+        dice_d4: int = 0,
+        dice_d6: int = 0,
+        dice_d8: int = 0,
+        dice_d10: int = 0,
+        dice_d12: int = 0,
+        dice_d20: int = 0,
+        dice_d100: int = 0,
         base: int = 0):
 
         """
         Rolls the requested amount of dices.
 
         Args:
-            d4:     The amount of D4 dices to roll.
-            d6:     The amount of D6 dices to roll.
-            d8:     The amount of D8 dices to roll.
-            d10:    The amount of D10 dices to roll.
-            d12:    The amount of D12 dices to roll.
-            d20:    The amount of D20 dices to roll.
-            d100:   The amount of D100 dices to roll.
+            dice_d4:     The amount of D4 dices to roll.
+            dice_d6:     The amount of D6 dices to roll.
+            dice_d8:     The amount of D8 dices to roll.
+            dice_d10:    The amount of D10 dices to roll.
+            dice_d12:    The amount of D12 dices to roll.
+            dice_d20:    The amount of D20 dices to roll.
+            dice_d100:   The amount of D100 dices to roll.
             base:   The base value to add the dice results to.
         """
 
         result = base
 
         # D4 dices
-        if d4 != 0:
-            for dummy in range(1, d4+1):
-                result += random.randint(1, 4)
+        for dummy in range(1, dice_d4 + 1):
+            result += random.randint(1, 4)
 
         # D6 dices
-        if d6 != 0:
-            for dummy in range(1, d6+1):
-                result += random.randint(1, 6)
+        for dummy in range(1, dice_d6 + 1):
+            result += random.randint(1, 6)
 
         # D8 dices
-        if d8 != 0:
-            for dummy in range(1, d8+1):
-                result += random.randint(1, 8)
+        for dummy in range(1, dice_d8 + 1):
+            result += random.randint(1, 8)
 
         # D10 dices
-        if d10 != 0:
-            for dummy in range(1, d10+1):
-                result += random.randint(1, 10)
+        for dummy in range(1, dice_d10 + 1):
+            result += random.randint(1, 10)
 
         # D12 dices
-        if d12 != 0:
-            for dummy in range(1, d12+1):
-                result += random.randint(1, 12)
+        for dummy in range(1, dice_d12 + 1):
+            result += random.randint(1, 12)
 
         # D20 dices
-        if d20 != 0:
-            for dummy in range(1, d20+1):
-                result += random.randint(1, 20)
+        for dummy in range(1, dice_d20 + 1):
+            result += random.randint(1, 20)
 
         # D100 dices
-        if d100 != 0:
-            for dummy in range(1, d100+1):
-                result += random.randint(1, 100)
+        for dummy in range(1, dice_d100 + 1):
+            result += random.randint(1, 100)
 
         return result

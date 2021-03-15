@@ -46,22 +46,23 @@ class TestDices:
         Tests random number generation by throwing dices.
         """
 
+        assert Dices.roll() == 0
+        assert Dices.roll(base=10) == 10
         assert Dices.roll(
-            d4=1,
-            d6=1,
-            d8=1,
-            d10=1,
-            d12=1,
-            d20=1,
-            d100=1,
+            dice_d4=1,
+            dice_d6=1,
+            dice_d8=1,
+            dice_d10=1,
+            dice_d12=1,
+            dice_d20=1,
+            dice_d100=1,
             base=10) >= 17
-
         assert Dices.roll(
-            d4=2,
-            d6=2,
-            d8=2,
-            d10=2,
-            d12=2,
-            d20=2,
-            d100=2,
+            dice_d4=2,
+            dice_d6=2,
+            dice_d8=2,
+            dice_d10=2,
+            dice_d12=2,
+            dice_d20=2,
+            dice_d100=2,
             base=10) >= 24
