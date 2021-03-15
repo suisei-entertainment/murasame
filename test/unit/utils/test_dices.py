@@ -18,25 +18,50 @@
 ## ============================================================================
 
 """
-Contains the implementation of framework utilities.
+Contains the unit tests of the Dices class.
 """
 
-from murasame.utils.singleton import Singleton
-from murasame.utils.systemlocator import SystemLocator, System
-from murasame.utils.productversion import ProductVersion
-from murasame.utils.aes import AESCipher
-from murasame.utils.rsa import (
-    RSAKeyLengths,
-    RSAPrivate,
-    RSAPublic,
-    RSAKeyGenerator,
-    RSASigner,
-    RSAVerifier,
-    RSAEncryptor,
-    RSADecryptor)
-from murasame.utils.jsonfile import JsonFile
-from murasame.utils.yamlfile import YamlFile
-from murasame.utils.secrets import Secrets
-from murasame.utils.geoip import GeoIP, GeoIPData
-from murasame.utils.cliprocessor import CliProcessor
+# Runtime Imports
+import os
+import sys
+
+# Dependency Imports
+import pytest
+
+# Fix paths to make framework modules accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+
+# Murasame Imports
 from murasame.utils.dices import Dices
+
+class TestDices:
+
+    """
+    Contains the unit tests for the Dices class.
+    """
+
+    def test_dice_rolling(self):
+
+        """
+        Tests random number generation by throwing dices.
+        """
+
+        assert Dices.roll(
+            d4=1,
+            d6=1,
+            d8=1,
+            d10=1,
+            d12=1,
+            d20=1,
+            d100=1,
+            base=10) >= 17
+
+        assert Dices.roll(
+            d4=2,
+            d6=2,
+            d8=2,
+            d10=2,
+            d12=2,
+            d20=2,
+            d100=2,
+            base=10) >= 24
