@@ -45,6 +45,7 @@
     ✔ Support for singletons.
     ✔ Support for the system locator design pattern.
     ✔ Support for certificate management.
+    ✔ Support for random number generation based on dices.
   Virtual File System:
     ☐ Basic virtual file system support based on directories.
     ☐ Support for extending the virtual file system with packages.
