@@ -372,6 +372,9 @@ def collect_dependencies() -> list:
 
     for line in lines:
         if not line.startswith('#') and not line.startswith('\n'):
+            # Remove potential comments at the end of the line
+            if '#' in line:
+                line, dummy = str.split(line, '#', 1)
             result.append(line.strip().replace('\n', ''))
 
     return result
