@@ -37,6 +37,7 @@ from murasame.pal.vfs.vfsnode import VFSNode, VFSNodeTypes
 from murasame.pal.vfs.vfsresource import VFSResource
 from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
 from murasame.pal.vfs.resourceversion import ResourceVersion
+from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
 # Test data
 SERIALIZED_NODE_DATA = \
@@ -131,9 +132,11 @@ class TestVFSNode:
         """
 
         # STEP #1 - Single resource can be added
-        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource1 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
         sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
         sut.add_resource(resource1)
@@ -142,13 +145,17 @@ class TestVFSNode:
         assert sut.NumResources == 1
 
         # STEP #2 - Multiple resources with different versions can be added
-        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource1 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=2))
+        resource2 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 2,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
         sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
         sut.add_resource(resource1)
@@ -158,13 +165,17 @@ class TestVFSNode:
         assert sut.NumResources == 2
 
         # STEP #3 - Resource with an existing version number is not added
-        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource1 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource2 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
         sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
         sut.add_resource(resource1)
@@ -174,21 +185,29 @@ class TestVFSNode:
         assert sut.NumResources == 1
 
         # STEP #4 - Resources can be added in any order
-        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource1 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=2))
+        resource2 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 2,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource3 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=3))
+        resource3 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 3,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource4 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=4))
+        resource4 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 4,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
         sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
         sut.add_resource(resource1)
@@ -206,9 +225,11 @@ class TestVFSNode:
         """
 
         # STEP #1 - A single resource can be removed
-        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource1 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
         sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
         sut.add_resource(resource1)
@@ -217,17 +238,23 @@ class TestVFSNode:
         assert sut.NumResources == 0
 
         # STEP #2 - A resource from multiple resources can be removed
-        resource1 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=1))
+        resource1 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 1,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource2 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=2))
+        resource2 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 2,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
-        resource3 = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                                descriptor=None,
-                                version=ResourceVersion(version=3))
+        resource3 = VFSResource(descriptor=VFSLocalFile(),
+                                data={'version': 3,
+                                      'descriptor': {
+                                            'type': 'localfile',
+                                            'path': '/test'}})
 
         sut = VFSNode(node_name='test1', node_type=VFSNodeTypes.FILE)
         sut.add_resource(resource1)

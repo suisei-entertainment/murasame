@@ -24,6 +24,7 @@ Contains the implementation of the VFSLocalFile class.
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
 
 class VFSLocalFile(VFSResourceDescriptor):
 
@@ -46,6 +47,18 @@ class VFSLocalFile(VFSResourceDescriptor):
         """
 
         return self._path
+
+    @property
+    def Type(self) -> 'VFSResourceTypes':
+
+        """
+        Returns the type of the VFS resource.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return VFSResourceTypes.LOCAL_FILE
 
     def __init__(self):
 

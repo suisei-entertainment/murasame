@@ -21,6 +21,9 @@
 Contains the implementation of the ResourceVersion class.
 """
 
+# Runtime Imports
+import sys
+
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.logging import LogWriter
@@ -32,6 +35,11 @@ class ResourceVersion(LogWriter):
 
     Authors:
         Attila Kovacs
+    """
+
+    LATEST = sys.maxsize
+    """
+    Constant representing the latest resource version.
     """
 
     @property

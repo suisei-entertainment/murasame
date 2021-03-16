@@ -23,7 +23,6 @@ Contains the implementation of the VFSNode class.
 
 # Runtime Imports
 import os
-import sys
 from enum import IntEnum
 from typing import Union
 
@@ -31,7 +30,6 @@ from typing import Union
 from murasame.logging import LogWriter
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresource import VFSResource
-from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
 from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 from murasame.pal.vfs.resourceversion import ResourceVersion
 
@@ -722,17 +720,17 @@ class VFSNode(LogWriter):
         # Retrieve node name
         try:
             self._name = data['name']
-        except KeyError:
+        except KeyError as error:
             raise InvalidInputError(
-                'Node name was not found in the serialized data.')
+                'Node name was not found in the serialized data.') from error
 
         # Retrieve node type
         node_type = None
         try:
             node_type = data['type']
-        except KeyError:
+        except KeyError as error:
             raise InvalidInputError(
-                'Node type was not found in the serialized data.')
+                'Node type was not found in the serialized data.') from error
 
         if node_type == 'directory':
 
@@ -844,12 +842,18 @@ class VFSNode(LogWriter):
         # version of that file so it won't be overwritten by anything coming
         # from a resource package.
         node = VFSNode(node_name=name, node_type=VFSNodeTypes.FILE)
-        descriptor = VFSLocalFile()
-        descriptor.deserialize(data={'type': 'localfile', 'path': f'{path}'})
-        resource = VFSResource(
-            resource_type=VFSResourceTypes.LOCAL_FILE,
-            descriptor=descriptor,
-            version=ResourceVersion(version=sys.maxsize))
+
+        data = \
+        {
+            'version': ResourceVersion.LATEST,
+            'descriptor':
+            {
+                'type': 'localfile',
+                'path': path
+            }
+        }
+
+        resource = VFSResource(descriptor=VFSLocalFile(), data=data)
         node.add_resource(resource)
 
         self.add_node(node)

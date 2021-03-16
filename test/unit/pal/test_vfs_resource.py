@@ -33,8 +33,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.pal.vfs.vfsresource import VFSResource
-from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
 from murasame.pal.vfs.resourceversion import ResourceVersion
+from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
 class TestPackageContent:
 
@@ -48,7 +48,6 @@ class TestPackageContent:
         Tests that a VFSResource object can be created.
         """
 
-        sut = VFSResource(resource_type=VFSResourceTypes.LOCAL_FILE,
-                          descriptor=None,
+        sut = VFSResource(descriptor=VFSLocalFile(),
                           version=ResourceVersion(version=1))
         assert sut is not None

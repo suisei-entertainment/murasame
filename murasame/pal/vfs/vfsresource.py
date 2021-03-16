@@ -22,7 +22,9 @@ Contains the implementation of the VFSResource class.
 """
 
 # Murasame Imports
+from murasame.exceptions import InvalidInputError
 from murasame.logging import LogWriter
+from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class VFSResource(LogWriter):
 
@@ -80,11 +82,10 @@ class VFSResource(LogWriter):
             Attila Kovacs
         """
 
-        return self._type
+        return self._descriptor.Type
 
     def __init__(
         self,
-        resource_type: 'VFSResourceTypes' = None,
         descriptor: 'VFSResourceDescriptor' = None,
         version: 'ResourceVersion' = None,
         data: dict = None) -> None:
@@ -93,10 +94,9 @@ class VFSResource(LogWriter):
         Creates a new VFSResource instance.
 
         Args:
-            resource_type:  The type of the resource.
             descriptor:     The resource descriptor of the resource.
             version:        The version of the resource.
-            data:           Optional data to be deserialized.
+            data:           The serialized form of the resource.
 
         Authors:
             Attila Kovacs
@@ -119,11 +119,6 @@ class VFSResource(LogWriter):
         The actual resource embedded in this VFS resource.
         """
 
-        self._type = resource_type
-        """
-        The type of the underlying resource.
-        """
-
         if data is not None:
             self.deserialize(data=data)
 
@@ -140,6 +135,8 @@ class VFSResource(LogWriter):
         """
 
         result = {}
+        result['version'] = self._version.Version
+        result['descriptor'] = self._descriptor.serialize()
         return result
 
     def deserialize(self, data: dict) -> None:
@@ -150,8 +147,42 @@ class VFSResource(LogWriter):
         Args:
             data:       The resources serialized as a dictionary.
 
+        Raises:
+            InvalidInputError:      Raised when the VFS resource descriptor is
+                                    not serialized as a dictionary.
+            InvalidInputError:      Raised when the resource version is not
+                                    found in the serialized data.
+            InvalidInputError:      Raised when the resource descriptor is not
+                                    found in the serialized data.
+
         Authors:
             Attila Kovacs
         """
 
-        return
+        # Retrieve version
+        try:
+            version = data['version']
+            self._version = ResourceVersion(version=int(version))
+        except KeyError as error:
+            self.error('No resource version specified in the serialized data.')
+            raise InvalidInputError('No resource version specified in the '
+                                    'serialized data.') from error
+
+        # Retrieve descriptor
+        try:
+            descriptor = data['descriptor']
+
+            if not isinstance(descriptor, dict):
+                self.error('The descriptor in the serialized VFS resource '
+                           'data must be a dictionary.')
+                raise InvalidInputError(
+                    'Invalid type encountered, when trying to deserialize '
+                    'VFS resource.')
+
+            self._descriptor.deserialize(descriptor)
+
+        except KeyError as error:
+            self.error('No descriptor found when trying to deserialize a VFS '
+                       'resource.')
+            raise InvalidInputError('No descriptor found when trying to '
+                                    'deserialize a VFS resource') from error
