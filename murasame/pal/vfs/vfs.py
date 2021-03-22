@@ -130,7 +130,7 @@ class DefaultVFS(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.vfs', cache_entries=True)
+        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         self._root = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         """

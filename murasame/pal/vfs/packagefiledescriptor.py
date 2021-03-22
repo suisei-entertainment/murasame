@@ -63,7 +63,7 @@ class PackageFileDescriptor(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.vfs', cache_entries=True)
+        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         self._path = path
         """

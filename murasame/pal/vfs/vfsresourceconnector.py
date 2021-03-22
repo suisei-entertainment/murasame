@@ -18,16 +18,19 @@
 ## ============================================================================
 
 """
-Contains the implementation of the PackageDescriptor class.
+Contains the implementation of the VFSResourceConnector class.
 """
+
+# Runtime Imports
+from typing import Any
 
 # Murasame Imports
 from murasame.logging import LogWriter
 
-class PackageDescriptor(LogWriter):
+class VFSResourceConnector(LogWriter):
 
     """
-    Contains the description of a single VFS resource package.
+    Common base class for resource connector implementations.
 
     Authors:
         Attila Kovacs
@@ -36,10 +39,28 @@ class PackageDescriptor(LogWriter):
     def __init__(self) -> None:
 
         """
-        Creates a new PackageDescriptor instance.
+        Creates a new VFSResourceConnector instance.
 
         Authors:
             Attila Kovacs
         """
 
         super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+
+    def load(self, descriptor: 'VFSResourceDescriptor') -> Any:
+
+        """
+        Loads the content of the VFS resource into memory.
+
+        Args:
+            descriptor:     The resource descriptor of the resource to load.
+
+        Returns:
+            The loaded resource data.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        raise NotImplementedError(
+            f'{self.__class__.__name__}.load() has to be implemented.')

@@ -21,7 +21,10 @@
 Contains the implementation of the VFSResourceDescriptor class.
 """
 
-class VFSResourceDescriptor:
+# Murasame Imports
+from murasame.logging import LogWriter
+
+class VFSResourceDescriptor(LogWriter):
 
     """
     Base class for for the descriptors of VFS resource types.
@@ -29,6 +32,17 @@ class VFSResourceDescriptor:
     Authors:
         Attila Kovacs
     """
+
+    def __init__(self) -> None:
+
+        """
+        Creates a new VFSResourceDescriptor instance.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
     def serialize(self) -> dict:
 
@@ -69,3 +83,20 @@ class VFSResourceDescriptor:
 
         raise NotImplementedError(
             f'{self.__class__.__name__}.deserialize() has to be implemented.')
+
+    def create_connector(self) -> 'VFSResourceConnector':
+
+        """
+        Function prototype for creating the resource connector for each type of
+        VFS resource.
+
+        Returns:
+            An object that is derived from VFSResourceConnector.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        raise NotImplementedError(
+            f'{self.__class__.__name__}.create_connector() has to be '
+            f'implemented.')

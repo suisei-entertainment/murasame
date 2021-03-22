@@ -25,6 +25,7 @@ Contains the implementation of the VFSLocalFile class.
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
 from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
+from murasame.pal.vfs.vfslocalfileconnector import VFSLocalFileConnector
 
 class VFSLocalFile(VFSResourceDescriptor):
 
@@ -64,7 +65,12 @@ class VFSLocalFile(VFSResourceDescriptor):
 
         """
         Creates a new VFSSystemFile instance.
+
+        Authors:
+            Attila Kovacs
         """
+
+        super().__init__()
 
         self._path = None
         """
@@ -117,3 +123,18 @@ class VFSLocalFile(VFSResourceDescriptor):
         except KeyError as error:
             raise InvalidInputError(f'Failed to parse VFSLocalFile from input '
                                     f'data: {data}.') from error
+
+    def create_connector(self) -> 'VFSResourceConnector':
+
+        """
+        Function prototype for creating the resource connector for each type of
+        VFS resource.
+
+        Returns:
+            An object that is derived from VFSResourceConnector.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return VFSLocalFileConnector()

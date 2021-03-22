@@ -159,7 +159,7 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.vfs', cache_entries=True)
+        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         # Root node can only be a directory node
         if node_name == '' and node_type == VFSNodeTypes.FILE:
@@ -776,7 +776,7 @@ class VFSNode(LogWriter):
                 self.debug(f'No resources found for {self.Name}.')
 
             for resource in resources:
-                res = VFSResource(data=resource)
+                res = VFSResource(descriptor=VFSLocalFile(), data=resource)
                 self.add_resource(res)
 
         self.debug(f'Node deserialization complete for {self.Name}.')

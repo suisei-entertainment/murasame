@@ -54,9 +54,21 @@ class VFSResource(LogWriter):
         """
         Provides access to the actual resource.
 
+        Raises:
+            RuntimeError:       Raised when trying to access the resource
+                                without specifying a resource loader.
+
         Authors:
             Attila Kovacs
         """
+
+        if not self._resource:
+
+            if not self._resource_loader:
+                raise RuntimeError('No resource loaded is specified when '
+                                   'trying to access a VFS resource.')
+
+            self._resource_connector.load(descriptor=self._descriptor)
 
         return self._resource
 
@@ -86,7 +98,7 @@ class VFSResource(LogWriter):
 
     def __init__(
         self,
-        descriptor: 'VFSResourceDescriptor' = None,
+        descriptor: 'VFSResourceDescriptor',
         version: 'ResourceVersion' = None,
         data: dict = None) -> None:
 
@@ -102,7 +114,7 @@ class VFSResource(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.vfs', cache_entries=True)
+        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         self._version = version
         """
@@ -114,6 +126,11 @@ class VFSResource(LogWriter):
         The resource descriptor of the underlying resource.
         """
 
+        self._resource_connector = None
+        """
+        The resource connector that is to be used when accessing the resource.
+        """
+
         self._resource = None
         """
         The actual resource embedded in this VFS resource.
@@ -121,6 +138,9 @@ class VFSResource(LogWriter):
 
         if data is not None:
             self.deserialize(data=data)
+
+        if descriptor is not None:
+            self._resource_connector = descriptor.create_connector()
 
     def serialize(self) -> dict:
 
