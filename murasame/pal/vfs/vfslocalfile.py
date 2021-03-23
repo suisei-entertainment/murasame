@@ -25,7 +25,6 @@ Contains the implementation of the VFSLocalFile class.
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
 from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
-from murasame.pal.vfs.vfslocalfileconnector import VFSLocalFileConnector
 
 class VFSLocalFile(VFSResourceDescriptor):
 
@@ -48,6 +47,18 @@ class VFSLocalFile(VFSResourceDescriptor):
         """
 
         return self._path
+
+    @property
+    def ContentType(self) -> str:
+
+        """
+        The MIME type of the file located at the indicated path.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._content
 
     @property
     def Type(self) -> 'VFSResourceTypes':
@@ -77,6 +88,11 @@ class VFSLocalFile(VFSResourceDescriptor):
         Path fo the file.
         """
 
+        self._content = None
+        """
+        The content type of the file.
+        """
+
     def serialize(self) -> dict:
 
         """
@@ -92,6 +108,10 @@ class VFSLocalFile(VFSResourceDescriptor):
         result = {}
         result['type'] = 'localfile'
         result['path'] = self._path
+
+        if self._content is not None:
+            result['contenttype'] = self._content
+
         return result
 
     def deserialize(self, data: dict) -> None:
@@ -124,6 +144,26 @@ class VFSLocalFile(VFSResourceDescriptor):
             raise InvalidInputError(f'Failed to parse VFSLocalFile from input '
                                     f'data: {data}.') from error
 
+        # Retrieve the content type
+        try:
+            self._content = data['contenttype']
+        except KeyError:
+            self._content = None
+
+    def update_content_type(self, content_type: str) -> None:
+
+        """
+        Updates the content type.
+
+        Args:
+            content_type:       The content type to set.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._content = content_type
+
     def create_connector(self) -> 'VFSResourceConnector':
 
         """
@@ -137,4 +177,8 @@ class VFSLocalFile(VFSResourceDescriptor):
             Attila Kovacs
         """
 
+        # Needed to import VFSLocalFileConnector to avoid circular imports
+        #pylint: disable=import-outside-toplevel
+
+        from murasame.pal.vfs.vfslocalfileconnector import VFSLocalFileConnector
         return VFSLocalFileConnector()

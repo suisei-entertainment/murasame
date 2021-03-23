@@ -60,7 +60,8 @@ linux_install_dependencies()
         apt-transport-https \
         ca-certificates \
         gnupg-agent \
-        graphviz
+        graphviz \
+        libmagic1
 
     # Scc is not available through apt, but there's a snap package, so use
     # that to install it.

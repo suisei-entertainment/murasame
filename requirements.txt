@@ -54,3 +54,4 @@ redis>=3.5.2
 
 # Utils
 pyyaml>=5.4.1
+python-magic
