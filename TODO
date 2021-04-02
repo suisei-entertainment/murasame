@@ -31,6 +31,7 @@
     ☐ Support for measuring traffic sent or received through sockets.
     ☐ Basic virtual file system support based on directories.
     ☐ Support for extending the virtual file system with packages.
+    ☐ Support for encrypted files in the virtual file system.
   Password Management:
     ✔ Basic password generation support.
     ✔ Basic password validation support.
