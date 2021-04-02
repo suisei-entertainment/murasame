@@ -88,9 +88,9 @@ class VFSLocalFileConnector(VFSResourceConnector):
             self.debug(f'Content type for {path} is identified as '
                        f'{content_type}.')
 
-            # LibMagic doesn't recognize JSON files correctly, so this logic
-            # is added to further specify the MIME type if LibMagic recognizes
-            # the type as text/plain.
+            # LibMagic doesn't recognize JSON and YAML files correctly, so this
+            # logic is added to further specify the MIME type if LibMagic
+            # recognizes the type as text/plain.
             if content_type == 'text/plain':
                 dummy, extension = os.path.splitext(path)
                 if extension == '.json':
@@ -112,6 +112,11 @@ class VFSLocalFileConnector(VFSResourceConnector):
             descriptor.update_content_type(content_type)
 
         self.debug(f'Loading {path} as {content_type}...')
+
+        # The following block will throw a no-else return warning even though
+        # there is a return statement after it. Pylint probably cannot handle
+        # the logging statement between the elif and the final return.
+        #pylint: disable=no-else-return
 
         if content_type == 'application/json':
             return self._load_as_json(path)

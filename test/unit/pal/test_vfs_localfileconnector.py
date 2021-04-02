@@ -32,6 +32,7 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
+from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfslocalfileconnector import VFSLocalFileConnector
 from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
@@ -119,6 +120,15 @@ BINARY_DESCRIPTOR_DATA = \
 
 BINARY_DESCRIPTOR = VFSLocalFile()
 BINARY_DESCRIPTOR.deserialize(data=BINARY_DESCRIPTOR_DATA)
+
+NONEXISTENT_DESCRIPTOR_DATA = \
+{
+    'type': 'localfile',
+    'path': '/path/to/file'
+}
+
+NONEXISTENT_DESCRIPTOR = VFSLocalFile()
+NONEXISTENT_DESCRIPTOR.deserialize(data=NONEXISTENT_DESCRIPTOR_DATA)
 
 class TestVFSLocalFileConnector:
 
@@ -215,3 +225,13 @@ class TestVFSLocalFileConnector:
         sut = VFSLocalFileConnector()
         data = sut.load(descriptor=YAML_CONF_DESCRIPTOR)
         assert data['test'] == 'value'
+
+        # STEP #9 - Non-existent files cannot be loaded
+        sut = VFSLocalFileConnector()
+        data = sut.load(descriptor=NONEXISTENT_DESCRIPTOR)
+        assert data == None
+
+        # STEP #10 - Invalid descriptor cannot be loaded
+        sut = VFSLocalFileConnector()
+        with pytest.raises(InvalidInputError):
+            sut.load(descriptor=None)
