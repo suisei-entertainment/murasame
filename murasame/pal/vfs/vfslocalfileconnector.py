@@ -88,6 +88,26 @@ class VFSLocalFileConnector(VFSResourceConnector):
             self.debug(f'Content type for {path} is identified as '
                        f'{content_type}.')
 
+            # LibMagic doesn't recognize JSON files correctly, so this logic
+            # is added to further specify the MIME type if LibMagic recognizes
+            # the type as text/plain.
+            if content_type == 'text/plain':
+                dummy, extension = os.path.splitext(path)
+                if extension == '.json':
+                    content_type = 'application/json'
+                elif extension == '.yaml':
+                    content_type = 'application/x-yaml'
+                elif extension == '.conf':
+                    # Conf files can be either JSON or YAML, try to
+                    # differentiate between them without having to fully parse
+                    # the whole file
+                    with open(path, 'r') as file:
+                        content = file.read()
+                        if content.startswith('{'):
+                            content_type = 'application/json'
+                        else:
+                            content_type = 'application/x-yaml'
+
             # Update the content type in the descriptor
             descriptor.update_content_type(content_type)
 
@@ -97,6 +117,8 @@ class VFSLocalFileConnector(VFSResourceConnector):
             return self._load_as_json(path)
         elif content_type == 'application/x-yaml':
             return self._load_as_yaml(path)
+        elif content_type == 'text/plain':
+            return self._load_as_text(path)
 
         self.debug(f'Content type {content_type} doesn\'t match any of the '
                    f'supported MIME types, loading the file as a binary.')
@@ -141,6 +163,26 @@ class VFSLocalFileConnector(VFSResourceConnector):
         file = YamlFile(path)
         file.load()
         return file.Content
+
+    @staticmethod
+    def _load_as_text(path: str) -> str:
+
+        """
+        Loads the content of the file as a simple plaintext file without any
+        additional parsing.
+
+        Args:
+            path:       Path to the file to load.
+
+        Returns:
+            The content of the file as a string.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        with open(path, 'r') as file:
+            return file.read()
 
     @staticmethod
     def _load_as_binary(path: str) -> dict:
