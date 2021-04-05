@@ -183,9 +183,9 @@ class TestVFSLocalFileConnector:
             file.write('test: value')
 
         # STEP #1 - JSON files can be loaded through the connector.
-        #sut = VFSLocalFileConnector()
-        #data = sut.load(descriptor=JSON_DESCRIPTOR)
-        #assert data['test'] == 'value'
+        sut = VFSLocalFileConnector()
+        data = sut.load(descriptor=JSON_DESCRIPTOR)
+        assert data['test'] == 'value'
 
         # STEP #2 - JSON files without specified MIME type can be loaded
         #           through the connector.
@@ -235,3 +235,17 @@ class TestVFSLocalFileConnector:
         sut = VFSLocalFileConnector()
         with pytest.raises(InvalidInputError):
             sut.load(descriptor=None)
+
+    def test_saving_files(self):
+
+        """
+        Tests that files can be saved through the local file connector.
+        """
+
+        # STEP #1 - JSON file can be saved
+
+        # STEP #2 - YAML file can be saved
+
+        # STEP #3 - Conf file can be saved
+
+        # STEP #3 - File without a MIME type can be saved

@@ -49,6 +49,7 @@
     ✔ Support for the system locator design pattern.
     ✔ Support for certificate management.
     ✔ Support for random number generation based on dices.
+    ☐ Support for localized strings.
 
 ===============================================================================
 0.2 - Raijin:

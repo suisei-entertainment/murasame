@@ -286,6 +286,10 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
+        # Remove starting /
+        if name.startswith('/'):
+            name = name[1:]
+
         if '/' in name:
             # Looking for a node attached to a child node
 
@@ -447,6 +451,10 @@ class VFSNode(LogWriter):
         Authors:
             Attila Kovacs
         """
+
+        # Strip the starting /
+        if name.startswith('/'):
+            name=name[1:]
 
         # Looking for a node attached to a child node
         if '/' in name:

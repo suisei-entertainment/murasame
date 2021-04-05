@@ -307,6 +307,10 @@ class DefaultVFS(LogWriter):
 
         self.debug(f'Checking the existence of node {name}...')
 
+        # Remove starting /
+        if name.startswith('/'):
+            name = name[1:]
+
         if '/' not in name:
             # Checking for a root level node
             return self._root.has_node(name)

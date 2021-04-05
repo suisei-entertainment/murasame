@@ -72,6 +72,7 @@ class TestVFS:
         sut.add_node(VFSNode(node_name='test'))
 
         assert sut.has_node('test')
+        assert sut.has_node('/test')
 
         SystemLocator.instance().unregister_all_providers(VFS)
 
