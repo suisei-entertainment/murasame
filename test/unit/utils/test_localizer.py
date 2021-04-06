@@ -37,7 +37,8 @@ LOCALIZATIONS_PATH = f'{LANGUAGE_FILES_PATH}/localization'
 
 EN = \
 {
-    'test_key': 'test_data_en'
+    'test_key': 'test_data_en',
+    'autotranslate_key': 'ship'
 }
 
 DE = \

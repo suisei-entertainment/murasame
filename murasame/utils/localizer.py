@@ -324,9 +324,14 @@ class Localizer(LogWriter):
             raise RuntimeError(
                 'Failed to retrieve the VFS from the system locator.')
 
-        data = vfs.get_content(key=f'/localization/{language}.yaml')
+        data = vfs.get_content(key=f'localization/{language}.yaml')
 
-        import pdb; pdb.set_trace()
+        if data is None:
+            self.error(f'Failed to load language file for language '
+                       f'{language}.')
+        else:
+            self.debug(f'Language file for language {language} has been '
+                       f'loaded.')
 
         return data
 
@@ -386,7 +391,16 @@ class Localizer(LogWriter):
             return self._default_language[key]
 
         data = self._load_language_file(language=self._default_language)
-        return data[key]
+
+        text = None
+        try:
+            text = data[key]
+        except KeyError:
+            self.error(f'Localization key {key} is not found in the default '
+                       f'language file.')
+            text = 'KEY NOT FOUND'
+
+        return text
 
     def _translate_text(self, text: str) -> str:
 
@@ -409,7 +423,7 @@ class Localizer(LogWriter):
         translation = translator.translate(
             text,
             src=self._default_language,
-            dst=self._language)
+            dest=self._language)
 
         self.debug(f'Received translation for {text}: {translation.text}.')
 
