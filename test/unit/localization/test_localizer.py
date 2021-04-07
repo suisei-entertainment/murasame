@@ -29,8 +29,9 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
-from murasame.utils import Localizer, SystemLocator, YamlFile
+from murasame.utils import SystemLocator, YamlFile
 from murasame.pal.vfs import VFS, DefaultVFS
+from murasame.localization import Localizer
 
 LANGUAGE_FILES_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/localizer/'))
 LOCALIZATIONS_PATH = f'{LANGUAGE_FILES_PATH}/localization'

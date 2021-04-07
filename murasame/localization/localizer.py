@@ -28,7 +28,7 @@ from string import Template
 from googletrans import Translator
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.logging.logwriter import LogWriter
 from murasame.pal.vfs import VFS
 from murasame.utils import SystemLocator
 

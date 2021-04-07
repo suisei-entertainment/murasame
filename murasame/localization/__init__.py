@@ -18,12 +18,7 @@
 ## ============================================================================
 
 """
-Contains the logging system implementation.
+Contains the localization system implementation.
 """
 
-from murasame.logging.loglevels import LogLevels
-from murasame.logging.logentry import LogEntry
-from murasame.logging.logchannel import LogChannel
-from murasame.logging.logtarget import LogTarget
-from murasame.logging.loggingsystem import LoggingSystem
-from murasame.logging.logwriter import LogWriter
+from murasame.localization.localizer import Localizer

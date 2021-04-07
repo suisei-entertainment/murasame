@@ -25,7 +25,7 @@ Contains the implementation of the LogWriter class.
 from datetime import datetime
 
 # Murasame Imports
-from murasame.utils import SystemLocator
+from murasame.utils.systemlocator import SystemLocator
 from murasame.logging.loglevels import LogLevels
 from murasame.logging.logentry import LogEntry
 from murasame.logging.loggingsystem import LoggingSystem
