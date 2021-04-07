@@ -48,7 +48,7 @@ class HostSystem:
     def __init__(self) -> None:
 
         """
-        Creates a new HostService instance.
+        Creates a new HostSystem instance.
 
         Authors:
             Attila Kovacs
