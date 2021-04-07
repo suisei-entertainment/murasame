@@ -21,6 +21,9 @@
     ✔ Basic exception support.
   Licensing:
     ✔ Support for managing file based licenses.
+  Localization:
+    ☐ Support for localized strings.
+    ☐ Support for translating strings automatically through Google Translate.
   Logging:
     ✔ Basic logging support using the built-in Python logging infrastructure.
   Managed Object Management:
@@ -49,7 +52,6 @@
     ✔ Support for the system locator design pattern.
     ✔ Support for certificate management.
     ✔ Support for random number generation based on dices.
-    ☐ Support for localized strings.
 
 ===============================================================================
 0.2 - Raijin:
