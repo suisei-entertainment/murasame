@@ -143,3 +143,18 @@ class TestLocalizer:
         sut = Localizer(language='de', auto_translate=True)
         assert sut.get(key='autotranslate_key') == 'Schiff'
 
+    def test_update(self):
+
+        """
+        Tests the update of localization files.
+        """
+
+        # STEP #1 - Test with reloading the default language as well
+        sut = Localizer(language='en', default_language='en', cache_default=True)
+        sut.update_localizations()
+        assert sut.get(key='test_key') == 'test_data_en'
+
+        # STEP #2 - Test without reloading the default language
+        sut = Localizer(language='en', default_language='en', cache_default=False)
+        sut.update_localizations()
+        assert sut.get(key='test_key') == 'test_data_en'

@@ -169,20 +169,23 @@ class Localizer(LogWriter):
         language: str = 'en',
         default_language: str = 'en',
         cache_default: bool = False,
-        auto_translate: bool = False,) -> None:
+        auto_translate: bool = False,
+        localization_directory='/localization') -> None:
 
         """
         Creates a new Localizer instance.
 
         Args:
-            language:           The selected language of the application.
-            default_language:   The default locale to use when looking for
-                                texts.
-            cache_default:      Whether or not the default language file
-                                should also be loaded.
-            auto_translate:     Automatically translate the text from the
-                                default language if no translated version was
-                                found.
+            language:               The selected language of the application.
+            default_language:       The default locale to use when looking for
+                                    texts.
+            cache_default:          Whether or not the default language file
+                                    should also be loaded.
+            auto_translate:         Automatically translate the text from the
+                                    default language if no translated version
+                                    was found.
+            localization_directory: The VFS directory in which the language
+                                    files are located.
         """
 
         super().__init__(channel_name='murasame.utils', cache_entries=True)
@@ -217,6 +220,12 @@ class Localizer(LogWriter):
         self._default_data = None
         """
         The loaded default language data.
+        """
+
+        self._localization_directory = localization_directory
+        """
+        The directory in the virtual file system that contains the localization
+        files.
         """
 
         self._load_language()
@@ -299,6 +308,20 @@ class Localizer(LogWriter):
 
         self.debug(f'Localization language was set to {new_language}.')
 
+    def update_localizations(self) -> None:
+
+        """
+        Reloads the localization files to pick up updates.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._data = self._load_language_file(language=self._language)
+        if self._cache_default:
+            self._default_data = self._load_language_file(
+                language=self._default_language)
+
     def _load_language_file(self, language: str) -> dict:
 
         """
@@ -324,7 +347,8 @@ class Localizer(LogWriter):
             raise RuntimeError(
                 'Failed to retrieve the VFS from the system locator.')
 
-        data = vfs.get_content(key=f'localization/{language}.yaml')
+        data = vfs.get_content(
+            key=f'{self._localization_directory}/{language}.yaml')
 
         if data is None:
             self.error(f'Failed to load language file for language '

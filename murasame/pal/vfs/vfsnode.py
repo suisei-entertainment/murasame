@@ -569,7 +569,7 @@ class VFSNode(LogWriter):
     def add_resource(
         self,
         resource: 'VFSResource',
-        skip_sorting: bool=False) -> None:
+        skip_sorting: bool = False) -> None:
 
         """
         Adds a new resource to the VFS node.
