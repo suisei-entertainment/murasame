@@ -307,21 +307,12 @@ class DefaultVFS(LogWriter):
 
         self.debug(f'Checking the existence of node {name}...')
 
-        # Remove starting /
-        if name.startswith('/'):
-            name = name[1:]
+        if not self._root:
+            self.debug(f'Node {name} doesn\'t exist in the virtual file '
+                       f'system.')
+            return False
 
-        if '/' not in name:
-            # Checking for a root level node
-            return self._root.has_node(name)
-
-        # Checking for a non-root level node
-        parts = str.split(name, '/', 1)
-        if self._root.has_node(parts[0]):
-            return self._root.get_node(parts[0]).has_node(parts[1])
-
-        self.debug(f'Node {name} doesn\'t exist in the virtual file system.')
-        return False
+        return  self._root.has_node(name=name)
 
     def _register_directory(self, path: str) -> None:
 
