@@ -121,6 +121,19 @@ class DefaultVFS(LogWriter):
 
         return self._root
 
+    @property
+    def Packages(self) -> dict:
+
+        """
+        Provides access to the resource packages registered in the virtual
+        file system.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._packages
+
     def __init__(self) -> None:
 
         """
@@ -135,6 +148,11 @@ class DefaultVFS(LogWriter):
         self._root = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         """
         The root node of the virtual file system.
+        """
+
+        self._packages = {}
+        """
+        Resource packages registered in the virtual file system.
         """
 
         self.info('VFS has been created.')
@@ -266,6 +284,10 @@ class DefaultVFS(LogWriter):
         Args:
             path:       Path to the data source.
 
+        Raises:
+            InvalidInputError:  Raised when trying to add an invalid data
+                                source.
+
         Authors:
             Attila Kovacs
         """
@@ -358,7 +380,10 @@ class DefaultVFS(LogWriter):
             Attila Kovacs
         """
 
-        self.debug('Registering new data source from resource package...')
+        self.debug(f'Registering new data source from resource package '
+                   f'{path}...')
+
+        package = VFSPackage(path=path)
 
     def _load_from_vfs_config(self, vfs_config: dict) -> None:
 

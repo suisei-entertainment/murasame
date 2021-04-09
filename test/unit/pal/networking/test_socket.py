@@ -33,7 +33,7 @@ from string import Template
 import pytest
 
 # Fix paths to make framework modules accessible
-FRAMEWORK_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
+FRAMEWORK_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..'))
 sys.path.insert(0, FRAMEWORK_DIR)
 
 # Murasame Imports

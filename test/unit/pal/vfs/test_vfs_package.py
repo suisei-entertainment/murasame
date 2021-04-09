@@ -34,6 +34,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.pal.vfs.vfspackage import VFSPackage
 
+TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfspackage.pak'))
+
 class TestPackage:
 
     """
@@ -43,8 +45,17 @@ class TestPackage:
     def test_creation(self):
 
         """
-        Tests that a Package object can be created.
+        Tests that a VFSPackage object can be created.
         """
 
-        sut = VFSPackage()
+        sut = VFSPackage(path=TEST_PACKAGE_PATH)
         assert sut is not None
+        assert sut.Path == TEST_PACKAGE_PATH
+
+    def test_package_loading(self):
+
+        """
+        Tests that a VFSPackage loads correctly from file.
+        """
+
+        sut = VFSPackage(path=TEST_PACKAGE_PATH)
