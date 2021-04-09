@@ -106,9 +106,9 @@ class VFSPackage(LogWriter):
         """
 
         # Check the content type of the file
-        content_type = magic.from_file(path, mime=True)
+        content_type = magic.from_file(self._path, mime=True)
 
-        if content_type != 'application/gzip':
-            raise InvalidInputError(
-                f'Resource package {path} is not a gzip compressed archive.')
+        if content_type != 'application/x-tar':
+            raise InvalidInputError(f'Resource package {self._path} is not a '
+                                    f'gzip compressed archive.')
 

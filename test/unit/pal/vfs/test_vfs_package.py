@@ -24,6 +24,8 @@ Contains the unit tests of the VFSPackage class.
 # Runtime Imports
 import os
 import sys
+import tarfile
+from pathlib import Path
 
 # Dependency Imports
 import pytest
@@ -34,13 +36,50 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.pal.vfs.vfspackage import VFSPackage
 
-TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfspackage.pak'))
+TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfspackage.pkg'))
 
 class TestPackage:
 
     """
     Contains the unit tests for the VFSPackage class.
     """
+
+    @classmethod
+    def setup_class(cls):
+
+        if os.path.isfile(TEST_PACKAGE_PATH):
+            os.remove(TEST_PACKAGE_PATH)
+
+        # Create test package files
+        if not os.path.isdir('/tmp/packagebuild'):
+            os.mkdir('/tmp/packagebuild')
+
+        if not os.path.isdir('/tmp/packagebuild/directory1'):
+            os.mkdir('/tmp/packagebuild/directory1')
+
+        if not os.path.isfile('/tmp/packagebuild/directory1/file1.txt'):
+            with open('/tmp/packagebuild/directory1/file1.txt', 'w') as file:
+                file.write('file1')
+
+        if not os.path.isdir('/tmp/packagebuild/directory2'):
+            os.mkdir('/tmp/packagebuild/directory2')
+
+        if not os.path.isfile('/tmp/packagebuild/directory2/file2.txt'):
+            with open('/tmp/packagebuild/directory2/file2.txt', 'w') as file:
+                file.write('file2')
+
+        # Create the package
+        with tarfile.open(TEST_PACKAGE_PATH, 'w') as tar:
+            tar.add('/tmp/packagebuild/directory1')
+            tar.add('/tmp/packagebuild/directory1/file1.txt')
+            tar.add('/tmp/packagebuild/directory2')
+            tar.add('/tmp/packagebuild/directory2/file2.txt')
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(TEST_PACKAGE_PATH):
+            os.remove(TEST_PACKAGE_PATH)
 
     def test_creation(self):
 
