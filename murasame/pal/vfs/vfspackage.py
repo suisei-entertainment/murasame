@@ -18,42 +18,28 @@
 ## ============================================================================
 
 """
-Contains the unit tests of HostOS class.
+Contains the implementation of the VFSPackage class.
 """
 
-# Runtime Imports
-import os
-import sys
-import platform
-
-# Dependency Imports
-import pytest
-
-# Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
-
 # Murasame Imports
-from murasame.pal.host.hostos import HostOS
+from murasame.logging import LogWriter
 
-class TestHostOS:
+class VFSPackage(LogWriter):
 
     """
-    Contains the unit tests of HostOS class.
+    Represents a single VFS resource package.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    def __init__(self) -> None:
 
         """
-        Tests that a HostOS instance can be created.
+        Creates a new VFSPackage instance.
+
+        Authors:
+            Attila Kovacs
         """
 
-        sut = HostOS()
-        assert sut.Platform == platform.platform()
-        assert sut.Name == platform.system()
-        assert sut.Release == platform.release()
-        assert sut.Version == platform.version()
-
-        if platform.system().lower() == 'linux':
-            assert sut.Distribution is not None
-        else:
-            assert sut.Distribution is None
+        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)

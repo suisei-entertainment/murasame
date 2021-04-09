@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of HostMemory class.
+Contains the unit tests of HostNetworking class.
 """
 
 # Runtime Imports
@@ -29,22 +29,23 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.host.hostmemory import HostMemory
+from murasame.pal.host.hostnetworking import HostNetworking
 
-class TestHostMemory:
+class TestHostNetworking:
 
     """
-    Contains the unit tests of HostMemory class.
+    Contains the unit tests of HostNetworking class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a HostMemory instance can be created successfully.
+        Tests that a HostNetworking instance can be created.
         """
 
-        sut = HostMemory()
-        assert sut.TotalSystemMemory is not None
+        sut = HostNetworking()
+        assert sut.PhysicalInterfaces is not None
+        assert sut.PublicIP is not None

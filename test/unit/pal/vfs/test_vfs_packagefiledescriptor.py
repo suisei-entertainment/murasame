@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the PackageFile class.
+Contains the unit tests of the PackageFileDescriptor class.
 """
 
 # Runtime Imports
@@ -29,22 +29,22 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.vfs.packagefile import PackageFile
+from murasame.pal.vfs.packagefiledescriptor import PackageFileDescriptor
 
-class TestPackageFile:
+class TestPackageFileDescriptor:
 
     """
-    Contains the unit tests for the PackageFile class.
+    Contains the unit tests for the PackageFileDescriptor class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a PackageFile object can be created.
+        Tests that a PackageFileDescriptor object can be created.
         """
 
-        sut = PackageFile()
+        sut = PackageFileDescriptor(path='/test/path')
         assert sut is not None

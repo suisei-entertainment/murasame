@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the Package class.
+Contains the unit tests of HostHardware class.
 """
 
 # Runtime Imports
@@ -29,22 +29,24 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.vfs.package import Package
+from murasame.pal.host.hosthardware import HostHardware
 
-class TestPackage:
+class TestHostHardware:
 
     """
-    Contains the unit tests for the Package class.
+    Contains the unit tests of HostHardware class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a Package object can be created.
+        Tests that a HostHardware instance can be created successfully.
         """
 
-        sut = Package()
-        assert sut is not None
+        sut = HostHardware()
+        assert sut.CPU is not None
+        assert sut.Memory is not None
+        assert sut.Networking is not None

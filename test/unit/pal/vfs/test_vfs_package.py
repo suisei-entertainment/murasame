@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the VFSResource class.
+Contains the unit tests of the VFSPackage class.
 """
 
 # Runtime Imports
@@ -29,25 +29,22 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.vfs.vfsresource import VFSResource
-from murasame.pal.vfs.resourceversion import ResourceVersion
-from murasame.pal.vfs.vfslocalfile import VFSLocalFile
+from murasame.pal.vfs.vfspackage import VFSPackage
 
-class TestPackageContent:
+class TestPackage:
 
     """
-    Contains the unit tests for the VFSResource class.
+    Contains the unit tests for the VFSPackage class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a VFSResource object can be created.
+        Tests that a Package object can be created.
         """
 
-        sut = VFSResource(descriptor=VFSLocalFile(),
-                          version=ResourceVersion(version=1))
+        sut = VFSPackage()
         assert sut is not None

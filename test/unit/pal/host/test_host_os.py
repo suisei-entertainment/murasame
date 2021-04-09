@@ -18,43 +18,42 @@
 ## ============================================================================
 
 """
-Contains the unit tests of HostDistribution class.
+Contains the unit tests of HostOS class.
 """
 
 # Runtime Imports
 import os
 import sys
+import platform
 
 # Dependency Imports
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.host.hostdistribution import HostDistribution
+from murasame.pal.host.hostos import HostOS
 
-class TestHostDistribution:
+class TestHostOS:
 
     """
-    Contains the unit tests of HostDistribution class.
+    Contains the unit tests of HostOS class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a HostDistribution instance can be created.
+        Tests that a HostOS instance can be created.
         """
 
-        sut = HostDistribution()
-        assert sut.ID == 'ubuntu'
-        assert sut.Name == 'Ubuntu'
-        assert sut.FullName.startswith('Ubuntu 18.04') \
-               or sut.FullName.startswith('Ubuntu 19.04') \
-               or sut.FullName.startswith('Ubuntu 20.04')
-        assert sut.MajorVersion in (18, 19, 20)
-        assert sut.MinorVersion == 4
-        assert sut.BuildNumber == -1
-        assert sut.VersionString in ('18.04', '19.04', '20.04')
-        assert sut.Codename.lower() in ('bionic', 'disco', 'focal')
-        assert sut.Like == 'debian'
+        sut = HostOS()
+        assert sut.Platform == platform.platform()
+        assert sut.Name == platform.system()
+        assert sut.Release == platform.release()
+        assert sut.Version == platform.version()
+
+        if platform.system().lower() == 'linux':
+            assert sut.Distribution is not None
+        else:
+            assert sut.Distribution is None

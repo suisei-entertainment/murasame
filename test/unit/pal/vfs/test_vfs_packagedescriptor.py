@@ -18,41 +18,33 @@
 ## ============================================================================
 
 """
-Contains the unit tests of HostUser class.
+Contains the unit tests of the PackageDescriptor class.
 """
 
 # Runtime Imports
 import os
 import sys
-import platform
 
 # Dependency Imports
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.host.hostuser import HostUser
+from murasame.pal.vfs.packagedescriptor import PackageDescriptor
 
-class TestHostUser:
+class TestPackageDescriptor:
 
     """
-    Contains the unit tests of the HostUser class.
+    Contains the unit tests for the PackageDescriptor class.
     """
 
     def test_creation(self):
 
         """
-        Tests that the HostUser class can be created.
+        Tests that a PackageDescriptor object can be created.
         """
 
-        sut = HostUser()
-
-        assert sut.Username is not None
-        assert sut.UserID is not None
-        assert sut.GroupID is not None
-        assert sut.GroupName is not None
-        assert sut.HomeDirectory is not None
-        assert not sut.IsRootUser
-        assert not sut.HasRootPermissions
+        sut = PackageDescriptor()
+        assert sut is not None

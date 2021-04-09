@@ -18,28 +18,35 @@
 ## ============================================================================
 
 """
-Contains the implementation of the Package class.
+Contains the unit tests of HostDescriptor class.
 """
 
+# Runtime Imports
+import os
+import sys
+
+# Dependency Imports
+import pytest
+
+# Fix paths to make framework modules accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
+
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.pal.host.hostdescriptor import HostDescriptor
 
-class Package(LogWriter):
+class TestHostDescriptor:
 
     """
-    Represents a single VFS resource package.
-
-    Authors:
-        Attila Kovacs
+    Contains the unit tests of HostDescriptor class.
     """
 
-    def __init__(self) -> None:
+    def test_creation(self):
 
         """
-        Creates a new Package instance.
-
-        Authors:
-            Attila Kovacs
+        Tests that a HostDescriptor instance can be created.
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        sut = HostDescriptor()
+        assert sut.Hardware is not None
+        assert sut.OS is not None
+        assert sut.Python is not None

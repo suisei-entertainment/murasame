@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of LinkAddress class.
+Contains the unit tests of HostMemory class.
 """
 
 # Runtime Imports
@@ -29,22 +29,22 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.host.linkaddress import LinkAddress
+from murasame.pal.host.hostmemory import HostMemory
 
-class TestLinkAddress:
+class TestHostMemory:
 
     """
-    Contains the unit tests of LinkAddress class.
+    Contains the unit tests of HostMemory class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a LinkAddress instance can be created.
+        Tests that a HostMemory instance can be created successfully.
         """
 
-        sut = LinkAddress(address='00:0A:95:9D:68:16')
-        assert sut.Address == '00:0A:95:9D:68:16'
+        sut = HostMemory()
+        assert sut.TotalSystemMemory is not None

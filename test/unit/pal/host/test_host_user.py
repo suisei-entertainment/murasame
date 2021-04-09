@@ -18,52 +18,41 @@
 ## ============================================================================
 
 """
-Contains the unit tests of HostPython class.
+Contains the unit tests of HostUser class.
 """
 
 # Runtime Imports
 import os
 import sys
+import platform
 
 # Dependency Imports
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.host.hostpython import HostPython
+from murasame.pal.host.hostuser import HostUser
 
-class TestHostPython:
+class TestHostUser:
 
     """
-    Contains the unit tests of HostPython class.
+    Contains the unit tests of the HostUser class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a HostPython instance can be created.
+        Tests that the HostUser class can be created.
         """
 
-        sut = HostPython()
-        assert sut.MajorVersion == sys.version_info.major
-        assert sut.MinorVersion == sys.version_info.minor
-        assert sut.PatchLevel == sys.version_info.micro
-        assert sut.PythonVersion == '{}.{}.{}'.format(
-            sys.version_info.major,
-            sys.version_info.minor,
-            sys.version_info.micro)
-        assert sut.Location == sys.executable
+        sut = HostUser()
 
-    def test_virtualenv_detection(self):
-
-        """
-        Tests that detecting virtualenv is working.
-
-        This testcase assumes that tests are always executed in a virtualenv
-        environment.
-        """
-
-        sut = HostPython()
-        assert sut.is_virtual_env()
+        assert sut.Username is not None
+        assert sut.UserID is not None
+        assert sut.GroupID is not None
+        assert sut.GroupName is not None
+        assert sut.HomeDirectory is not None
+        assert not sut.IsRootUser
+        assert not sut.HasRootPermissions

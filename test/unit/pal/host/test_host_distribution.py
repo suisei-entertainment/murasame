@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of HostNetworking class.
+Contains the unit tests of HostDistribution class.
 """
 
 # Runtime Imports
@@ -29,23 +29,32 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.host.hostnetworking import HostNetworking
+from murasame.pal.host.hostdistribution import HostDistribution
 
-class TestHostNetworking:
+class TestHostDistribution:
 
     """
-    Contains the unit tests of HostNetworking class.
+    Contains the unit tests of HostDistribution class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a HostNetworking instance can be created.
+        Tests that a HostDistribution instance can be created.
         """
 
-        sut = HostNetworking()
-        assert sut.PhysicalInterfaces is not None
-        assert sut.PublicIP is not None
+        sut = HostDistribution()
+        assert sut.ID == 'ubuntu'
+        assert sut.Name == 'Ubuntu'
+        assert sut.FullName.startswith('Ubuntu 18.04') \
+               or sut.FullName.startswith('Ubuntu 19.04') \
+               or sut.FullName.startswith('Ubuntu 20.04')
+        assert sut.MajorVersion in (18, 19, 20)
+        assert sut.MinorVersion == 4
+        assert sut.BuildNumber == -1
+        assert sut.VersionString in ('18.04', '19.04', '20.04')
+        assert sut.Codename.lower() in ('bionic', 'disco', 'focal')
+        assert sut.Like == 'debian'

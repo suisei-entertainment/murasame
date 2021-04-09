@@ -91,6 +91,8 @@
     ☐ Basic JIRA support.
     ☐ Add support for network objects as VFS resources.
     ☐ Add support for database objects as VFS resources.
+    ☐ Add support for encrypted resource packages.
+    ☐ Add support for caching resource packages to memory.
   Password Management:
 
   Service:

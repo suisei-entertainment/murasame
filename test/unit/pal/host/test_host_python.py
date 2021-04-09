@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the PackageDescriptor class.
+Contains the unit tests of HostPython class.
 """
 
 # Runtime Imports
@@ -29,22 +29,41 @@ import sys
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.vfs.packagedescriptor import PackageDescriptor
+from murasame.pal.host.hostpython import HostPython
 
-class TestPackageDescriptor:
+class TestHostPython:
 
     """
-    Contains the unit tests for the PackageDescriptor class.
+    Contains the unit tests of HostPython class.
     """
 
     def test_creation(self):
 
         """
-        Tests that a PackageDescriptor object can be created.
+        Tests that a HostPython instance can be created.
         """
 
-        sut = PackageDescriptor()
-        assert sut is not None
+        sut = HostPython()
+        assert sut.MajorVersion == sys.version_info.major
+        assert sut.MinorVersion == sys.version_info.minor
+        assert sut.PatchLevel == sys.version_info.micro
+        assert sut.PythonVersion == '{}.{}.{}'.format(
+            sys.version_info.major,
+            sys.version_info.minor,
+            sys.version_info.micro)
+        assert sut.Location == sys.executable
+
+    def test_virtualenv_detection(self):
+
+        """
+        Tests that detecting virtualenv is working.
+
+        This testcase assumes that tests are always executed in a virtualenv
+        environment.
+        """
+
+        sut = HostPython()
+        assert sut.is_virtual_env()
