@@ -31,7 +31,7 @@ from murasame.exceptions import InvalidInputError
 from murasame.utils import System, JsonFile
 from murasame.logging import LogWriter
 from murasame.pal.vfs.vfsnode import VFSNode, VFSNodeTypes
-
+from murasame.pal.vfs.vfspackage import VFSPackage
 
 class VFS:
 

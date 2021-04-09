@@ -111,4 +111,3 @@ class VFSPackage(LogWriter):
         if content_type != 'application/x-tar':
             raise InvalidInputError(f'Resource package {self._path} is not a '
                                     f'gzip compressed archive.')
-
