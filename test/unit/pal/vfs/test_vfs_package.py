@@ -25,6 +25,7 @@ Contains the unit tests of the VFSPackage class.
 import os
 import sys
 import tarfile
+import json
 from pathlib import Path
 
 # Dependency Imports
@@ -35,8 +36,53 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.pal.vfs.vfspackage import VFSPackage
+from murasame.pal.vfs.vfs import VFS, DefaultVFS
+from murasame.utils import SystemLocator
 
 TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfspackage.pkg'))
+
+PACKAGE_DESCRIPTOR = \
+{
+    'name': 'ROOT',
+    'type': 'directory',
+    'subdirectories':
+    {
+        'directory1':
+        {
+            'name': 'directory1',
+            'type': 'directory',
+            'subdirectories': {},
+            'files':
+            {
+                'file1.txt':
+                {
+                    'name': 'file1.txt',
+                    'type': 'packagedfile',
+                    'resource': []
+                }
+            }
+        },
+        'directory2':
+        {
+            'name': 'directory2',
+            'type': 'directory',
+            'subdirectories': {},
+            'files':
+            {
+                'file2.txt':
+                {
+                    'name': 'file2.txt',
+                    'type': 'packagedfile',
+                    'resource': []
+                }
+            }
+        }
+    },
+    'files':
+    {
+
+    }
+}
 
 class TestPackage:
 
@@ -49,6 +95,9 @@ class TestPackage:
 
         if os.path.isfile(TEST_PACKAGE_PATH):
             os.remove(TEST_PACKAGE_PATH)
+
+        if os.path.isfile('/tmp/packagebuild/.vfs'):
+            os.remove('/tmp/packagebuild/.vfs')
 
         # Create test package files
         if not os.path.isdir('/tmp/packagebuild'):
@@ -68,18 +117,31 @@ class TestPackage:
             with open('/tmp/packagebuild/directory2/file2.txt', 'w') as file:
                 file.write('file2')
 
+        if not os.path.isfile('/tmp/packagebuild/.vfs'):
+            with open('/tmp/packagebuild/.vfs', 'w') as file:
+                json.dump(obj=PACKAGE_DESCRIPTOR, fp=file)
+
         # Create the package
+        current_dir = os.getcwd()
+        os.chdir('/tmp/packagebuild')
         with tarfile.open(TEST_PACKAGE_PATH, 'w') as tar:
-            tar.add('/tmp/packagebuild/directory1')
-            tar.add('/tmp/packagebuild/directory1/file1.txt')
-            tar.add('/tmp/packagebuild/directory2')
-            tar.add('/tmp/packagebuild/directory2/file2.txt')
+            tar.add('.vfs')
+            tar.add('directory1')
+            tar.add('directory1/file1.txt')
+            tar.add('directory2')
+            tar.add('directory2/file2.txt')
+        os.chdir(current_dir)
+
+        # Setup VFS
+        SystemLocator.instance().register_provider(VFS, DefaultVFS())
 
     @classmethod
     def teardown_class(cls):
 
         if os.path.isfile(TEST_PACKAGE_PATH):
             os.remove(TEST_PACKAGE_PATH)
+
+        SystemLocator.instance().reset()
 
     def test_creation(self):
 
@@ -97,4 +159,10 @@ class TestPackage:
         Tests that a VFSPackage loads correctly from file.
         """
 
+        vfs = SystemLocator.instance().get_provider(VFS)
+
         sut = VFSPackage(path=TEST_PACKAGE_PATH)
+        assert vfs.has_node('/directory1')
+        assert vfs.has_node('/directory2')
+        assert vfs.has_node('/directory1/file1.txt')
+        assert vfs.has_node('/directory2/file2.txt')

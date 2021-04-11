@@ -23,6 +23,8 @@ Contains the implementation of the VFSPackage class.
 
 # Runtime Imports
 import os
+import tarfile
+import uuid
 
 # Dependency Imports
 import magic
@@ -30,6 +32,7 @@ import magic
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.logging import LogWriter
+from murasame.utils import SystemLocator, JsonFile
 
 class VFSPackage(LogWriter):
 
@@ -94,6 +97,12 @@ class VFSPackage(LogWriter):
         The content of the resource package.
         """
 
+        self._extract_directory = None
+        """
+        Path to a random directory where files from the archive will be
+        extracted.
+        """
+
         self._load()
 
     def _load(self) -> None:
@@ -101,9 +110,20 @@ class VFSPackage(LogWriter):
         """
         Loads the resource package.
 
+        Raises:
+            InvalidInputError:      Raised if the given path does not
+                                    correspond to a tar file.
+            InvalidInputError:      Raised if the archive does not contain a
+                                    .vfs VFS descriptor file.
+
         Authors:
             Attila Kovacs
         """
+
+        # Avoiding circular dependency between VFS components
+        #pylint: disable=import-outside-toplevel
+        from murasame.pal.vfs.vfs import VFS
+        from murasame.pal.vfs.vfsnode import VFSNode
 
         # Check the content type of the file
         content_type = magic.from_file(self._path, mime=True)
@@ -111,3 +131,34 @@ class VFSPackage(LogWriter):
         if content_type != 'application/x-tar':
             raise InvalidInputError(f'Resource package {self._path} is not a '
                                     f'gzip compressed archive.')
+
+        # Load the VFS configuration from the package
+        tar = tarfile.TarFile(name=self._path)
+        descriptor = tar.getmember(name='.vfs')
+        if not descriptor:
+            raise InvalidInputError(f'Resource package {self._path} does not '
+                                    f'contains a VFS descriptor.')
+
+        self._extract_directory = f'/tmp/{uuid.uuid4()}'
+        self.debug(f'Random directory for package {self._path} is '
+                   f'{self._extract_directory}.')
+
+        tar.extractall(path=self._extract_directory, members=[descriptor])
+
+        descriptor_file = JsonFile(path=f'{self._extract_directory}/.vfs')
+        descriptor_file.load()
+
+        # Create the package tree
+        node = VFSNode(node_name='ROOT')
+        node.deserialize(data=descriptor_file.Content)
+
+        # Merge the package tree into the main VFS tree
+
+        # Pylint can't find the instance() member of the Singleton class
+        #pylint: disable=no-member
+        vfs = SystemLocator.instance().get_provider(VFS)
+        if not vfs:
+            raise RuntimeError('Failed to retrieve the virtual file system '
+                               'from the system locator.')
+
+        vfs.Root.merge_with(node)

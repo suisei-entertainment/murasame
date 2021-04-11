@@ -494,7 +494,7 @@ class VFSNode(LogWriter):
         if self.Type == VFSNodeTypes.FILE:
             self.debug(
                 f'Merging resources from {node.Name} into {self.Name}...')
-            for dummy, resource in node.Resources.items():
+            for resource in node.Resources:
                 self.add_resource(resource)
         else:
             self.debug(
