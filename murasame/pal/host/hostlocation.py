@@ -154,6 +154,30 @@ class HostLocation(LogWriter):
         # The postal code where the IP address is located
         self._postal_code = 'UNKNOWN'
 
+        self._identify_location(public_ip=public_ip,
+                                database_path=database_path,
+                                geoip_license_key=geoip_license_key)
+
+    def _identify_location(
+            self,
+            public_ip: str,
+            database_path: str,
+            geoip_license_key: str = None) -> None:
+
+        """
+        Executes the host location logic.
+
+        Args:
+            public_ip:          The public IP of the host.
+            database_path:      Path to the diretory where the GeoIP database
+                                is located.
+            geoip_license_key:  The license key to use when downloading the
+                                GeoIP database.
+
+        Authors:
+            Attila Kovacs
+        """
+
         if public_ip == 'UNKNOWN':
             self.error(
                 'Unknown public IP has been provided, cannot determine'

@@ -873,6 +873,9 @@ class ServerSocket(BaseSocket):
             require_cert:       Whether or not a valid certificate is required
                                 during authentication.
 
+        Raises:
+            RuntimeError:       Raised when the socket cannot be created.
+
         Authors:
             Attila Kovacs
         """
@@ -946,7 +949,7 @@ class ServerSocket(BaseSocket):
         except socket.error as socket_error:
             self.error(f'Failed to create server socket for {host}:{port}. '
                        f'Reason: {socket_error}')
-            return
+            raise RuntimeError from socket_error
 
         self.debug('Server socket created.')
 
