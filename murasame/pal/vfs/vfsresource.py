@@ -65,7 +65,7 @@ class VFSResource(LogWriter):
         if not self._resource:
 
             if not self._resource_connector:
-                raise RuntimeError('No resource loader is specified when '
+                raise RuntimeError('No resource connector is specified when '
                                    'trying to access a VFS resource.')
 
             self._resource=self._resource_connector.load(

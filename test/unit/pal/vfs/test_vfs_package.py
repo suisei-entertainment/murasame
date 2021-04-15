@@ -57,8 +57,19 @@ PACKAGE_DESCRIPTOR = \
                 'file1.txt':
                 {
                     'name': 'file1.txt',
-                    'type': 'packagedfile',
-                    'resource': []
+                    'type': 'packagefile',
+                    'resource':
+                    [
+                        {
+                            'version': '1',
+                            'descriptor':
+                            {
+                                'type': 'packagefile',
+                                'path': '/directory1/file1.txt',
+                                'contenttype': 'text/plain'
+                            }
+                        }
+                    ]
                 }
             }
         },
@@ -72,8 +83,19 @@ PACKAGE_DESCRIPTOR = \
                 'file2.txt':
                 {
                     'name': 'file2.txt',
-                    'type': 'packagedfile',
-                    'resource': []
+                    'type': 'packagefile',
+                    'resource':
+                    [
+                        {
+                            'version': '1',
+                            'descriptor':
+                            {
+                                'type': 'packagefile',
+                                'path': '/directory2/file2.txt',
+                                'contenttype': 'text/plain'
+                            }
+                        }
+                    ]
                 }
             }
         }
@@ -166,3 +188,5 @@ class TestPackage:
         assert vfs.has_node('/directory2')
         assert vfs.has_node('/directory1/file1.txt')
         assert vfs.has_node('/directory2/file2.txt')
+        assert vfs.get_node('/directory1/file1.txt').Latest.Descriptor.PackagePath == TEST_PACKAGE_PATH
+        assert vfs.get_node('/directory2/file2.txt').Latest.Descriptor.PackagePath == TEST_PACKAGE_PATH

@@ -31,6 +31,7 @@ from murasame.logging import LogWriter
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresource import VFSResource
 from murasame.pal.vfs.vfslocalfile import VFSLocalFile
+from murasame.pal.vfs.vfspackagefile import VFSPackageFile
 from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class VFSNodeTypes(IntEnum):
@@ -784,7 +785,20 @@ class VFSNode(LogWriter):
                 self.debug(f'No resources found for {self.Name}.')
 
             for resource in resources:
-                res = VFSResource(descriptor=VFSLocalFile(), data=resource)
+                try:
+                    resource_type = resource['descriptor']['type']
+                except KeyError as error:
+                    raise InvalidInputError(
+                        f'The resource does not specify the type.') from error
+
+                res = None
+                if resource_type == 'localfile':
+                    res = VFSResource(descriptor=VFSLocalFile(),
+                                      data=resource)
+                elif resource_type == 'packagefile':
+                    res = VFSResource(descriptor=VFSPackageFile(),
+                                      data=resource)
+
                 self.add_resource(res)
 
         self.debug(f'Node deserialization complete for {self.Name}.')

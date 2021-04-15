@@ -25,6 +25,7 @@ Contains the implementation of the VFSPackage class.
 import os
 import tarfile
 import uuid
+import shutil
 
 # Dependency Imports
 import magic
@@ -105,6 +106,19 @@ class VFSPackage(LogWriter):
 
         self._load()
 
+    def __del__(self) -> None:
+
+        """
+        Destructor.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # Make sure that the temp directory is deleted
+        if os.path.isdir(self._extract_directory):
+            shutil.rmtree(self._extract_directory)
+
     def _load(self) -> None:
 
         """
@@ -150,7 +164,8 @@ class VFSPackage(LogWriter):
 
         # Create the package tree
         node = VFSNode(node_name='ROOT')
-        node.deserialize(data=descriptor_file.Content)
+        node.deserialize(
+            data=self._inject_package_path(descriptor_file.Content))
 
         # Merge the package tree into the main VFS tree
 
@@ -162,3 +177,83 @@ class VFSPackage(LogWriter):
                                'from the system locator.')
 
         vfs.Root.merge_with(node)
+
+    def _inject_package_path(self, descriptor: dict) -> dict:
+
+        """
+        Injects the real path to the resource package into the resource
+        descriptor.
+
+        Args:
+            descriptor:     The vfs package descriptor to inject the path into.
+
+        Returns:
+            The modified package descriptor that now contains the real path
+            to the resource package.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        descriptor['package_path'] = self._path
+        descriptor = self._inject_path_to_subdirectories(descriptor=descriptor)
+        descriptor = self._inject_path_to_files(descriptor=descriptor)
+        return  descriptor
+
+    def _inject_path_to_subdirectories(self, descriptor: dict) -> dict:
+
+        """
+        Inject the real path of the resource package to all subdirectories of
+        the resource package.
+
+        Args:
+            descriptor:     The descriptor to inject the path into.
+
+        Returns:
+            The modified package descriptor.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        subdirectories = None
+
+        try:
+            subdirectories = descriptor['subdirectories']
+        except KeyError:
+            subdirectories = {}
+
+        for dummy, subdirectory in subdirectories.items():
+            subdirectory = self._inject_path_to_subdirectories(
+                descriptor=subdirectory)
+            subdirectory = self._inject_path_to_files(descriptor=subdirectory)
+
+        return descriptor
+
+    def _inject_path_to_files(self, descriptor: dict) -> dict:
+
+        """
+        Inject the real path of the resource package to all resource files of
+        the resource package.
+
+        Args:
+            descriptor:     The descriptor to inject the path into.
+
+        Returns:
+            The modified package descriptor.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        files = None
+
+        try:
+            files = descriptor['files']
+        except KeyError:
+            files = {}
+
+        for dummy, file in files.items():
+            file['resource'][0]['descriptor']['package_path'] = self._path
+
+        return descriptor

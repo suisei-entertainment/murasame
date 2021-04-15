@@ -18,33 +18,45 @@
 ## ============================================================================
 
 """
-Contains the unit tests of the PackageFile class.
+Contains the implementation of the VFSPackageFileConnector class.
 """
 
 # Runtime Imports
-import os
-import sys
-
-# Dependency Imports
-import pytest
-
-# Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
+from typing import Any
 
 # Murasame Imports
+from murasame.exceptions import InvalidInputError
+from murasame.pal.vfs.vfsresourceconnector import VFSResourceConnector
 from murasame.pal.vfs.vfspackagefile import VFSPackageFile
 
-class TestPackageFile:
+class VFSPackageFileConnector(VFSResourceConnector):
 
     """
-    Contains the unit tests for the PackageFile class.
+    Resource connector implementation for files in a resource package.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    def load(self, descriptor: 'VFSResourceDescriptor') -> Any:
 
         """
-        Tests that a PackageFile object can be created.
+        Loads the content of the VFS resource into memory.
+
+        Args:
+            descriptor:     The resource descriptor of the resource to load.
+
+        Raises:
+            InvalidInputError:      Raised when the provided descriptor is not
+                                    a VFSPackageFile.
+
+        Returns:
+            The loaded resource data.
+
+        Authors:
+            Attila Kovacs
         """
 
-        sut = VFSPackageFile()
-        assert sut is not None
+        # This connector can only load resources with type VFSLocalFile
+        if not descriptor or not isinstance(descriptor, VFSPackageFile):
+            raise InvalidInputError('Invalid descriptor type provided.')
