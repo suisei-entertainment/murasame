@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.utils import SystemLocator, YamlFile
-from murasame.pal.vfs import VFS, DefaultVFS
+from murasame.pal.vfs import VFSAPI, VFS
 from murasame.localization import Localizer
 
 LANGUAGE_FILES_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/localizer/'))
@@ -89,8 +89,8 @@ class TestLocalizer:
         ja.overwrite_content(content=JA)
         ja.save()
 
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        vfs = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        vfs = SystemLocator.instance().get_provider(VFSAPI)
         vfs.register_source(path=LANGUAGE_FILES_PATH)
 
     @classmethod

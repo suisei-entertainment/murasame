@@ -18,8 +18,5 @@
 ## ============================================================================
 
 """
-Contains the implementation of the virtual file system.
+Contains the unit tests for the application implementation.
 """
-
-from murasame.pal.vfs.vfs import VFSAPI, VFS
-from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor

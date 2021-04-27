@@ -18,8 +18,32 @@
 ## ============================================================================
 
 """
-Contains the implementation of the virtual file system.
+Contains the implementation of the ApplicationReturnCodes enum.
 """
 
-from murasame.pal.vfs.vfs import VFSAPI, VFS
-from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+# Runtime Imports
+from enum import IntEnum
+
+class ApplicationReturnCodes(IntEnum):
+
+    """
+    Contains the list of application exit codes supported by Murasame.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    # Application execution finished successfully.
+    SUCCESS = 0
+
+    # Daemon application is already running.
+    ALREADY_RUNNING = 1
+
+    # Daemon application is not running.
+    NOT_RUNNING = 2
+
+    # Application error originating from the underlying platform.
+    PLATFORM_ERROR = 3
+
+    # Uncaught exception was triggered.
+    UNCAUGHT_EXCEPTION = 666

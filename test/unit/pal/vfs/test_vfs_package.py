@@ -36,7 +36,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.pal.vfs.vfspackage import VFSPackage
-from murasame.pal.vfs.vfs import VFS, DefaultVFS
+from murasame.pal.vfs.vfs import VFSAPI, VFS
 from murasame.utils import SystemLocator
 
 TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfspackage.pkg'))
@@ -155,7 +155,7 @@ class TestPackage:
         os.chdir(current_dir)
 
         # Setup VFS
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
 
     @classmethod
     def teardown_class(cls):
@@ -181,7 +181,7 @@ class TestPackage:
         Tests that a VFSPackage loads correctly from file.
         """
 
-        vfs = SystemLocator.instance().get_provider(VFS)
+        vfs = SystemLocator.instance().get_provider(VFSAPI)
 
         sut = VFSPackage(path=TEST_PACKAGE_PATH)
         assert vfs.has_node('/directory1')

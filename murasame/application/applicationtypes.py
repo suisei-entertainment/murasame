@@ -18,8 +18,20 @@
 ## ============================================================================
 
 """
-Contains the implementation of the virtual file system.
+Contains the implementation of the ApplicationTypes enum.
 """
 
-from murasame.pal.vfs.vfs import VFSAPI, VFS
-from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+# Runtime Imports
+from enum import IntEnum
+
+class ApplicationTypes(IntEnum):
+
+    """
+    List of supported application types.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    DAEMON_APPLICATION = 0  # Unix daemon
+    CLI_APPLICATION  = 1 # CLI application

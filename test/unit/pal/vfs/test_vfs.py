@@ -33,7 +33,7 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.vfs.vfs import VFS, DefaultVFS
+from murasame.pal.vfs.vfs import VFSAPI, VFS
 from murasame.pal.vfs.vfsnode import VFSNode
 from murasame.utils import SystemLocator
 
@@ -51,11 +51,11 @@ class TestVFS:
         Tests that a VFS object can be created.
         """
 
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        sut = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        sut = SystemLocator.instance().get_provider(VFSAPI)
         assert sut is not None
 
-        SystemLocator.instance().unregister_all_providers(VFS)
+        SystemLocator.instance().unregister_all_providers(VFSAPI)
 
     def test_adding_nodes(self):
 
@@ -64,8 +64,8 @@ class TestVFS:
         """
 
         # STEP #1 - Normal addition
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        sut = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        sut = SystemLocator.instance().get_provider(VFSAPI)
 
         assert not sut.has_node('test')
 
@@ -74,11 +74,11 @@ class TestVFS:
         assert sut.has_node('test')
         assert sut.has_node('/test')
 
-        SystemLocator.instance().unregister_all_providers(VFS)
+        SystemLocator.instance().unregister_all_providers(VFSAPI)
 
         # STEP #2 - Adding a node with the same name twice results in a merge
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        sut = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        sut = SystemLocator.instance().get_provider(VFSAPI)
 
         node1 = VFSNode(node_name='test1')
         node2 = VFSNode(node_name='test2')
@@ -94,11 +94,11 @@ class TestVFS:
         assert sut.has_node('test1/test2')
         assert sut.has_node('test1/test4')
 
-        SystemLocator.instance().unregister_all_providers(VFS)
+        SystemLocator.instance().unregister_all_providers(VFSAPI)
 
         # STEP #3 - Node can be added to existing parent
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        sut = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        sut = SystemLocator.instance().get_provider(VFSAPI)
 
         node1 = VFSNode(node_name='test1')
         node2 = VFSNode(node_name='test2')
@@ -110,7 +110,7 @@ class TestVFS:
 
         assert sut.has_node('test1/test2/test3')
 
-        SystemLocator.instance().unregister_all_providers(VFS)
+        SystemLocator.instance().unregister_all_providers(VFSAPI)
 
     def test_removing_nodes(self):
 
@@ -118,15 +118,15 @@ class TestVFS:
         Tests that nodes can be removed from the VFS.
         """
 
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        sut = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        sut = SystemLocator.instance().get_provider(VFSAPI)
 
         sut.add_node(VFSNode(node_name='test'))
         assert sut.has_node('test')
         sut.remove_node(node_name='test')
         assert not sut.has_node('test')
 
-        SystemLocator.instance().unregister_all_providers(VFS)
+        SystemLocator.instance().unregister_all_providers(VFSAPI)
 
     def test_adding_directories(self):
 
@@ -157,8 +157,8 @@ class TestVFS:
         with open(f'{VFS_ROOT_PATH}/subdirectory2/subdirectory3/file4', 'w') as file:
             file.write('{\"attribute4\": \"value4\"}')
 
-        SystemLocator.instance().register_provider(VFS, DefaultVFS())
-        sut = SystemLocator.instance().get_provider(VFS)
+        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        sut = SystemLocator.instance().get_provider(VFSAPI)
 
         sut.register_source(path=VFS_ROOT_PATH)
 
@@ -170,4 +170,4 @@ class TestVFS:
         assert sut.has_node('subdirectory2/subdirectory3')
         assert sut.has_node('subdirectory2/subdirectory3/file4')
 
-        SystemLocator.instance().unregister_all_providers(VFS)
+        SystemLocator.instance().unregister_all_providers(VFSAPI)

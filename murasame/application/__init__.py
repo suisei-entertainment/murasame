@@ -18,8 +18,8 @@
 ## ============================================================================
 
 """
-Contains the implementation of the virtual file system.
+Contains the application implementations of the framework.
 """
 
-from murasame.pal.vfs.vfs import VFSAPI, VFS
-from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
+from murasame.application.application import ApplicationAPI, Application
+from murasame.application.businesslogic import BusinessLogic

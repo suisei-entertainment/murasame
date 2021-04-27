@@ -33,7 +33,7 @@ from murasame.logging import LogWriter
 from murasame.pal.vfs.vfsnode import VFSNode, VFSNodeTypes
 from murasame.pal.vfs.vfspackage import VFSPackage
 
-class VFS:
+class VFSAPI:
 
     """
     The root class of the Virtual File System.
@@ -99,8 +99,7 @@ class VFS:
 
         del path
 
-@System(VFS)
-class DefaultVFS(LogWriter):
+class VFS(LogWriter):
 
     """
     The root class of the Virtual File System.

@@ -136,7 +136,7 @@ class VFSPackage(LogWriter):
 
         # Avoiding circular dependency between VFS components
         #pylint: disable=import-outside-toplevel
-        from murasame.pal.vfs.vfs import VFS
+        from murasame.pal.vfs.vfs import VFSAPI
         from murasame.pal.vfs.vfsnode import VFSNode
 
         # Check the content type of the file
@@ -171,7 +171,7 @@ class VFSPackage(LogWriter):
 
         # Pylint can't find the instance() member of the Singleton class
         #pylint: disable=no-member
-        vfs = SystemLocator.instance().get_provider(VFS)
+        vfs = SystemLocator.instance().get_provider(VFSAPI)
         if not vfs:
             raise RuntimeError('Failed to retrieve the virtual file system '
                                'from the system locator.')

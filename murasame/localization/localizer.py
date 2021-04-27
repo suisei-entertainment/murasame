@@ -29,7 +29,7 @@ from googletrans import Translator
 
 # Murasame Imports
 from murasame.logging.logwriter import LogWriter
-from murasame.pal.vfs import VFS
+from murasame.pal.vfs import VFSAPI
 from murasame.utils import SystemLocator
 
 """
@@ -341,7 +341,7 @@ class Localizer(LogWriter):
 
         # Pylint cannot see the instance() function in SystemLocator
         #pylint: disable=no-member
-        vfs = SystemLocator.instance().get_provider(VFS)
+        vfs = SystemLocator.instance().get_provider(VFSAPI)
 
         if not vfs:
             raise RuntimeError(
