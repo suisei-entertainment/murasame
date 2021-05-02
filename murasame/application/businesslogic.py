@@ -187,6 +187,19 @@ class BusinessLogic:
 
         return os.devnull
 
+    @property
+    def IsVFSDisabled(self) -> bool:
+
+        """
+        Returns whether or not the usage of the virtual file system has been
+        disabled.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return False
+
     def main_loop(self, *args, **kwargs) -> ApplicationReturnCodes:
 
         """
@@ -212,7 +225,7 @@ class BusinessLogic:
         del kwargs
         return ApplicationReturnCodes.SUCCESS
 
-    def before_main_loop(self, *args, **kwargs) -> None:
+    def before_main_loop(self, *args, **kwargs) -> ApplicationReturnCodes:
 
         """
         Function that is called before the application enters its main loop.
@@ -229,8 +242,9 @@ class BusinessLogic:
 
         del args
         del kwargs
+        return ApplicationReturnCodes.SUCCESS
 
-    def after_main_loop(self, *args, **kwargs) -> None:
+    def after_main_loop(self, *args, **kwargs) -> ApplicationReturnCodes:
 
         """
         Function that is called after the application exited the main loop in
@@ -248,6 +262,7 @@ class BusinessLogic:
 
         del args
         del kwargs
+        return ApplicationReturnCodes.SUCCESS
 
     def initialize_systems(self) -> None:
 

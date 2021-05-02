@@ -141,6 +141,8 @@ class Application(LogWriter):
         """
 
         # Validate business logic
+        self.debug('Validating business logic...')
+
         if not business_logic or not isinstance(business_logic, BusinessLogic):
             raise InvalidInputError('A valid business logic implementation '
                                     'has to be provided for an application.')
@@ -157,6 +159,8 @@ class Application(LogWriter):
                 f'The provided working directory {root_directory} does not '
                 f'contain a configuration subdirectory.')
 
+        self.info('Business logic has been validated successfully.')
+
         # Validate license if required
         if business_logic.IsLicenseRequired:
             self._validate_license(
@@ -166,23 +170,40 @@ class Application(LogWriter):
 
         # Initialize Sentry.IO
         if business_logic.UseSentryIO:
+            self.debug('Initializing Sentry SDK...')
             # False positive, Pylint thinks sentry_sdk.init() is an abstract
             # class.
             #pylint: disable=abstract-class-instantiated
             sentry_sdk.init(dsn=business_logic.SentryDSN)
+            self.info('Sentry SDK has been initialized.')
 
         # Pylint doesn't recognize the instance() method of Singleton.
         #pylint: disable=no-member
 
-       # Initialize the VFS
-        SystemLocator.instance().register_provider(VFSAPI, VFS())
+        if not business_logic.IsVFSDisabled:
 
-        # Load the configuration
-        SystemLocator.instance().register_provider(
-            ConfigurationAPI, Configuration())
+           # Initialize the VFS
+            self.debug('Initializing the virtual file system...')
+            vfs = VFS()
+            SystemLocator.instance().register_provider(VFSAPI, vfs)
+            vfs.register_source(path=business_logic.WorkingDirectory)
+            self.info('Virtual file system has been initialized.')
+
+            # Load the configuration
+            self.debug('Loading the configuration...')
+            configuration = Configuration()
+            SystemLocator.instance().register_provider(
+                ConfigurationAPI, configuration)
+            configuration.load()
+            self.info('Configuration has been loaded.')
+
+        else:
+            self.info('The virtual file system has been disabled.')
 
         # Initialize systems
+        self.debug('Initializing application systems...')
         business_logic.initialize_systems()
+        self.info('Application systems initialized successfully.')
 
         # Publish the application in the system locator.
         SystemLocator.instance().register_provider(
@@ -216,8 +237,9 @@ class Application(LogWriter):
             result = self._business_logic.main_loop(args, kwargs)
             result = self._business_logic.after_main_loop(args, kwargs)
         except Exception as error:
-            self._business_logic.handle_uncaught_exception(error)
-            sentry_sdk.capture_exception(error)
+            self._business_logic.on_uncaught_exception(error)
+            if self._business_logic.UseSentryIO:
+                sentry_sdk.capture_exception(error)
             return ApplicationReturnCodes.UNCAUGHT_EXCEPTION
 
         return result
@@ -264,6 +286,9 @@ class Application(LogWriter):
         Authors:
             Attila Kovacs
         """
+
+        if self._type != ApplicationTypes.DAEMON_APPLICATION:
+            return
 
         print('Trying to stop the daemon...')
 
@@ -316,6 +341,9 @@ class Application(LogWriter):
             Attila Kovacs
         """
 
+        if self._type != ApplicationTypes.DAEMON_APPLICATION:
+            return
+
         self.stop()
         self.start(*args, **kwargs)
 
@@ -330,6 +358,9 @@ class Application(LogWriter):
         Authors:
             Attila Kovacs
         """
+
+        if self._type != ApplicationTypes.DAEMON_APPLICATION:
+            return None
 
         pid = None
 
@@ -408,8 +439,8 @@ class Application(LogWriter):
             else:
                 raise OSError from error
 
-    @staticmethod
-    def _validate_license(public_key: str,
+    def _validate_license(self,
+                          public_key: str,
                           license_file: str,
                           cb_decryption_key_callback: Callable) -> None:
 
@@ -432,6 +463,8 @@ class Application(LogWriter):
             Attila Kovacs
         """
 
+        self.debug('Validating application license...')
+
         # Create the validator
         validator = LicenseValidator(public_key_path=public_key)
 
@@ -440,6 +473,8 @@ class Application(LogWriter):
                 license_path=license_file,
                 cb_retrieve_password=cb_decryption_key_callback):
             raise InvalidLicenseKeyError('License key cannot be verified.')
+
+        self.info('License has been validated successfully.')
 
     def _daemonize(self) -> None:
 
