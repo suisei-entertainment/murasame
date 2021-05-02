@@ -314,7 +314,7 @@ class Application(LogWriter):
             while 1:
                 print('Sending SIGTERM...')
                 os.kill(pid, signal.SIGTERM)
-                time.sleep(0.1)
+                time.sleep(0.1) # nosemgrep
                 i = i + 1
                 if i % 10 == 0:
                     print('Sending SIGHUP...')
@@ -527,12 +527,14 @@ class Application(LogWriter):
         sys.stdout.flush()
         sys.stderr.flush()
 
-        std_in = open(self.BusinessLogic.StdIn, 'r')
-        std_out = open(self.BusinessLogic.StdOut, 'a+')
+        # Not closing the streams here is considered an error by Semgrep, but
+        # it's a false positive
+        std_in = open(self.BusinessLogic.StdIn, 'r') # nosemgrep
+        std_out = open(self.BusinessLogic.StdOut, 'a+') # nosemgrep
         std_err = std_out
 
         if self.BusinessLogic.StdErr is not None:
-            std_err = open(self.BusinessLogic.StdErr, 'a+', 1)
+            std_err = open(self.BusinessLogic.StdErr, 'a+', 1) # nosemgrep
 
         # Duplicate file descriptors
         os.dup2(std_in.fileno(), sys.stdin.fileno())
