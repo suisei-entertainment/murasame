@@ -49,7 +49,7 @@ from murasame.exceptions import InvalidInputError
 
 TEST_SERVER = \
 """
-#!/usr/bin/python3
+#!$shebang
 
 import time
 import sys
@@ -81,11 +81,13 @@ if __name__ == '__main__':
     main()
 """
 
-TEST_SERVER = Template(TEST_SERVER).substitute(framework_dir=FRAMEWORK_DIR)
+TEST_SERVER = Template(TEST_SERVER).substitute(
+    shebang=os.path.abspath(os.path.expanduser('~/.murasame/.env/bin/python')),
+    framework_dir=FRAMEWORK_DIR)
 
 TEST_CLIENT = \
 """
-#!/usr/bin/python3
+#!$shebang
 
 import sys
 
@@ -119,7 +121,9 @@ if __name__ == '__main__':
     main()
 """
 
-TEST_CLIENT = Template(TEST_CLIENT).substitute(framework_dir=FRAMEWORK_DIR)
+TEST_CLIENT = Template(TEST_CLIENT).substitute(
+    shebang=os.path.abspath(os.path.expanduser('~/.murasame/.env/bin/python')),
+    framework_dir=FRAMEWORK_DIR)
 
 class ExampleClientThread(ClientThread):
     def handle_message(self, message: Any) -> None:

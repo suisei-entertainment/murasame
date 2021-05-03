@@ -24,16 +24,60 @@ Contains the unit tests for the Application class.
 # Platform Imports
 import os
 import sys
+import subprocess
+from string import Template
 
 # Dependency Imports
 import pytest
 
 # Fix paths to make framework modules accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+FRAMEWORK_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
+sys.path.insert(0, FRAMEWORK_DIR)
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.application import Application, BusinessLogic, ApplicationReturnCodes
+
+TEST_DAEMON = \
+"""
+#!$shebang
+
+import os
+import sys
+import time
+
+# Fix paths to make framework modules accessible without installation
+sys.path.insert(0, '$framework_dir')
+
+from murasame.application import Application, BusinessLogic
+
+TEST_FILE_1 = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon/daemontest1.txt'))
+TEST_FILE_2 = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon/daemontest2.txt'))
+
+class TestDaemon(BusinessLogic):
+
+    @property
+    def WorkingDirectory(self):
+        return os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon'))
+
+    def main_loop(*argc, **argv):
+        if os.path.isfile(TEST_FILE_1):
+            with open(TEST_FILE_2, 'w') as file:
+                file.write('test')
+        else:
+            with open(TEST_FILE_1, 'w') as file:
+                file.write('test')
+
+if __name__ == '__main__':
+    app = Application(business_logic=TestDaemon())
+    app.start()
+    app.stop()
+    app.restart()
+"""
+
+TEST_DAEMON = Template(TEST_DAEMON).substitute(
+    shebang=os.path.abspath(os.path.expanduser('~/.murasame/.env/bin/python')),
+    framework_dir=FRAMEWORK_DIR)
 
 class DummyBusinessLogic(BusinessLogic):
 
@@ -109,7 +153,36 @@ class TestApplication:
         Tests that the application can operate as a Unix daemon.
         """
 
-        pass
+        base_dir = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon'))
+
+        if not os.path.isdir(base_dir):
+            os.mkdir(base_dir)
+        else:
+            if os.path.isfile(f'{base_dir}/daemontest1.txt'):
+                os.remove(f'{base_dir}/daemontest1.txt')
+            if os.path.isfile(f'{base_dir}/daemontest2.txt'):
+                os.remove(f'{base_dir}/daemontest2.txt')
+
+        if not os.path.isdir(f'{base_dir}/config'):
+            os.mkdir(f'{base_dir}/config')
+
+        with open(f'{base_dir}/daemon.py', 'w') as file:
+            file.write(TEST_DAEMON)
+            os.chmod(f'{base_dir}/daemon.py', 0o777)
+
+        current_dir = os.getcwd()
+        os.chdir(base_dir)
+        try:
+            process = subprocess.run(f'python daemon.py', shell=True, check=False)
+            if not process.returncode == ApplicationReturnCodes.SUCCESS:
+                return False
+        except subprocess.CalledProcessError:
+           assert False
+
+        os.chdir(current_dir)
+
+        assert os.path.isfile(f'{base_dir}/daemontest1.txt')
+        assert os.path.isfile(f'{base_dir}/daemontest2.txt')
 
     def test_daemon_signals(self):
 
