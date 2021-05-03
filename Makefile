@@ -169,4 +169,11 @@ loc-report:
 depgraph:
 	pydeps --max-bacon=4 --cluster -o ${WORKSPACE_DIRECTORY}/murasame.svg ./murasame
 
+## ============================================================================
+##	Updates dependencies in the virtual environment
+## ============================================================================
+venvupdate:
+	pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+
 .PHONY: unittest build
+
