@@ -25,5 +25,5 @@ from murasame.logging.loglevels import LogLevels
 from murasame.logging.logentry import LogEntry
 from murasame.logging.logchannel import LogChannel
 from murasame.logging.logtarget import LogTarget
-from murasame.logging.loggingsystem import LoggingSystem
+from murasame.logging.loggingsystem import LoggingAPI, LoggingSystem
 from murasame.logging.logwriter import LogWriter

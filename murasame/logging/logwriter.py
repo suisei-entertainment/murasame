@@ -28,7 +28,7 @@ from datetime import datetime
 from murasame.utils.systemlocator import SystemLocator
 from murasame.logging.loglevels import LogLevels
 from murasame.logging.logentry import LogEntry
-from murasame.logging.loggingsystem import LoggingSystem
+from murasame.logging.loggingsystem import LoggingAPI
 
 class LogWriter:
 
@@ -102,7 +102,7 @@ class LogWriter:
             Attila Kovacs
         """
 
-        # Whether or not log entries should be cached if the log servie is
+        # Whether or not log entries should be cached if the log service is
         # unavailable.
         self._cache_entries = cache_entries
 
@@ -373,7 +373,7 @@ class LogWriter:
 
         # Try to attach to the log channel if not already attached
         if not self._channel:
-            self._attach()
+            self._channel = self._attach()
 
         if self._channel:
             # Empty the cache if there if there are cached entries
@@ -400,7 +400,7 @@ class LogWriter:
         #pylint: disable=no-member
 
         # Get the channel based on its name
-        log_system= SystemLocator.instance().get_provider(LoggingSystem)
+        log_system= SystemLocator.instance().get_provider(LoggingAPI)
 
         if log_system:
             channel = log_system.get_channel(self._channel_name)

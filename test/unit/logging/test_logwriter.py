@@ -33,11 +33,11 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.utils import SystemLocator
-from murasame.logging import LogLevels, LoggingSystem, LogWriter
+from murasame.logging import LogLevels, LoggingAPI, LogWriter
 
 class LoggingSystemTester:
     def __init__(self):
-        SystemLocator.instance().register_provider(LoggingSystem, self)
+        SystemLocator.instance().register_provider(LoggingAPI, self)
     def get_channel(self, name):
         return self
     @property

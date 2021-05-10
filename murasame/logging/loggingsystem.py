@@ -21,7 +21,10 @@
 Contains the implementation of the LoggingSystem class.
 """
 
-class LoggingSystem:
+# Runtime Imports
+from typing import Union
+
+class LoggingAPI:
 
     """
     Common interface for logging system implementations.
@@ -29,6 +32,24 @@ class LoggingSystem:
     Authors:
         Attila Kovacs
     """
+
+    def has_channel(self, name: str) -> bool:
+
+        """
+        Returns whether or not a given log channel is registered in the
+        logging system.
+
+        Args:
+            name:       The name of the log channel to check.
+
+        Returns:
+            'True' if the given log channel is registered, 'False' otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return False
 
     def get_channel(self, name: str) -> 'LogChannel':
 
@@ -45,3 +66,61 @@ class LoggingSystem:
         #pylint: disable=no-self-use
 
         del name
+
+class LoggingSystem:
+
+    """
+    Default logging system implementation.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    def __init__(self) -> None:
+
+        """
+        Creates a new LoggingSystem instance.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._channels = {}
+        """
+        The log channels registered in the logging system.
+        """
+
+    def has_channel(self, name: str) -> bool:
+
+        """
+        Returns whether or not a given log channel is registered in the
+        logging system.
+
+        Args:
+            name:       The name of the log channel to check.
+
+        Returns:
+            'True' if the given log channel is registered, 'False' otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return  name in self._channels
+
+    def get_channel(self, name: str) -> Union['LogChannel', None]:
+
+        """
+        Returns a given log channel.
+
+        Args:
+            name:       Name of the channel to retrieve.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        if self.has_channel(name):
+            return self._channels[name]
+
+        return None
