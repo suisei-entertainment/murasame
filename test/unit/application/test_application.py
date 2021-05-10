@@ -45,11 +45,13 @@ TEST_DAEMON = \
 import os
 import sys
 import time
+import logging
 
 # Fix paths to make framework modules accessible without installation
 sys.path.insert(0, '$framework_dir')
 
 from murasame.application import Application, BusinessLogic
+from murasame.logging import LogLevels
 
 TEST_FILE_1 = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon/daemontest1.txt'))
 TEST_FILE_2 = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon/daemontest2.txt'))
@@ -61,18 +63,28 @@ class TestDaemon(BusinessLogic):
         return os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon'))
 
     def main_loop(*argc, **argv):
-        if os.path.isfile(TEST_FILE_1):
-            with open(TEST_FILE_2, 'w') as file:
-                file.write('test')
-        else:
-            with open(TEST_FILE_1, 'w') as file:
-                file.write('test')
+        with open(TEST_FILE_1, 'w') as file:
+            file.write('test')
 
 if __name__ == '__main__':
+    print('Creating application...')
     app = Application(business_logic=TestDaemon())
+    app.overwrite_log_level(new_log_level=LogLevels.DEBUG)
+    print('Starting application...')
+    for entry in app._cache:
+        print(entry.Message)
     app.start()
+    print('Stopping application...')
+    for entry in app._cache:
+        print(entry.Message)
     app.stop()
+    print('Restarting application...')
+    for entry in app._cache:
+        print(entry.Message)
     app.restart()
+    print('Application logs:')
+    for entry in app._cache:
+        print(entry.Message)
 """
 
 TEST_DAEMON = Template(TEST_DAEMON).substitute(
@@ -160,8 +172,6 @@ class TestApplication:
         else:
             if os.path.isfile(f'{base_dir}/daemontest1.txt'):
                 os.remove(f'{base_dir}/daemontest1.txt')
-            if os.path.isfile(f'{base_dir}/daemontest2.txt'):
-                os.remove(f'{base_dir}/daemontest2.txt')
 
         if not os.path.isdir(f'{base_dir}/config'):
             os.mkdir(f'{base_dir}/config')
@@ -182,7 +192,6 @@ class TestApplication:
         os.chdir(current_dir)
 
         assert os.path.isfile(f'{base_dir}/daemontest1.txt')
-        assert os.path.isfile(f'{base_dir}/daemontest2.txt')
 
     def test_daemon_signals(self):
 

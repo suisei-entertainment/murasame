@@ -236,11 +236,22 @@ class Application(LogWriter):
             result = self._business_logic.before_main_loop(args, kwargs)
             result = self._business_logic.main_loop(args, kwargs)
             result = self._business_logic.after_main_loop(args, kwargs)
+        except SystemExit as error:
+            # Delete the PID file of daemon applications before exiting
+            # to avoid leftover files.
+            if self._type == ApplicationTypes.DAEMON_APPLICATION:
+                self.delete_pid()
+            raise SystemExit from error
         except Exception as error:
             self._business_logic.on_uncaught_exception(error)
             if self._business_logic.UseSentryIO:
                 sentry_sdk.capture_exception(error)
             return ApplicationReturnCodes.UNCAUGHT_EXCEPTION
+
+        if self._type == ApplicationTypes.DAEMON_APPLICATION:
+            self.warning(
+                'Leaving the main loop of a daemon application, cleaning up.')
+            self.delete_pid()
 
         return result
 
