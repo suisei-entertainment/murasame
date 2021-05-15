@@ -27,9 +27,10 @@ import tarfile
 import shutil
 import uuid
 
-from urllib.error import ContentTooShortError
+from urllib.error import ContentTooShortError, URLError
 
 # Dependency Imports
+import requests
 import wget
 import geoip2
 import geoip2.database
@@ -254,8 +255,14 @@ class GeoIP:
         try:
             wget.download(url=self._update_link,
                           out=package_filename)
+        except requests.exceptions.ConnectionError:
+            # Failed to connect to the backend to download the database
+            return
         except ContentTooShortError:
             # Failed to download the whole package.
+            return
+        except URLError:
+            # Failed to connect to the backend to download the database
             return
 
         # Extract the update package

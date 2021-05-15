@@ -407,6 +407,11 @@ class HostNetworking(LogWriter):
             response = requests.get('https://api.ipify.org', timeout=5)
             response.raise_for_status()
             ip_address = response.text
+        except requests.exceptions.ConnectionError:
+            self.warning('Failed to connect to the public IP detection '
+                         'service.')
+            self._public_ip = 'UNKNOWN'
+            return
         except requests.exceptions.Timeout:
             self.warning('Failed to detect public IP. Request timeout.')
             self._public_ip = 'UNKNOWN'

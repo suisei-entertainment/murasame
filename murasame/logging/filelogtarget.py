@@ -39,7 +39,11 @@ class FileLogTarget(LogTarget):
         Attila Kovacs
     """
 
-    def __init__(self, logger: 'Logger', configuration: dict) -> None:
+    def __init__(
+        self,
+        logger: 'Logger',
+        configuration: dict,
+        root_path: str) -> None:
 
         """
         Creates a new FileLogTarget entry.
@@ -49,6 +53,7 @@ class FileLogTarget(LogTarget):
                                 logging.
             configuration:      The configuration of the target in serialized
                                 format.
+            root_path:          Root path of the logging system.
 
         Authors:
             Attila Kovacs
@@ -75,12 +80,16 @@ class FileLogTarget(LogTarget):
         self._handler = None
 
         # Parse the configuration
-        self._load_configuration(configuration=configuration)
+        self._load_configuration(configuration=configuration,
+                                 root_path=root_path)
 
         # Apply the configuration to the logger.
         self._apply_configuration()
 
-    def _load_configuration(self, configuration: dict) -> None:
+    def _load_configuration(
+        self,
+        configuration: dict,
+        root_path: str) -> None:
 
         """
         Loads the configuration of the target from its serialized format.
@@ -88,15 +97,18 @@ class FileLogTarget(LogTarget):
         Args:
             configuration:      The configuration of the log target in
                                 serialized format.
+            root_path:          Root path of the logging system.
 
         Authors:
             Attila Kovacs
         """
 
+        filename = configuration['filename']
+
         # Load filename
         try:
             self._filename = os.path.abspath(
-                os.path.expanduser(configuration['filename']))
+                os.path.expanduser(f'{root_path}/{filename}'))
         except KeyError as exception:
             raise InvalidInputError(
                 'Filename is not found in the configuration when trying to '

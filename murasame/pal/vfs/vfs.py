@@ -99,6 +99,89 @@ class VFSAPI:
 
         del path
 
+    def add_node(self, node: 'VFSNode', parent: str = '') -> None:
+
+        """
+        Adds a new node to the VFS. By default the new node will be added to
+        the root node unless a different parent node is specified.
+
+        Args:
+            node:       The node to add.
+            parent:     Name of the parent node to add the new node to.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        #pylint: disable=no-self-use
+
+        del node
+        del parent
+
+    def remove_node(self, node_name: str) -> None:
+
+        """
+        Removes an existing VFS node from the node tree.
+
+        Args:
+            node_name:      Name of the node to remove.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        #pylint: disable=no-self-use
+
+        del node_name
+
+    def has_node(self, name: str) -> bool:
+
+        """
+        Returns whether or not there is a VFS node with a given name in the
+        VFS tree.
+
+        Args:
+            name:       The name of the node to check for.
+
+        Returns:
+            'True' if the there is a node with the given name in the VFS,
+            ' False' otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        #pylint: disable=no-self-use
+
+        return  False
+
+    def get_all_files(
+            self,
+            node_name: str,
+            recursive: bool = False,
+            filter: str = None) -> list:
+
+        """
+        Returns a list of all VFS file nodes under a given directory node.
+
+        Args:
+            node_name:          The name of the VFS node to retrieve the files
+                                from.
+            recursive:          Whether or not files in subdirectories should
+                                be returned as well.
+            filter:             Optional filter string to only include files
+                                in the result list that match the given filter.
+
+        Returns:
+            A list of VFS file nodes.
+        """
+
+        #pylint: disable=no-self-use
+
+        del node_name
+        del recursive
+        del filter
+
 class VFS(LogWriter):
 
     """
@@ -334,6 +417,54 @@ class VFS(LogWriter):
             return False
 
         return  self._root.has_node(name=name)
+
+    def get_all_files(
+            self,
+            node_name: str,
+            recursive: bool = False,
+            filter: str = None) -> list:
+
+        """
+        Returns a list of all VFS file nodes under a given directory node.
+
+        Args:
+            node_name:          The name of the VFS node to retrieve the files
+                                from.
+            recursive:          Whether or not files in subdirectories should
+                                be returned as well.
+            filter:             Optional filter string to only include files
+                                in the result list that match the given filter.
+
+        Returns:
+            A list of VFS file nodes.
+        """
+
+        if recursive:
+            self.debug(f'Retrieving all file nodes from VFS directory node '
+                       f'{node_name} and subdirectories...')
+        else:
+            self.debug(f'Retrieving all file nodes from VFS directory node '
+                       f'{node_name}...')
+
+        if not self._root:
+            self.error(f'Node {node_name} doesn\'t exist in the virtual file '
+                       f'system.')
+            return []
+
+        # Just return an empty list if the requested directory node doesn't
+        #  exist, or it's not a directory node.
+        if not self._root.has_node(name=node_name):
+            self.error(f'Node {node_name} doesn\'t exist in the virtual file '
+                       f'system.')
+            return []
+
+        node = self._root.get_node(name=node_name)
+        if node.Type != VFSNodeTypes.DIRECTORY:
+            self.error(f'Node {node_name} is not a directory node.')
+            return  []
+
+        return node.get_all_files(recursive=recursive,
+                                  filter=filter)
 
     def _register_directory(self, path: str) -> None:
 

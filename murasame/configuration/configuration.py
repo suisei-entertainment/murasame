@@ -31,6 +31,7 @@ from murasame.utils import SystemLocator
 from murasame.pal.vfs import VFSAPI
 from murasame.configuration.configurationbackends import ConfigurationBackends
 from murasame.configuration.dictionarybackend import DictionaryBackend
+from murasame.configuration.vfsconfigurationsource import VFSConfigurationSource
 
 class ConfigurationAPI:
 
@@ -194,18 +195,10 @@ class Configuration(LogWriter):
             raise InvalidInputError(
                 f'Unsupported configuration backend: {backend_type}')
 
-        # Pylint cannot recognize the instance() method of Singleton
-        #pylint: disable=no-member
+        self._sources.append(VFSConfigurationSource(path='/configuration'))
 
-        # Add /configuration as the initial configuration source
-        vfs = SystemLocator.instance().get_provicer(VFSAPI)
-
-        if not vfs:
-            raise RuntimeError(
-                'Failed to retrieve a VFS provider while trying to '
-                'initialize the configuration system.')
-
-        self._sources
+        # Load the configuration to memory
+        self.load()
 
     def get(self, attribute: str) -> Any:
 
@@ -216,6 +209,10 @@ class Configuration(LogWriter):
         Args:
             attribute:      Name of the attribute to retrieve.
 
+        Raises:
+            RuntimeError:       Raised when no valid configuration backend is
+                                set.
+
         Returns:
             The value of the attribute, or 'None' if it was not found.
 
@@ -223,9 +220,15 @@ class Configuration(LogWriter):
             Attila Kovacs
         """
 
-        #pylint: disable=no-self-use
+        if not self._backend:
+            raise RuntimeError('No configuration backend has been specified, '
+                               'cannot retrieve attributes.')
 
-        del attribute
+        attr = self._backend.get_attribute(attribute_name=attribute)
+        if attr:
+            return attr.Value
+
+        return None
 
     def set(self, attribute: str, value: Any) -> None:
 
@@ -236,14 +239,27 @@ class Configuration(LogWriter):
             attribute:      Name of the attribute to set.
             value:          The new value of the attribute.
 
+        Raises:
+            RuntimeError:       Raised when no valid configuration backend is
+                                set.
+            InvalidInputError:  Raised when trying to set the value of a
+                                non-existing attribute.
+
         Authors:
             Attila Kovacs
         """
 
-        #pylint: disable=no-self-use
+        if not self._backend:
+            raise RuntimeError('No configuration backend has been specified, '
+                               'cannot set configuration attributes.')
 
-        del attribute
-        del value
+        attr = self._backend.get_attribute(attribute_name=attribute)
+        if attr:
+            attr.Value = value
+        else:
+            raise InvalidInputError(
+                f'Trying to set the value for non-existing attribute '
+                f'{attribute}.')
 
     def load(self) -> None:
 
@@ -254,9 +270,8 @@ class Configuration(LogWriter):
             Attila Kovacs
         """
 
-        #pylint: disable=no-self-use
-
-        return
+        for source in self._sources:
+            source.load()
 
     def save(self) -> None:
 
@@ -269,4 +284,5 @@ class Configuration(LogWriter):
 
         #pylint: disable=no-self-use
 
-        return
+        for source in self._sources:
+            source.save()

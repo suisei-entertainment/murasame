@@ -29,6 +29,7 @@ import uuid
 from urllib.error import ContentTooShortError
 
 # Dependency Imports
+import requests
 import geoip2
 import geoip2.database
 import wget
@@ -174,6 +175,15 @@ class HostLocation(LogWriter):
             geoip_license_key:  The license key to use when downloading the
                                 GeoIP database.
 
+        Raises:
+            RuntimeError:       Raised when it is not possible to connect to
+                                the GeoIP download server.
+            RuntimeError:       Raised if the GeoIP database cannot be
+                                downloaded.
+            InvalidInputError:  Raised if the GeoIP database was not found and
+                                there is no license key provided to download
+                                one automatically.
+
         Authors:
             Attila Kovacs
         """
@@ -208,6 +218,10 @@ class HostLocation(LogWriter):
                 try:
                     wget.download(url=update_link,
                                   out=package_filename)
+                except requests.exceptions.ConnectionError as error:
+                    # Failed to connect to the backend to retrieve the database
+                    raise RuntimeError('Failed to connect to the GeoIP '
+                                       'download server.') from error
                 except ContentTooShortError as error:
                     raise RuntimeError(
                         'Failed to download GeoIP database.') from error

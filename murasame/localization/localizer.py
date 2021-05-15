@@ -25,6 +25,7 @@ Contains the implementation of the Localizer class.
 from string import Template
 
 # Dependency Imports
+import httpx
 from googletrans import Translator
 
 # Murasame Imports
@@ -188,7 +189,7 @@ class Localizer(LogWriter):
                                     files are located.
         """
 
-        super().__init__(channel_name='murasame.utils', cache_entries=True)
+        super().__init__(channel_name='murasame.localizer', cache_entries=True)
 
         self._language = language
         """
@@ -444,10 +445,15 @@ class Localizer(LogWriter):
         self.debug(f'Attempting to translate {text} to {self._language}...')
 
         translator = Translator()
-        translation = translator.translate(
-            text,
-            src=self._default_language,
-            dest=self._language)
+        try:
+            translation = translator.translate(
+                text,
+                src=self._default_language,
+                dest=self._language)
+        except httpx.ConnectError as error:
+            self.error(
+                f'Failed to translate text {text}. Reason: {error}')
+            return text
 
         self.debug(f'Received translation for {text}: {translation.text}.')
 

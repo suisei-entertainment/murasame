@@ -803,6 +803,39 @@ class VFSNode(LogWriter):
 
         self.debug(f'Node deserialization complete for {self.Name}.')
 
+    def get_all_files(
+            self,
+            recursive: bool = False,
+            filter: str = None) -> list:
+
+        """
+        Returns a list of all VFS file nodes under this node.
+
+        Args:
+            recursive:          Whether or not files in subdirectories should
+                                be returned as well.
+            filter:             Optional filter string to only include files
+                                in the result list that match the given filter.
+
+        Returns:
+            A list of VFS file nodes.
+        """
+
+        result = []
+
+        for key, file in self.Files:
+            if filter is not None:
+                if filter in file.Name:
+                    result.append(file)
+            else:
+                result.append(file)
+
+        if recursive:
+            for key, subdirectory in self.Subdirectories:
+                result.extend(subdirectory.get_all_files())
+
+        return  result
+
     def populate_from_directory(self, path: str) -> None:
 
         """

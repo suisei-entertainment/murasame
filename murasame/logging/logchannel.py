@@ -16,6 +16,7 @@
 ##  limitations under the License.
 ##
 ## ============================================================================
+
 """
 Contains implementation of the LogChannel class.
 """
@@ -203,8 +204,10 @@ class LogChannel:
                     log_target = ConsoleLogTarget(logger=self._logger,
                                                   configuration=target)
                 elif target_type == 'file':
-                    log_target = FileLogTarget(logger=self._logger,
-                                               configuration=target)
+                    log_target = FileLogTarget(
+                        logger=self._logger,
+                        configuration=target,
+                        root_path=configuration['__log_root_path__'])
 
             except InvalidInputError:
                 # Don't fail if the configuration of a target is wrong.

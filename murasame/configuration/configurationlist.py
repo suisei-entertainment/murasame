@@ -92,7 +92,7 @@ class ConfigurationList(LogWriter):
 
         return 0
 
-    def __init__(self, name: str, content: dict = None) -> None:
+    def __init__(self, name: str, content: list = None) -> None:
 
         """
         Creates a new ConfigurationList instance.

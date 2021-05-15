@@ -22,7 +22,14 @@ Contains the implementation of the LoggingSystem class.
 """
 
 # Runtime Imports
+import os
 from typing import Union
+
+# Murasame Imports
+from murasame.exceptions import InvalidInputError
+from murasame.utils import SystemLocator, JsonFile
+from murasame.logging.logchannel import LogChannel
+from murasame.logging.defaultlogconfig import DEFAULT_LOG_CONFIG
 
 class LoggingAPI:
 
@@ -76,10 +83,31 @@ class LoggingSystem:
         Attila Kovacs
     """
 
+    @property
+    def RootPath(self) -> str:
+
+        """
+        The root path of the logging system where log files for file log
+        targets are written.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return  self._root_path
+
     def __init__(self) -> None:
 
         """
         Creates a new LoggingSystem instance.
+
+        Since logging is one of the most basic functionalities, it should work
+        even if the higher level systems fail, so logging doesn't use the
+        normal configuration mechanism of the framework, but instead tries to
+        load and parse the configuration file itself.
+
+        If no logging configuration is found, it will start with a default
+        logging configuration for the framework.
 
         Authors:
             Attila Kovacs
@@ -89,6 +117,14 @@ class LoggingSystem:
         """
         The log channels registered in the logging system.
         """
+
+        self._root_path = None
+        """
+        The root path in the file system where log files are written.
+        """
+
+        if not self._load_configuration():
+            self._load_default_configuration()
 
     def has_channel(self, name: str) -> bool:
 
@@ -106,7 +142,7 @@ class LoggingSystem:
             Attila Kovacs
         """
 
-        return  name in self._channels
+        return name in self._channels
 
     def get_channel(self, name: str) -> Union['LogChannel', None]:
 
@@ -124,3 +160,100 @@ class LoggingSystem:
             return self._channels[name]
 
         return None
+
+    def _load_configuration(self) -> bool:
+
+        """
+        Loads the logging configuration from the config file.
+
+        Returns:
+            'True' if the configuration was loaded successfully 'False'
+            otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        config_path = os.path.abspath('./config/logging.conf')
+
+        # Check whether or not there is a logging configuration file in the
+        # config directory of the application
+        if not os.path.isfile(config_path):
+            return False
+
+        # Load the configuration file
+        config_file = JsonFile(path=config_path)
+        config_file.load()
+        config = config_file.Content
+
+        # Get the root logging path from the configuration
+        if not 'rootpath' in config:
+            return False
+
+        self._root_path = os.path.abspath(os.path.expanduser(config['rootpath']))
+
+        # Create the root logging directory if it doesn't exist
+        if not os.path.isdir(self._root_path):
+            try:
+                os.makedirs(self._root_path, exist_ok=True)
+            except OSError:
+                # Failed to create the root path
+                return False
+
+        # Check for log channel configuration
+        if not 'channels' in config:
+            return False
+
+        channels = config['channels']
+
+        for channel in channels:
+
+            # Append the root path to the configuration to the channel for
+            # file log targets
+            channel['__log_root_path__'] = self._root_path
+
+            try:
+                log_channel = LogChannel(configuration=channel)
+                self._channels[log_channel.Name] = log_channel
+            except InvalidInputError:
+                # Don't fail if the configuration of a channel is wrong
+                continue
+
+        return True
+
+    def _load_default_configuration(self) -> None:
+
+        """
+        Loads the default logging system configuration.
+
+        Raises:
+            RuntimeError:       Raised if the root logging directory cannot be
+                                created.
+            InvalidInputError:  Raised if the default logging configuration
+                                contains an error.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._root_path = os.path.abspath(os.path.expanduser(DEFAULT_LOG_CONFIG['rootpath']))
+
+        if not os.path.isdir(self._root_path):
+            try:
+                os.makedirs(self._root_path, exist_ok=True)
+            except OSError as error:
+                raise RuntimeError(f'Failed to create the root logging '
+                                   f'directory: {self._root_path}') from error
+
+        for channel in DEFAULT_LOG_CONFIG['channels']:
+
+            # Append the root path to the configuration to the channel for
+            # file log targets
+            channel['__log_root_path__'] = self._root_path
+
+            try:
+                log_channel = LogChannel(configuration=channel)
+                self._channels[log_channel.Name] = log_channel
+            except InvalidInputError as error:
+                raise InvalidInputError(
+                    'Invalid default logging configuration.') from error

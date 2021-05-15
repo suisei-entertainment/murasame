@@ -68,11 +68,12 @@ TEST_CONFIGURATION_WITH_FILE_TARGET = \
             'type': 'file',
             'format': '[%(asctime)s][%(levelname)s]: %(message)s',
             'dateformat': '%Y-%m-%d %H:%M:%S',
-            'filename': '~/.murasame/testfiles/file_log_target.log',
+            'filename': 'file_log_target.log',
             'maxsize': '5',
             'backupcount': '2'
         }
-    ]
+    ],
+    '__log_root_path__': '~/.murasame/testfiles'
 }
 
 class TestLogChannel:

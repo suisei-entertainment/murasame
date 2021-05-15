@@ -36,7 +36,7 @@ import sentry_sdk
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError, InvalidLicenseKeyError
-from murasame.logging import LogWriter
+from murasame.logging import LogWriter, LoggingAPI, LoggingSystem
 from murasame.licensing import LicenseValidator
 from murasame.utils import SystemLocator
 from murasame.application.applicationreturncodes import ApplicationReturnCodes
@@ -161,6 +161,9 @@ class Application(LogWriter):
 
         self.info('Business logic has been validated successfully.')
 
+        # Enter the specified working directory
+        os.chdir(root_directory)
+
         # Validate license if required
         if business_logic.IsLicenseRequired:
             self._validate_license(
@@ -179,6 +182,11 @@ class Application(LogWriter):
 
         # Pylint doesn't recognize the instance() method of Singleton.
         #pylint: disable=no-member
+
+        # Initialize the logging system
+        self.info('Initializing logging system...')
+        logging_system = LoggingSystem()
+        SystemLocator.instance().register_provider(LoggingAPI, logging_system)
 
         if not business_logic.IsVFSDisabled:
 
