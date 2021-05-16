@@ -27,7 +27,7 @@ from typing import Union
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.utils import SystemLocator, JsonFile
+from murasame.utils import JsonFile
 from murasame.logging.logchannel import LogChannel
 from murasame.logging.defaultlogconfig import DEFAULT_LOG_CONFIG
 
@@ -56,6 +56,9 @@ class LoggingAPI:
             Attila Kovacs
         """
 
+        #pylint: disable=no-self-use
+
+        del name
         return False
 
     def get_channel(self, name: str) -> 'LogChannel':

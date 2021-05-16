@@ -27,8 +27,6 @@ from typing import Callable, Any
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.logging import LogWriter
-from murasame.utils import SystemLocator
-from murasame.pal.vfs import VFSAPI
 from murasame.configuration.configurationbackends import ConfigurationBackends
 from murasame.configuration.dictionarybackend import DictionaryBackend
 from murasame.configuration.vfsconfigurationsource import VFSConfigurationSource

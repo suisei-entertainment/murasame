@@ -789,7 +789,7 @@ class VFSNode(LogWriter):
                     resource_type = resource['descriptor']['type']
                 except KeyError as error:
                     raise InvalidInputError(
-                        f'The resource does not specify the type.') from error
+                        'The resource does not specify the type.') from error
 
                 res = None
                 if resource_type == 'localfile':
@@ -806,7 +806,7 @@ class VFSNode(LogWriter):
     def get_all_files(
             self,
             recursive: bool = False,
-            filter: str = None) -> list:
+            filename_filter: str = None) -> list:
 
         """
         Returns a list of all VFS file nodes under this node.
@@ -814,7 +814,7 @@ class VFSNode(LogWriter):
         Args:
             recursive:          Whether or not files in subdirectories should
                                 be returned as well.
-            filter:             Optional filter string to only include files
+            filename_filter:    Optional filter string to only include files
                                 in the result list that match the given filter.
 
         Returns:
@@ -823,15 +823,15 @@ class VFSNode(LogWriter):
 
         result = []
 
-        for key, file in self.Files:
-            if filter is not None:
-                if filter in file.Name:
+        for dummy, file in self.Files:
+            if filename_filter is not None:
+                if filename_filter in file.Name:
                     result.append(file)
             else:
                 result.append(file)
 
         if recursive:
-            for key, subdirectory in self.Subdirectories:
+            for dummy, subdirectory in self.Subdirectories.items():
                 result.extend(subdirectory.get_all_files())
 
         return  result

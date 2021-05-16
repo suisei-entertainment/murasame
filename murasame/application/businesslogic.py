@@ -276,7 +276,7 @@ class BusinessLogic:
 
         #pylint: disable=no-self-use
 
-        pass
+        return
 
     def on_uncaught_exception(self, exception: Exception) -> None:
 
@@ -312,6 +312,8 @@ class BusinessLogic:
             Attila Kovacs
         """
 
+        #pylint: disable=no-self-use
+
         del signum
         del frame
 
@@ -331,6 +333,8 @@ class BusinessLogic:
         Authors:
             Attila Kovacs
         """
+
+        #pylint: disable=no-self-use
 
         del signum
         del frame
@@ -352,6 +356,8 @@ class BusinessLogic:
             Attila Kovacs
         """
 
+        #pylint: disable=no-self-use
+
         del signum
         del frame
 
@@ -372,6 +378,8 @@ class BusinessLogic:
             Attila Kovacs
         """
 
+        #pylint: disable=no-self-use
+
         del signum
         del frame
 
@@ -391,6 +399,8 @@ class BusinessLogic:
         Authors:
             Attila Kovacs
         """
+
+        #pylint: disable=no-self-use
 
         del signum
         del frame

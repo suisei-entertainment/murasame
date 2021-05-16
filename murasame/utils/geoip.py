@@ -266,9 +266,9 @@ class GeoIP:
             return
 
         # Extract the update package
-        tar = tarfile.open(package_filename)
-        tar.extractall(path=PACKAGE_DOWNLOAD_LOCATION, members=GeoIP._find_mmdb(tar))
-        tar.close()
+        with tarfile.open(package_filename) as tar:
+            tar.extractall(path=PACKAGE_DOWNLOAD_LOCATION,
+                           members=GeoIP._find_mmdb(tar))
 
         # Move the database to the requested location
         shutil.move(src=f'{PACKAGE_DOWNLOAD_LOCATION}/GeoLite2-City.mmdb',
