@@ -25,9 +25,9 @@ Contains the implementation of the DictionaryBackend class.
 from typing import Any
 
 # Murasame Imports
-from .configurationbackend import ConfigurationBacked
+from .configurationbackend import ConfigurationBackend
 
-class DictionaryBackend(ConfigurationBacked):
+class DictionaryBackend(ConfigurationBackend):
 
     """
     Implements a configuration backend that stores the configuration in a

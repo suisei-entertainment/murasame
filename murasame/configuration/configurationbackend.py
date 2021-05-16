@@ -27,7 +27,7 @@ from typing import Any
 # Murasame Imports
 from murasame.logging import LogWriter
 
-class ConfigurationBacked(LogWriter):
+class ConfigurationBackend(LogWriter):
 
     """
     Common base class for all configuration backend implementations.
