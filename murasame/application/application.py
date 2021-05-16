@@ -549,7 +549,9 @@ class Application(LogWriter):
         # Not closing the streams here is considered an error by Semgrep, but
         # it's a false positive. Pylint also throws a false warning about not
         # using with.
-        #pylint disable=consider-using-with
+
+        #pylint: disable=consider-using-with
+
         std_in = open(self.BusinessLogic.StdIn, 'r') # nosemgrep
         std_out = open(self.BusinessLogic.StdOut, 'a+') # nosemgrep
         std_err = std_out

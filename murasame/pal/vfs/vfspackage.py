@@ -147,17 +147,17 @@ class VFSPackage(LogWriter):
                                     f'gzip compressed archive.')
 
         # Load the VFS configuration from the package
-        tar = tarfile.TarFile(name=self._path)
-        descriptor = tar.getmember(name='.vfs')
-        if not descriptor:
-            raise InvalidInputError(f'Resource package {self._path} does not '
-                                    f'contains a VFS descriptor.')
+        with  tarfile.TarFile(name=self._path) as tar:
+            descriptor = tar.getmember(name='.vfs')
+            if not descriptor:
+                raise InvalidInputError(f'Resource package {self._path} does not '
+                                        f'contains a VFS descriptor.')
 
-        self._extract_directory = f'/tmp/{uuid.uuid4()}'
-        self.debug(f'Random directory for package {self._path} is '
-                   f'{self._extract_directory}.')
+            self._extract_directory = f'/tmp/{uuid.uuid4()}'
+            self.debug(f'Random directory for package {self._path} is '
+                       f'{self._extract_directory}.')
 
-        tar.extractall(path=self._extract_directory, members=[descriptor])
+            tar.extractall(path=self._extract_directory, members=[descriptor])
 
         descriptor_file = JsonFile(path=f'{self._extract_directory}/.vfs')
         descriptor_file.load()
