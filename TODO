@@ -3,9 +3,9 @@
 ===============================================================================
 
   Application:
-    ☐ Support for Unix daemon applications.
-    ☐ Support for Unix CLI applications.
-    ☐ Support for Sentry.IO reports.
+    ✔ Support for Unix daemon applications.
+    ✔ Support for Unix CLI applications.
+    ✔ Support for Sentry.IO reports.
   Build System:
     ✔ Basic makefile based build tools.
     ✔ Support for builds and Travis CI.
@@ -22,8 +22,8 @@
   Licensing:
     ✔ Support for managing file based licenses.
   Localization:
-    ☐ Support for localized strings.
-    ☐ Support for translating strings automatically through Google Translate.
+    ✔ Support for localized strings.
+    ✔ Support for translating strings automatically through Google Translate.
   Logging:
     ✔ Basic logging support using the built-in Python logging infrastructure.
   Managed Object Management:
