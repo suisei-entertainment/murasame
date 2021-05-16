@@ -159,7 +159,7 @@ class VFSAPI:
             self,
             node_name: str,
             recursive: bool = False,
-            filter: str = None) -> list:
+            filename_filter: str = None) -> list:
 
         """
         Returns a list of all VFS file nodes under a given directory node.
@@ -169,7 +169,7 @@ class VFSAPI:
                                 from.
             recursive:          Whether or not files in subdirectories should
                                 be returned as well.
-            filter:             Optional filter string to only include files
+            filename_filter:    Optional filter string to only include files
                                 in the result list that match the given filter.
 
         Returns:
@@ -180,7 +180,7 @@ class VFSAPI:
 
         del node_name
         del recursive
-        del filter
+        del filename_filter
 
 class VFS(LogWriter):
 
@@ -422,7 +422,7 @@ class VFS(LogWriter):
             self,
             node_name: str,
             recursive: bool = False,
-            filter: str = None) -> list:
+            filename_filter: str = None) -> list:
 
         """
         Returns a list of all VFS file nodes under a given directory node.
@@ -432,7 +432,7 @@ class VFS(LogWriter):
                                 from.
             recursive:          Whether or not files in subdirectories should
                                 be returned as well.
-            filter:             Optional filter string to only include files
+            filename_filter:    Optional filter string to only include files
                                 in the result list that match the given filter.
 
         Returns:
@@ -464,7 +464,7 @@ class VFS(LogWriter):
             return  []
 
         return node.get_all_files(recursive=recursive,
-                                  filter=filter)
+                                  filename_filter=filename_filter)
 
     def _register_directory(self, path: str) -> None:
 
