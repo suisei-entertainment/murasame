@@ -130,6 +130,16 @@ class TestDictionaryBackend:
         """
 
         sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        attr = ConfigurationAttribute(name='testattr',
+                                      value='testvalue',
+                                      data_type='STRING')
+        sut.add_attribute(parent='testgroup', attribute=attr)
+
+        assert sut.get_attribute(attribute_name='testgroup.testattr') == attr
+        assert sut.get_value(attribute_name='testgroup.testattr') == 'testvalue'
 
     def test_retrieving_groups(self):
 
@@ -138,6 +148,11 @@ class TestDictionaryBackend:
         """
 
         sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+
+        assert sut.get_group(group_name='testgroup') == group
 
     def test_retrieving_lists(self):
 
@@ -146,6 +161,14 @@ class TestDictionaryBackend:
         """
 
         sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        config_list = ConfigurationList(name='testlist',
+                                        content=TEST_CONFIGURATION_LIST)
+        sut.add_list(parent='testgroup', config_list=config_list)
+
+        assert sut.get_list(list_name='testgroup.testlist') == config_list
 
     def test_setting_attributes(self):
 
@@ -154,3 +177,13 @@ class TestDictionaryBackend:
         """
 
         sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        attr = ConfigurationAttribute(name='testattr',
+                                      value='testvalue',
+                                      data_type='STRING')
+        sut.add_attribute(parent='testgroup', attribute=attr)
+        sut.set(attribute='testgroup.testattr', value='newvalue')
+
+        assert sut.get_value('testgroup.testattr') == 'newvalue'

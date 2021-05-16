@@ -71,7 +71,16 @@ class DictionaryBackend(ConfigurationBackend):
 
         #pylint: disable=no-self-use
 
-        return None
+        if self.has_group(group_name=entry_name):
+            return  self.get_group(group_name=entry_name)
+
+        if self.has_list(list_name=entry_name):
+            return  self.get_list(list_name=entry_name)
+
+        if self.has_attribute(attribute_name=entry_name):
+            return  self.get_attribute(attribute_name=entry_name)
+
+        return  None
 
     def get_value(self, attribute_name: str) -> Any:
 
