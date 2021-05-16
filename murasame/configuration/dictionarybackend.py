@@ -392,8 +392,8 @@ class DictionaryBackend(ConfigurationBacked):
                        f'non-existent parent {parent}.')
             return
 
-        group = self.get_group(parent)
-        group.add_group(group)
+        parent_group = self.get_group(parent)
+        parent_group.add_group(group)
 
         self.debug(f'Configuration group {group.Name} added under parent '
                    f'{parent}.')

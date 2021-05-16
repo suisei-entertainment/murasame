@@ -33,6 +33,19 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.configuration.dictionarybackend import DictionaryBackend
+from murasame.configuration.configurationgroup import ConfigurationGroup
+from murasame.configuration.configurationlist import ConfigurationList
+from murasame.configuration.configurationattribute import ConfigurationAttribute
+
+TEST_CONFIGURATION_GROUP = \
+{
+
+}
+
+TEST_CONFIGURATION_LIST = \
+[
+
+]
 
 class TestDictionaryBackend:
 
@@ -57,22 +70,87 @@ class TestDictionaryBackend:
         assert sut is not None
 
     def test_adding_groups(self):
-        pass
+
+        """
+        Tests that configuration groups can be added to the backend.
+        """
+
+        # STEP #1 - Test simple group addition
+        sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        assert sut.has_group(group_name='testgroup')
+
+        # STEP #2 - Test adding subgroups
+        sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        group2 = ConfigurationGroup(name='testgroup2',
+                                    content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent='testgroup', group=group2)
+        assert sut.has_group('testgroup.testgroup2')
 
     def test_adding_lists(self):
-        pass
+
+        """
+        Tests that configuration lists can be added to the backend.
+        """
+
+        sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        config_list = ConfigurationList(name='testlist',
+                                        content=TEST_CONFIGURATION_LIST)
+        sut.add_list(parent='testgroup', config_list=config_list)
+        assert sut.has_list(list_name='testgroup.testlist')
 
     def test_adding_attributes(self):
-        pass
+
+        """
+        Tests that configuration attributes can be added to the backend.
+        """
+
+        sut = DictionaryBackend()
+        group = ConfigurationGroup(name='testgroup',
+                                   content=TEST_CONFIGURATION_GROUP)
+        sut.add_group(parent=None, group=group)
+        attr = ConfigurationAttribute(name='testattr',
+                                      value='testvalue',
+                                      data_type='STRING')
+        sut.add_attribute(parent='testgroup', attribute=attr)
+        assert sut.has_attribute(attribute_name='testgroup.testattr')
 
     def test_retrieving_attributes(self):
-        pass
+
+        """
+        Tests that configuration attributes can be retrieved from the backend.
+        """
+
+        sut = DictionaryBackend()
 
     def test_retrieving_groups(self):
-        pass
+
+        """
+        Tests that configuration groups can be retrieved from the backend.
+        """
+
+        sut = DictionaryBackend()
 
     def test_retrieving_lists(self):
-        pass
+
+        """
+        Tests that configuration lists can be retrieved from the backend.
+        """
+
+        sut = DictionaryBackend()
 
     def test_setting_attributes(self):
-        pass
+
+        """
+        Tests that configuration attributes can be set through the backend.
+        """
+
+        sut = DictionaryBackend()
