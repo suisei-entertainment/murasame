@@ -450,7 +450,7 @@ class Localizer(LogWriter):
                 text,
                 src=self._default_language,
                 dest=self._language)
-        except httpx.RequestError as error:
+        except httpx.HTTPError as error:
             self.error(
                 f'Failed to translate text {text}. Reason: {error}')
             return text
