@@ -26,7 +26,6 @@ distro>=1.3.0
 # Networking
 wget>=3.2
 urllib3>=1.26.4 # CVE-2021-28363
-httpx[http2]>=0.18.1
 requests>=2.23.0
 aiohttp>=3.7.4 # CVE-2021-21330
 geoip2>=4.2.0
