@@ -18,11 +18,10 @@
 ## ============================================================================
 
 """
-Contains the implementation of the networking functionality.
+Contains constants related to the networking implementation of the framework.
 """
 
-from murasame.pal.networking.basesocket import BaseSocket
-from murasame.pal.networking.clientsocket import ClientSocket
-from murasame.pal.networking.serversocket import ServerSocket
-from murasame.pal.networking.clientthread import ClientThread
-from murasame.pal.networking.socketmessagetransformer import SocketMessageTransformer
+SOCKET_LOG_CHANNEL = 'murasame.pal.networking.socket'
+"""
+Name of the log channel all socket implementations should use.
+"""
