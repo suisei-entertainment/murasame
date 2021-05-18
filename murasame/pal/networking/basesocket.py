@@ -107,9 +107,34 @@ class BaseSocket(LogWriter):
 
         return self._ssl_protocol
 
+    @property
+    def NumBytesSent(self) -> int:
+
+        """
+        The amount of bytes sent through the socket.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._bytes_sent
+
+    @property
+    def NumBytesReceived(self) -> int:
+
+        """
+        The amount of bytes received through the socket.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._bytes_received
+
     def __init__(
         self,
         name: str = None,
+        blocking: bool = True,
         ssl_protocol: 'BaseSocket.Protocols' = 'BaseSocket.Protocols.UNENCRYPTED',
         cert_file: str = None,
         ca_list: str = None,
@@ -121,6 +146,8 @@ class BaseSocket(LogWriter):
 
         Args:
             name:               Name of the socket.
+            blocking:           Whether or not the socket is created with
+                                blocking turned on.
             ssl_protocol:       The SSL protocol to use when setting up the
                                 socket.
             cert_file:          The certificate file to use when establishing
@@ -184,20 +211,96 @@ class BaseSocket(LogWriter):
         Whether or not a valid certificate is required during authentication.
         """
 
+        self._bytes_sent = 0
+        """
+        The amount of bytes sent through the socket.
+        """
+
+        self._bytes_received = 0
+        """
+        The amount of bytes received through the socket.
+        """
+
         try:
-            self._create_socket(purpose)
+            self._create_socket(purpose=purpose, blocking=blocking)
         except InvalidInputError as exception:
             self.error(
                 f'Failed to create socket. Reason: {exception.errormessage}.')
             raise
 
-    def _create_socket(self, purpose: 'BaseSocket.Purposes') -> None:
+    def set_blocking(self, blocking: bool = True) -> None:
+
+        """
+        Allows enabling or disabling socket blocking.
+
+        Args:
+            blocking:       Whether or not the socket should block.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._raw_socket.setblocking(blocking)
+
+        if blocking:
+            self.debug(f'Socket {self._name} is set to blocking.')
+        else:
+            self.debug(f'Socket {self._name} is set to non-blocking.')
+
+    def increase_bytes_sent(self, bytes_sent: int) -> None:
+
+        """
+        Increases the counter for the amount of bytes sent through the socket.
+
+        Args:
+            bytes_sent:     The amount of bytes sent through the socket.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._bytes_sent += bytes_sent
+
+    def increase_bytes_received(self, bytes_received) -> None:
+
+        """
+        Increases the counter for the amount of bytes received through the
+        socket.
+
+        Args:
+            bytes_received:     The amount of bytes received through the
+                                socket.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._bytes_received += bytes_received
+
+    def reset_counters(self) -> None:
+
+        """
+        Resets the traffic counters.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self._bytes_sent = 0
+        self._bytes_received = 0
+
+    def _create_socket(
+        self,
+        purpose: 'BaseSocket.Purposes',
+        blocking: bool = True) -> None:
 
         """
         Creates the socket based on the initial configuration.
 
         Args:
             purpose:            The purpose of the SSL connection.
+            blocking:           Whether or not the socket should be created
+                                with blocking enabled.
 
         Authors:
             Attila Kovacs
@@ -205,9 +308,9 @@ class BaseSocket(LogWriter):
 
         # Create the socket
         self._raw_socket = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_STREAM)
-        self._raw_socket.setblocking(True)
+            family=socket.AF_INET,
+            type=socket.SOCK_STREAM)
+        self.set_blocking(blocking=blocking)
 
         # Encrypt the socket if required
         if self._ssl_protocol == BaseSocket.Protocols.UNENCRYPTED:

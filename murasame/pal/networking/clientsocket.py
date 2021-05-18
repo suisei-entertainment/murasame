@@ -119,16 +119,6 @@ class ClientSocket(BaseSocket):
         The message transformer object to use.
         """
 
-        self._bytes_sent = 0
-        """
-        The amount of bytes sent through the socket.
-        """
-
-        self._bytes_received = 0
-        """
-        The amount of bytes received through the socket.
-        """
-
         try:
             self._validate_port(port)
         except InvalidInputError as exception:
@@ -241,7 +231,7 @@ class ClientSocket(BaseSocket):
 
         try:
             self._socket.sendall(raw_message, message_size)
-            self._bytes_sent += message_size
+            self.increase_bytes_sent(bytes_sent=message_size)
             self.debug(
                 f'Sending message {raw_message}  ({message_size} bytes) over '
                 f'socket {self.Name}.')

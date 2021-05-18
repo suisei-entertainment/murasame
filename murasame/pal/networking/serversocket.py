@@ -142,16 +142,6 @@ class ServerSocket(BaseSocket):
         Whether or not the connection handler thread should run.
         """
 
-        self._bytes_sent = 0
-        """
-        The amount of bytes sent through the socket.
-        """
-
-        self._bytes_received = 0
-        """
-        The amount of bytes received through the socket.
-        """
-
         self.debug(f'Creating server socket for {host}:{port}...')
 
         try:

@@ -83,6 +83,7 @@ class ClientThread(Thread):
 
     def __init__(
         self,
+        parent_socket: 'ServerSocket',
         connection: object,
         ip_address: str,
         port: int,
@@ -93,14 +94,23 @@ class ClientThread(Thread):
         Creates a new ClientThread instance.
 
         Args:
+            parent_socket:          The server socket this thread belongs to.
             connection:             The connection object to the client.
             ip_address:             The IP address of the client.
             port:                   The port the client connected from.
             receive_buffer_size:    Size of the receive buffer of the socket.
             transformer:            The message transformer object to use.
+
+        Authors:
+            Attila Kovacs
         """
 
         super().__init__(name=f'ClientThread-{ip_address}:{port}', daemon=True)
+
+        self._parent_socket = parent_socket
+        """
+        The parent socket this thread belongs to.
+        """
 
         self._connection = connection
         """
@@ -130,16 +140,6 @@ class ClientThread(Thread):
         self._receive_buffer_size = receive_buffer_size
         """
         Size of the receive buffer.
-        """
-
-        self._bytes_sent = 0
-        """
-        The amount of bytes sent through the socket.
-        """
-
-        self._bytes_received = 0
-        """
-        The amount of bytes received through the socket.
         """
 
         self._logger = LogWriter(
@@ -177,7 +177,8 @@ class ClientThread(Thread):
             try:
                 raw_data = self.Connection.recv(4096)
                 message_size = len(raw_data)
-                self._bytes_received += message_size
+                self._parent_socket.increase_bytes_received(
+                    bytes_received=message_size)
                 self._logger.debug(
                     f'Received data from {self.IPAddress}:{self.Port}. '
                     f'Raw data: {str(raw_data)} ({message_size} bytes)')
