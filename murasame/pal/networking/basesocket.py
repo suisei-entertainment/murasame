@@ -206,7 +206,7 @@ class BaseSocket(LogWriter):
         # Create the socket
         self._raw_socket = socket.socket(
             socket.AF_INET,
-            socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
+            socket.SOCK_STREAM)
         self._raw_socket.setblocking(True)
 
         # Encrypt the socket if required
