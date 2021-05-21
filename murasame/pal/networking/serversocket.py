@@ -238,6 +238,7 @@ class ServerSocket(BaseSocket):
             self._socket.listen(5)
             (connection, (ip_address, port)) = self._socket.accept()
             connection_handler = self._client_handler(
+                parent_socket=self,
                 connection=connection,
                 ip_address=ip_address,
                 port=port,

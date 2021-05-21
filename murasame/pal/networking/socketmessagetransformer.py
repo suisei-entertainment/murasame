@@ -51,16 +51,42 @@ class SocketMessageTransformer(LogWriter):
         super().__init__(channel_name=SOCKET_LOG_CHANNEL,
                          cache_entries=True)
 
-    def transform(self, message: Any) -> bytes:
+    def serialize(self, message: Any) -> bytes:
 
         """
-        Transformation function used to transform all messages sent or received
+        Transformation function used to transform all messages sent
         through a socket.
+
+        Args:
+            message:        The message to send in the application's format.
+
+        Returns:
+            The message transformed to a byte array.
 
         Authors:
             Attila Kovacs
         """
 
         raise NotImplementedError(
-            f'SocketMessageTransformer.transform() has to be implemented in '
+            f'SocketMessageTransformer.serialize() has to be implemented in '
+            f'{self.__class__.__name__}.')
+
+    def deserialize(self, message: bytes) -> Any:
+
+        """
+        Transformation function used to transform all messages received through
+        a socket.
+
+        Args:
+            message:        The message that has been received.
+
+        Returns:
+            The messages transformed to the application's format.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        raise NotImplementedError(
+            f'SocketMessageTransformer.deserialize() has to be implemented in '
             f'{self.__class__.__name__}.')

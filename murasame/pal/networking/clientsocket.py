@@ -223,7 +223,7 @@ class ClientSocket(BaseSocket):
         raw_message = None
 
         if self._transformer:
-            raw_message = self._transformer.transform(message)
+            raw_message = self._transformer.serialize(message)
         else:
             raw_message = message
 
@@ -239,6 +239,40 @@ class ClientSocket(BaseSocket):
             self.error(
                 f'Failed to send message {str(raw_message)} over socket '
                 f'{self.Name}.')
+
+    def receive(self) -> Any:
+
+        """
+        Receives a message through the socket.
+
+        Returns:
+            The message that has been received in the application's format.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        message = None
+
+        try:
+            raw_message = self._socket.recv(4096)
+        except socket.error:
+            self.error(
+                f'Failed to receive message through socket {self.Name}.')
+            return None
+
+        message_size = len(raw_message)
+        self.increase_bytes_received(bytes_received=message_size)
+
+        if self._transformer:
+            message = self._transformer.deserialize(message=raw_message)
+        else:
+            message = raw_message
+
+        self.debug(f'Received message {message} ({message_size} bytes) over '
+                   f'socket {self.Name}.')
+
+        return message
 
     def _validate_port(self, port: int) -> None:
 

@@ -98,8 +98,10 @@ from murasame.pal.networking import ClientSocket, SocketMessageTransformer
 SERVER_PORT = 11492
 
 class ExampleMessageTransformer(SocketMessageTransformer):
-    def transform(self, message: str) -> bytes:
+    def serialize(self, message: str) -> bytes:
         return bytes(message, encoding='utf-8')
+    def deserialize(self, message: bytes) -> str:
+        return str(message, encoding='utf--8')
 
 def main() -> int:
 
@@ -131,8 +133,10 @@ class ExampleClientThread(ClientThread):
             pass
 
 class ExampleMessageTransformer(SocketMessageTransformer):
-    def transform(self, message: str) -> bytes:
+    def serialize(self, message: str) -> bytes:
         return bytes(str(message), encoding='utf-8')
+    def deserialize(self, message: bytes) -> str:
+        return str(message, encoding='utf--8')
 
 class TestSocket:
 

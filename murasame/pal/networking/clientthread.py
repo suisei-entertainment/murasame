@@ -199,9 +199,41 @@ class ClientThread(Thread):
             # Transform the received_data
             data = raw_data
             if self._transformer is not None:
-                data = self._transformer.transform(message=raw_data)
+                data = self._transformer.deserialize(message=raw_data)
 
             self.handle_message(message=data)
+
+    def send(self, message: Any) -> None:
+
+        """
+        Sends a message to the connected client.
+
+        Args:
+            message:        The message to send in the application's format.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        raw_message = None
+
+        if self._transformer:
+            raw_message = self._transformer.serialize(message=message)
+        else:
+            raw_message = message
+
+        message_size = len(raw_message)
+
+        try:
+            self.Connection.sendall(raw_message, message_size)
+            self._parent_socket.increase_bytes_sent(message_size)
+            self._logger.debug(
+                f'Sending message {raw_message}  ({message_size} bytes) over '
+                f'socket {self._parent_socket.Name}.')
+        except socket.error:
+            self._logger.error(
+                f'Failed to send message {str(raw_message)} over socket '
+                f'{self._parent_socket.Name}.')
 
     def handle_message(self, message: Any) -> None:
 
