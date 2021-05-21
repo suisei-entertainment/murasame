@@ -23,6 +23,7 @@ Contains the implementation of the CliProcessor class.
 
 # Runtime Imports
 import os
+import sys
 import argparse
 from typing import Callable
 
@@ -115,17 +116,19 @@ class CliProcessor:
         self._register_commands(command_map)
 
     def process(self,
-                args: list,
-                cb_argument_processor: Callable) -> argparse.Namespace:
+                cb_argument_processor: Callable,
+                args: list = None) -> argparse.Namespace:
 
         """
         Processes the command line arguments.
 
         Args:
-            args:                   The list of command line arguments the
-                                    application was called with.
             cb_argument_processor:  A callback function that will be called
                                     after the command line has been parsed.
+            args:                   The list of command line arguments the
+                                    application was called with. If this
+                                    parameter is not supplied, the arguments
+                                    will be automatically retrieved.
 
         Returns:
             The processed command line arguments as an argparse Namespace
@@ -135,8 +138,15 @@ class CliProcessor:
             Attila Kovacs
         """
 
+        # Automatically retrieve the command line arguments the application was
+        # started with if it is not supplied
+        if args is None:
+            args = sys.argv[1:]
+
+        # Parse the CLI arguments
         arguments = self._parser.parse_args(args=args)
 
+        # Process arguments
         if arguments:
             cb_argument_processor(arguments)
 
