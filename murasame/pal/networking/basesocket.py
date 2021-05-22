@@ -354,8 +354,18 @@ class BaseSocket(LogWriter):
                 f'Unsupported SSL protocol version {self._ssl_protocol} when '
                 f'creating socket.')
 
+        # Determine TLS v1.2 support
+        has_tls_v12 = False
+
+        try:
+            has_tls_v12 = ssl.HAS_TLSv1_2
+        except AttributeError:
+            # PyPy does not have the HAS_TLSv1_2 flag in its SSL module,
+            # but it does support TLS v1.2, so this can be safely set here
+            has_tls_v12 = True
+
         # Default context options for TLS v1.2
-        if not ssl.HAS_TLSv1_2:
+        if not has_tls_v12:
             raise MissingRequirementError(
                 'TLS v1.2 is not supported by the platform, cannot '
                 'create socket.')
