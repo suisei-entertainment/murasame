@@ -122,6 +122,9 @@ class TestApplication:
 
     """
     Contains the unit tests of the Application class.
+
+    Authors:
+        Attila Kovacs
     """
 
     @classmethod
@@ -136,26 +139,58 @@ class TestApplication:
         if not os.path.isdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest2/'))):
             os.mkdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest2/')))
 
-    def test_creation(self):
+    @classmethod
+    def teardown_class(cls):
+
+        return
+
+    def test_creation_with_valid_business_logic(self):
 
         """
         Tests that an application can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Application with a valid business logic can be created
         sut = Application(business_logic=DummyBusinessLogic())
 
-        # STEP #2 - Application cannot be created without business logic
+    def test_creation_without_business_logic(self):
+
+        """
+        Tests that an application cannot be created without a valid business
+        logic.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = Application(business_logic=None)
 
-        # STEP #3 - Application cannot be created without a valid working
-        #           directory.
+    def test_creation_without_working_directory(self):
+
+        """
+        Tests that an application cannot be created without a valid working
+        directory.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = Application(business_logic=DummyBusinessLogicInvalidWorkingDirectory())
 
-        # STEP #4 - The working directory of the application must contain a
-        #           config subdirectory.
+    def test_creation_without_config_directory(self):
+
+        """
+        Tests that an application cannot be created without a valid config
+        subdirectory in its working directory.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = Application(business_logic=DummyBusinessLogicNoConfig())
 
@@ -163,6 +198,9 @@ class TestApplication:
 
         """
         Tests that the application can operate as a Unix daemon.
+
+        Authors:
+            Attila Kovacs
         """
 
         base_dir = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon'))
@@ -193,24 +231,93 @@ class TestApplication:
 
         assert os.path.isfile(f'{base_dir}/daemontest1.txt')
 
-    def test_daemon_signals(self):
+    def test_daemon_sigterm_signals(self):
 
         """
-        Tests that the daemon application can handle standard OS signals.
+        Tests that the daemon application can handle the SIGTERM signal.
+
+        Authors:
+            Attila Kovacs
         """
+
+        # TODO
 
         pass
 
-    def test_execution(self):
+    def test_daemon_sigint_signals(self):
 
         """
-        Tests the basic execution logic of the application.
+        Tests that the daemon application can handle the SIGINT signal.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test basic application return type
+        # TODO
+
+        pass
+
+    def test_daemon_sigalrm_signals(self):
+
+        """
+        Tests that the daemon application can handle the SIGALRM signal.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # TODO
+
+        pass
+
+    def test_daemon_sigusr1_signals(self):
+
+        """
+        Tests that the daemon application can handle the SIGUSR1 signal.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # TODO
+
+        pass
+
+    def test_daemon_sigusr2_signals(self):
+
+        """
+        Tests that the daemon application can handle the SIGUSR2 signal.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # TODO
+
+        pass
+
+    def test_return_code_after_successful_execution(self):
+
+        """
+        Tests that the application returns SUCCESS return code upon successful
+        execution.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = Application(business_logic=DummyBusinessLogic())
         assert sut.execute() == ApplicationReturnCodes.SUCCESS
 
-        # STEP #2 - Test uncaught exception handling
+    def test_return_code_on_uncaught_exception(self):
+
+        """
+        Tests that the application returns UNCAUGHT_EXCEPTION return code
+        when an unhandled exception is encountered.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = Application(business_logic=DummyBusinessLogicThrowingException())
         assert sut.execute() == ApplicationReturnCodes.UNCAUGHT_EXCEPTION
