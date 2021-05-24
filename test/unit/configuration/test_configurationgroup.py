@@ -131,36 +131,68 @@ class TestConfigurationGroup:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_simple_configuration_group_creation(self):
 
         """
-        Tests the creation of the configuration group.
+        Tests the creation of a simple configuration group.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Create simple configuration group
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         assert sut.Name == 'test'
 
-        # STEP #2 - Create nested configuration group
+    def test_nested_configuration_group_creation(self):
+
+        """
+        Tests that a nested configuration group can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP)
         assert sut.Name == 'nested'
 
-        # STEP #3 - Create configuration group with a list
+    def test_nested_configuration_group_with_list_creation(self):
+
+        """
+        Tests that a nested configuration group containing a configuration list
+        can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP_WITH_LIST)
         assert sut.Name == 'nested'
 
-        # STEP #4 - Create configuration group without a name
+    def test_creating_configuration_group_without_name(self):
+
+        """
+        Tests that a configuration group can be created without a name.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(content=SIMPLE_TEST_GROUP)
         assert sut.Name == None
 
-        # STEP #5 - Create an empty configuration group
+    def test_creating_empty_configuration_group(self):
+
+        """
+        Tests that an empty configuration group can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(content={})
         assert sut.Name == None
 
-    def test_attribute_retrieval(self):
+    def test_simple_attribute_retrieval(self):
 
         """
         Tests that configuration attributes can be retrieved from the group.
@@ -169,7 +201,6 @@ class TestConfigurationGroup:
             Attila Kovacs
         """
 
-        # STEP #1 - Test simple attribute retrieval
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         assert sut.get_attribute('stringvalue').Value == 'test'
         assert sut.get_attribute('intvalue').Value == 3
@@ -178,19 +209,46 @@ class TestConfigurationGroup:
         assert sut.Groups is not None
         assert sut.Lists is not None
 
-        # STEP #2 - Test retrieval from a nested group
+    def test_attribute_retrieval_from_nested_group(self):
+
+        """
+        Tests that configuration attributes can be retrieved from a nested
+        configuration group.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP)
         assert sut.get_attribute('nest.nestedname').Value == 'test2'
 
-        # STEP #3 - Test retrieval of non-existing attribute
+    def test_retrieving_non_existent_attribute(self):
+
+        """
+        Tests that retrieval of a non-existend configuration attribute.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         assert sut.get_attribute('nonexistent') is None
 
-        # STEP #4 - Test retrieval of invalid attribute name
+    def test_retrieving_invalid_attribute(self):
+
+        """
+        Tests retrieval of a configuration attribute with invalid name from a
+        configuration group.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         assert sut.get_attribute('') is None
         assert sut.get_attribute(None) is None
 
-    def test_group_retrieval(self):
+    def test_simple_group_retrieval(self):
 
         """
         Tests that configuration groups can be retrieved from the group.
@@ -199,23 +257,50 @@ class TestConfigurationGroup:
             Attila Kovacs
         """
 
-        # STEP #1 - Test simple group retrieval
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP)
         assert sut.get_group('nest').Name == 'nest'
 
-        # STEP #2 - Test retrieval from a nested group
+    def test_group_retrieval_from_nested_group(self):
+
+        """
+        Tests that nested configuration group can be retrieved from the
+        configuration group.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP)
         assert sut.get_group('nest.nestnest').Name == 'nestnest'
 
-        # STEP #3 - Test retrieval of non-existing group
+    def test_retrieval_of_non_existent_group(self):
+
+        """
+        Tests retrieval of non-existend configuration group from a
+        configuration group/
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP)
         assert sut.get_group('nonexistent') is None
 
-        # STEP #4 - Test retrieval of invalid group name
+    def test_retrieval_of_group_with_invalid_name(self):
+
+        """
+        Tests retrieval of a group with invalid name from a configuration
+        group.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = ConfigurationGroup(name='test', content=NESTED_GROUP)
         assert sut.get_group('') is None
         assert sut.get_group(None) is None
 
-    def test_list_retrieval(self):
+    def test_simple_list_retrieval(self):
 
         """
         Tests that configuration lists can be retrieved from the group.
@@ -224,19 +309,46 @@ class TestConfigurationGroup:
             Attila Kovacs
         """
 
-        # STEP #1 - Test simple list retrieval
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP_WITH_LIST)
         assert sut.get_list('list').get_value(0) == 1
 
-        # STEP #2 - Test group list retrieval
+    def test_retrieving_group_list(self):
+
+        """
+        Tests retrieving a configuration list containing configuration groups
+        from a configuration gorup.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=GROUP_WITH_GROUP_LIST)
         assert sut.get_list('list').get_content()['element1'].Name == 'element1'
 
-        # STEP #3 - Test retrieval of non-existing list
+    def test_retrieving_non_existent_list(self):
+
+        """
+        Tests retrieval of non-existent configuration list from a configuration
+        group.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=NESTED_GROUP_WITH_LIST)
         assert sut.get_group('nonexistent') is None
 
-        # STEP #4 - Test retrieval of invalid list name
+    def test_retrieval_of_invalid_list_name(self):
+
+        """
+        Tests retrieval of a configuration list with invalid name from a
+        configuration group.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = ConfigurationGroup(name='test', content=NESTED_GROUP_WITH_LIST)
         assert sut.get_list('') is None
         assert sut.get_list(None) is None
 
@@ -281,20 +393,35 @@ class TestConfigurationGroup:
             Attila Kovacs
         """
 
-        # STEP #1 - New subgroup can be added to an existing group
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         subgroup = ConfigurationGroup(name='subgroup', content=SIMPLE_SUBGROUP)
         sut.add_group(subgroup)
         assert sut.get_group('subgroup') is not None
 
-        # STEP #2 - Invalid group cannot be added
+    def test_adding_invalid_subgroup(self):
+
+        """
+        Tests adding an invalid subgroup to a configuration group.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         current_num = sut.NumGroups
         sut.add_group(None)
         assert current_num == sut.NumGroups
 
-        # STEP #3 - Adding a group with the same name as a subgroup results in
-        #           a merge
+    def test_adding_subgroup_with_same_name(self):
+
+        """
+        Tests that adding a group with the same name as a subgroup results in
+        a merge.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         subgroup = ConfigurationGroup(name='subgroup', content=SIMPLE_SUBGROUP)
         sut.add_group(subgroup)
@@ -314,19 +441,35 @@ class TestConfigurationGroup:
             Attila Kovacs
         """
 
-        # STEP #1 - New list can be added to an existing group
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         sut.add_list(ConfigurationList(name='test', content=[1,2,3]))
         assert sut.get_list('test') is not None
 
-        # STEP #2 - Invalid list cannot be added
+    def test_adding_invalid_list(self):
+
+        """
+        Tests that invalid configuration list cannot be added to a
+        configuration group.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         current_num = sut.NumLists
         sut.add_list(None)
         assert current_num == sut.NumLists
 
-        # STEP #3 - Adding a list with the same name as an existing sublist
-        #           results in a merge
+    def test_adding_list_with_same_name(self):
+
+        """
+        Tests that adding a list with the same name as an existing sublist
+        results in a merge.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=SIMPLE_TEST_GROUP)
         sut.add_list(ConfigurationList(name='test', content=[1,2,3]))
         current_num = sut.NumLists
@@ -344,13 +487,20 @@ class TestConfigurationGroup:
             Attila Kovacs
         """
 
-        # STEP #1 - Configuration groups can be merged.
         sut = ConfigurationGroup(name='test', content=SIMPLE_SUBGROUP)
         sut.merge_with(ConfigurationGroup(name='test',
                                           content=SIMPLE_SUBGROUP_2))
         assert sut.get_attribute('testattribute2') is not None
 
-        # STEP #2 - Test merging with an invalid group
+    def test_merging_with_invalid_group(self):
+
+        """
+        Tests that configuration group cannot be merged with an invalid group.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ConfigurationGroup(name='test', content=SIMPLE_SUBGROUP)
         current_attr_num = sut.NumAttributes
         current_group_num = sut.NumGroups
@@ -359,6 +509,15 @@ class TestConfigurationGroup:
         assert current_attr_num == sut.NumAttributes
         assert current_group_num == sut.NumGroups
         assert current_list_num == sut.NumLists
+
+    def test_merging_groups_with_different_names(self):
+
+        """
+        Tests merging configuration groups with different names.
+
+        Authors:
+            Attila Kovacs
+        """
 
         # STEP #3 - Test merging groups with different names
         sut = ConfigurationGroup(name='test', content=SIMPLE_SUBGROUP)

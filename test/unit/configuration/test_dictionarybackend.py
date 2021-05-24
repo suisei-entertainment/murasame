@@ -65,7 +65,6 @@ class TestDictionaryBackend:
             Attila Kovacs
         """
 
-        # STEP #1 - Simple creation test
         sut = DictionaryBackend()
         assert sut is not None
 
@@ -73,16 +72,26 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration groups can be added to the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test simple group addition
         sut = DictionaryBackend()
         group = ConfigurationGroup(name='testgroup',
                                    content=TEST_CONFIGURATION_GROUP)
         sut.add_group(parent=None, group=group)
         assert sut.has_group(group_name='testgroup')
 
-        # STEP #2 - Test adding subgroups
+    def test_adding_subgroups(self):
+
+        """
+        Tests that subgroups can be added to the backend.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = DictionaryBackend()
         group = ConfigurationGroup(name='testgroup',
                                    content=TEST_CONFIGURATION_GROUP)
@@ -96,6 +105,9 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration lists can be added to the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = DictionaryBackend()
@@ -111,6 +123,9 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration attributes can be added to the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = DictionaryBackend()
@@ -127,6 +142,9 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration attributes can be retrieved from the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = DictionaryBackend()
@@ -145,6 +163,9 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration groups can be retrieved from the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = DictionaryBackend()
@@ -158,6 +179,9 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration lists can be retrieved from the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = DictionaryBackend()
@@ -174,6 +198,9 @@ class TestDictionaryBackend:
 
         """
         Tests that configuration attributes can be set through the backend.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = DictionaryBackend()
