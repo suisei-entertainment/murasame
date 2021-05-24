@@ -123,7 +123,7 @@ documentation:
 ## ============================================================================
 unittest:
 	@echo Executing unit tests...
-	pytest -vv --full-trace --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
+	pytest -vv --durations=10 --full-trace --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
 	@echo
 
 ## ============================================================================
@@ -139,7 +139,7 @@ lint:
 ## ============================================================================
 coverage:
 	@echo Measuring unit test coverage...
-	pytest -vv --full-trace --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html --cov=./murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest -vv --durations=10 --full-trace --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html --cov=./murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	@echo
 
 ## ============================================================================
