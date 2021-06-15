@@ -39,12 +39,18 @@ class TestLicenseDescriptor:
 
     """
     Contains the unit tests of the LicenseDescriptor class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a licensedescriptor instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         key = uuid.uuid4()
@@ -65,6 +71,9 @@ class TestLicenseDescriptor:
 
         """
         Tests that features can be added to the license descriptor.
+
+        Authors:
+            Attila Kovacs
         """
 
         key = uuid.uuid4()
@@ -86,6 +95,9 @@ class TestLicenseDescriptor:
 
         """
         Tests that features can be removed.
+
+        Authors:
+            Attila Kovacs
         """
 
         key = uuid.uuid4()
@@ -108,6 +120,9 @@ class TestLicenseDescriptor:
 
         """
         Tests that a license descriptor can be serialized to JSON.
+
+        Authors:
+            Attila Kovacs
         """
 
         key = '8c6f4d93-e848-468a-8465-bbad9f66e4f1'

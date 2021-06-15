@@ -56,68 +56,88 @@ class TestLicenseValidator:
 
     """
     Contains the unit tests of the LicenseValidator class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
-
-        """
-        Tests that a LicenseValidator can be created.
-        """
+    @classmethod
+    def setup_class(cls):
 
         key_generator = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048,
             cb_retrieve_password=get_password)
 
         key_generator.save_key_pair(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
-            public_key_path='{}/license_public.pem'.format(TEST_PATH))
+            private_key_path=f'{TEST_PATH}/license_private.pem',
+            public_key_path=f'{TEST_PATH}/license_public.pem')
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(f'{TEST_PATH}/license_private_pem'):
+            os.remove(f'{TEST_PATH}/license_private_pem')
+
+        if os.path.isfile(f'{TEST_PATH}/license_public_pem'):
+            os.remove(f'{TEST_PATH}/license_public_pem')
+
+        if os.path.isfile(f'{TEST_PATH}/license.lic'):
+            os.remove(f'{TEST_PATH}/license.lic')
+
+    def test_creation_with_public_key(self):
+
+        """
+        Tests that a LicenseValidator can be created with using an existing
+        RSAPublic object.
+
+        Authors:
+            Attila Kovacs
+        """
 
         public_key = RSAPublic(
-            key_path='{}/license_public.pem'.format(TEST_PATH))
+            key_path=f'{TEST_PATH}/license_public.pem')
 
-        # STEP #1 - Create using a public key
         sut = LicenseValidator(public_key=public_key)
 
-        # STEP #2 - Create using a public key path
-        sut = LicenseValidator(
-            public_key_path='{}/license_public.pem'.format(TEST_PATH))
+        assert sut is not None
 
-        os.remove('{}/license_private.pem'.format(TEST_PATH))
-        os.remove('{}/license_public.pem'.format(TEST_PATH))
+    def test_creation_with_public_key_path(self):
+
+        """
+        Tests that a LicenseValidator can be created with a path to a public
+        key in the file system.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = LicenseValidator(
+            public_key_path=f'{TEST_PATH}/license_public.pem')
+
+        assert sut is not None
 
     def test_validation(self):
 
         """
         Tests that a license can be validated using the validator.
+
+        Authors:
+            Attila Kovacs
         """
 
-        key_generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_2048,
-            cb_retrieve_password=get_password)
-
-        key_generator.save_key_pair(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
-            public_key_path='{}/license_public.pem'.format(TEST_PATH))
-
         private_key = RSAPrivate(
-            key_path='{}/license_private.pem'.format(TEST_PATH),
+            key_path=f'{TEST_PATH}/license_private.pem',
             cb_retrieve_password=get_password)
 
         public_key = RSAPublic(
-            key_path='{}/license_public.pem'.format(TEST_PATH))
+            key_path=f'{TEST_PATH}/license_public.pem')
 
-        # STEP #1 - Test by assigning an existing private key
         generator = LicenseGenerator(
-            private_key=private_key,
-            cb_retrieve_encryption_password=get_encryption_key)
-
-        # STEP #2 - Test by creating with a key path
-        generator = LicenseGenerator(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
+            private_key_path=f'{TEST_PATH}/license_private.pem',
             cb_retrieve_key_password=get_password,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        license_path = '{}/license.lic'.format(TEST_PATH)
+        license_path = f'{TEST_PATH}/license.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()
@@ -138,9 +158,5 @@ class TestLicenseValidator:
         sut = LicenseValidator(public_key=public_key)
 
         assert sut.validate(
-            license_path='{}/license.lic'.format(TEST_PATH),
+            license_path=f'{TEST_PATH}/license.lic',
             cb_retrieve_password=get_encryption_key)
-
-        os.remove('{}/license_private.pem'.format(TEST_PATH))
-        os.remove('{}/license_public.pem'.format(TEST_PATH))
-        os.remove('{}/license.lic'.format(TEST_PATH))

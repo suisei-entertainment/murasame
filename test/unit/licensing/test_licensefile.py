@@ -56,21 +56,46 @@ class TestLicenseFile:
 
     """
     Contains the unit tests for the LicenseFile class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
-
-        """
-        Tests that a LicenseFile object can be created.
-        """
+    @classmethod
+    def setup_class(cls):
 
         key_generator = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048,
             cb_retrieve_password=get_password)
 
         key_generator.save_key_pair(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
-            public_key_path='{}/license_public.pem'.format(TEST_PATH))
+            private_key_path=f'{TEST_PATH}/license_private.pem',
+            public_key_path=f'{TEST_PATH}/license_public.pem')
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(f'{TEST_PATH}/license_private.pem'):
+            os.remove(f'{TEST_PATH}/license_private.pem')
+
+        if os.path.isfile(f'{TEST_PATH}/license_public.pem'):
+            os.remove(f'{TEST_PATH}/license_public.pem')
+
+        if os.path.isfile(f'{TEST_PATH}/license.lic'):
+            os.remove(f'{TEST_PATH}/license.lic')
+
+        if os.path.isfile(f'{TEST_PATH}/license2.lic'):
+            os.remove(f'{TEST_PATH}/license2.lic')
+
+    def test_creation_with_existing_private_key(self):
+
+        """
+        Tests that a LicenseFile object can be created when providing an
+        existing RSAPrivate object.
+
+        Authors:
+            Attila Kovacs
+        """
 
         private_key = RSAPrivate(
             key_path='{}/license_private.pem'.format(TEST_PATH),
@@ -79,18 +104,50 @@ class TestLicenseFile:
         public_key = RSAPublic(
             key_path='{}/license_public.pem'.format(TEST_PATH))
 
-        # STEP #1 - Test by assigning an existing private key
         generator = LicenseGenerator(
             private_key=private_key,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        # STEP #2 - Test by creating with a key path
+        license_path = f'{TEST_PATH}/license.lic'
+
+        key = uuid.uuid4()
+        owner = uuid.uuid4()
+        license_type = LicenseTypes.DEVELOPMENT
+        feature = uuid.uuid4()
+
+        descriptor = LicenseDescriptor(
+            license_key=key,
+            owner_id=owner,
+            license_type=license_type)
+        descriptor.add_feature(
+            feature_id=feature,
+            metadata={'test': 'testvalue'})
+
+        generator.generate(output_path=license_path,
+                           license_descriptor=descriptor)
+
+        sut = LicenseFile(license_file_path=license_path,
+                          cb_retrieve_password=get_encryption_key)
+
+        assert sut.Signature is not None
+        assert isinstance(sut.License, LicenseDescriptor)
+
+    def test_creation_with_private_key_path(self):
+
+        """
+        Tests that a license file can be created when providing a path to a
+        private key file in the file system.
+
+        Authors:
+            Attila Kovacs
+        """
+
         generator = LicenseGenerator(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
+            private_key_path=f'{TEST_PATH}/license_private.pem',
             cb_retrieve_key_password=get_password,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        license_path = '{}/license.lic'.format(TEST_PATH)
+        license_path = f'{TEST_PATH}/license2.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()

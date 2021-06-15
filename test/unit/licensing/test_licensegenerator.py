@@ -55,70 +55,89 @@ class TestLicenseGenerator:
 
     """
     Contains the unit tests of the LicenseGenerator class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
-
-        """
-        Tests that a license generator can be created.
-        """
+    @classmethod
+    def setup_class(cls):
 
         key_generator = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048,
             cb_retrieve_password=get_password)
 
         key_generator.save_key_pair(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
-            public_key_path='{}/license_public.pem'.format(TEST_PATH))
+            private_key_path=f'{TEST_PATH}/license_private.pem',
+            public_key_path=f'{TEST_PATH}/license_public.pem')
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(f'{TEST_PATH}/license_private.pem'):
+            os.remove(f'{TEST_PATH}/license_private.pem')
+
+        if os.path.isfile(f'{TEST_PATH}/license_public.pem'):
+            os.remove(f'{TEST_PATH}/license_public.pem')
+
+        if os.path.isfile(f'{TEST_PATH}/license.lic'):
+            os.remove(f'{TEST_PATH}/license.lic')
+
+    def test_creation_with_existing_private_key(self):
+
+        """
+        Tests that a license generator can be created with an existing private
+        key object.
+
+        Authors:
+            Attila Kovacs
+        """
 
         private_key = RSAPrivate(
-            key_path='{}/license_private.pem'.format(TEST_PATH),
+            key_path=f'{TEST_PATH}/license_private.pem',
             cb_retrieve_password=get_password)
 
-        # STEP #1 - Test by assigning an existing private key
         sut = LicenseGenerator(
             private_key=private_key,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        # STEP #2 - Test by creating with a key path
+        assert sut is not None
+
+    def test_creation_with_private_key_path(self):
+
+        """
+        Tests that a license generator can be created with a path to a private
+        key in the file system.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LicenseGenerator(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
+            private_key_path=f'{TEST_PATH}/license_private.pem',
             cb_retrieve_key_password=get_password,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        os.remove('{}/license_private.pem'.format(TEST_PATH))
-        os.remove('{}/license_public.pem'.format(TEST_PATH))
+        assert sut is not None
 
     def test_generation(self):
 
         """
-        Tests that a license key can be generatred.
+        Tests that a license key can be generated.
+
+        Authors:
+            Attila Kovacs
         """
 
-        key_generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_2048,
-            cb_retrieve_password=get_password)
-
-        key_generator.save_key_pair(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
-            public_key_path='{}/license_public.pem'.format(TEST_PATH))
-
         private_key = RSAPrivate(
-            key_path='{}/license_private.pem'.format(TEST_PATH),
+            key_path=f'{TEST_PATH}/license_private.pem',
             cb_retrieve_password=get_password)
 
-        # STEP #1 - Test by assigning an existing private key
         sut = LicenseGenerator(
             private_key=private_key,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        # STEP #2 - Test by creating with a key path
-        sut = LicenseGenerator(
-            private_key_path='{}/license_private.pem'.format(TEST_PATH),
-            cb_retrieve_key_password=get_password,
-            cb_retrieve_encryption_password=get_encryption_key)
-
-        license_path = '{}/license.lic'.format(TEST_PATH)
+        license_path = f'{TEST_PATH}/license.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()
@@ -135,8 +154,4 @@ class TestLicenseGenerator:
 
         sut.generate(output_path=license_path, license_descriptor=descriptor)
 
-        assert os.path.isfile('{}/license.lic'.format(TEST_PATH))
-
-        os.remove('{}/license_private.pem'.format(TEST_PATH))
-        os.remove('{}/license_public.pem'.format(TEST_PATH))
-        os.remove('{}/license.lic'.format(TEST_PATH))
+        assert os.path.isfile(f'{TEST_PATH}/license.lic')
