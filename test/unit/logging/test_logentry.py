@@ -39,12 +39,18 @@ class TestLogEntry:
 
     """
     Contains all unit tests of the LogEntry class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a log entry can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         timestamp = datetime.datetime.now()

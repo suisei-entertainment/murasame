@@ -80,12 +80,18 @@ class TestLogChannel:
 
     """
     Contains all unit tests of the LogChannel class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a log channel can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = LogChannel(configuration=BASIC_TEST_CONFIGURATION)
@@ -96,6 +102,9 @@ class TestLogChannel:
 
         """
         Tests that a console log target can be used in a log channel.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = LogChannel(configuration=TEST_CONFIGURATION_WITH_CONSOLE_TARGET)
@@ -106,6 +115,9 @@ class TestLogChannel:
 
         """
         Tests that a file log target can be used in a log channel.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = LogChannel(configuration=TEST_CONFIGURATION_WITH_FILE_TARGET)
@@ -116,6 +128,9 @@ class TestLogChannel:
 
         """
         Tests that a syslog log target can be used in a log channel.
+
+        Authors:
+            Attila Kovacs
         """
 
         pass
@@ -124,6 +139,9 @@ class TestLogChannel:
 
         """
         Tests that a database log target can be used in a log channel.
+
+        Authors:
+            Attila Kovacs
         """
 
         pass
@@ -132,6 +150,9 @@ class TestLogChannel:
 
         """
         Tests that a structured log target can be used in a log channel.
+
+        Authors:
+            Attila Kovacs
         """
 
         pass

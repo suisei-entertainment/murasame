@@ -50,25 +50,46 @@ class TestLogWriter:
 
     """
     Contains all unit tests of the LogWriter class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation_without_logging_service_and_caching_enabled(self):
 
         """
-        Tests that a log writer can be created.
+        Tests that a log writer can be created without an existing logging
+        service and caching enabled.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Log writer can be created without a logging service if
-        #           caching is enabled
         sut = LogWriter(channel_name='test', cache_entries=True)
         assert sut.LogLevel == LogLevels.DEBUG
 
-        # STEP #2 - Log writer can be created without a logging service if
-        #           caching is not enabled
+    def test_creation_without_logging_service_and_caching_disabled(self):
+
+        """
+        Tests that a log writer can be created without an existing logging
+        service and caching disabled.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=False)
         assert sut.LogLevel == LogLevels.DEBUG
 
-        # STEP #3 - Log writer can be created if there is a logging service
+    def test_creation_with_logging_service(self):
+
+        """
+        Tests that a log writer can be created with a valid logging service
+
+        Authors:
+            Attila Kovacs
+        """
+
         system = LoggingSystemTester()
         sut = LogWriter(channel_name='test')
         assert sut.LogLevel == LogLevels.INFO
@@ -78,21 +99,42 @@ class TestLogWriter:
 
         """
         Tests that log levels can be overwritten in the log writer.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Log level can be overwritten.
         sut = LogWriter(channel_name='test', cache_entries=False)
         assert sut.LogLevel == LogLevels.DEBUG
         sut.overwrite_log_level(new_log_level=LogLevels.WARNING)
         assert sut.LogLevel == LogLevels.WARNING
         assert sut.IsLogLevelOverwritten
 
-        # STEP #2 - Log level overwrite can be disabled
+    def test_log_level_overwrite_disable(self):
+
+        """
+        Tests that an overwritten log level can be reset to its default value.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = LogWriter(channel_name='test', cache_entries=False)
+        sut.overwrite_log_level(new_log_level=LogLevels.WARNING)
         sut.reset_log_level()
         assert sut.LogLevel, LogLevels.INFO
         assert not sut.IsLogLevelOverwritten
 
-        # STEP #3 - Log level can be reset when there is a channel attached
+    def test_log_level_overwrite_when_channel_is_attached(self):
+
+        """
+        Tests that log levels can be overwritten in the log writer when there
+        is a log channel attached.
+
+        Authors:
+            Attila Kovacs
+        """
+
         system = LoggingSystemTester()
         sut = LogWriter(channel_name='test')
         sut.overwrite_log_level(LogLevels.EMERGENCY)
@@ -105,6 +147,9 @@ class TestLogWriter:
 
         """
         Tests that TRACE level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is TRACE
@@ -130,6 +175,9 @@ class TestLogWriter:
 
         """
         Tests that DEBUG level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is DEBUG
@@ -155,6 +203,9 @@ class TestLogWriter:
 
         """
         Tests that INFO level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below INFO
@@ -186,6 +237,9 @@ class TestLogWriter:
 
         """
         Tests that NOTICE level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below NOTICE
@@ -216,7 +270,10 @@ class TestLogWriter:
     def test_warning_message(self):
 
         """
-        Tests that NOTICE level messages are handled correctly.
+        Tests that WARNING level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below WARNING
@@ -248,6 +305,9 @@ class TestLogWriter:
 
         """
         Tests that ERROR level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below ERROR
@@ -279,6 +339,9 @@ class TestLogWriter:
 
         """
         Tests that CRITICAL level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below CRITICAL
@@ -310,6 +373,9 @@ class TestLogWriter:
 
         """
         Tests that ALERT level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below ALERT
@@ -341,6 +407,9 @@ class TestLogWriter:
 
         """
         Tests that EMERGENCY level messages are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Message is written if log level is below EMERGENCY
@@ -365,14 +434,25 @@ class TestLogWriter:
     def test_logging_suspension(self):
 
         """
-        Tests that logging can be suspended and resumed.
+        Tests that logging can be suspended.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Logging can be suspended
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.suspend_logging()
         assert sut.IsLoggingSuspended
 
-        # STEP #2 - Logging can be resumed
+    def test_logging_resume(self):
+
+        """
+        Tests that logging can be resumed.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = LogWriter(channel_name='test', cache_entries=True)
         sut.resume_logging()
         assert not sut.IsLoggingSuspended
