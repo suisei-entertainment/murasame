@@ -56,6 +56,9 @@ class TestLocalizer:
 
     """
     Contains the unit tests of the Localizer class.
+
+    Authors:
+        Attila Kovacs
     """
 
     @classmethod
@@ -98,28 +101,55 @@ class TestLocalizer:
 
         SystemLocator.instance().reset()
 
-    def test_creation(self):
+    def test_creation_with_default_parameters(self):
 
         """
-        Tests that a Localizer instance can be created.
+        Tests that a Localizer instance can be created with default parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Localizer can be created with default parameters
         sut = Localizer()
 
-        # STEP #2 - Localizer can be created with custom language
+        assert sut is not None
+
+    def test_creation_with_custom_language(self):
+
+        """
+        Tests that a Localizer instance can be created with a custom language.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = Localizer(language='hu', default_language='ja', cache_default=True)
 
-        # STEP #3 - Localizer can be created with Google Translate enabled.
+        assert sut is not None
+
+    def test_creation_with_google_translate_enabled(self):
+
+        """
+        Tests that a Localizer instance can be created with Google Translate
+        enabled.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = Localizer(language='de', auto_translate=True)
+
+        assert sut is not None
 
     def test_retrieving_entries(self):
 
         """
         Tests that localized texts can be retrieved from the Localizer.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Simple retrieval
         sut = Localizer()
         assert sut.get(key='test_key') == 'test_data_en'
 
@@ -127,7 +157,11 @@ class TestLocalizer:
 
         """
         Tests that language can be switched at runtime.
+
+        Authors:
+            Attila Kovacs
         """
+
         sut = Localizer()
         assert sut.get(key='test_key') == 'test_data_en'
         sut.switch_language(new_language='de')
@@ -138,23 +172,38 @@ class TestLocalizer:
         """
         Tests that non-existent entries can be localized using Google
         Translate.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = Localizer(language='de', auto_translate=True)
         assert sut.get(key='autotranslate_key') == 'Schiff'
 
-    def test_update(self):
+    def test_update_with_reloading_default_language(self):
 
         """
-        Tests the update of localization files.
+        Tests the update of localization files with reloading the default
+        language.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test with reloading the default language as well
         sut = Localizer(language='en', default_language='en', cache_default=True)
         sut.update_localizations()
         assert sut.get(key='test_key') == 'test_data_en'
 
-        # STEP #2 - Test without reloading the default language
+    def test_update_without_reloading_default_language(self):
+
+        """
+        Tests the update of localization files without reloading the default
+        language.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = Localizer(language='en', default_language='en', cache_default=False)
         sut.update_localizations()
         assert sut.get(key='test_key') == 'test_data_en'
