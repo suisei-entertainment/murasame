@@ -39,12 +39,18 @@ class TestVFSLocalFile:
 
     """
     Contains the unit tests of the VFSLocalFile class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a VFSLocalFile object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSLocalFile()
@@ -54,6 +60,9 @@ class TestVFSLocalFile:
 
         """
         Tests that at a VFSLocalFile object can be serialized to a dictionary.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSLocalFile()
@@ -69,20 +78,41 @@ class TestVFSLocalFile:
 
         """
         Tests that a VFSLocalFile object can be deserialized from a dictionary.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Valid structure can be deserialized
         serialized = { 'type': 'localfile', 'path': '/test/path' }
         sut = VFSLocalFile()
         sut.deserialize(data=serialized)
         assert sut.Path == '/test/path'
+
+    def test_deserialization_of_invalid_structure(self):
+
+        """
+        Tests the deserialization of an invalid structure.
+
+        Authors:
+            Attila Kovacs
+        """
 
         # STEP #2 - Invalid structure cannot be deserialized
         sut = VFSLocalFile()
         with pytest.raises(InvalidInputError):
             sut.deserialize(data={'path': '/test/path'})
 
-        # STEP #3 - Structure without type marker cannot be deserialized
+
+    def test_deserialization_without_type_marker(self):
+
+        """
+        Tests deserialization without a valid type marker in the serialized
+        data.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = VFSLocalFile()
         serialized = { 'type': 'invalidtype', 'path': '/test/path' }
         with pytest.raises(InvalidInputError):

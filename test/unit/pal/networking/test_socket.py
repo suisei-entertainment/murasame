@@ -142,15 +142,21 @@ class TestSocket:
 
     """
     Contains unit tests for the socket wrappers.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_create_unencrypted_client_socket(self):
 
         """
-        Tests that an unencrypted client socket can be created.
+        Tests that an unencrypted client socket can be created with valid
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Client socket can be created with valid parameters
         sut = ClientSocket(name='testsocket', host='localhost', port=11492)
 
         assert sut.Name == 'testsocket'
@@ -160,7 +166,15 @@ class TestSocket:
 
         del sut
 
-        # STEP #2 - Socket can't be created with invalid port
+    def test_create_unencrypted_client_socket_with_invalid_port(self):
+
+        """
+        Tests creation of a client socket with invalid port.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
@@ -176,7 +190,15 @@ class TestSocket:
                                host='localhost',
                                port=123456789)
 
-        # STEP #3 - Socket can't be created with invalid protocol
+    def test_create_unencrypted_client_socket_with_invalid_protocol(self):
+
+        """
+        Tests creation of a client socket with invalid protocol.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(
                 name='testsocket',
@@ -193,10 +215,13 @@ class TestSocket:
     def test_create_unencrypted_server_socket(self):
 
         """
-        Tests that an unencrypted server socket can be created.
+        Tests that an unencrypted server socket can be created with valid
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Server socket can be created with valid parameters
         sut = ServerSocket(name='testsocket', host='', port=11492)
 
         assert sut.Name == 'testsocket'
@@ -206,7 +231,15 @@ class TestSocket:
 
         del sut
 
-        # STEP #2 - Socket can't be created with invalid port
+    def test_create_unencrypted_server_socket_with_invalid_port(self):
+
+        """
+        Test creation of unencrypted server socket with invalid port.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ServerSocket(name='testsocket',
                                host='localhost',
@@ -222,7 +255,21 @@ class TestSocket:
                                host='localhost',
                                port=123456789)
 
-        # STEP #3 - Socket can't be created with invalid protocol
+    # This test seems to throw a warning about a non-raisable exception in
+    # pytest around the ServerSocket descructor not having _client_threads
+    # which is not true. Might be related to pytest internally changing the
+    # class structure? It seems to be a false positive, so ignore this warning
+    # for now.
+    @pytest.mark.filterwarnings('ignore')
+    def test_create_unencrypted_server_socket_with_invalid_protocol(self):
+
+        """
+        Test creation of unencrypted server socket with invalid protocol.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ServerSocket(
                 name='testsocket',
@@ -233,10 +280,13 @@ class TestSocket:
     def test_create_tls12_client_socket(self):
 
         """
-        Tests that a TLS v1.2 encrypted client socket can be created.
+        Tests that a TLS v1.2 encrypted client socket can be created with valid
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Client socket can be created with valid parameters
         sut = ClientSocket(
             name='testsocket',
             host='localhost',
@@ -251,7 +301,15 @@ class TestSocket:
 
         del sut
 
-        # STEP #2 - Socket can't be created with invalid port
+    def test_create_tls12_client_socket_with_invalid_port(self):
+
+        """
+        Tests TLS v1.2 client socket creation with invalid port.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
@@ -276,10 +334,13 @@ class TestSocket:
     def test_create_tls12_server_socket(self):
 
         """
-        Tests that a TLS v1.2 encrypted server socket can be created.
+        Tests that a TLS v1.2 encrypted server socket can be created with valid
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Server socket can be created with valid parameters
         sut = ServerSocket(
             name='testsocket',
             host='',
@@ -294,7 +355,15 @@ class TestSocket:
 
         del sut
 
-        # STEP #2 - Socket can't be created with invalid port
+    def test_create_tls12_server_socket_with_invalid_port(self):
+
+        """
+        Tests creation of TLSv1.2 server socket with invalid port.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ServerSocket(name='testsocket',
                                host='localhost',
@@ -319,10 +388,13 @@ class TestSocket:
     def test_create_tls13_client_socket(self):
 
         """
-        Tests that a TLS v1.3 encrypted client socket can be created.
+        Tests that a TLS v1.3 encrypted client socket can be created with valid
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Client socket can be created with valid parameters
         sut = ClientSocket(
             name='testsocket',
             host='localhost',
@@ -337,7 +409,15 @@ class TestSocket:
 
         del sut
 
-        # STEP #2 - Socket can't be created with invalid port
+    def test_create_tls13_client_socket_with_invalid_port(self):
+
+        """
+        Test creation of TLSv1.3 client socket with invalid port.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
@@ -362,10 +442,13 @@ class TestSocket:
     def test_create_tls13_server_socket(self):
 
         """
-        Tests that a TLS v1.3 encrypted server socket can be created.
+        Tests that a TLS v1.3 encrypted server socket can be created with valid
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Server socket can be created
         sut = ServerSocket(
             name='testsocket',
             host='',
@@ -380,7 +463,15 @@ class TestSocket:
 
         del sut
 
-        # STEP #2 - Socket can't be created with invalid port
+    def test_create_tls13_server_socket_with_invalid_port(self):
+
+        """
+        Tests creation of TLSv1.3 server socket with invalid port.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
@@ -406,6 +497,9 @@ class TestSocket:
 
         """
         Messages can be sent between sockets.
+
+        Authors:
+            Attila Kovacs
         """
 
         # Setup
@@ -428,7 +522,6 @@ class TestSocket:
         os.chdir(base_path)
 
         # STEP #1 - Test sending from client socket
-
         try:
             subprocess.run('python server.py', shell=True, check=True)
         except subprocess.CalledProcessError as error:

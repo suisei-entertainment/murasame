@@ -43,12 +43,18 @@ class TestVFS:
 
     """
     Contains the unit tests for the VFS class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a VFS object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         SystemLocator.instance().register_provider(VFSAPI, VFS())
@@ -57,13 +63,15 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-    def test_adding_nodes(self):
+    def test_adding_nodes_normally(self):
 
         """
         Tests that nodes can be added to the VFS.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Normal addition
         SystemLocator.instance().register_provider(VFSAPI, VFS())
         sut = SystemLocator.instance().get_provider(VFSAPI)
 
@@ -76,7 +84,15 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-        # STEP #2 - Adding a node with the same name twice results in a merge
+    def test_adding_duplicate_node(self):
+
+        """
+        Tests that adding a node with the same name twice results in a merge.
+
+        Authors:
+            Attila Kovacs
+        """
+
         SystemLocator.instance().register_provider(VFSAPI, VFS())
         sut = SystemLocator.instance().get_provider(VFSAPI)
 
@@ -96,7 +112,15 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-        # STEP #3 - Node can be added to existing parent
+    def test_adding_node_to_existing_parent(self):
+
+        """
+        Tests that a node can be added to an existing parent.
+
+        Authors:
+            Attila Kovacs
+        """
+
         SystemLocator.instance().register_provider(VFSAPI, VFS())
         sut = SystemLocator.instance().get_provider(VFSAPI)
 
@@ -116,6 +140,9 @@ class TestVFS:
 
         """
         Tests that nodes can be removed from the VFS.
+
+        Authors:
+            Attila Kovacs
         """
 
         SystemLocator.instance().register_provider(VFSAPI, VFS())
@@ -132,6 +159,9 @@ class TestVFS:
 
         """
         Tests that file system directories can be added to the VFS.
+
+        Authors:
+            Attila Kovacs
         """
 
         # Create test directories
