@@ -143,288 +143,519 @@ class TestLogWriter:
         assert sut.LogLevel == LogLevels.INFO
         SystemLocator.instance().reset()
 
-    def test_trace_message(self):
+    def test_trace_message_with_log_level_trace(self):
 
         """
-        Tests that TRACE level messages are handled correctly.
+        Tests that TRACE level messages are handled correctly when log level
+        is set to TRACE.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is TRACE
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.TRACE)
         sut.trace(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is not writen if log level is above TRACE
+    def test_trace_message_with_log_level_above_trace(self):
+
+        """
+        Tests that TRACE level messages are handled correctly when log level
+        is set above TRACE.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.trace(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #3 - Message is not writen if logging has been suspended
+    def test_trace_message_with_logging_suspended(self):
+
+        """
+        Tests that TRACE level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.TRACE)
         sut.suspend_logging()
         sut.trace(message='test')
         assert not sut.CachedLogEntries
 
-    def test_debug_message(self):
+    def test_debug_message_with_log_level_debug(self):
 
         """
-        Tests that DEBUG level messages are handled correctly.
+        Tests that DEBUG level messages are handled correctly when log level is
+        set to DEBUG.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is DEBUG
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.debug(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is not writen if log level is above DEBUG
+    def test_debug_message_with_log_level_below_debug(self):
+
+        """
+        Tests that DEBUG level messages are handled correctly when log level is
+        below DEBUG.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = LogWriter(channel_name='test', cache_entries=True)
+        sut.overwrite_log_level(new_log_level=LogLevels.TRACE)
+        sut.debug(message='test')
+        assert sut.CachedLogEntries[0].Message == 'test'
+
+    def test_debug_message_with_log_level_above_debug(self):
+
+        """
+        Tests that DEBUG level messages are handled correctly when log level is
+        above DEBUG.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.INFO)
         sut.debug(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #3 - Message is not writen if logging has been suspended
+    def test_debug_message_with_logging_suspended(self):
+
+        """
+        Tests that DEBUG level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.debug(message='test')
         assert not sut.CachedLogEntries
 
-    def test_info_message(self):
+    def test_info_message_when_log_level_under_info(self):
 
         """
-        Tests that INFO level messages are handled correctly.
+        Tests that INFO level messages are handled correctly when log level is
+        set below INFO.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below INFO
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.info(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is INFO
+    def test_info_message_when_log_level_is_info(self):
+
+        """
+        Tests that INFO level messages are handled correctly when log level is
+        set to INFO.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.INFO)
         sut.info(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if log level is above INFO
+    def test_info_message_when_log_level_above_info(self):
+
+        """
+        Tests that INFO level messages are handled correctly when log level is
+        set above INFO.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.info(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #4 - Message is not writen if logging has been suspended
+    def test_info_message_when_logging_suspended(self):
+
+        """
+        Tests that INFO level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.info(message='test')
         assert not sut.CachedLogEntries
 
-    def test_notice_message(self):
+    def test_notice_message_with_log_level_below_notice(self):
 
         """
-        Tests that NOTICE level messages are handled correctly.
+        Tests that NOTICE level messages are handled correctly when log level
+        is set below NOTICE.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below NOTICE
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.notice(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is NOTICE
+    def test_notice_message_with_log_level_notice(self):
+
+        """
+        Tests that NOTICE level messages are handled correctly when log level
+        is set to NOTICE.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.NOTICE)
         sut.notice(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if log level is above NOTICE
+    def test_notice_message_with_log_level_above_notice(self):
+
+        """
+        Tests that NOTICE level messages are handled correctly when log level
+        is set above NOTICE.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.notice(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #4 - Message is not writen if logging has been suspended
+    def test_notice_message_when_logging_suspended(self):
+
+        """
+        Tests that NOTICE level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.notice(message='test')
         assert not sut.CachedLogEntries
 
-    def test_warning_message(self):
+    def test_warning_message_with_log_level_below_warning(self):
 
         """
-        Tests that WARNING level messages are handled correctly.
+        Tests that WARNING level messages are handled correctly when log level
+        is set below WARNING.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below WARNING
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.warning(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is WARNING
+    def test_warning_message_with_log_level_warning(self):
+
+        """
+        Tests that WARNING level messages are handled correctly when log level
+        is set to WARNING.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.WARNING)
         sut.warning(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if log level is above WARNING
+    def test_warning_message_with_log_level_above_warning(self):
+
+        """
+        Tests that WARNING level messages are handled correctly when log level
+        is set above WARNING.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.warning(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #4 - Message is not writen if logging has been suspended
+    def test_warning_message_with_logging_suspended(self):
+
+        """
+        Tests that WARNING level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.warning(message='test')
         assert not sut.CachedLogEntries
 
-    def test_error_message(self):
+    def test_error_message_with_log_level_below_error(self):
 
         """
-        Tests that ERROR level messages are handled correctly.
+        Tests that ERROR level messages are handled correctly when log level is
+        set below ERROR.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below ERROR
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.error(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is ERROR
+    def test_error_message_with_log_level_error(self):
+
+        """
+        Tests that ERROR level messages are handled correctly when log level is
+        set to ERROR.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.ERROR)
         sut.error(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if log level is above ERROR
+    def test_error_message_with_log_level_above_error(self):
+
+        """
+        Tests that ERROR level messages are handled correctly when log level is
+        set above ERROR.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.error(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #5 - Message is not writen if logging has been suspended
+    def test_error_message_with_logging_suspended(self):
+
+        """
+        Tests that ERROR level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.error(message='test')
         assert not sut.CachedLogEntries
 
-    def test_critical_message(self):
+    def test_critical_message_with_log_level_below_critical(self):
 
         """
-        Tests that CRITICAL level messages are handled correctly.
+        Tests that CRITICAL level messages are handled correctly when log level
+        is set below CRITICAL.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below CRITICAL
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.critical(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is CRITICAL
+    def test_critical_message_with_log_level_critical(self):
+
+        """
+        Tests that CRITICAL level messages are handled correctly when log level
+        is set to CRITICAL.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.CRITICAL)
         sut.critical(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if log level is above CRITICAL
+    def test_critical_message_with_log_level_above_critical(self):
+
+        """
+        Tests that CRITICAL level messages are handled correctly when log level
+        is set above CRITICAL.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.critical(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #4 - Message is not writen if logging has been suspended
+    def test_critical_message_with_logging_suspended(self):
+
+        """
+        Tests that CRITICAL level messages are handled correctly when logging
+        is suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.critical(message='test')
         assert not sut.CachedLogEntries
 
-    def test_alert_message(self):
+    def test_alert_message_with_log_level_below_alert(self):
 
         """
-        Tests that ALERT level messages are handled correctly.
+        Tests that ALERT level messages are handled correctly when log level
+        is set below ALERT.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below ALERT
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.alert(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is ALERT
+    def test_alert_message_with_log_level_alert(self):
+
+        """
+        Tests that ALERT level messages are handled correctly when log level
+        is set to ALERT.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.ALERT)
         sut.alert(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if log level is above ALERT
+    def test_alert_message_with_log_level_above_alert(self):
+
+        """
+        Tests that ALERT level messages are handled correctly when log level
+        is set above ALERT.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.alert(message='test')
         assert not sut.CachedLogEntries
 
-        # STEP #4 - Message is not writen if logging has been suspended
+    def test_alert_message_with_logging_suspended(self):
+
+        """
+        Tests that ALERT level messages are handled correctly when logging is
+        suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
         sut.alert(message='test')
         assert not sut.CachedLogEntries
 
-    def test_emergency_message(self):
+    def test_emergency_message_with_log_level_below_emergency(self):
 
         """
-        Tests that EMERGENCY level messages are handled correctly.
+        Tests that EMERGENCY level messages are handled correctly when log
+        level is set below EMERGENCY.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Message is written if log level is below EMERGENCY
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.emergency(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #2 - Message is written if log level is EMERGENCY
+    def test_emergency_message_with_log_level_emergency(self):
+
+        """
+        Tests that EMERGENCY level messages are handled correctly when log
+        level is set to EMERGENCY.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.EMERGENCY)
         sut.emergency(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-        # STEP #3 - Message is not writen if logging has been suspended
+    def test_emergency_message_with_logging_suspended(self):
+
+        """
+        Tests that EMERGENCY level messages are handled correctly when logging
+        is suspended.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = LogWriter(channel_name='test', cache_entries=True)
         sut.overwrite_log_level(new_log_level=LogLevels.DEBUG)
         sut.suspend_logging()
