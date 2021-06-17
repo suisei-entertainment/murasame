@@ -131,57 +131,90 @@ class TestCPUDetection:
 
     """
     Contains the unit tests of HostCPU class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that the HostCPU object can be created without errors.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostCPU()
+        assert sut is not None
 
-    def test_architecture_detection(self):
+    def test_architecture_detection_with_cpuinfo(self):
 
         """
-        Tests that the host CPU architecture can be detected correctly.
+        Tests that the host CPU architecture can be detected correctly by using
+        cpuinfo.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Normal detection through cpuinfo
         sut = HostCPU()
         sut._detect_architecture(TEST_DATA)
         assert sut.Architecture in ('X86_64', 'AARCH64')
 
-        # STEP #2 - Fallback detection through platform
+    def test_architecture_detection_with_platform(self):
+
+        """
+        Tests that the host CPU architecture can be detected correctly by using
+        platform.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostCPU()
         sut._detect_architecture({})
         assert sut.Architecture in ('X86_64', 'AARCH64')
 
-    def test_cpu_count_detection(self):
+    def test_cpu_count_detection_with_cpuinfo(self):
 
         """
-        Tests that the amount of CPU cores can be detected correctly.
+        Tests that the amount of CPU cores can be detected correctly with using
+        cpuinfo.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Normal detection through cpuinfo
         sut = HostCPU()
         sut._detect_cpu_count(TEST_DATA)
         assert sut.NumCores == 16
         assert sut.NumPhysicalCores != -1
 
-        # STEP #2 - Fallback detection through multiprocessing
+    def test_cpu_count_detection_with_multiprocessing(self):
+
+        """
+        Tests that the amount of CPU cores can be detected correctly with using
+        multiprocessing.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostCPU()
         sut._detect_cpu_count({})
         assert sut.NumCores != -1
         assert sut.NumPhysicalCores != -1
 
-    def test_cpu_type_detection(self):
+    def test_cpu_type_detection_with_cpuinfo(self):
 
         """
-        Tests that the CPU type can be detected correctly.
+        Tests that the CPU type can be detected correctly with cpuinfo.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Normal detection through cpuinfo
         sut = HostCPU()
         sut._detect_cpu_type(TEST_DATA)
         assert sut.VendorID == 'GenuineIntel'
@@ -191,7 +224,16 @@ class TestCPUDetection:
         assert sut.ExtendedModel == 2
         assert sut.Family == 6
 
-        # STEP #2 - Missing cpuinfo data
+
+    def test_cpu_type_detection_with_missing_cpuinfo(self):
+
+        """
+        Tests that the CPU type can be detected correctly without cpuinfo.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostCPU()
         sut._detect_cpu_type({})
         assert sut.VendorID == 'UNKNOWN'
@@ -201,34 +243,55 @@ class TestCPUDetection:
         assert sut.ExtendedModel == -1
         assert sut.Family == -1
 
-    def test_cpu_speed_detection(self):
+    def test_cpu_speed_detection_with_cpuinfo(self):
 
         """
         Tests that the CPU speed can be detected correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Normal detection through cpuinfo
         sut = HostCPU()
         sut._detect_cpu_speed(TEST_DATA)
         assert sut.MaxSpeed == '2.6000 GHz'
 
-        # STEP #2 - Detection with empty cpuinfo
+    def test_cpu_speed_detection_without_cpuinfo(self):
+
+        """
+        Tests that the CPU type can be detected correctly without cpuinfo.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostCPU()
         sut._detect_cpu_speed({})
         assert sut.MaxSpeed == 'UNKNOWN'
 
-    def test_cpu_cache_detection(self):
+    def test_cpu_cache_detection_with_cpuinfo(self):
 
         """
-        Tests that the CPU cache size can be detected correctly.
+        Tests that the CPU cache size can be detected correctly with cpuinfo.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Normal detection through cpuinfo
         sut = HostCPU()
         sut._detect_cache_data(TEST_DATA)
         assert sut.L2CacheSize == '256 KB'
 
-        # STEP #2 - Detection with empty cpuinfo
+    def test_cpu_cache_detection_without_cpuinfo(self):
+
+        """
+        Tests that the CPU cache size can be detected correctly without
+        cpuinfo.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostCPU()
         sut._detect_cache_data({})
         assert sut.L2CacheSize == 'UNKNOWN'

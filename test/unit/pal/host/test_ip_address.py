@@ -40,12 +40,18 @@ class TestIPAddress:
 
     """
     Contains the unit tests of IpAddress class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_ip_address_creation(self):
 
         """
         Tests that a IpAddress instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = IPAddress(address='192.168.0.1',
@@ -60,6 +66,15 @@ class TestIPAddress:
         assert not sut.is_localhost()
         assert not sut.is_link_local_address()
 
+    def test_ipv4_address_creation(self):
+
+        """
+        Tests that an IPv4Address instance can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = IPv4Address(address='192.168.0.1',
                           netmask='255.255.255.0',
                           broadcast_address='192.168.0.255',
@@ -71,6 +86,15 @@ class TestIPAddress:
         assert sut.BroadcastAddress == '192.168.0.255'
         assert not sut.is_localhost()
         assert not sut.is_link_local_address()
+
+    def test_ipv6_address_creation(self):
+
+        """
+        Tests that an IPv6Address instance can be created.
+
+        Authors:
+            Attila Kovacs
+        """
 
         sut = IPv6Address(address='2001:0db8:85a3:0000:0000:8a2e:0370:7334',
                           netmask='ffff:ffff:ffff::',

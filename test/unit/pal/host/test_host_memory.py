@@ -38,12 +38,18 @@ class TestHostMemory:
 
     """
     Contains the unit tests of HostMemory class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostMemory instance can be created successfully.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostMemory()

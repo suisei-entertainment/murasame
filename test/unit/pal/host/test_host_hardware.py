@@ -38,12 +38,18 @@ class TestHostHardware:
 
     """
     Contains the unit tests of HostHardware class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostHardware instance can be created successfully.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostHardware()

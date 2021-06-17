@@ -38,12 +38,18 @@ class TestHostPython:
 
     """
     Contains the unit tests of HostPython class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostPython instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostPython()
@@ -63,6 +69,9 @@ class TestHostPython:
 
         This testcase assumes that tests are always executed in a virtualenv
         environment.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostPython()

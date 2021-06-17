@@ -38,12 +38,18 @@ class TestHostDistribution:
 
     """
     Contains the unit tests of HostDistribution class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostDistribution instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostDistribution()

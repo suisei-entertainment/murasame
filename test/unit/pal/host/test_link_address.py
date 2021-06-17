@@ -38,12 +38,18 @@ class TestLinkAddress:
 
     """
     Contains the unit tests of LinkAddress class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a LinkAddress instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = LinkAddress(address='00:0A:95:9D:68:16')

@@ -38,12 +38,18 @@ class TestPhysicalInterface:
 
     """
     Contains the unit tests of PhysicalInterface class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a PhysicalInterface instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = PhysicalInterface(interface_name='test')
@@ -52,7 +58,10 @@ class TestPhysicalInterface:
     def test_link_address_handling(self):
 
         """
-        Tests that link adddresses are handled correctly.
+        Tests that link addresses are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = PhysicalInterface(interface_name='test')
@@ -66,6 +75,9 @@ class TestPhysicalInterface:
 
         """
         Tests that IPv4 addresses are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = PhysicalInterface(interface_name='test')
@@ -87,6 +99,9 @@ class TestPhysicalInterface:
 
         """
         Tests that IPv6 addresses are handled correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = PhysicalInterface(interface_name='test')

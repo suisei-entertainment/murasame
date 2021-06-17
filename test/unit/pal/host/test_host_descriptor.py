@@ -38,12 +38,18 @@ class TestHostDescriptor:
 
     """
     Contains the unit tests of HostDescriptor class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostDescriptor instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostDescriptor()

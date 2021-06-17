@@ -36,12 +36,18 @@ class TestHostSystem:
 
     """
     Contains the unit tests of HostSystem class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostSystem instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostSystem()
@@ -51,6 +57,9 @@ class TestHostSystem:
 
         """
         Tests that a HostSystem instane can be initialized.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostSystem()

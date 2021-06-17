@@ -39,12 +39,18 @@ class TestHostOS:
 
     """
     Contains the unit tests of HostOS class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostOS instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostOS()

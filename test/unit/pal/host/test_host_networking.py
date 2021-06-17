@@ -38,12 +38,18 @@ class TestHostNetworking:
 
     """
     Contains the unit tests of HostNetworking class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a HostNetworking instance can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = HostNetworking()

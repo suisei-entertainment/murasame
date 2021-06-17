@@ -54,34 +54,45 @@ def find_mmdb(members):
             member.name = os.path.basename(member.name)
             yield member
 
+GEOIP_DOWNLOAD_URL = \
+    'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=pELDCVUneMIsHhyU&suffix=tar.gz'
+
 class TestHostLocation:
 
     """
     Contains the unit tests of HostLocation class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    @classmethod
+    def setup_class(cls):
 
-        """
-        Tests that a HostLocation instance can be created successfully.
-        """
-
-        # Download a GeoIP database
-        download_url = \
-            'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=pELDCVUneMIsHhyU&suffix=tar.gz'
-
-        print('')
-        print('Downloading GeoIP database...')
-        wget.download(url=download_url, out=DATABASE_PACKAGE_PATH)
-        print('')
-        print('Extracting GeoIP database...')
+        # Download a new GeoIP database
+        wget.download(url=GEOIP_DOWNLOAD_URL, out=DATABASE_PACKAGE_PATH)
         tar = tarfile.open(DATABASE_PACKAGE_PATH)
         tar.extractall(path='/tmp', members=find_mmdb(tar))
         tar.close()
         shutil.move(src='/tmp/GeoLite2-City.mmdb', dst=DATABASE_PATH)
         os.remove(DATABASE_PACKAGE_PATH)
 
-        # STEP #1 - Create with a valid IP, but without a database
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(DATABASE_PATH):
+            os.remove(DATABASE_PATH)
+
+    def test_creation_with_valid_ip_without_database(self):
+
+        """
+        Tests that a HostLocation instance can be created successfully with
+        a valid IP address but without a GeoIP database.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = HostLocation(public_ip='5.187.173.113',
                                database_path='/data')
@@ -91,7 +102,16 @@ class TestHostLocation:
             assert sut.PostalCode == 'UNKNOWN'
             assert sut.Location == (0,0)
 
-        # STEP #2 - Create with an invalid IP and without a database
+    def test_creation_without_valid_ip_without_database(self):
+
+        """
+        Tests that a HostLocation instance can be created successfully without
+        a valid IP address and a GeoIP database.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = HostLocation(public_ip='192.168.0.1',
                                database_path='/data')
@@ -101,7 +121,16 @@ class TestHostLocation:
             assert sut.PostalCode == 'UNKNOWN'
             assert sut.Location == (0,0)
 
-        # STEP #3 - Create with a valid IP and a database
+    def test_creation_with_valid_ip_and_database(self):
+
+        """
+        Tests that a HostLocation instance can be created successfully with
+        a valid IP address and GeoIP database.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostLocation(public_ip='5.187.173.113',
                            database_path=DATABASE_DIR)
         assert sut.Continent != 'UNKNOWN'
@@ -110,7 +139,16 @@ class TestHostLocation:
         assert sut.PostalCode != 'UNKNOWN'
         assert sut.Location != (0,0)
 
-        # STEP #4 - Create with an invalid IP and a database
+    def test_creation_with_invalid_ip_and_valid_database(self):
+
+        """
+        Tests that a HostLocation instance can be created successfully without
+        a valid IP address but with a GeoIP database.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = HostLocation(public_ip='192.168.0.1',
                            database_path=DATABASE_DIR)
         assert sut.Continent == 'UNKNOWN'
