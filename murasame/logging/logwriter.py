@@ -216,7 +216,7 @@ class LogWriter:
         if self.IsLoggingSuspended:
             return
 
-        if self._log_level == LogLevels.DEBUG:
+        if self._log_level <= LogLevels.DEBUG:
             entry = self._make_entry(level=LogLevels.DEBUG, message=message)
             self._log(entry=entry)
 
