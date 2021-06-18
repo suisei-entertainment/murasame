@@ -41,76 +41,144 @@ COMMON_PASSWORD_LIST_2 = "password1\npassword2\npassword3\npassword4"
 
 class TestPasswordComplexity:
 
+    @classmethod
+    def setup_class(cls):
+
+        with open(COMMON_PASSWORD_LIST_PATH, 'w') as pwd_file:
+            pwd_file.write(COMMON_PASSWORD_LIST)
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(COMMON_PASSWORD_LIST_PATH):
+            os.remove(COMMON_PASSWORD_LIST_PATH)
+
     def test_creation(self):
 
         """
         Tests that the password complexity validator can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Creation with default parameters
         sut = PasswordComplexity()
         assert sut is not None
         assert sut.validate(password='test')
 
-    def test_length_validation(self):
+    def test_length_validation_with_default_parameters(self):
 
         """
-        Tests that passwords are validated for length correctly.
+        Tests that passwords are validated for length correctly with default
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test with default parameters
         sut = PasswordComplexity()
         assert sut.validate(password='test')
         assert sut.validate(password='')
         assert sut.validate(password='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
-        # STEP #2 - Test with configured minimum length
+    def test_length_validation_with_minimum_length(self):
+
+        """
+        Tests that passwords are validated for length correctly with custom
+        minimum length specified.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(min_length=5)
         assert not sut.validate(password='test')
         assert sut.validate(password='test1')
 
-        # STEP #3 - Test with configured maximum length
+    def test_lenggth_validation_with_maximum_length(self):
+
+        """
+        Tests that passwords are validated for length correctly with custom
+        maximum length specified.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(max_length=5)
         assert sut.validate(password='test')
         assert not sut.validate(password='test11')
 
-    def test_character_validation(self):
+    def test_character_validation_with_default_parameters(self):
 
         """
-        Tests that passwords are validated for characters correctly.
+        Tests that passwords are validated for characters correctly with
+        default parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test with default parameters
         sut = PasswordComplexity()
         assert sut.validate(password='test')
         assert sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-        # STEP #2 - Test with lowercase required
+    def test_character_validation_with_lowercase_required(self):
+
+        """
+        Tests that passwords are validated for characters correctly with
+        lowercase character requirement configured.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(require_lower=True)
         assert sut.validate(password='test')
         assert not sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-        # STEP #3 - Test with uppercase required
+    def test_character_validation_with_uppercase_required(self):
+
+        """
+        Tests that passwords are validated for characters correctly with
+        uppercase character requirement configured.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(require_upper=True)
         assert not sut.validate(password='test')
         assert sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-        # STEP #4 - Test with lower and uppercase required
+    def test_character_validation_with_lowercase_uppercase_required(self):
+
+        """
+        Tests that passwords are validated for characters correctly with
+        lowercase and uppercase character requirement configured.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(require_lower=True, require_upper=True)
         assert not sut.validate(password='test')
         assert not sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-    def test_numerical_validation(self):
+    def test_numerical_validation_with_default_parameters(self):
 
         """
-        Tests that passwords are validated for numerical characters correctly.
+        Tests that passwords are validated for numerical characters correctly
+        with default parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test with default parameters
         sut = PasswordComplexity()
         assert sut.validate(password='test')
         assert sut.validate(password='TEST')
@@ -120,7 +188,16 @@ class TestPasswordComplexity:
         assert sut.validate(password='@')
         assert sut.validate(password='Test@')
 
-        # STEP #2 - Test with number required
+    def test_numerical_validation_with_custom_parameters(self):
+
+        """
+        Tests that passwords are validated for numerical characters correctly
+        with custom parameters.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(require_number=True)
         assert not sut.validate(password='test')
         assert not sut.validate(password='TEST')
@@ -130,13 +207,16 @@ class TestPasswordComplexity:
         assert not sut.validate(password='@')
         assert not sut.validate(password='Test@')
 
-    def test_symbol_required(self):
+    def test_symbol_required_with_default_parameters(self):
 
         """
-        Tests that passwords are validated for symbols correctly.
+        Tests that passwords are validated for symbols correctly with default
+        parameters.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Test with default parameters
         sut = PasswordComplexity()
         assert sut.validate(password='test')
         assert sut.validate(password='TEST')
@@ -146,7 +226,16 @@ class TestPasswordComplexity:
         assert sut.validate(password='@')
         assert sut.validate(password='Test@')
 
-        # STEP #2 - Test with symbol required
+    def test_symbol_required_with_custom_parameters(self):
+
+        """
+        Tests that passwords are validated for symbols correctly with custom
+        parameters.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = PasswordComplexity(require_symbol=True)
         assert not sut.validate(password='test')
         assert not sut.validate(password='TEST')
@@ -160,13 +249,11 @@ class TestPasswordComplexity:
 
         """
         Tests that passwords can be validated against a common password list.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # Setup
-        with open(COMMON_PASSWORD_LIST_PATH, 'w') as pwd_file:
-            pwd_file.write(COMMON_PASSWORD_LIST)
-
-        # STEP #1 - Test against password list
         sut = PasswordComplexity(not_common=True,
                                  common_pwds=COMMON_PASSWORD_LIST_PATH)
         assert sut.validate(password='test')
@@ -175,7 +262,19 @@ class TestPasswordComplexity:
         assert not sut.validate(password='password3')
         assert sut.validate(password='password4')
 
-        # STEP #2 - Test against reloaded password list
+    def test_common_passwords_after_list_reload(self):
+
+        """
+        Tests that passwords can be validated against a common password list
+        after reloading the list.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = PasswordComplexity(not_common=True,
+                                 common_pwds=COMMON_PASSWORD_LIST_PATH)
+
         with open(COMMON_PASSWORD_LIST_PATH, 'w') as pwd_file:
             pwd_file.write(COMMON_PASSWORD_LIST_2)
 

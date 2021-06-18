@@ -38,12 +38,18 @@ class TestPasswordGenerator:
 
     """
     Contains the unit tests of the PasswordGenerator class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_generation(self):
+    def test_generation_single_character(self):
 
         """
-        Tests password generation.
+        Tests password generation of a single character.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - Generate a single character
@@ -51,7 +57,15 @@ class TestPasswordGenerator:
 
         assert len(pwd) == 1
 
-        # STEP #2 - Generate multiple characters
+    def test_generation_multiple_characters(self):
+
+        """
+        Tests password generation of multiple characters.
+
+        Authors:
+            Attila Kovacs
+        """
+
         pwd = PasswordGenerator.generate(pwd_length=12)
 
         assert len(pwd) == 12
