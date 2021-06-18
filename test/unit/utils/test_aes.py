@@ -34,32 +34,47 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.utils import AESCipher
 
+TEST_STRING = 'this is a test'
+
+KEY = 'secret test password'
+
 class TestAESEncryption:
 
     """
     Contains the unit tests for the content encryption functions.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_content_encrpytion(self):
+    def test_content_encrpytion_same_cipher(self):
 
         """
-        Tests that content can be encrpyted and decrypted successfully.
+        Tests that content can be encrypted and decrypted successfully with
+        the same AES cipher.
+
+        Authors:
+            Attila Kovacs
         """
 
-        test_string = 'this is a test'
-        key = 'secret test password'
-
-        # STEP #1 - Encrypt and decrypt using the same AESCipher object.
-        sut = AESCipher(key)
-        encrypted = sut.encrypt(test_string)
+        sut = AESCipher(KEY)
+        encrypted = sut.encrypt(TEST_STRING)
         decrypted = sut.decrypt(encrypted)
-        assert decrypted == test_string
+        assert decrypted == TEST_STRING
 
-        # STEP #2 - Encrypt and decrypt using different AESCipher objects
-        sut1 = AESCipher(key)
-        encrypted = sut1.encrypt(test_string)
+    def test_content_encryption_different_ciphers(self):
 
-        sut2 = AESCipher(key)
+        """
+        Tests that content can be encrypted and decrypted successfully with
+        different AES cipher objects.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut1 = AESCipher(KEY)
+        encrypted = sut1.encrypt(TEST_STRING)
+
+        sut2 = AESCipher(KEY)
         decrypted = sut2.decrypt(encrypted)
-        assert decrypted == test_string
-
+        assert decrypted == TEST_STRING
