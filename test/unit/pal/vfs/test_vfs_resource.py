@@ -40,12 +40,18 @@ class TestPackageContent:
 
     """
     Contains the unit tests for the VFSResource class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a VFSResource object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSResource(descriptor=VFSLocalFile(),

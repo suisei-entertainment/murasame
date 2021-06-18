@@ -38,12 +38,18 @@ class TestPackageFile:
 
     """
     Contains the unit tests for the PackageFile class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a PackageFile object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSPackageFile()

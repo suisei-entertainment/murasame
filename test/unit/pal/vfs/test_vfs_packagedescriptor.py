@@ -38,12 +38,18 @@ class TestPackageDescriptor:
 
     """
     Contains the unit tests for the PackageDescriptor class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a PackageDescriptor object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = PackageDescriptor()

@@ -79,21 +79,36 @@ class TestVFSNode:
 
     """
     Contains the unit tests for the VFSNode class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation_root_node(self):
 
         """
-        Tests that a VFSNode object can be created.
+        Tests that a VFSNode object can be created as the root node of the
+        VFS tree.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Create root node
         sut = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
         assert sut.isroot()
         assert sut.Name == 'ROOT'
 
-        # STEP #2 - Create non-root node
+    def test_creation_non_root_node(self):
+
+        """
+        Tests that a VFSNode object can be created as a non-root node of the
+        VFS tree.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
         assert not sut.isroot()
@@ -103,35 +118,55 @@ class TestVFSNode:
         assert not sut.Resources
         assert not sut.Latest
 
-        # STEP #3 - Root node can only be a directory node
+    def test_creation_non_directory_root_node(self):
+
+        """
+        Tests that the root node of the VFS tree can only be a directory node.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = VFSNode(node_name='', node_type=VFSNodeTypes.FILE)
 
-    def test_type_checking(self):
+    def test_type_checking_of_directory_node(self):
 
         """
-        Tests that the type of the node can be checked.
+        Tests that the type of a directory node can be checked.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Directory node
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
         assert sut.Type == VFSNodeTypes.DIRECTORY
         assert sut.isdir()
         assert not sut.isfile()
 
-        # STEP #2 - File node
+    def test_type_checking_of_file_node(self):
+
+        """
+        Tests that the type of a file node can be checked.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.FILE)
         assert sut.Type == VFSNodeTypes.FILE
         assert not sut.isdir()
         assert sut.isfile()
 
-    def test_adding_resource(self):
+    def test_adding_single_resource(self):
 
         """
-        Tests that resources can be added to the node.
+        Tests that a single VFS resource can be added to the node.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Single resource can be added
         resource1 = VFSResource(descriptor=VFSLocalFile(),
                                 data={'version': 1,
                                       'descriptor': {
@@ -144,7 +179,16 @@ class TestVFSNode:
         assert sut.Latest == resource1
         assert sut.NumResources == 1
 
-        # STEP #2 - Multiple resources with different versions can be added
+    def test_adding_multiple_resources_with_different_version(self):
+
+        """
+        Tests that multiple VFS resources with difference resource versions
+        can be added to the node.
+
+        Authors:
+            Attila Kovacs
+        """
+
         resource1 = VFSResource(descriptor=VFSLocalFile(),
                                 data={'version': 1,
                                       'descriptor': {
@@ -164,7 +208,16 @@ class TestVFSNode:
         assert sut.Latest == resource2
         assert sut.NumResources == 2
 
-        # STEP #3 - Resource with an existing version number is not added
+    def test_adding_multiple_resources_with_same_version(self):
+
+        """
+        Tests that a second VFS resource with the same version as an already
+        existing resource cannot be added to the node.
+
+        Authors:
+            Attila Kovacs
+        """
+
         resource1 = VFSResource(descriptor=VFSLocalFile(),
                                 data={'version': 1,
                                       'descriptor': {
@@ -184,7 +237,15 @@ class TestVFSNode:
         assert sut.Latest == resource1
         assert sut.NumResources == 1
 
-        # STEP #4 - Resources can be added in any order
+    def test_adding_resource_in_any_order(self):
+
+        """
+        Tests that resources can be added to the VFS node in any order.
+
+        Authors:
+            Attila Kovacs
+        """
+
         resource1 = VFSResource(descriptor=VFSLocalFile(),
                                 data={'version': 1,
                                       'descriptor': {
@@ -218,13 +279,15 @@ class TestVFSNode:
         assert sut.NumResources == 4
         assert sut.Latest == resource4
 
-    def test_removing_resource(self):
+    def test_removing_single_resource(self):
 
         """
-        Tests that resources can be removed from the node.
+        Tests that a single VFS resource can be removed from the node.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - A single resource can be removed
         resource1 = VFSResource(descriptor=VFSLocalFile(),
                                 data={'version': 1,
                                       'descriptor': {
@@ -237,7 +300,16 @@ class TestVFSNode:
 
         assert sut.NumResources == 0
 
-        # STEP #2 - A resource from multiple resources can be removed
+    def test_removing_single_resource_from_multiple(self):
+
+        """
+        Tests that a single VFS resource can be removed from the node when
+        multiple resource are added to the node.
+
+        Authors:
+            Attila Kovacs
+        """
+
         resource1 = VFSResource(descriptor=VFSLocalFile(),
                                 data={'version': 1,
                                       'descriptor': {
@@ -268,6 +340,9 @@ class TestVFSNode:
 
         """
         Tests that a VFS node can be serialized to a dictionary.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSNode(node_name='test1')
@@ -288,6 +363,9 @@ class TestVFSNode:
 
         """
         Tests that a VFS node can be deserialized from a dictionary.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSNode(node_name='whatever')

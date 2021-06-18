@@ -110,6 +110,9 @@ class TestPackage:
 
     """
     Contains the unit tests for the VFSPackage class.
+
+    Authors:
+        Attila Kovacs
     """
 
     @classmethod
@@ -169,6 +172,9 @@ class TestPackage:
 
         """
         Tests that a VFSPackage object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = VFSPackage(path=TEST_PACKAGE_PATH)
@@ -179,6 +185,9 @@ class TestPackage:
 
         """
         Tests that a VFSPackage loads correctly from file.
+
+        Authors:
+            Attila Kovacs
         """
 
         vfs = SystemLocator.instance().get_provider(VFSAPI)

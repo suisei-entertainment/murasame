@@ -39,23 +39,47 @@ class TestResourceVersion:
 
     """
     Contains the unit tests for the ResourceVersion class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation_with_valid_version_number(self):
 
         """
-        Tests that a ResourceVersion object can be created.
+        Tests that a ResourceVersion object can be created with a valid version
+        number.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Creation with valid version number is possible
         sut = ResourceVersion(version=1)
         assert sut is not None
 
-        # STEP #2 - Creation without a version number is not possible
+    def test_creation_without_version_number(self):
+
+        """
+        Tests that a RersourceVersion object cannot be created without a
+        version number.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(TypeError):
             sut = ResourceVersion()
 
-        # STEP #3 - Creation with invalid version number is not possible
+    def test_creation_with_invalid_version_number(self):
+
+        """
+        Tests that a ResourceVersion object cannot be created with an invalid
+        version number.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ResourceVersion(version=0)
 
@@ -66,6 +90,9 @@ class TestResourceVersion:
 
         """
         Tests that resource version instances can be compared.
+
+        Authors:
+            Attila Kovacs
         """
         sut1 = ResourceVersion(version=1)
         sut2 = ResourceVersion(version=1)
@@ -98,6 +125,9 @@ class TestResourceVersion:
         """
         Tests that the string represenations of a resource version object are
         correct.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = ResourceVersion(version=1)
@@ -109,6 +139,9 @@ class TestResourceVersion:
 
         """
         Tests that the version number can be bumped.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = ResourceVersion(version=1)
