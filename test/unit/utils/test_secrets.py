@@ -52,17 +52,17 @@ class TestSecrets:
 
     """
     Contains all unit tests of the GeoIP class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
-
-        """
-        Tests that a GeoIP object can be created.
-        """
+    @classmethod
+    def setup_class(cls):
 
         # Create the test file
         config_file = JsonFile(
-            path='{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY),
+            path=f'{TEST_CONFIG_DIRECTORY}/secrets.conf',
             cb_retrieve_key=get_password)
         config_file.overwrite_content(content=TEST_DATA)
         config_file.save()
@@ -70,23 +70,32 @@ class TestSecrets:
         # Set the environment variable
         os.environ['MURASAME_SECRETS_KEY'] = TEST_PASSWORD
 
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(f'{TEST_CONFIG_DIRECTORY}/secrets.conf'):
+            os.remove(f'{TEST_CONFIG_DIRECTORY}/secrets.conf')
+
+    def test_creation(self):
+
+        """
+        Tests that a Secrets object can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = Secrets(config_directory=TEST_CONFIG_DIRECTORY)
+        assert sut is not None
 
     def test_query(self):
 
         """
         Tests that values can be retrieved from the secrets file.
+
+        Authors:
+            Attila Kovacs
         """
-
-        # Create the test file
-        config_file = JsonFile(
-            path='{}/secrets.conf'.format(TEST_CONFIG_DIRECTORY),
-            cb_retrieve_key=get_password)
-        config_file.overwrite_content(content=TEST_DATA)
-        config_file.save()
-
-        # Set the environment variable
-        os.environ['MURASAME_SECRETS_KEY'] = TEST_PASSWORD
 
         sut = Secrets(config_directory=TEST_CONFIG_DIRECTORY)
         assert sut.get_secret(key='testkey') == 'testvalue'

@@ -39,6 +39,9 @@ class TestSingletonObject:
 
     """
     Basic test singleton.
+
+    Authors:
+        Attila Kovacs
     """
 
     def __init__(self):
@@ -49,6 +52,9 @@ class TestSingletonObject:
 
         """
         Simple test function to test function calling on the singleton.
+
+        Authors:
+            Attila Kovacs
         """
 
         self.testvalue = 'modified'
@@ -57,19 +63,31 @@ class TestSingleton:
 
     """
     Test suite for the Singleton annotation.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_singleton_access(self):
+    def test_singleton_access_through_instance(self):
 
         """
         Test accessing the singleton through the instance method.
+
+        Authors: Attila Kovacs
         """
 
-        # STEP 1 - Singleton access through the instance() method
         sut = TestSingletonObject.instance()
         assert sut.testvalue == 'test'
 
-        # STEP 2 - Singleton cannot be accessed outside the instance() method.
+    def test_singleton_instance_outside_instance(self):
+
+        """
+        Tests accessing the singleton outside the instance method.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(TypeError):
             sut = TestSingletonObject()
 
@@ -77,6 +95,9 @@ class TestSingleton:
 
         """
         Test calling functions on the singleton.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = TestSingletonObject.instance()
@@ -87,6 +108,9 @@ class TestSingleton:
 
         """
         Test the instance check functionality of the Singleton.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = TestSingletonObject.instance()
