@@ -38,12 +38,18 @@ class TestDices:
 
     """
     Contains the unit tests for the Dices class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_dice_rolling(self):
 
         """
         Tests random number generation by throwing dices.
+
+        Authors:
+            Attila Kovacs
         """
 
         assert Dices.roll() == 0

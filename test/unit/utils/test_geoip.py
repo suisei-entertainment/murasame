@@ -43,36 +43,52 @@ class TestGeoIP:
 
     """
     Contains all unit tests of the GeoIP class.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_creation(self):
-
-        """
-        Tests that a GeoIP object can be created.
-        """
+    @classmethod
+    def setup_class(cls):
 
         # Delete the database if it's already there
         if os.path.isfile('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH)):
             os.remove('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
 
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH)):
+            os.remove('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
+
+    def test_creation(self):
+
+        """
+        Tests that a GeoIP object can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
                     database_path=DATABASE_PATH)
-
 
         assert sut is not None
         assert os.path.isfile(
             '{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
 
-    def test_geoip_query(self):
+    def test_geoip_query_with_valid_ip_address(self):
 
         """
-        Tests that IP addresses can be queried.
+        Tests that valid IP addresses can be queried.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
                     database_path=DATABASE_PATH)
 
-        # STEP #1 - Query valid IP address
         result = sut.query('5.187.173.113')
         assert result is not None
         assert result.IPAddress == '5.187.173.113'
@@ -83,10 +99,43 @@ class TestGeoIP:
         assert result.Latitude == 47.6838
         assert result.Longitude == 19.1401
 
-        # STEP #2 - Query internal IP address
+    def test_geoip_with_local_ip_address(self):
+
+        """
+        Test querying an internal IP address for GeoIP.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
+                    database_path=DATABASE_PATH)
+
         result = sut.query('192.168.0.1')
         assert result is not None
         assert result.IPAddress == '192.168.0.1'
+        assert result.Continent == 'UNKNOWN'
+        assert result.Country == 'UNKNOWN'
+        assert result.City == 'UNKNOWN'
+        assert result.PostalCode == 'UNKNOWN'
+        assert result.Latitude == 'UNKNOWN'
+        assert result.Longitude == 'UNKNOWN'
+
+    def test_geoip_with_invalid_ip_address(self):
+
+        """
+        Test querying an invalid IP address for GeoIP.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
+                    database_path=DATABASE_PATH)
+
+        result = sut.query('256.256.0.1')
+        assert result is not None
+        assert result.IPAddress == '256.256.0.1'
         assert result.Continent == 'UNKNOWN'
         assert result.Country == 'UNKNOWN'
         assert result.City == 'UNKNOWN'

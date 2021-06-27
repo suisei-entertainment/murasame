@@ -309,6 +309,10 @@ class GeoIP:
                     latitude=response.location.latitude,
                     longitude=response.location.longitude)
             except geoip2.errors.AddressNotFoundError:
+                # Raised when the IP address is not found in the database
+                result = GeoIPData(ip_address=ip_address)
+            except ValueError:
+                # Raised when trying to query an invalid IP address
                 result = GeoIPData(ip_address=ip_address)
 
         return result
