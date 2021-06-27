@@ -342,15 +342,21 @@ class TestProductVersion:
 
     """
     Contains the unit tests for the ProductVersion class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_product_version_creation(self):
 
         """
-        Tests that a product version instance can be created successfully.
+        Tests that a product version instance can be created successfully with
+        normal config data.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Product version can be created with normal config data
         sut = ProductVersion(SIMPLE_TEST_VERSION)
 
         assert sut.MajorVersion == 1
@@ -361,19 +367,53 @@ class TestProductVersion:
         assert sut.SCM == 'abcdef'
         assert sut.Build == '0'
 
-        # STEP #2 - Product version can't be created with invalid major version
+    def test_product_version_creation_with_invalid_major_version(self):
+
+        """
+        Tests that product version cannot be created with invalid major
+        version.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(INVALID_MAJOR_VERSION)
 
-        # STEP #3 - Product version can't be created with invalid minor version
+    def test_product_version_creation_with_invalid_minor_version(self):
+
+        """
+        Tests that product version cannot be created with invalid minor
+        version.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(INVALID_MINOR_VERSION)
 
-        # STEP #4 - Product version can't be created with invalid patch level
+    def test_product_version_creation_with_invalid_major_patch_level(self):
+
+        """
+        Tests that product version cannot be created with invalid patch level.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(INVALID_PATCH_LEVEL)
 
-        # STEP #5 - Product version can be created without metadata
+    def test_product_version_creation_without_metadata(self):
+
+        """
+        Tests that product version can be created without metadata.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(NO_METADATA)
         assert sut.MajorVersion == 1
         assert sut.MinorVersion == 2
@@ -382,7 +422,15 @@ class TestProductVersion:
         assert sut.Codename == 'UNKNOWN'
         assert sut.SCM == 'UNKNOWN'
 
-        # STEP #6 - Product version can be created with partial metadata
+    def test_product_version_creation_with_partial_metadata(self):
+
+        """
+        Tests that product version can be created with partial metadata.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(METADATA_NO_CODENAME)
         assert sut.MajorVersion == 1
         assert sut.MinorVersion == 2
@@ -399,23 +447,63 @@ class TestProductVersion:
         assert sut.Codename == 'test'
         assert sut.SCM == 'UNKNOWN'
 
-        # STEP #7 - Product version can't be created without major version
+    def test_product_version_creation_with_no_major_version(self):
+
+        """
+        Tests that product version cannot be created without a major version.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(NO_MAJOR_VERSION)
 
-        # STEP #8 - Product version can't be created without minor version
+    def test_product_version_creation_with_no_minor_version(self):
+
+        """
+        Tests that product version cannot be created without a minor version.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(NO_MINOR_VERSION)
 
-        # STEP #9 - Product version can't be created without patch leve
+    def test_product_version_creation_with_no_patch_level(self):
+
+        """
+        Tests that product version cannot be created without a patch level.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(NO_PATCH_LEVEL)
 
-        # STEP #10 - Product version can be created without a release level
+    def test_product_version_creation_with_no_release_level(self):
+
+        """
+        Tests that product version can be created with no release level.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(NO_RELEASE_LEVEL)
         assert sut.ReleaseLevel == ProductVersion.ReleaseLevels.GA
 
-        # STEP #11 - Product version can be created with various release levels
+    def test_product_version_creation_with_various_release_levels(self):
+
+        """
+        Tests the creation of product version with various release levels.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(INTERNAL_VERSION)
         assert sut.MajorVersion == 1
         assert sut.MinorVersion == 2
@@ -456,13 +544,29 @@ class TestProductVersion:
         assert sut.Codename == 'test'
         assert sut.SCM == 'abcdef'
 
-        # STEP #12 - Product version can't be created with invalid release
-        #            level
+    def test_product_version_creation_with_invalid_release_level(self):
+
+        """
+        Tests that a product version cannot be created with invalid release
+        level.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(INVALID_RELEASE_LEVEL)
 
-        # STEP #13 - Product version can't be created with negative version
-        #            numbers
+    def test_product_version_creation_with_negative_version_numbers(self):
+
+        """
+        Tests that product version cannot be created with negative version
+        numbers.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(NEGATIVE_MAJOR_VERSION)
 
@@ -472,48 +576,85 @@ class TestProductVersion:
         with pytest.raises(InvalidInputError):
             sut = ProductVersion(NEGATIVE_PATCH_LEVEL)
 
-    def test_metadata_retrieval(self):
+    def test_metadata_retrieval_in_raw_format(self):
 
         """
-        Tests that metadata can be retrieved from the product version
+        Tests that metadata can be retrieved from the product version in raw
+        format.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Metadata can be retrieved in a raw format
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         assert sut.MetaData == {'codename': 'test', 'scm': 'abcdef'}
 
-        # STEP #2 - Additional metadata fields can be accessed through the
-        #           raw format
+    def test_accessing_metadata_fields_through_raw_format(self):
+
+        """
+        Tests that metadata fields can be accessed through the raw metadata.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(ADDITIONAL_METADATA)
         assert sut.MetaData == {'codename': 'test', 'scm': 'abcdef', 'additional': 'data'}
         assert sut.Build == '0'
         assert sut.MetaData['additional'] == 'data'
 
-        # STEP #3 - Build number can be retrieved
+    def test_accessing_build_number(self):
+
+        """
+        Tests that the build number can be accessed.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(VERSION_WITH_BUILD_NUMBER)
         assert sut.Build == '1'
 
         sut = ProductVersion(NO_METADATA)
         assert sut.Build == '0'
 
-    def test_version_string_conversion(self):
+    def test_version_string_conversion_full_version(self):
 
         """
-        Tests string representations of the product version
+        Tests string representations of the full product version.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Tests that the full product version is correct
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         assert sut.VersionString == '1.2.3-BETA+test(abcdef)'
 
         sut = ProductVersion(NO_METADATA)
         assert sut.VersionString == '1.2.3-BETA'
 
-        # STEP #2 - Tests that the short product version is correct
+    def test_version_string_conversion_short_version(self):
+
+        """
+        Tests string represnetation of the short product version.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         assert sut.ShortVersionString == '1.2.3'
 
-        # STEP #3 - Tests that the metadata conversion string is correct
+    def test_version_string_metadata_conversion(self):
+
+        """
+        Tests that the metadata conversion to string in the product version is
+        correct.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         assert sut.MetaString == 'test(abcdef)'
 
@@ -526,8 +667,15 @@ class TestProductVersion:
         sut = ProductVersion(METADATA_NO_SCM)
         assert sut.MetaString == 'test(UNKNOWN)'
 
-        # STEP #4 - Tests that string conversion for various release levels is
-        #           correct.
+    def test_version_string_conversion_release_levels(self):
+
+        """
+        Tests that the string conversion of various release levels is correct.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(INTERNAL_VERSION)
         assert sut.VersionString == '1.2.3-DEVELOPMENT+test(abcdef)'
 
@@ -547,6 +695,9 @@ class TestProductVersion:
 
         """
         Tests that product versions can be compared by using operators
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = ProductVersion(SIMPLE_TEST_VERSION)
@@ -588,28 +739,54 @@ class TestProductVersion:
         assert sut.__str__() == '1.2.3-BETA+test(abcdef)'
         assert sut.__hash__() == hash(sut.VersionString)
 
-    def test_version_number_bumping(self):
+    def test_bumping_major_version(self):
 
         """
-        Tests that version numbers can be bumped.
+        Tests that major version can be bumped.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Bump major version
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         sut.bump_major_version()
         assert sut.VersionString == '2.0.0-BETA+test(abcdef)'
 
-        # STEP #2 - Bump minor version
+    def test_bumping_minor_version(self):
+
+        """
+        Tests that minor version can be bumped.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         sut.bump_minor_version()
         assert sut.VersionString == '1.3.0-BETA+test(abcdef)'
 
-        # STEP #3 - Bump patch level
+    def test_bumping_patch_level(self):
+
+        """
+        Tests that patch level can be bumped.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(SIMPLE_TEST_VERSION)
         sut.bump_patch_level()
         assert sut.VersionString == '1.2.4-BETA+test(abcdef)'
 
-        # STEP #4 - Bump build number
+    def test_bumping_build_number(self):
+
+        """
+        Tests that build number can be bumped.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = ProductVersion(VERSION_WITH_BUILD_NUMBER)
         sut.bump_build_number()
         assert sut.VersionString == '1.2.3-BETA+UNKNOWN(Build 2)'
