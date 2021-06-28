@@ -51,6 +51,9 @@ def get_password():
 
     Returns:
         The test password.
+
+    Authors:
+        Attila Kovacs
     """
 
     return 'testpassword'
@@ -59,26 +62,34 @@ class TestYamlFile:
 
     """
     Contains all unit tests of the JsonFile class.
+
+    Authors:
+        Attila Kovacs
     """
 
     def test_creation(self):
 
         """
         Tests that a JsonFile object can be created.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP 1 - Create file
         sut = YamlFile(path=TEST_FILE_PATH)
         assert sut.Path is not None
         assert sut.Content == {}
 
-    def test_saving_and_loading_json_file(self):
+    def test_saving_and_loading_compacted_yaml_file(self):
 
         """
-        Tests that YAML content can be saved to and loaded from a file on disk.
+        Tests that YAML content can be saved to and loaded from a file on disk
+        in compacted format.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Compacted YAML file
         sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
         sut1.save()
@@ -88,7 +99,16 @@ class TestYamlFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-        # STEP #2 - Formatted YAML file
+    def test_saving_and_loading_formatted_yaml_file(self):
+
+        """
+        Tests that YAML content can be saved to and loaded from a file on disk
+        formatted.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
         sut1.save(compact=False)
@@ -98,11 +118,14 @@ class TestYamlFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_saving_and_loading_encrypted_json_file(self):
+    def test_saving_and_loading_encrypted_yaml_file(self):
 
         """
         Tests that YAML content can be saved to and loaded from an encrypted
         file on disk.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut1 = YamlFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
@@ -117,38 +140,56 @@ class TestYamlFile:
 
         """
         Tests loading a non-existent YAML file is handled properly.
+
+        Authors:
+            Attila Kovacs
         """
 
         sut = YamlFile(path=INVALID_TEST_FILE_PATH)
         sut.load()
         assert sut.Content == {}
 
-    def test_savig_file_to_invalid_location(self):
+    def test_savig_unencrypted_file_to_invalid_location(self):
 
         """
-        Tests that the file is not saved to an invalid location.
+        Tests that the unencrypted file is not saved to an invalid location.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Unencrypted YAML file
         sut = YamlFile(path='/invalid/path/to/somewhere/file.yaml')
         with pytest.raises(RuntimeError):
             sut.save()
 
-        # STEP #2 - Encrypted YAML file
+    def test_savig_encrypted_file_to_invalid_location(self):
+
+        """
+        Tests that the encrypted file is not saved to an invalid location.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = YamlFile(path='/invalid/path/to/somewhere/file.yaml',
                        cb_retrieve_key=get_password)
         with pytest.raises(RuntimeError):
             sut.save()
 
-    def test_loading_malformed_yaml_file(self):
+    def test_loading_unencrypted_malformed_yaml_file(self):
+
+        """
+        Tests that an unencrypted malformed YAML file cannot be loaded.
+
+        Authors:
+            Attila Kovacs
+        """
 
         # Create a malformed file
         malformed_json = '{invalid yaml: [}'
         with open(MALFORMED_FILE_PATH, 'w+') as malformed:
             malformed.write(malformed_json)
 
-        # STEP 1 - Trying to load a malformed YAML file results in
-        # an exception
         sut = YamlFile(path=MALFORMED_FILE_PATH)
         with pytest.raises(InvalidInputError):
             sut.load()
@@ -160,14 +201,28 @@ class TestYamlFile:
         with open(MALFORMED_FILE_PATH, 'wb') as malformed:
             malformed.write(content)
 
-        # STEP #2 - Trying to load an encrypted and malformed JSON file results
-        # in an exception
+    def test_loading_encrypted_malformed_yaml_file(self):
+
+        """
+        Tests that an encrypted malformed YAML file cannot be loaded.
+
+        Authors:
+            Attila Kovacs
+        """
 
         sut = YamlFile(path=MALFORMED_FILE_PATH, cb_retrieve_key=get_password)
         with pytest.raises(InvalidInputError):
             sut.load()
 
     def test_overwrite_yaml_file_content(self):
+
+        """
+        Tests that the content of a YAML file can be overwritten.
+
+        Authors:
+            Attila Kovacs
+        """
+
 
         sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
