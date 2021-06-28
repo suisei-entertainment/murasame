@@ -24,6 +24,7 @@ Contains the unit tests of the Singleton class.
 # Runtime Imports
 import os
 import sys
+import shutil
 
 # Dependency Imports
 import pytest
@@ -59,12 +60,49 @@ class TestSystemLocator:
 
     """
     Contains the unit tests of the system locator pattern.
+
+    Authors:
+        Attila Kovacs
     """
+
+    @classmethod
+    def setup_class(cls):
+
+        sys.path.append(os.path.abspath(os.path.expanduser(
+            '~/.murasame/testfiles/')))
+
+        if not os.path.isdir(SYSTEM_DIR):
+            os.mkdir(SYSTEM_DIR)
+
+            # Create a test system file
+            system_file = f'{SYSTEM_DIR}/testsystem.py'
+            with open(system_file, 'w+') as test_file:
+                test_file.write(TEST_SYSTEM)
+
+            # Create an __init__.py file
+            init_file = f'{SYSTEM_DIR}/__init__.py'
+            with open(init_file, 'w+') as test_file:
+                test_file.write('\n')
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(f'{SYSTEM_DIR}/testsystem.py'):
+            os.remove(f'{SYSTEM_DIR}/testsystem.py')
+
+        if os.path.isfile(f'{SYSTEM_DIR}/__init__.py'):
+            os.remove(f'{SYSTEM_DIR}/__init__.py')
+
+        if os.path.isdir(SYSTEM_DIR):
+            shutil.rmtree(SYSTEM_DIR, ignore_errors=True)
 
     def test_system_path(self):
 
         """
         Tests that system paths can be created correctly.
+
+        Authors:
+            Attila Kovacs
         """
 
         system_path = '/path/to/systems'
@@ -74,29 +112,15 @@ class TestSystemLocator:
         assert sut.Path == system_path
         assert sut.Package == system_package
 
-    def test_system_discovery(self):
+    def test_system_discovery_with_valid_system_path(self):
 
         """
-        Tests that system discovery works properly.
+        Tests that system discovery works properly when a valid system path
+        is provided.
+
+        Authors:
+            Attila Kovacs
         """
-
-        sys.path.append(os.path.abspath(os.path.expanduser(
-            '~/.murasame/testfiles/')))
-
-        if not os.path.isdir(SYSTEM_DIR):
-            os.mkdir(SYSTEM_DIR)
-
-        # Create a test system file
-        system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
-        with open(system_file, 'w+') as test_file:
-            test_file.write(TEST_SYSTEM)
-
-        # Create an __init__.py file
-        init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
-        with open(init_file, 'w+') as test_file:
-            test_file.write('\n')
-
-        # STEP #1 - Load a valid system path
 
         # Register the path with the system locator
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
@@ -108,7 +132,17 @@ class TestSystemLocator:
 
         assert SystemLocator.instance().get_provider(AbstractSystem) is not None
 
-        # STEP #2 - Try to load an invalid system path
+    def test_system_discovery_with_valid_system_path(self):
+
+        """
+        Tests that system discovery works properly when an invalid system path
+        is provided.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        from systems.testsystem import AbstractSystem
         SystemLocator.instance().register_path('/invalid/path', 'systems')
         SystemLocator.instance().discover_systems()
 
@@ -118,23 +152,10 @@ class TestSystemLocator:
 
         """
         Tests that system paths cannot be registered twice.
+
+        Authors:
+            Attila Kovacs
         """
-
-        sys.path.append(os.path.abspath(os.path.expanduser(
-            '~/.murasame/testfiles/')))
-
-        if not os.path.isdir(SYSTEM_DIR):
-            os.mkdir(SYSTEM_DIR)
-
-        # Create a test system file
-        system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
-        with open(system_file, 'w+') as test_file:
-            test_file.write(TEST_SYSTEM)
-
-        # Create an __init__.py file
-        init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
-        with open(init_file, 'w+') as test_file:
-            test_file.write('\n')
 
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
@@ -147,23 +168,10 @@ class TestSystemLocator:
 
         """
         Tests that systems can be accessed through the SystemLocator.
+
+        Authors:
+            Attila Kovacs
         """
-
-        sys.path.append(os.path.abspath(os.path.expanduser(
-            '~/.murasame/testfiles/')))
-
-        if not os.path.isdir(SYSTEM_DIR):
-            os.mkdir(SYSTEM_DIR)
-
-            # Create a test system file
-            system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
-            with open(system_file, 'w+') as test_file:
-                test_file.write(TEST_SYSTEM)
-
-            # Create an __init__.py file
-            init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
-            with open(init_file, 'w+') as test_file:
-                test_file.write('\n')
 
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
         SystemLocator.instance().discover_systems()
@@ -177,24 +185,10 @@ class TestSystemLocator:
 
         """
         Tests that the system locator can be reset.
+
+        Authors:
+            Attila Kovacs
         """
-
-        # STEP #1 - Reset should remove existing providers
-        sys.path.append(os.path.abspath(os.path.expanduser(
-            '~/.murasame/testfiles/')))
-
-        if not os.path.isdir(SYSTEM_DIR):
-            os.mkdir(SYSTEM_DIR)
-
-            # Create a test system file
-            system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
-            with open(system_file, 'w+') as test_file:
-                test_file.write(TEST_SYSTEM)
-
-            # Create an __init__.py file
-            init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
-            with open(init_file, 'w+') as test_file:
-                test_file.write('\n')
 
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
         SystemLocator.instance().discover_systems()
@@ -208,37 +202,34 @@ class TestSystemLocator:
         provider = SystemLocator.instance().get_provider(AbstractSystem)
         assert provider is None
 
-        # STEP #2 - New providers can be added after reset
+    def test_adding_providers_after_reset(self):
+
+        """
+        Tests that new providers can be registered after the system locator
+        has been reset.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        from systems.testsystem import AbstractSystem, ConcreteSystem
+        SystemLocator.instance().reset()
         SystemLocator.instance().register_provider(AbstractSystem, ConcreteSystem())
 
         provider = SystemLocator.instance().get_provider(AbstractSystem)
         assert provider is not None
         assert provider.system_function()
 
-    def test_provider_unregistration(self):
+    def test_unregistering_single_provider(self):
 
         """
-        Tests that registered system providers can be unregistered.
+        Tests that as single registered provider can be unregistered.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Unregistering a single provider
         SystemLocator.instance().reset()
-
-        sys.path.append(os.path.abspath(os.path.expanduser(
-            '~/.murasame/testfiles/')))
-
-        if not os.path.isdir(SYSTEM_DIR):
-            os.mkdir(SYSTEM_DIR)
-
-            # Create a test system file
-            system_file = '{}/{}'.format(SYSTEM_DIR, 'testsystem.py')
-            with open(system_file, 'w+') as test_file:
-                test_file.write(TEST_SYSTEM)
-
-            # Create an __init__.py file
-            init_file = '{}/{}'.format(SYSTEM_DIR, '__init__.py')
-            with open(init_file, 'w+') as test_file:
-                test_file.write('\n')
 
         SystemLocator.instance().register_path(SYSTEM_DIR, 'systems')
         SystemLocator.instance().discover_systems()
@@ -253,8 +244,16 @@ class TestSystemLocator:
 
         assert provider is None
 
-        # STEP #2 - Unregister all providers
-        from systems.testsystem import AbstractSystem
+    def test_unregistering_all_providers(self):
+
+        """
+        Tests that all providers can be unregistered.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        from systems.testsystem import AbstractSystem, ConcreteSystem
         SystemLocator.instance().reset()
         SystemLocator.instance().register_provider(AbstractSystem, ConcreteSystem())
 

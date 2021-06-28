@@ -49,6 +49,9 @@ def get_password():
 
     """
     Returns the test password to be used in the unit tests.
+
+    Authors:
+        Attila Kovacs
     """
 
     return b'testpassword'
@@ -57,34 +60,82 @@ class TestRSA:
 
     """
     Contains the RSA related unit tests.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_key_generation(self):
+    @classmethod
+    def setup_class(cls):
+
+        generator = RSAKeyGenerator(
+            key_length=RSAKeyLengths.KEY_LENGTH_4096)
+
+        generator.save_key_pair(
+            private_key_path=f'{KEY_PATH}/signing_private.pem',
+            public_key_path=f'{KEY_PATH}/signing_public.pem')
+
+    @classmethod
+    def teardown_class(cls):
+
+        if os.path.isfile(f'{KEY_PATH}/signing_private.pem'):
+            os.remove(f'{KEY_PATH}/signing_private.pem')
+
+        if os.path.isfile(f'{KEY_PATH}/signing_public.pem'):
+            os.remove(f'{KEY_PATH}/signing_public.pem')
+
+    def test_2048_bit_key_generation_without_encryption(self):
 
         """
-        Tests that an RSA key can be generated.
+        Tests that a 2048 bit unencrypted RSA key can be generated.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - 2048 bit RSA key can be generated without encryption
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
         assert sut.PrivateKey is not None
 
-        # STEP #2 - 4096 bit RSA key can be generated without encryption
+    def test_4096_bit_key_generation_without_encryption(self):
+
+        """
+        Tests that a 4096 bit unencrypted RSA key can be generated.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         assert sut.PrivateKey is not None
 
-        # STEP #3 - 2048 bit RSA key can be generated with encryption
+    def test_2048_bit_key_generation_with_encryption(self):
+
+        """
+        Tests that a 2048 bit encrypted RSA key can be generated.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048,
             cb_retrieve_password=get_password)
 
         assert sut.PrivateKey is not None
 
-        # STEP #4 - 4096 bit RSA key can be generated with encryption
+    def test_4096_bit_key_generation_with_encryption(self):
+
+        """
+        Tests that a 4096 bit encrypted RSA key can be generated.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096,
             cb_retrieve_password=get_password)
@@ -92,13 +143,15 @@ class TestRSA:
         assert sut.PrivateKey is not None
 
 
-    def test_saving_public_key(self):
+    def test_saving_2048_bit_public_key(self):
 
         """
-        Tests that the generated public key can be saved to disk.
+        Tests that the generated 2048 bit public key can be saved to disk.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - 2048 bit RSA public key can be saved
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
@@ -107,7 +160,15 @@ class TestRSA:
 
         assert os.path.isfile('{}/public_2048_1.pem'.format(KEY_PATH))
 
-        # STEP #2 - 4096 bit RSA public key can be saved
+    def test_saving_4096_bit_public_key(self):
+
+        """
+        Tests that the generated 4096 bit public key can be saved to disk.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
@@ -116,13 +177,16 @@ class TestRSA:
 
         assert os.path.isfile('{}/public_4096_1.pem'.format(KEY_PATH))
 
-    def test_saving_private_key(self):
+    def test_saving_2048_bit_unencrypted_private_key(self):
 
         """
-        Tests that the generated private key can be saved to disk.
+        Tests that the generated 2048 bit unencrypted private key can be saved
+        to disk.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - 2048 bit RSA public key can be saved unencrypted
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
@@ -131,7 +195,16 @@ class TestRSA:
 
         assert os.path.isfile('{}/private_2048_1.pem'.format(KEY_PATH))
 
-        # STEP #2 - 4096 bit RSA public key can be saved unencrypted
+    def test_saving_4096_bit_unencrypted_private_key(self):
+
+        """
+        Tests that the generated 4096 bit unencrypted private key can be saved
+        to disk.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
@@ -140,7 +213,16 @@ class TestRSA:
 
         assert os.path.isfile('{}/private_4096_1.pem'.format(KEY_PATH))
 
-        # STEP #3 - 2048 bit RSA public key can be saved encrypted
+    def test_saving_2048_bit_encrypted_private_key(self):
+
+        """
+        Tests that the generated 2048 bit encrypted private key can be saved
+        to disk.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048,
             cb_retrieve_password=get_password)
@@ -150,7 +232,16 @@ class TestRSA:
 
         assert os.path.isfile('{}/private_2048_2.pem'.format(KEY_PATH))
 
-        # STEP #4 - 4096 bit RSA public key can be saved encrypted
+    def test_saving_4096_bit_encrypted_private_key(self):
+
+        """
+        Tests that the generated 4096 bit encrypted private key can be saved
+        to disk.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096,
             cb_retrieve_password=get_password)
@@ -160,13 +251,15 @@ class TestRSA:
 
         assert os.path.isfile('{}/private_4096_2.pem'.format(KEY_PATH))
 
-    def test_saving_key_pair(self):
+    def test_saving_2048_bit_key_pair_unencrypted(self):
 
         """
-        Tests that an RSA key pair can be saved.
+        Tests that a 2048 bit RSA key pair can be saved unencrypted.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - 2048 bit key pair can be saved unencrypted
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
@@ -177,7 +270,15 @@ class TestRSA:
         assert os.path.isfile('{}/pair_private_2048_1.pem'.format(KEY_PATH))
         assert os.path.isfile('{}/pair_public_2048_1.pem'.format(KEY_PATH))
 
-        # STEP #2 - 4096 bit key pair can be saved unencrypted
+    def test_saving_4096_bit_key_pair_unencrypted(self):
+
+        """
+        Tests that a 4096 bit RSA key pair can be saved unencrypted.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
@@ -188,7 +289,15 @@ class TestRSA:
         assert os.path.isfile('{}/pair_private_4096_1.pem'.format(KEY_PATH))
         assert os.path.isfile('{}/pair_public_4096_1.pem'.format(KEY_PATH))
 
-        # STEP #3 - 2048 bit key pair can be saved encrypted
+    def test_saving_2048_bit_key_pair_encrypted(self):
+
+        """
+        Tests that a 2048 bit RSA key pair can be saved encrypted.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_2048,
             cb_retrieve_password=get_password)
@@ -200,7 +309,15 @@ class TestRSA:
         assert os.path.isfile('{}/pair_private_2048_2.pem'.format(KEY_PATH))
         assert os.path.isfile('{}/pair_public_2048_2.pem'.format(KEY_PATH))
 
-        # STEP #4 - 4096 bit key pair can be saved encrypted
+    def test_saving_4096_bit_key_pair_encrypted(self):
+
+        """
+        Tests that a 4096 bit RSA key pair can be saved encrypted.
+
+        Authors:
+            Attila Kovacs
+        """
+
         sut = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096,
             cb_retrieve_password=get_password)
@@ -212,13 +329,15 @@ class TestRSA:
         assert os.path.isfile('{}/pair_private_4096_2.pem'.format(KEY_PATH))
         assert os.path.isfile('{}/pair_public_4096_2.pem'.format(KEY_PATH))
 
-    def test_public_key_loading(self):
+    def test_loading_existing_public_key(self):
 
         """
-        Tests that a generated public key can be loaded.
+        Tests that an existing public key can be loaded.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Existing key file can be loaded
         generator = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
@@ -229,18 +348,27 @@ class TestRSA:
 
         assert sut.Key is not None
 
-        # STEP #2 - InvalidInputError is raised when trying to open a
-        #           non-existing key file.
+    def test_loading_non_existing_public_key(self):
+
+        """
+        Tests that a non-existent public key cannot be loaded.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = RSAPublic(key_path='/non/existing/path')
 
-    def test_private_key_loading(self):
+    def test_loading_unencrypted_private_key(self):
 
         """
         Tests that a generated private key can be loaded.
+
+        Authors:
+            Attila Kovacs
         """
 
-        # STEP #1 - Unencrypted RSA private key can be loaded
         generator = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
@@ -252,7 +380,15 @@ class TestRSA:
 
         assert sut.Key is not None
 
-        # STEP #2 - Encrypted RSA private key can be loaded
+    def test_loading_encrypted_private_key(self):
+
+        """
+        Tests that a generated encrypted private key can be loaded.
+
+        Authors:
+            Attila Kovacs
+        """
+
         generator = RSAKeyGenerator(
             key_length=RSAKeyLengths.KEY_LENGTH_4096,
             cb_retrieve_password=get_password)
@@ -266,23 +402,27 @@ class TestRSA:
 
         assert sut.Key is not None
 
-        # STEP #3 - InvalidInputError is raised when trying to open a
-        #           non-existing key file.
+    def test_loading_non_existing_private_key(self):
+
+        """
+        Tests that a non-existing private key cannot be loaded.
+
+        Authors:
+            Attila Kovacs
+        """
+
         with pytest.raises(InvalidInputError):
             sut = RSAPrivate(key_path='/non/existing/path')
 
-    def test_message_verification(self):
+    def test_message_verification_without_encoding(self):
 
         """
-        Tests that messages can be signed and verified using an RSA key pair.
+        Tests that messages can be signed and verified using an RSA key pair
+        without encoding.
+
+        Authors:
+            Attila Kovacs.
         """
-
-        generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_4096)
-
-        generator.save_key_pair(
-            private_key_path='{}/signing_private.pem'.format(KEY_PATH),
-            public_key_path='{}/signing_public.pem'.format(KEY_PATH))
 
         sut_signer = RSASigner(
             private_key_path='{}/signing_private.pem'.format(KEY_PATH))
@@ -292,11 +432,27 @@ class TestRSA:
 
         message = 'test message'
 
-        # STEP #1 - Test without encoding
         signature = sut_signer.sign(message)
         assert sut_verifier.verify(message, signature)
 
-        # #STEP #2 - Test with encoding
+    def test_message_verification_with_encoding(self):
+
+        """
+        Tests that messages can be signed and verified using an RSA key pair
+        with encoding.
+
+        Authors:
+            Attila Kovacs.
+        """
+
+        sut_signer = RSASigner(
+            private_key_path='{}/signing_private.pem'.format(KEY_PATH))
+
+        sut_verifier = RSAVerifier(
+            public_key_path='{}/signing_public.pem'.format(KEY_PATH))
+
+        message = 'test message'
+
         signature = sut_signer.sign(message=message, encode=True)
         assert sut_verifier.verify(
             message=message, signature=signature, encoded=True)
@@ -306,6 +462,9 @@ class TestRSA:
         """
         Tests that messages can be encrypted and decrypted using an RSA key
         pair.
+
+        Authors:
+            Attila Kovacs
         """
 
         generator = RSAKeyGenerator(
