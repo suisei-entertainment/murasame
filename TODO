@@ -12,7 +12,7 @@
     ✔ Support for PyPy builds in Travis
     ☐ Support for PyPi releases through Travis.
   Configuration Management:
-    ☐ Support for configuration files in VFS.
+    ✔ Support for configuration files in VFS.
   Debugging:
     ✔ Support for basic debugging decorators.
   Entity-Component Management:
@@ -32,7 +32,7 @@
     ✔ Support for basic host detection.
     ✔ Support for socket based network communication.
     ☐ Support for measuring traffic sent or received through sockets.
-    ☐ Basic virtual file system support based on directories.
+    ✔ Basic virtual file system support based on directories.
     ☐ Support for extending the virtual file system with packages.
     ☐ Support for encrypted files in the virtual file system.
   Password Management:
@@ -68,7 +68,7 @@
   Debugging:
 
   Entity-Component Management:
-    ☐ Support for local entity-component system.
+    ☐ Support for basic entity-component system.
   Exceptions:
 
   Licensing:
@@ -112,7 +112,7 @@
   Debugging:
 
   Entity-Component Management:
-    ☐ Support for distributed entity-component system.
+
   Exceptions:
 
   Licensing:
