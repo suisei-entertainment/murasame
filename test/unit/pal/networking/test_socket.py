@@ -138,6 +138,8 @@ class ExampleMessageTransformer(SocketMessageTransformer):
     def deserialize(self, message: bytes) -> str:
         return str(message, encoding='utf--8')
 
+BASE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/socket'))
+
 class TestSocket:
 
     """
@@ -146,6 +148,26 @@ class TestSocket:
     Authors:
         Attila Kovacs
     """
+
+    @classmethod
+    def setup_class(cls):
+
+        if not os.path.isdir(BASE_PATH):
+            os.mkdir(BASE_PATH)
+
+        client_path = f'{BASE_PATH}/client.py'
+        server_path = f'{BASE_PATH}/server.py'
+
+        with open(client_path, 'w') as client_file:
+            client_file.write(TEST_CLIENT)
+
+        with open(server_path, 'w') as server_file:
+            server_file.write(TEST_SERVER)
+
+    @classmethod
+    def teardown_class(cls):
+
+        shutil.rmtree(BASE_PATH)
 
     def test_create_unencrypted_client_socket(self):
 
@@ -493,33 +515,17 @@ class TestSocket:
                                ssl_protocol=BaseSocket.Protocols.TLSv13,
                                require_cert=False)
 
-    def test_message_sending(self):
+    def test_message_sending_from_client_socket(self):
 
         """
-        Messages can be sent between sockets.
+        Messages can be sent between sockets from a client socket.
 
         Authors:
             Attila Kovacs
         """
 
-        # Setup
-        base_path = os.path.abspath(
-            os.path.expanduser('~/.murasame/testfiles/socket'))
-
-        if not os.path.isdir(base_path):
-            os.mkdir(base_path)
-
-        client_path = f'{base_path}/client.py'
-        server_path = f'{base_path}/server.py'
-
-        with open(client_path, 'w') as client_file:
-            client_file.write(TEST_CLIENT)
-
-        with open(server_path, 'w') as server_file:
-            server_file.write(TEST_SERVER)
-
         current_dir = os.getcwd()
-        os.chdir(base_path)
+        os.chdir(BASE_PATH)
 
         # STEP #1 - Test sending from client socket
         try:
@@ -537,6 +543,20 @@ class TestSocket:
         client.disconnect()
         del client
 
+        os.chdir(current_dir)
+
+    def test_message_sending_from_server_socket(self):
+
+        """
+        Messages can be sent between sockets from a server socket.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        current_dir = os.getcwd()
+        os.chdir(BASE_PATH)
+
         # STEP #2 - Test sending from server socket
         server = ServerSocket(name='testsocket',
                               port=11492,
@@ -548,6 +568,5 @@ class TestSocket:
         except subprocess.CalledProcessError as error:
             assert False
 
-        # Cleanup
         os.chdir(current_dir)
-        shutil.rmtree(base_path)
+

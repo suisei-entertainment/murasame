@@ -223,7 +223,6 @@ class TestYamlFile:
             Attila Kovacs
         """
 
-
         sut1 = YamlFile(path=TEST_FILE_PATH)
         sut1.Content['test'] = 'test content'
         sut1.overwrite_content({'test': 'overwritten'})
