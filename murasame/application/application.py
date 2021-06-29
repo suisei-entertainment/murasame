@@ -62,7 +62,8 @@ class Application(LogWriter):
     Basic application class that implements fundamental application
     functionalities.
 
-    This implementation is based on the python-daemon implementation at:
+    The Unix daemon  implementation is based on the python-daemon
+    implementation at:
         https://github.com/serverdensity/python-daemon
     which is derived from:
         http://www.jejik.com/articles/2007/02/
@@ -177,7 +178,8 @@ class Application(LogWriter):
             # False positive, Pylint thinks sentry_sdk.init() is an abstract
             # class.
             #pylint: disable=abstract-class-instantiated
-            sentry_sdk.init(dsn=business_logic.SentryDSN)
+            sentry_sdk.init(dsn=business_logic.SentryDSN,
+                            before_send=business_logic.before_sentry_send)
             self.info('Sentry SDK has been initialized.')
 
         # Pylint doesn't recognize the instance() method of Singleton.

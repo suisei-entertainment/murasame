@@ -404,3 +404,23 @@ class BusinessLogic:
 
         del signum
         del frame
+
+    def before_sentry_send(self, event: object, hint: object) -> object:
+
+        """
+        Handler function that allows specifying custom logic that is executed
+        before the sentry report is sent.
+
+        Args:
+            event:      The event that is being captured.
+            hint:       Additional hint data.
+
+        Returns:
+            The modified event.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        del hint
+        return event
