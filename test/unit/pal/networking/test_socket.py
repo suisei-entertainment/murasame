@@ -527,7 +527,6 @@ class TestSocket:
         current_dir = os.getcwd()
         os.chdir(BASE_PATH)
 
-        # STEP #1 - Test sending from client socket
         try:
             subprocess.run('python server.py', shell=True, check=True)
         except subprocess.CalledProcessError as error:
@@ -557,7 +556,6 @@ class TestSocket:
         current_dir = os.getcwd()
         os.chdir(BASE_PATH)
 
-        # STEP #2 - Test sending from server socket
         server = ServerSocket(name='testsocket',
                               port=11492,
                               transformer=ExampleMessageTransformer(),
@@ -569,4 +567,3 @@ class TestSocket:
             assert False
 
         os.chdir(current_dir)
-
