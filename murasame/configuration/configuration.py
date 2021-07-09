@@ -33,8 +33,7 @@ from murasame.configuration.vfsconfigurationsource import VFSConfigurationSource
 
 class ConfigurationAPI:
 
-    """
-    System definition for the configuration system.
+    """System definition for the configuration system.
 
     Authors:
         Attila Kovacs
@@ -42,13 +41,12 @@ class ConfigurationAPI:
 
     def initialize(self, cb_retrieve_key: Callable = None) -> None:
 
-        """
-        Initializes the configuration system.
+        """Initializes the configuration system.
 
         Args:
-            cb_retrieve_key:        A callback function to call when the
-                                    configuration needs the decryption key to
-                                    the configuration files.
+            cb_retrieve_key (Callable): A callback function to call when the
+                configuration needs the decryption key to the configuration
+                files.
 
         Authors:
             Attila Kovacs
@@ -60,15 +58,13 @@ class ConfigurationAPI:
 
     def get(self, attribute: str) -> Any:
 
-        """
-        Retrieves the value of a single configuration attribute from the
-        configuration tree.
+        """Retrieves the value of a single configuration attribute.
 
         Args:
-            attribute:      Name of the attribute to retrieve.
+            attribute (str): Name of the attribute to retrieve.
 
         Returns:
-            The value of the attribute, or 'None' if it was not found.
+            Any: The value of the attribute, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -80,12 +76,11 @@ class ConfigurationAPI:
 
     def set(self, attribute: str, value: Any) -> None:
 
-        """
-        Sets the value of a given configuration attribute.
+        """Sets the value of a given configuration attribute.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Authors:
             Attila Kovacs
@@ -98,8 +93,7 @@ class ConfigurationAPI:
 
     def load(self) -> None:
 
-        """
-        Loads the configuration to memory.
+        """Loads the configuration to memory.
 
         Authors:
             Attila Kovacs
@@ -111,8 +105,7 @@ class ConfigurationAPI:
 
     def save(self) -> None:
 
-        """
-        Saves the current configuration.
+        """Saves the current configuration.
 
         Authors:
             Attila Kovacs
@@ -124,8 +117,16 @@ class ConfigurationAPI:
 
 class Configuration(LogWriter):
 
-    """
-    Main class of the configuration system.
+    """Main class of the configuration system.
+
+    Attributes:
+        _backend (ConfigurationBackend): The configuration backend to use to
+            store the configuration at runtime.
+
+        _sources (list): List of configuration sources.
+
+        _cb_config_key (Callable): The callback function to be used to retrieve
+            the password required to decrypt the configuration.
 
     Authors:
         Attila Kovacs
@@ -133,45 +134,36 @@ class Configuration(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new Configuration instance.
+        """Creates a new Configuration instance.
+
+        Authors:
+            Attila Kovacs
         """
 
         super().__init__(channel_name='murasame.configuration',
                          cache_entries=True)
 
         self._backend = None
-        """
-        The configuration backend to use to store the configuration at runtime.
-        """
-
         self._sources = []
-        """
-        List of configuration sources.
-        """
-
         self._cb_config_key = None
-        """
-        The callback function to be used to retrieve the password required to
-        decrypt the configuration.
-        """
 
     def initialize(
             self,
             backend_type: ConfigurationBackends = ConfigurationBackends.DICTIONARY,
             cb_retrieve_key: Callable = None) -> None:
 
-        """
-        Initializes the configuration system.
+        """Initializes the configuration system.
 
         This function will add the configuration node from VFS as a
         configuration source.
 
         Args:
-            backend_type:           The type of configuration backend to use.
-            cb_retrieve_key:        A callback function to call when the
-                                    configuration needs the decryption key to
-                                    the configuration files.
+            backend_type (ConfigurationBackends): The type of configuration
+                backend to use.
+
+            cb_retrieve_key (Callable): A callback function to call when the
+                configuration needs the decryption key to the configuration
+                files.
 
         Raises:
             RuntimeError:           Raised if no VFS provider can be retrieved.
@@ -200,19 +192,16 @@ class Configuration(LogWriter):
 
     def get(self, attribute: str) -> Any:
 
-        """
-        Retrieves the value of a single configuration attribute from the
-        configuration tree.
+        """Retrieves the value of a single configuration attribute.
 
         Args:
-            attribute:      Name of the attribute to retrieve.
+            attribute (str): Name of the attribute to retrieve.
 
         Raises:
-            RuntimeError:       Raised when no valid configuration backend is
-                                set.
+            RuntimeError: Raised when no valid configuration backend is set.
 
         Returns:
-            The value of the attribute, or 'None' if it was not found.
+            Any: The value of the attribute, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -230,18 +219,17 @@ class Configuration(LogWriter):
 
     def set(self, attribute: str, value: Any) -> None:
 
-        """
-        Sets the value of a given configuration attribute.
+        """Sets the value of a given configuration attribute.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Raises:
-            RuntimeError:       Raised when no valid configuration backend is
-                                set.
-            InvalidInputError:  Raised when trying to set the value of a
-                                non-existing attribute.
+            RuntimeError: Raised when no valid configuration backend is set.
+
+            InvalidInputError: Raised when trying to set the value of a
+                non-existing attribute.
 
         Authors:
             Attila Kovacs
@@ -261,8 +249,7 @@ class Configuration(LogWriter):
 
     def load(self) -> None:
 
-        """
-        Loads the configuration to memory.
+        """Loads the configuration to memory.
 
         Authors:
             Attila Kovacs
@@ -273,8 +260,7 @@ class Configuration(LogWriter):
 
     def save(self) -> None:
 
-        """
-        Saves the current configuration.
+        """Saves the current configuration.
 
         Authors:
             Attila Kovacs

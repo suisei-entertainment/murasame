@@ -21,13 +21,20 @@
 Contains the implementation of the ConfigurationAttribute class.
 """
 
+# Runtime Imports
+from typing import Any
+
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 
 class ConfigurationAttribute:
 
-    """
-    Representation of a single configuration attribute.
+    """Representation of a single configuration attribute.
+
+    Attributes:
+        _name (str): The name of the attribute
+        _value (Any): The currentvalue of the attribute.
+        _type (str): The data type of the attribute.
 
     Authors:
         Attila Kovacs
@@ -36,8 +43,7 @@ class ConfigurationAttribute:
     @property
     def Name(self) -> str:
 
-        """
-        The name of the attribute.
+        """The name of the attribute.
 
         Authors:
             Attila Kovacs
@@ -46,10 +52,9 @@ class ConfigurationAttribute:
         return self._name
 
     @property
-    def Value(self) -> object:
+    def Value(self) -> Any:
 
-        """
-        The current value of the attribute.
+        """The current value of the attribute.
 
         Authors:
             Attila Kovacs
@@ -58,7 +63,7 @@ class ConfigurationAttribute:
         return self._value
 
     @Value.setter
-    def Value(self, value: object) -> None:
+    def Value(self, value: Any) -> None:
 
         if self._type == 'STRING':
             self._value = str(value)
@@ -88,8 +93,7 @@ class ConfigurationAttribute:
     @property
     def Type(self) -> str:
 
-        """
-        The data type of the property.
+        """The data type of the property.
 
         Authors:
             Attila Kovacs
@@ -97,39 +101,26 @@ class ConfigurationAttribute:
 
         return self._type
 
-    def __init__(self, name: str, value: object, data_type: str) -> None:
+    def __init__(self, name: str, value: Any, data_type: str) -> None:
 
-        """
-        Creates a new ConfigurationAttribute instance.
+        """Creates a new ConfigurationAttribute instance.
 
         Args:
-            name:       The name of the attribute.
-            value:      The value of the attribute.
-            data_type:  The data type of the attribute.
+            name (str): The name of the attribute.
+            value (Any): The value of the attribute.
+            data_type (str): The data type of the attribute.
 
         Authors:
             Attila Kovacs
         """
 
         self._name = name
-        """
-        The name of the attribute
-        """
-
         self._value = value
-        """
-        The current value of the attribute.
-        """
-
         self._type = data_type
-        """
-        The data type of the attribute.
-        """
 
     def __str__(self) -> str:
 
-        """
-        Returns the string representation of the object.
+        """Returns the string representation of the object.
 
         Authors:
             Attila Kovacs
@@ -139,8 +130,7 @@ class ConfigurationAttribute:
 
     def __repr__(self) -> str:
 
-        """
-        Returns the string representation of the object.
+        """Returns the string representation of the object.
 
         Authors:
             Attila Kovacs

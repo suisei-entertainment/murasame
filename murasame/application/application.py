@@ -47,8 +47,7 @@ from murasame.pal.vfs import VFSAPI, VFS
 
 class ApplicationAPI:
 
-    """
-    API definition for the Application.
+    """API definition for the Application.
 
     Authors:
         Attila Kovacs
@@ -58,9 +57,7 @@ class ApplicationAPI:
 
 class Application(LogWriter):
 
-    """
-    Basic application class that implements fundamental application
-    functionalities.
+    """Basic application implementation containing fundamental functionalities.
 
     The Unix daemon  implementation is based on the python-daemon
     implementation at:
@@ -69,6 +66,14 @@ class Application(LogWriter):
         http://www.jejik.com/articles/2007/02/
         a_simple_unix_linux_daemon_in_python/www.boxedice.com
 
+    Attributes:
+        _business_logic (BusinessLogic): The business logic of the application.
+
+        _type (ApplicationTypes): The type of the application.
+
+        _alive (bool): Whether or not the application is running. Only used for
+            daemon applications.
+
     Authors:
         Attila Kovacs
     """
@@ -76,8 +81,7 @@ class Application(LogWriter):
     @property
     def BusinessLogic(self) -> 'BusinessLogic':
 
-        """
-        Provides access to the business logic of the application.
+        """The business logic of the application.
 
         Authors:
             Attila Kovacs
@@ -88,8 +92,7 @@ class Application(LogWriter):
     @property
     def Type(self) -> 'ApplicationTypes':
 
-        """
-        The type of the application.
+        """The type of the application.
 
         Authors:
             Attila Kovacs
@@ -102,22 +105,24 @@ class Application(LogWriter):
         business_logic: 'BusinessLogic',
         application_type: 'ApplicationTypes' = ApplicationTypes.DAEMON_APPLICATION) -> None:
 
-        """
-        Creates a new Application instance.
+        """Creates a new Application instance.
 
         Args:
-            business_logic:     The business logic implementation of the
-                                application.
-            type:               The type of application to create.
+            business_logic (BusinessLogic): The business logic implementation
+                of the application.
+
+            application_type (ApplicationTypes): The type of application to
+                create.
 
         Raises:
             InvalidInputError:  Raised if the provided business logic is
-                                invalid.
+                invalid.
+
             InvalidInputError:  Raised if the working directory specified by
-                                the business logic doesn't exist.
+                the business logic doesn't exist.
+
             InvalidInputError:  Raised if the working directory specified by
-                                the business logic doesn't have a configuration
-                                subdirectory.
+                the business logic doesn't have a configuration subdirectory.
 
         Authors:
             Attila Kovacs
@@ -127,19 +132,8 @@ class Application(LogWriter):
                          cache_entries=True)
 
         self._business_logic = business_logic
-        """
-        The business logic of the application.
-        """
-
         self._type = application_type
-        """
-        The type of the application.
-        """
-
         self._alive = False
-        """
-        Whether or not the daemon is alive.
-        """
 
         # Validate business logic
         self.debug('Validating business logic...')
@@ -221,8 +215,7 @@ class Application(LogWriter):
 
     def execute(self, *args: list, **kwargs: list) -> int:
 
-        """
-        Contains the main execution logic of the application.
+        """Contains the main execution logic of the application.
 
         Args:
             *args:          List of unnamed arguments.
@@ -267,8 +260,7 @@ class Application(LogWriter):
 
     def start(self, *args: list, **kwargs: list) -> None:
 
-        """
-        Starts the application as a daemon.
+        """Starts the application as a daemon.
 
         Args:
             args:       List of unnamed arguments.
@@ -301,8 +293,7 @@ class Application(LogWriter):
 
     def stop(self) -> None:
 
-        """
-        Stops the daemon.
+        """Stops the daemon.
 
         Authors:
             Attila Kovacs
@@ -351,8 +342,7 @@ class Application(LogWriter):
 
     def restart(self, *args: list, **kwargs: list) -> None:
 
-        """
-        Restarts the daemon.
+        """Restarts the daemon.
 
         Args:
             args:       List of unnamed arguments.
@@ -370,11 +360,10 @@ class Application(LogWriter):
 
     def get_pid(self) -> int:
 
-        """
-        Returns the PID of the running daemon process.
+        """Returns the PID of the running daemon process.
 
         Returns:
-            The PID of the running daemon process.
+            int: The PID of the running daemon process.
 
         Authors:
             Attila Kovacs
@@ -398,11 +387,10 @@ class Application(LogWriter):
 
     def get_status(self) -> str:
 
-        """
-        Returns the current status of the daemon.
+        """Returns the current status of the daemon.
 
         Returns:
-            A status report string reflecting the current status of the daemon.
+            str: A status string reflecting the current status of the daemon.
 
         Authors:
             Attila Kovacs
@@ -417,11 +405,10 @@ class Application(LogWriter):
 
     def is_running(self) -> bool:
 
-        """
-        Returns whether or not the daemon is running.
+        """Returns whether or not the daemon is running.
 
         Returns:
-            'True' if the daemon process is running, 'False' otherwise.
+            bool: 'True' if the daemon process is running, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -442,8 +429,7 @@ class Application(LogWriter):
 
     def delete_pid(self) -> None:
 
-        """
-        Deletes the PID file.
+        """Deletes the PID file.
 
         Authors:
             Attila Kovacs
@@ -465,20 +451,18 @@ class Application(LogWriter):
                           license_file: str,
                           cb_decryption_key_callback: Callable) -> None:
 
-        """
-        Validates the license key of the application.
+        """Validates the license key of the application.
 
         Args:
-            public_key:                     Path to the public key of the
-                                            license file.
-            license_file:                   Path to the license file of the
-                                            application.
-            cb_decryption_key_callback:     Callback function to retrieve the
-                                            decryption key to the license
-                                            file.
+            public_key (str): Path to the public key of the license file.
+
+            license_file (str): Path to the license file of the application.
+
+            cb_decryption_key_callback (Callable): Callback function to
+                retrieve the decryption key to the license file.
 
         Raises:
-            InvalidLicenseKey:      Raised if the license key is invalid.
+            InvalidLicenseKey: Raised if the license key is invalid.
 
         Authors:
             Attila Kovacs
@@ -499,8 +483,7 @@ class Application(LogWriter):
 
     def _daemonize(self) -> None:
 
-        """
-        Daemonizes the process using the Unix double-fork method.
+        """Daemonizes the process using the Unix double-fork method.
 
         For details, see Stevens' "Advanced Programming in the UNIX
         Environment" (ISBN 0201563177)

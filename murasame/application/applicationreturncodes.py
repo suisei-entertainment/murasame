@@ -26,24 +26,23 @@ from enum import IntEnum
 
 class ApplicationReturnCodes(IntEnum):
 
-    """
-    Contains the list of application exit codes supported by Murasame.
+    """Contains the list of application exit codes supported by Murasame.
+
+    Attributes:
+        SUCCESS: Application execution finished successfully.
+        ALREADY_RUNNING: Daemon application is already running.
+        NOT_RUNNING: Daemon application is not running.
+        PLATFORM_ERROR: Application error originating from the underlying
+            platform.
+
+        UNCAUGHT_EXCEPTION: Uncaught exception was triggered.
 
     Authors:
         Attila Kovacs
     """
 
-    # Application execution finished successfully.
     SUCCESS = 0
-
-    # Daemon application is already running.
     ALREADY_RUNNING = 1
-
-    # Daemon application is not running.
     NOT_RUNNING = 2
-
-    # Application error originating from the underlying platform.
     PLATFORM_ERROR = 3
-
-    # Uncaught exception was triggered.
     UNCAUGHT_EXCEPTION = 666

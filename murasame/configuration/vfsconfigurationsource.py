@@ -32,9 +32,10 @@ from murasame.configuration.configurationattribute import ConfigurationAttribute
 
 class VFSConfigurationSource(ConfigurationSource):
 
-    """
-    Configuration source implementation that uses a VFS directory as the
-    source of the configuration.
+    """Configuration source that uses a VFS directory as the source.
+
+    Attributes:
+        _path (str): Path to the VFS directory to use as configuration source.
 
     Authors:
         Attila Kovacs
@@ -42,12 +43,11 @@ class VFSConfigurationSource(ConfigurationSource):
 
     def __init__(self, path: str) -> None:
 
-        """
-        Creates a new VFSConfigurationSource instance.
+        """Creates a new VFSConfigurationSource instance.
 
         Args:
-            path:       Path to the VFS directory to use as configuration
-                        source.
+            path (str): Path to the VFS directory to use as configuration
+                source.
 
         Authors:
             Attila Kovacs
@@ -56,20 +56,17 @@ class VFSConfigurationSource(ConfigurationSource):
         super().__init__()
 
         self._path = path
-        """
-        Path to the VFS directory to use as configuration source.
-        """
 
     def load(self) -> None:
 
-        """
-        Loads the configuration from this configuration source.
+        """Loads the configuration from this configuration source.
 
         Raises:
-            RuntimeError:       Raised if no VFS provider can be retrieved to
-                                load the configuration files.
-            InvalidInputError:  Raised if there is no VFS node corresponding
-                                to the configured path.
+            RuntimeError: Raised if no VFS provider can be retrieved to load
+                the configuration files.
+
+            InvalidInputError: Raised if there is no VFS node corresponding to
+                the configured path.
 
         Authors:
             Attila Kovacs
@@ -104,8 +101,7 @@ class VFSConfigurationSource(ConfigurationSource):
 
     def save(self) -> None:
 
-        """
-        Saves the configuration to this configuration source.
+        """Saves the configuration to this configuration source.
 
         Authors:
             Attila Kovacs
@@ -116,11 +112,10 @@ class VFSConfigurationSource(ConfigurationSource):
 
     def _parse(self, content: dict) -> None:
 
-        """
-        Parses the content of the provided dictionary.
+        """Parses the content of the provided dictionary.
 
         Args:
-            content:        The content of the configuration file.
+            content (dict): The content of the configuration file.
 
         Authors:
             Attila Kovacs
@@ -130,18 +125,17 @@ class VFSConfigurationSource(ConfigurationSource):
             if isinstance(value, dict):
                 self._parse_dictionary(key, value)
             elif isinstance(value, list):
-                self.parse_list(key, value)
+                self._parse_list(key, value)
             else:
                 self._parse_attribute(key, value)
 
     def _parse_dictionary(self, key: str , value: dict) -> None:
 
-        """
-        Parse the configuration content as a configuration group.
+        """Parse the configuration content as a configuration group.
 
         Args:
-            key:        The name of the configuration group.
-            value:      The content of the configuration group.
+            key (str): The name of the configuration group.
+            value (dict): The content of the configuration group.
 
         Authors:
             Attila Kovacs
@@ -149,14 +143,13 @@ class VFSConfigurationSource(ConfigurationSource):
 
         config_group = ConfigurationGroup(name=key, content=value)
 
-    def parse_list(self, key: str, value: list) -> None:
+    def _parse_list(self, key: str, value: list) -> None:
 
-        """
-        Parse the configuration content as a configuration list.
+        """Parse the configuration content as a configuration list.
 
         Args:
-            key:        The name of the configuration list.
-            value:      The content of the configuration list.
+            key (str): The name of the configuration list.
+            value (list): The content of the configuration list.
 
         Authors:
             Attila Kovacs
@@ -166,16 +159,15 @@ class VFSConfigurationSource(ConfigurationSource):
 
     def _parse_attribute(self, key: str, value: object) -> None:
 
-        """
-        Parse the configuration content as a configuration attribute.
+        """Parse the configuration content as a configuration attribute.
 
         Args:
-            key:        The name of the configuration attribute.
-            value:      The content of the configuration attribute.
+            key (str): The name of the configuration attribute.
+            value (object): The content of the configuration attribute.
 
         Raises:
-            InvalidInputError:      Raised when unsupported datatype is
-                                    detected for the the attribute value.
+            InvalidInputError: Raised when unsupported datatype is detected for
+                the the attribute value.
 
         Authors:
             Attila Kovacs

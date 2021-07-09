@@ -26,8 +26,11 @@ from enum import IntEnum
 
 class ApplicationTypes(IntEnum):
 
-    """
-    List of supported application types.
+    """List of supported application types.
+
+    Attributes:
+        DAEMON_APPLICATION: Unix daemon
+        CLI_APPLICATION: CLI application
 
     Authors:
         Attila Kovacs

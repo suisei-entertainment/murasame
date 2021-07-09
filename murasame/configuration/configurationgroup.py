@@ -29,8 +29,13 @@ from murasame.configuration.configurationlist import ConfigurationList
 
 class ConfigurationGroup(LogWriter):
 
-    """
-    Representation of a single configuration group.
+    """Representation of a single configuration group.
+
+    Attributes:
+        _name (str):    The name of the configuration group.
+        _groups (dict): Dictionary of child configuration groups.
+        _lists  (dict): Dictionary of child configuration lists.
+        _attributes (dict): Dictionary of configuration attributes.
 
     Authors:
         Attila Kovacs
@@ -39,8 +44,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def Name(self) -> str:
 
-        """
-        The name of the configuration group.
+        """The name of the configuration group.
 
         Authors:
             Attila Kovacs
@@ -51,8 +55,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def Attributes(self) -> dict:
 
-        """
-        Provides access to the configuration attributes stored in the group.
+        """Provides access to the configuration attributes stored in the group.
 
         Authors:
             Attila Kovacs
@@ -63,8 +66,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def Groups(self) -> dict:
 
-        """
-        Provides access to the configuration groups stored in the group.
+        """Provides access to the configuration groups stored in the group.
 
         Authors:
             Attila Kovacs
@@ -75,8 +77,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def Lists(self) -> dict:
 
-        """
-        Provides access to the configuration lists stored in the group.
+        """Provides access to the configuration lists stored in the group.
 
         Authors:
             Attila Kovacs
@@ -87,8 +88,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def NumAttributes(self) -> int:
 
-        """
-        Returns the amount of configuration attributes in the group.
+        """Returns the amount of configuration attributes in the group.
 
         Authors:
             Attila Kovacs
@@ -99,8 +99,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def NumGroups(self) -> int:
 
-        """
-        Returns the amount of configuration groups in the group.
+        """Returns the amount of configuration groups in the group.
 
         Authors:
             Attila Kovacs
@@ -111,8 +110,7 @@ class ConfigurationGroup(LogWriter):
     @property
     def NumLists(self) -> int:
 
-        """
-        Returns the amount of configuration lists in the group.
+        """Returns the amount of configuration lists in the group.
 
         Authors:
             Attila Kovacs
@@ -122,11 +120,14 @@ class ConfigurationGroup(LogWriter):
 
     def __init__(self, name: str = None, content: dict = None) -> None:
 
-        """
-        Creates a new ConfigurationGroup instance.
+        """Creates a new ConfigurationGroup instance.
 
         Args:
-            content:        The content of the configuration group.
+            name (str): The name of the configuration group. This will be
+                overwritten if the content dictionary also contains a name for
+                the configuration group.
+
+            content (dict): The content of the configuration group.
 
         Authors:
             Attila Kovacs
@@ -145,8 +146,7 @@ class ConfigurationGroup(LogWriter):
 
     def __str__(self) -> str:
 
-        """
-        The string representation of the object.
+        """The string representation of the object.
 
         Authors:
             Attila Kovacs
@@ -156,8 +156,7 @@ class ConfigurationGroup(LogWriter):
 
     def __repr__(self) -> str:
 
-        """
-        The string representation of the object.
+        """The string representation of the object.
 
         Authors:
             Attila Kovacs
@@ -167,16 +166,15 @@ class ConfigurationGroup(LogWriter):
 
     def get_attribute(self, attribute_name: str) -> 'ConfigurationAttribute':
 
-        """
-        Returns an attribute from this configuration file.
+        """Returns an attribute from this configuration file.
 
         Args:
-            name:       Full name of the attribute to retrieve without the
-                        filename part.
+            attribute_name (str): Full name of the attribute to retrieve
+                without the filename part.
 
         Returns:
-            The attribute object if it was found, None if the attribute
-            doesn't exist.
+            ConfigurationAttribute: The attribute object if it was found,
+                'None' if the attribute doesn't exist.
 
         Authors:
             Attila Kovacs
@@ -207,16 +205,15 @@ class ConfigurationGroup(LogWriter):
 
     def get_group(self, group_name: str) -> 'ConfigurationGroup':
 
-        """
-        Returns a group from this configuration file.
+        """Returns a group from this configuration file.
 
         Args:
-            name:       Full name of the group to retrieve without the filename
-                        part.
+            name (str): Full name of the group to retrieve without the filename
+                part.
 
         Returns:
-            The group object if it was found, None if the attribute doesn't
-            exist.
+            ConfigurationGroup: The group object if it was found, 'None' if the
+                attribute doesn't exist.
 
         Authors:
             Attila Kovacs
@@ -247,14 +244,15 @@ class ConfigurationGroup(LogWriter):
 
     def get_list(self, list_name: str) -> 'ConfigurationList':
 
-        """
-        Returns a list from this configuration group.
+        """Returns a list from this configuration group.
 
         Args:
-            name:       Full name of the list to retrieve without the filename
-                        part.
+            name (str): Full name of the list to retrieve without the filename
+                part.
+
         Returns:
-            The list object if it was found, None if the list doesn't exist.
+            ConfigurationList: The list object if it was found, 'None' if the
+                list doesn't exist.
 
         Authors:
             Attila Kovacs
@@ -285,15 +283,14 @@ class ConfigurationGroup(LogWriter):
 
     def has_top_level_attribute(self, attribute_name: str) -> bool:
 
-        """
-        Returns whether or not an attribute is a top level one in the file.
+        """Returns whether or not an attribute is a top level one in the file.
 
         Args:
-            attribute_name:      The name of the attribute to check.
+            attribute_name (str): The name of the attribute to check.
 
         Returns:
-            'True' if the attribute is present as a top level list, 'False'
-            otherwise.
+            bool: 'True' if the attribute is present as a top level list,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -306,15 +303,14 @@ class ConfigurationGroup(LogWriter):
 
     def has_top_level_list(self, list_name: str) -> bool:
 
-        """
-        Returns whether or not a list is a top level one in the file.
+        """Returns whether or not a list is a top level one in the file.
 
         Args:
-            list_name:      The name of the list to check.
+            list_name (str): The name of the list to check.
 
         Returns:
-            'True' if the list is present as a top level list, 'False'
-            otherwise.
+            bool: 'True' if the list is present as a top level list, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -327,15 +323,14 @@ class ConfigurationGroup(LogWriter):
 
     def has_top_level_group(self, group_name: str) -> bool:
 
-        """
-        Returns whether or not a given group is a top level one in the file.
+        """Returns whether or not a given group is a top level one in the file.
 
         Args:
-            group_name:      The name of the group to check.
+            group_name (str): The name of the group to check.
 
         Returns:
-            'True' if the group is present as a top level group, 'False'
-            otherwise.
+            bool: 'True' if the group is present as a top level group, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -348,11 +343,11 @@ class ConfigurationGroup(LogWriter):
 
     def add_attribute(self, attribute: 'ConfigurationAttribute') -> None:
 
-        """
-        Adds a new configuration attribute to the group.
+        """Adds a new configuration attribute to the group.
 
         Args:
-            attribute:      The new configuration attribute to add.
+            attribute (ConfigurationGroup): The new configuration attribute to
+                add.
 
         Authors:
             Attila Kovacs
@@ -375,11 +370,10 @@ class ConfigurationGroup(LogWriter):
 
     def add_group(self, group: 'ConfigurationGroup') -> None:
 
-        """
-        Adds a new configuration group to the group.
+        """Adds a new configuration group to the group.
 
         Args:
-            group:          The new configuration group to add.
+            group (ConfigurationGroup): The new configuration group to add.
 
         Authors:
             Attila Kovacs
@@ -403,11 +397,10 @@ class ConfigurationGroup(LogWriter):
 
     def add_list(self, config_list: 'ConfigurationList') -> None:
 
-        """
-        Adds a new configuration list to the group.
+        """Adds a new configuration list to the group.
 
         Args:
-            config_list:            The new configuration list to add.
+            config_list (ConfigurationList): The new configuration list to add.
 
         Authors:
             Attila Kovacs
@@ -430,11 +423,11 @@ class ConfigurationGroup(LogWriter):
 
     def merge_with(self, other: 'ConfigurationGroup') -> None:
 
-        """
-        Merges the content of the other configuration group into this one.
+        """Merges the content of the other configuration group into this one.
 
-        Arguments:
-            other:      The other configuration group to merge into this one.
+        Args:
+            other (ConfigurationGroup): The other configuration group to merge
+                into this one.
 
         Authors:
             Attila Kovacs
@@ -493,17 +486,16 @@ class ConfigurationGroup(LogWriter):
 
     def _split_attribute_name(self, name: str) -> 'str, str':
 
-        """
-        Splits the attribute name to the top level group and the remaining part.
+        """ Splits the name to the top level group and the remaining part.
 
         Returns:
-            The name of the configuration group is returned as the first return
-            value, while the second value will contain the remaininder of the
-            name, thus the full attribute name.
+            str, str: The name of the configuration group is returned as the
+                first return value, while the second value will contain the
+                remainder of the name, thus the full attribute name.
 
         Raises:
-            InvalidInputError   Raised when an empty string is provided as the
-                                attribute name.
+            InvalidInputError: Raised when an empty string is provided as the
+                attribute name.
 
         Authors:
             Attila Kovacs
@@ -519,11 +511,10 @@ class ConfigurationGroup(LogWriter):
 
     def _load_group(self, content: dict) -> None:
 
-        """
-        Loads the configuration group from a JSON object.
+        """Loads the configuration group from a JSON object.
 
         Args:
-            content:        The JSON content of the group to parse.
+            content (dict): The JSON content of the group to parse.
 
         Authors:
             Attila Kovacs
@@ -559,15 +550,14 @@ class ConfigurationGroup(LogWriter):
 
     def _identify_entry_type(self, content: object) -> str:
 
-        """
-        Returns the entry type of a JSON object.
+        """Returns the entry type of a JSON object.
 
         Args:
-            content:        The object to identify.
+            content (object): The object to identify.
 
         Returns:
-            The type of the object in string format, or 'UNKNOWN' if the type
-            cannot be identified.
+            str: The type of the object in string format, or 'UNKNOWN' if the
+                type cannot be identified.
 
         Authors:
             Attila Kovacs
@@ -599,12 +589,11 @@ class ConfigurationGroup(LogWriter):
                                 entry_key: str,
                                 entry_content: dict) -> None:
 
-        """
-        Processes an entry in the file as a configuration group.
+        """Processes an entry in the file as a configuration group.
 
         Args:
-            entry_key:      The key of the entry.
-            entry_content:  The content of the entry.
+            entry_key (str): The key of the entry.
+            entry_content (dict): The content of the entry.
 
         Authors:
             Attila Kovacs
@@ -625,12 +614,11 @@ class ConfigurationGroup(LogWriter):
                                entry_key: str,
                                entry_content: dict) -> None:
 
-        """
-        Processes an entry in the file as a list of configuration entries.
+        """Processes an entry in the file as a list of configuration entries.
 
         Args:
-            entry_key:      The key of the entry.
-            entry_content:  The content of the entry.
+            entry_key (str): The key of the entry.
+            entry_content (dict): The content of the entry.
 
         Authors:
             Attila Kovacs
@@ -652,13 +640,12 @@ class ConfigurationGroup(LogWriter):
                                     entry_content: object,
                                     entry_type: str) -> None:
 
-        """
-        Processes an entry in the file as a configuration attribute.
+        """Processes an entry in the file as a configuration attribute.
 
-        Args
-            entry_key:      The key of the entry.
-            entry_content:  The content of the entry.
-            entry_type:     The identified type of the entry.
+        Args:
+            entry_key (str): The key of the entry.
+            entry_content (object): The content of the entry.
+            entry_type (str): The identified type of the entry.
 
         Authors:
             Attila Kovacs

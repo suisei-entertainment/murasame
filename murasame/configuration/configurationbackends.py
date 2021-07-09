@@ -26,9 +26,13 @@ from enum import IntEnum
 
 class ConfigurationBackends(IntEnum):
 
-    """
-    Contains the list of supported configuration backends for storing the
+    """Contains the list of supported configuration backends for storing the
     runtime configuration.
+
+    Attributes:
+        NOT_SET: Default value
+        DICTIONARY: In-memory dictionary
+        REDIS: Redis
 
     Authors:
             Attila Kovacs

@@ -29,9 +29,10 @@ from .configurationbackend import ConfigurationBackend
 
 class DictionaryBackend(ConfigurationBackend):
 
-    """
-    Implements a configuration backend that stores the configuration in a
-    dictionary in memory.
+    """Implements a backend that stores the configuration in a dictionary.
+
+    Attributes:
+        _data (dict): The dictionary storing the configuration data.
 
     Authors:
         Attila Kovacs
@@ -39,8 +40,7 @@ class DictionaryBackend(ConfigurationBackend):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new DictionaryBackend instance.
+        """Creates a new DictionaryBackend instance.
 
         Authors:
             Attila Kovacs
@@ -49,21 +49,16 @@ class DictionaryBackend(ConfigurationBackend):
         super().__init__()
 
         self._data = {}
-        """
-        The dictionary storing the configuration.
-        """
 
     def get(self, entry_name: str) -> Any:
 
-        """
-        Retrieves the value of a single configuration object from the
-        configuration tree.
+        """Retrieves the value of a single configuration object.
 
         Args:
-            entry_name:      Name of the object to retrieve.
+            entry_name (str): Name of the object to retrieve.
 
         Returns:
-            The object, or 'None' if it was not found.
+            Any: The object, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -84,8 +79,7 @@ class DictionaryBackend(ConfigurationBackend):
 
     def get_value(self, attribute_name: str) -> Any:
 
-        """
-        Returns the value of a given configuration attribute.
+        """Returns the value of a given configuration attribute.
 
         Configuration attributes are organized into configuration groups.
 
@@ -99,7 +93,11 @@ class DictionaryBackend(ConfigurationBackend):
             <group>.[<group>].[<group>]...[<group>].<attribute>
 
         Args:
-            attribute_name:     Full name of the configuration attribute.
+            attribute_name (str): Full name of the configuration attribute.
+
+        Returns:
+            Any: The value of the requested configuration attribute, or 'None',
+                if it was not found.
 
         Authors:
             Attila Kovacs
@@ -125,8 +123,7 @@ class DictionaryBackend(ConfigurationBackend):
 
     def get_attribute(self, attribute_name: str) -> 'ConfigurationAttribute':
 
-        """
-        Returns the given configuration attribute.
+        """Returns the given configuration attribute.
 
         Configuration attributes are organized into configuration groups.
 
@@ -140,7 +137,11 @@ class DictionaryBackend(ConfigurationBackend):
             <group>.[<group>].[<group>]...[<group>].<attribute>
 
         Args:
-            attribute_name:     Full name of the configuration attribute.
+            attribute_name (str): Full name of the configuration attribute.
+
+        Returns:
+            ConfigurationAttribute: The requested configuration attribute
+                instance, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -174,8 +175,7 @@ class DictionaryBackend(ConfigurationBackend):
 
     def get_group(self, group_name: str) -> 'ConfigurationGroup':
 
-        """
-        Returns the given configuration group.
+        """Returns the given configuration group.
 
         Configuration groups are organized into configuration groups.
 
@@ -189,7 +189,11 @@ class DictionaryBackend(ConfigurationBackend):
             <group>.[<group>].[<group>]...[<group>].[<group>]
 
         Args:
-            group_name:       Full name of the configuration group.
+            group_name (str): Full name of the configuration group.
+
+        Returns:
+            ConfigurationGroup: The requested configuration group instance, or
+                'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -233,8 +237,7 @@ class DictionaryBackend(ConfigurationBackend):
 
     def get_list(self, list_name: str) -> 'ConfigurationList':
 
-        """
-        Returns the given configuration list.
+        """Returns the given configuration list.
 
         Configuration lists are organized into configuration groups.
 
@@ -248,7 +251,11 @@ class DictionaryBackend(ConfigurationBackend):
             <group>.[<group>].[<group>]...[<group>].<list>
 
         Args:
-            list_name:       The full name of the list to retrieve.
+            list_name (str): The full name of the list to retrieve.
+
+        Returns:
+            ConfigurationList: The requested configuration list instance, or
+                'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -285,15 +292,13 @@ class DictionaryBackend(ConfigurationBackend):
 
     def has_group(self, group_name: str) -> bool:
 
-        """
-        Returns whether or not the backend has a group with the given
-        name.
+        """Returns whether or not the backend has a group with the given name.
 
         Args:
-            group_name:      Name of the group to check.
+            group_name (str): Name of the group to check.
 
         Returns:
-            'True' if the given group exists, 'False' otherwise.
+            bool: 'True' if the given group exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -312,15 +317,13 @@ class DictionaryBackend(ConfigurationBackend):
 
     def has_list(self, list_name: str) -> bool:
 
-        """
-        Returns whether or not the backend has a list with the given
-        name.
+        """Returns whether or not the backend has a list with the given name.
 
         Args:
-            list_name:      Name of the group to check.
+            list_name (str): Name of the group to check.
 
         Returns:
-            'True' if the given list exists, 'False' otherwise.
+            bool: 'True' if the given list exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -339,15 +342,13 @@ class DictionaryBackend(ConfigurationBackend):
 
     def has_attribute(self, attribute_name: str) -> bool:
 
-        """
-        Returns whether or not the backend has an attribute with the given
-        name.
+        """Returns whether or not the backend has a given attribute.
 
         Args:
-            attribute_name:      Name of the attribute to check.
+            attribute_name (str): Name of the attribute to check.
 
         Returns:
-            'True' if the given attribute exists, 'False' otherwise.
+            bool: 'True' if the given attribute exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -366,13 +367,12 @@ class DictionaryBackend(ConfigurationBackend):
 
     def add_group(self, parent: str, group: 'ConfigurationGroup') -> None:
 
-        """
-        Adds a new configuration group to the configuration tree.
+        """Adds a new configuration group to the configuration tree.
 
-        Arguments:
-            parent:     The full name of the parent object the group will be
-                        added to.
-            group:      The configuration group object to add.
+        Args:
+            parent (str): The full name of the parent object the group will be
+                added to.
+            group (ConfigurationGroup): The configuration group object to add.
 
         Authors:
             Attila Kovacs
@@ -409,13 +409,12 @@ class DictionaryBackend(ConfigurationBackend):
 
     def add_list(self, parent: str, config_list: 'ConfigurationList') -> None:
 
-        """
-        Adds a new configuration list to the configuration tree.
+        """Adds a new configuration list to the configuration tree.
 
-        Arguments:
-            parent:         The full name of the parent object the list will be
-                            added to.
-            config_list:    The configuration list to add.
+        Args:
+            parent (str): The full name of the parent object the list will be
+                added to.
+            config_list (ConfigurationList): The configuration list to add.
 
         Authors:
             Attila Kovacs
@@ -447,13 +446,13 @@ class DictionaryBackend(ConfigurationBackend):
                       parent: str,
                       attribute: 'ConfigurationAttribute') -> None:
 
-        """
-        Adds a new configuration attribute to the configuration tree.
+        """Adds a new configuration attribute to the configuration tree.
 
-        Arguments:
-            parent:     The full name of the parent object the list will be
-                        added to.
-            attribute:  The configuration attribute to add.
+        Args:
+            parent (str): The full name of the parent object the list will be
+                added to.
+            attribute (ConfigurationAttribute): The configuration attribute to
+                add.
 
         Authors:
             Attila Kovacs
@@ -485,12 +484,11 @@ class DictionaryBackend(ConfigurationBackend):
                     group_name: str,
                     other: 'ConfigurationGroup') -> None:
 
-        """
-        Merges the content of a configuration group with another one.
+        """Merges the content of a configuration group with another one.
 
-        Arguments:
-            group_name:     Name of the configuration group to merge into.
-            group:          The configuration group to merge.
+        Args:
+            group_name (str): Name of the configuration group to merge into.
+            other (ConfigurationGroup): The configuration group to merge.
 
         Authors:
             Attila Kovacs
@@ -526,12 +524,11 @@ class DictionaryBackend(ConfigurationBackend):
 
     def set(self, attribute: str, value: Any) -> None:
 
-        """
-        Sets the value of a given configuration attribute.
+        """Sets the value of a given configuration attribute.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Authors:
             Attila Kovacs
@@ -545,17 +542,15 @@ class DictionaryBackend(ConfigurationBackend):
 
     def can_set(self, attribute: str, value: Any) -> bool:
 
-        """
-        Returns whether or not the given attribute can be set to the given new
-        value.
+        """Returns whether or not the given attribute can be set to a new value.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Returns:
-            'True' if the given attribute can be set to the new value, 'False'
-            otherwise.
+            bool: 'True' if the given attribute can be set to the new value,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -590,12 +585,11 @@ class DictionaryBackend(ConfigurationBackend):
 
     def _do_set(self, attribute: str, value: Any) -> None:
 
-        """
-        Contains the actual setter logic of the backend.
+        """Contains the actual setter logic of the backend.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Authors:
             Attila Kovacs
@@ -607,13 +601,12 @@ class DictionaryBackend(ConfigurationBackend):
 
     def _split_attribute_name(self, name: str) -> 'str, str':
 
-        """
-        Splits the attribute name to the group_name and the remaining part.
+        """Splits the attribute name to the group_name and the remaining part.
 
         Returns:
-            The name of the configuration group is returned as the first return
-            value, while the second value will contain the remainder of the
-            name, thus the full attribute name.
+            str, str: The name of the configuration group is returned as the
+                first return value, while the second value will contain the
+                remainder of the name, thus the full attribute name.
 
         Authors:
             Attila Kovacs

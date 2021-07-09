@@ -29,8 +29,7 @@ from murasame.logging import LogWriter
 
 class ConfigurationBackend(LogWriter):
 
-    """
-    Common base class for all configuration backend implementations.
+    """Common base class for all configuration backend implementations.
 
     Authors:
         Attila Kovacs
@@ -38,8 +37,7 @@ class ConfigurationBackend(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new ConfigurationBackend instance.
+        """Creates a new ConfigurationBackend instance.
 
         Authors:
             Attila Kovacs
@@ -50,15 +48,13 @@ class ConfigurationBackend(LogWriter):
 
     def get(self, entry_name: str) -> Any:
 
-        """
-        Retrieves the value of a single configuration object from the
-        configuration tree.
+        """Retrieves the value of a single configuration object.
 
         Args:
-            entry_name:      Name of the object to retrieve.
+            entry_name (str): Name of the object to retrieve.
 
         Returns:
-            The object, or 'None' if it was not found.
+            Any: The object, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -70,8 +66,7 @@ class ConfigurationBackend(LogWriter):
 
     def get_value(self, attribute_name: str) -> Any:
 
-        """
-        Returns the value of a given configuration attribute.
+        """Returns the value of a given configuration attribute.
 
         Configuration attributes are organized into configuration groups.
 
@@ -85,7 +80,11 @@ class ConfigurationBackend(LogWriter):
             <group>.[<group>].[<group>]...[<group>].<attribute>
 
         Args:
-            name:       Full name of the configuration attribute.
+            name (str): Full name of the configuration attribute.
+
+        Returns:
+            Any: The value of the configuration attribute if it exists, or
+            'None', if it doesn't.
 
         Authors:
             Attila Kovacs
@@ -97,22 +96,25 @@ class ConfigurationBackend(LogWriter):
 
     def get_attribute(self, attribute_name: str) -> 'ConfigurationAttribute':
 
-        """
-        Returns the given configuration attribute.
+        """Returns the given configuration attribute.
 
         Configuration attributes are organized into configuration groups.
 
-        Each configuration group can contain any number of configuration groups
-        and/or configuration attributes. A configuration group can contain
-        further configuration groups and/or configuration lists or attributes,
-        forming a tree structure.
+        Each configuration group can contain any number of configuration
+        groups, lists and/or configuration attributes. A configuration group
+        can contain further configuration groups and/or configuration
+        attributes, forming a tree structure.
 
-        A given configuration attribute can be accessed by specifying it's full
+        A given configuration list can be accessed by specifying it's full
         name, which is formatted the following way:
             <group>.[<group>].[<group>]...[<group>].<attribute>
 
         Args:
-            attribute_name:     Full name of the configuration attribute.
+            attribute_name (str):     Full name of the configuration attribute.
+
+        Returns:
+            ConfigurationAttribute: The retrieved configuration attribute
+                instance, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -124,22 +126,25 @@ class ConfigurationBackend(LogWriter):
 
     def get_group(self, group_name: str) -> 'ConfigurationGroup':
 
-        """
-        Returns the given configuration group.
+        """Returns the given configuration group.
 
         Configuration groups are organized into configuration groups.
 
-        Each configuration group can contain any number of configuration groups,
-        lists and/or configuration attributes. A configuration group can contain
-        further configuration groups and/or configuration attributes, forming a
-        tree structure.
+        Each configuration group can contain any number of configuration
+        groups, lists and/or configuration attributes. A configuration group
+        can contain further configuration groups and/or configuration
+        attributes, forming a tree structure.
 
-        A given configuration group can be accessed by specifying it's full
+        A given configuration list can be accessed by specifying it's full
         name, which is formatted the following way:
-            <group>.[<group>].[<group>]...[<group>].[<group>]
+            <group>.[<group>].[<group>]...[<group>]
 
         Args:
-            group_name:       Full name of the configuration group.
+            group_name (str): Full name of the configuration group.
+
+        Returns:
+            ConfigurationGroup: The retrieved configuration group instance, or
+                'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -151,22 +156,21 @@ class ConfigurationBackend(LogWriter):
 
     def get_list(self, list_name: str) -> 'ConfigurationList':
 
-        """
-        Returns the given configuration list.
+        """Returns the given configuration list.
 
         Configuration lists are organized into configuration groups.
 
-        Each configuration group can contain any number of configuration groups,
-        lists and/or configuration attributes. A configuration group can contain
-        further configuration groups and/or configuration attributes, forming a
-        tree structure.
+        Each configuration group can contain any number of configuration
+        groups, lists and/or configuration attributes. A configuration group
+        can contain further configuration groups and/or configuration
+        attributes, forming a tree structure.
 
-        A given configuration list can be accessed by specifying it's full name,
-        which is formatted the following way:
+        A given configuration list can be accessed by specifying it's full
+        name, which is formatted the following way:
             <group>.[<group>].[<group>]...[<group>].<list>
 
         Args:
-            list_name:       The full name of the list to retrieve.
+            list_name (str): The full name of the list to retrieve.
 
         Authors:
             Attila Kovacs
@@ -178,15 +182,13 @@ class ConfigurationBackend(LogWriter):
 
     def has_group(self, group_name: str) -> bool:
 
-        """
-        Returns whether or not the backend has a group with the given
-        name.
+        """Returns whether or not the backend has a group with the given name.
 
         Args:
-            group_name:      Name of the group to check.
+            group_name (str): Name of the group to check.
 
         Returns:
-            'True' if the given group exists, 'False' otherwise.
+            bool: 'True' if the given group exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -199,15 +201,13 @@ class ConfigurationBackend(LogWriter):
 
     def has_list(self, list_name: str) -> bool:
 
-        """
-        Returns whether or not the backend has a list with the given
-        name.
+        """Returns whether or not the backend has a list with the given name.
 
         Args:
-            list_name:      Name of the group to check.
+            list_name (str): Name of the group to check.
 
         Returns:
-            'True' if the given list exists, 'False' otherwise.
+            bool: 'True' if the given list exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -220,15 +220,13 @@ class ConfigurationBackend(LogWriter):
 
     def has_attribute(self, attribute_name: str) -> bool:
 
-        """
-        Returns whether or not the backend has an attribute with the given
-        name.
+        """ Returns whether or not the backend has a given attribute.
 
         Args:
-            attribute_name:      Name of the attribute to check.
+            attribute_name (str): Name of the attribute to check.
 
         Returns:
-            'True' if the given attribute exists, 'False' otherwise.
+            bool: 'True' if the given attribute exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -241,13 +239,12 @@ class ConfigurationBackend(LogWriter):
 
     def add_group(self, parent: str, group: 'ConfigurationGroup') -> None:
 
-        """
-        Adds a new configuraton group to the configuration tree.
+        """Adds a new configuration group to the configuration tree.
 
-        Arguments:
-            parent:     The full name of the parent object the group will be
-                        added to.
-            group:      The configuration group object to add.
+        Args:
+            parent (str): The full name of the parent object the group will be
+                added to.
+            group (ConfigurationGroup): The configuration group object to add.
 
         Authors:
             Attila Kovacs
@@ -260,13 +257,12 @@ class ConfigurationBackend(LogWriter):
 
     def add_list(self, parent: str, config_list: 'ConfigurationList') -> None:
 
-        """
-        Adds a new configuration list to the configuration tree.
+        """Adds a new configuration list to the configuration tree.
 
-        Arguments:
-            parent:         The full name of the parent object the list will be
-                            added to.
-            config_list:    The configuration list to add.
+        Args:
+            parent (str): The full name of the parent object the list will be
+                added to.
+            config_list (ConfigurationList): The configuration list to add.
 
         Authors:
             Attila Kovacs
@@ -281,13 +277,13 @@ class ConfigurationBackend(LogWriter):
                       parent: str,
                       attribute: 'ConfigurationAttribute') -> None:
 
-        """
-        Adds a new configuration attribute to the configuration tree.
+        """Adds a new configuration attribute to the configuration tree.
 
-        Arguments:
-            parent:     The full name of the parent object the list will be
-                        added to.
-            attribute:  The configuration attribute to add.
+        Args:
+            parent (str): The full name of the parent object the list will be
+                added to.
+            attribute (ConfigurationAttribute): The configuration attribute to
+                add.
 
         Authors:
             Attila Kovacs
@@ -302,12 +298,11 @@ class ConfigurationBackend(LogWriter):
                     group_name: str,
                     other: 'ConfigurationGroup') -> None:
 
-        """
-        Merges the content of a configuration group with another one.
+        """Merges the content of a configuration group with another one.
 
-        Arguments:
-            group_name:     Name of the configuration group to merge into.
-            group:          The configuration group to merge.
+        Args:
+            group_name (str): Name of the configuration group to merge into.
+            group (ConfigurationGroup): The configuration group to merge.
 
         Authors:
             Attila Kovacs
@@ -320,12 +315,11 @@ class ConfigurationBackend(LogWriter):
 
     def set(self, attribute: str, value: Any) -> None:
 
-        """
-        Sets the value of a given configuration attribute.
+        """Sets the value of a given configuration attribute.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Authors:
             Attila Kovacs
@@ -338,17 +332,15 @@ class ConfigurationBackend(LogWriter):
 
     def can_set(self, attribute: str, value: Any) -> bool:
 
-        """
-        Returns whether or not the given attribute can be set to the given new
-        value.
+        """Returns whether or not the attribute can be set to the new value.
 
         Args:
-            attribute:      Name of the attribute to set.
-            value:          The new value of the attribute.
+            attribute (str): Name of the attribute to set.
+            value (Any): The new value of the attribute.
 
         Returns:
-            'True' if the given attribute can be set to the new value, 'False'
-            otherwise.
+            bool: 'True' if the given attribute can be set to the new value,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs

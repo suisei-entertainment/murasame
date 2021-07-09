@@ -30,9 +30,7 @@ from murasame.application.applicationreturncodes import ApplicationReturnCodes
 
 class BusinessLogic:
 
-    """
-    Common base class for the representation of the business logic part of an
-    application.
+    """Common base class for business logic implementations.
 
     Authors:
         Attila Kovacs
@@ -41,8 +39,7 @@ class BusinessLogic:
     @property
     def IsLicenseRequired(self) -> bool:
 
-        """
-        Whether or not a valid license is required to start the application.
+        """Whether or not a valid license is required to start the application.
 
         Authors:
             Attila Kovacs
@@ -53,8 +50,7 @@ class BusinessLogic:
     @property
     def LicensePublicKey(self) -> Union[str, None]:
 
-        """
-        Path to the public key used to validate the license of the application.
+        """Path to the public key used to validate the license.
 
         Authors:
             Attila Kovacs
@@ -65,8 +61,7 @@ class BusinessLogic:
     @property
     def LicenseFile(self) -> Union[str, None]:
 
-        """
-        Path to the license file.
+        """Path to the license file.
 
         Authors:
             Attila Kovacs
@@ -77,8 +72,7 @@ class BusinessLogic:
     @property
     def LicenseDecryptionKeyCallback(self) -> Union[Callable, None]:
 
-        """
-        Callback to be used when accessing the key to the license file.
+        """Callback to be used when accessing the key to the license file.
 
         Authors:
             Attila Kovacs
@@ -89,8 +83,7 @@ class BusinessLogic:
     @property
     def UseSentryIO(self) -> bool:
 
-        """
-        Whether or not Sentry.IO is used by the application.
+        """Whether or not Sentry.IO is used by the application.
 
         Authors:
             Attila Kovacs
@@ -101,8 +94,7 @@ class BusinessLogic:
     @property
     def SentryDSN(self) -> Union[str, None]:
 
-        """
-        The Sentry DSN to use when sending reports to Sentry.IO.
+        """The Sentry DSN to use when sending reports to Sentry.IO.
 
         Authors:
             Attila Kovacs
@@ -113,9 +105,9 @@ class BusinessLogic:
     @property
     def PIDFile(self) -> str:
 
-        """
-        The PID file used by the application. Only used for daemon type
-        applications.
+        """The PID file used by the application.
+
+        Only used for daemon type applications.
 
         Authors:
             Attila Kovacs
@@ -126,8 +118,7 @@ class BusinessLogic:
     @property
     def WorkingDirectory(self) -> str:
 
-        """
-        The working directory of the application.
+        """The working directory of the application.
 
         Authors:
             Attila Kovacs
@@ -138,9 +129,9 @@ class BusinessLogic:
     @property
     def Umask(self) -> int:
 
-        """
-        The file mask to be used by files created by the application. Only used
-        for daemon type applications.
+        """The file mask to be used by files created by the application.
+
+        Only used for daemon type applications.
 
         Authors:
             Attila Kovacs
@@ -151,9 +142,9 @@ class BusinessLogic:
     @property
     def StdIn(self) -> object:
 
-        """
-        The input stream to be used by the application. Only used for daemon
-        type applications.
+        """The input stream to be used by the application.
+
+        Only used for daemon type applications.
 
         Authors:
             Attila Kovacs
@@ -164,9 +155,9 @@ class BusinessLogic:
     @property
     def StdOut(self) -> object:
 
-        """
-        The output stream to be used by the application. Only used for daemon
-        type applications.
+        """The output stream to be used by the application.
+
+        Only used for daemon type applications.
 
         Authors:
             Attila Kovacs
@@ -177,9 +168,9 @@ class BusinessLogic:
     @property
     def StdErr(self) -> object:
 
-        """
-        The error stream to be used by the application. Only used for daemon
-        type applications.
+        """The error stream to be used by the application.
+
+        Only used for daemon type applications.
 
         Authors:
             Attila Kovacs
@@ -190,9 +181,7 @@ class BusinessLogic:
     @property
     def IsVFSDisabled(self) -> bool:
 
-        """
-        Returns whether or not the usage of the virtual file system has been
-        disabled.
+        """Returns whether or not the usage of the VFS has been disabled.
 
         Authors:
             Attila Kovacs
@@ -202,18 +191,20 @@ class BusinessLogic:
 
     def main_loop(self, *args, **kwargs) -> ApplicationReturnCodes:
 
-        """
-        Contains the main loop (or the main business execution logic of
-        the application.
+        """Implements the main loop of the application.
 
         Args:
             args:       List of unnamed arguments.
             kwargs:     List of named arguments.
 
         Returns:
-            The overall return code of the application.
+            ApplicationReturnCodes: The overall return code of the application.
+
             ApplicationReturnCodes.SUCCESS for successful execution, or an
             integer value to indicate issues.
+
+            If the return code is not ApplicationReturnCodes.SUCCESS, then the
+            application will quit with this return code.
 
         Authors:
             Attila Kovacs
@@ -227,12 +218,20 @@ class BusinessLogic:
 
     def before_main_loop(self, *args, **kwargs) -> ApplicationReturnCodes:
 
-        """
-        Function that is called before the application enters its main loop.
+        """Function that is called before the application enters its main loop.
 
         Args:
             args:       List of unnamed arguments.
             kwargs:     List of named arguments.
+
+        Returns:
+            ApplicationReturnCodes: Result of the execution of the function.
+
+            If the execution was successful then this function should return
+            ApplicationReturnCodes.SUCCESS, otherwise a supported error code.
+
+            If the function return an error, then the application execution
+            will not continue, the application will quit with this return code.
 
         Authors:
             Attila Kovacs
@@ -246,9 +245,12 @@ class BusinessLogic:
 
     def after_main_loop(self, *args, **kwargs) -> ApplicationReturnCodes:
 
-        """
-        Function that is called after the application exited the main loop in
-        a normal way.
+        """Function that is called after the application exited the main loop.
+
+        This function is only called if the application exits the main loop
+        with an ApplicationReturnCodes.SUCCESS return code, otherwise the
+        application execution will stop and the application will quit the error
+        code from the main loop.
 
         Args:
             args:       List of unnamed arguments.
@@ -266,9 +268,9 @@ class BusinessLogic:
 
     def initialize_systems(self) -> None:
 
-        """
-        Initializes the systems used by the application. It is called by the
-        application upon initialization.
+        """Initializes the systems used by the application.
+
+        It is called by the application upon initialization.
 
         Authors:
             Attila Kovacs
@@ -280,12 +282,13 @@ class BusinessLogic:
 
     def on_uncaught_exception(self, exception: Exception) -> None:
 
-        """
-        Handler function called when the application encounters an uncaught
-        exception.
+        """Handler function for uncaught exceptions.
+
+        This function will be called every time the application encounters an
+        unhandled exception.
 
         Args:
-            exception:      The exception that was not handled properly.
+            exception (Exception): The exception that was not handled properly.
 
         Authors:
             Attila Kovacs
@@ -297,16 +300,15 @@ class BusinessLogic:
 
     def handle_sigterm(self, signum: int, frame: object) -> None:
 
-        """
-        Handler function that is called when SIGTERM is received.
+        """Handler function that is called when SIGTERM is received.
 
         This function can be overwritten by custom business logic
         implementation of daemon applications to implement some custom logic
         for this signal.
 
         Args:
-            signum:     The actual signam number that was received.
-            frame:      The current stack frame.
+            signum (int): The actual signam number that was received.
+            frame (object): The current stack frame.
 
         Authors:
             Attila Kovacs
@@ -319,16 +321,15 @@ class BusinessLogic:
 
     def handle_sigint(self, signum: int, frame: object) -> None:
 
-        """
-        Handler function that is called when SIGTERM is received.
+        """Handler function that is called when SIGTERM is received.
 
         This function can be overwritten by custom business logic
         implementation of daemon applications to implement some custom logic
         for this signal.
 
         Args:
-            signum:     The actual signam number that was received.
-            frame:      The current stack frame.
+            signum (int): The actual signam number that was received.
+            frame (object): The current stack frame.
 
         Authors:
             Attila Kovacs
@@ -341,16 +342,15 @@ class BusinessLogic:
 
     def handle_sigalrm(self, signum: int, frame: object) -> None:
 
-        """
-        Handler function that is called when SIGALRM is received.
+        """Handler function that is called when SIGALRM is received.
 
         This function can be overwritten by custom business logic
         implementation of daemon applications to implement some custom logic
         for this signal.
 
         Args:
-            signum:     The actual signam number that was received.
-            frame:      The current stack frame.
+            signum (int): The actual signam number that was received.
+            frame (object): The current stack frame.
 
         Authors:
             Attila Kovacs
@@ -363,16 +363,15 @@ class BusinessLogic:
 
     def handle_sigusr1(self, signum: int, frame: object) -> None:
 
-        """
-        Handler function that is called when SIGUSR1 is received.
+        """Handler function that is called when SIGUSR1 is received.
 
         This function can be overwritten by custom business logic
         implementation of daemon applications to implement some custom logic
         for this signal.
 
         Args:
-            signum:     The actual signam number that was received.
-            frame:      The current stack frame.
+            signum (int): The actual signam number that was received.
+            frame (object): The current stack frame.
 
         Authors:
             Attila Kovacs
@@ -385,16 +384,15 @@ class BusinessLogic:
 
     def handle_sigusr2(self, signum: int, frame: object) -> None:
 
-        """
-        Handler function that is called when SIGUSR2 is received.
+        """Handler function that is called when SIGUSR2 is received.
 
         This function can be overwritten by custom business logic
         implementation of daemon applications to implement some custom logic
         for this signal.
 
         Args:
-            signum:     The actual signam number that was received.
-            frame:      The current stack frame.
+            signum (int): The actual signam number that was received.
+            frame (object): The current stack frame.
 
         Authors:
             Attila Kovacs
@@ -407,13 +405,11 @@ class BusinessLogic:
 
     def before_sentry_send(self, event: object, hint: object) -> object:
 
-        """
-        Handler function that allows specifying custom logic that is executed
-        before the sentry report is sent.
+        """Handler function called before a Sentry report is sent.
 
         Args:
-            event:      The event that is being captured.
-            hint:       Additional hint data.
+            event (object): The event that is being captured.
+            hint (object): Additional hint data.
 
         Returns:
             The modified event.

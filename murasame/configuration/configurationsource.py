@@ -26,8 +26,7 @@ from murasame.logging import LogWriter
 
 class ConfigurationSource(LogWriter):
 
-    """
-    Base class for configuration sources.
+    """Base class for configuration sources.
 
     Authors:
         Attila Kovacs
@@ -35,8 +34,7 @@ class ConfigurationSource(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new ConfigurationSource instance.
+        """Creates a new ConfigurationSource instance.
 
         Authors:
             Attila Kovacs
@@ -47,8 +45,7 @@ class ConfigurationSource(LogWriter):
 
     def load(self) -> None:
 
-        """
-        Loads the configuration from this configuration source.
+        """Loads the configuration from this configuration source.
 
         Authors:
             Attila Kovacs
@@ -59,8 +56,7 @@ class ConfigurationSource(LogWriter):
 
     def save(self) -> None:
 
-        """
-        Saves the configuration to this configuration source.
+        """Saves the configuration to this configuration source.
 
         Authors:
             Attila Kovacs
