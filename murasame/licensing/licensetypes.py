@@ -26,13 +26,15 @@ from enum import IntEnum
 
 class LicenseTypes(IntEnum):
 
-    """
-    List of supported license types.
+    """List of supported license types.
+
+    Attributes:
+        PRODUCTION: Used for licenses issued for live production systems.
+        DEVELOPMENT: Used for licenses used during development.
 
     Authors:
         Attila Kovacs
     """
 
-    PRODUCTION = 0  # Used for licenses issued for live production systems.
-
-    DEVELOPMENT = 42 # Used for licenses used during development.
+    PRODUCTION = 0
+    DEVELOPMENT = 42

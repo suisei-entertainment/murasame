@@ -29,8 +29,10 @@ from murasame.utils import RSAPublic, JsonFile
 
 class LicenseValidator:
 
-    """
-    Utility class to validate a license.
+    """Utility class to validate a license.
+
+    Attributes:
+        _public_key (RSAPublic): The public key to use for the validation.
 
     Authors:
         Attila Kovacs
@@ -40,21 +42,17 @@ class LicenseValidator:
                  public_key: 'RSAPublic' = None,
                  public_key_path: str = None) -> None:
 
-        """
-        Creates a new LicenseValidator instance.
+        """Creates a new LicenseValidator instance.
 
         Args:
-            public_key:         The public key object to use for validation.
-            public_key_path:    Path to the file containing the public key.
+            public_key (RSAPublic): The public key object to use for validation.
+            public_key_path (str): Path to the file containing the public key.
 
         Authors:
             Attila Kovacs
         """
 
         self._public_key = None
-        """
-        The public key to use for the validation.
-        """
 
         if public_key is not None:
             self._public_key = public_key
@@ -65,17 +63,15 @@ class LicenseValidator:
                  license_path: str,
                  cb_retrieve_password: 'Callable' = None) -> bool:
 
-        """
-        Validates the given license file using the public key.
+        """Validates the given license file using the public key.
 
         Args:
-            license_path:           Path to the license file.
-            cb_retrieve_password:   Callback function that is called to
-                                    retrieve the passwort required to decrypt
-                                    the license file.
+            license_path (str): Path to the license file.
+            cb_retrieve_password (Callable): Callback function that is called
+                to retrieve the password required to decrypt the license file.
 
         Returns:
-            'True' if the given license is valid, 'False' otherwise.
+            bool: 'True' if the given license is valid, 'False' otherwise.
 
         Authors:
             Attila Kovacs

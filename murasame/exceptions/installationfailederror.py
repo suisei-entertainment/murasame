@@ -27,8 +27,10 @@ from murasame.exceptions.exception import FrameworkError
 
 class InstallationFailedError(FrameworkError):
 
-    """
-    Exception raised when installation of a component has failed.
+    """Exception raised when installation of a component has failed.
+
+    Attributes:
+        requirement (str): Name of the requirement that has failed to install.
 
     Authors:
         Attila Kovacs
@@ -36,7 +38,7 @@ class InstallationFailedError(FrameworkError):
 
     def __init__(self,
                  message: str = '',
-                 errorcode: int = ErrorCodes.INSTALL_FAILED,
+                 errorcode: ErrorCodes = ErrorCodes.INSTALL_FAILED,
                  package: str = __package__,
                  file: str = '',
                  line: str = '',
@@ -45,29 +47,34 @@ class InstallationFailedError(FrameworkError):
                  inspect_caller: bool = True,
                  requirement: str = None) -> None:
 
-        """
-        Creates a new InstallationFailedError instance.
+        """Creates a new InstallationFailedError instance.
 
         Args:
-            message:            The user message that clarifies the exception.
-            errorcode:          The platform errorcode that identifies the
-                                actual error.
-            package:            Name of the Python package that raised the
-                                exception.
-            file:               Name of the source file where the exception was
-                                raised.
-            line:               The line number in the source code where the
-                                exception was raised.
-            function:           Name of the funtion that raised the exception.
-            wrapped_exception:  Another, non-SEED exception that is wrapped
-                                inside the SEED exception.
-            inspect_caller:     Whether or not the caller should be inspected
-                                to retrieve the raising location of the
-                                exception. Should only be True in the topmost
-                                exception in the inheritance tree, otherwise
-                                should be passed down as False.
-            requirement:        String description of the requirement that has
-                                failed to install.
+            message (str): The user message that clarifies the exception.
+
+            errorcode (ErrorCodes): The platform error code that identifies the
+                actual error.
+
+            package (str): Name of the Python package that raised the
+                exception.
+
+            file (str): Name of the source file where the exception was raised.
+
+            line (int): The line number in the source code where the exception
+                was raised.
+
+            function (str): Name of the function that raised the exception.
+
+            wrapped_exception (Exception):  Another exception that is wrapped
+                 inside the Murasame exception.
+
+            inspect_caller (bool): Whether or not the caller should be
+                inspected to retrieve the raising location of the exception.
+                Should only be 'True' in the topmost exception in the
+                inheritance tree, otherwise should be passed down as 'False'.
+
+            requirement (str): Name of the requirement that has failed to
+                install.
 
         Authors:
             Attila Kovacs
@@ -87,6 +94,3 @@ class InstallationFailedError(FrameworkError):
                          inspect_caller=False)
 
         self.requirement = requirement
-        """
-        String description of the requirement that has failed to install.
-        """

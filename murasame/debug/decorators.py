@@ -30,9 +30,13 @@ from murasame.logging import LogWriter
 
 def debug(function: Callable) -> Any:
 
-    """
-    Allows logging of a function call including the arguments it was called
-    with.
+    """Allows logging of a function call with the arguments it was called with.
+
+    Args:
+        function (Callable): The function to debug.
+
+    Returns:
+        Any: The return value of the wrapped function.
 
     Authors:
         Attila Kovacs
@@ -50,8 +54,14 @@ def debug(function: Callable) -> Any:
 
 def time(function: Callable) -> Any:
 
-    """
-    Allows logging of the execution time of functions.
+    """Allows logging of the execution time of functions.
+
+    Args:
+        *args: Variable argument list.
+        **kwargs: Variable length list of named arguments.
+
+    Returns:
+        Any: The return value of the wrapped function.
 
     Authors:
         Attila Kovacs

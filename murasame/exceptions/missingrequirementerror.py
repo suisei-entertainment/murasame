@@ -27,8 +27,8 @@ from murasame.exceptions.exception import FrameworkError
 
 class MissingRequirementError(FrameworkError):
 
-    """
-    Exception raised when a required component is missing during installation.
+    """Exception raised when a required component is missing during
+        installation.
 
     Authors:
         Attila Kovacs
@@ -36,7 +36,7 @@ class MissingRequirementError(FrameworkError):
 
     def __init__(self,
                  message: str = '',
-                 errorcode: int = ErrorCodes.MISSING_REQUIREMENT,
+                 errorcode: ErrorCodes = ErrorCodes.MISSING_REQUIREMENT,
                  package: str = __package__,
                  file: str = '',
                  line: str = '',
@@ -49,25 +49,28 @@ class MissingRequirementError(FrameworkError):
         Creates a new MissingRequirementError instance.
 
         Args:
-            message:            The user message that clarifies the exception.
-            errorcode:          The platform errorcode that identifies the
-                                actual error.
-            package:            Name of the Python package that raised the
-                                exception.
-            file:               Name of the source file where the exception was
-                                raised.
-            line:               The line number in the source code where the
-                                exception was raised.
-            function:           Name of the funtion that raised the exception.
-            wrapped_exception:  Another, non-SEED exception that is wrapped
-                                inside the SEED exception.
-            inspect_caller:     Whether or not the caller should be inspected
-                                to retrieve the raising location of the
-                                exception. Should only be True in the topmost
-                                exception in the inheritance tree, otherwise
-                                should be passed down as False.
-            requirement:        String description of the requirement that is
-                                missing.
+            message (str): The user message that clarifies the exception.
+
+            errorcode (ErrorCodes): The platform error code that identifies the
+                actual error.
+
+            package (str): Name of the Python package that raised the
+                exception.
+
+            file (str): Name of the source file where the exception was raised.
+
+            line (int): The line number in the source code where the exception
+                was raised.
+
+            function (str): Name of the function that raised the exception.
+
+            wrapped_exception (Exception):  Another exception that is wrapped
+                 inside the Murasame exception.
+
+            inspect_caller (bool): Whether or not the caller should be
+                inspected to retrieve the raising location of the exception.
+                Should only be 'True' in the topmost exception in the
+                inheritance tree, otherwise should be passed down as 'False'.
 
         Authors:
             Attila Kovacs

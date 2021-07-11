@@ -26,8 +26,13 @@ from murasame.licensing.licensetypes import LicenseTypes
 
 class LicenseDescriptor:
 
-    """
-    Represents a single license.
+    """Represents a single license.
+
+    Attributes:
+        _license_key (UUID): The unique license key.
+        _owner_id (UUID): Unique ID of the owner of the license.
+        _type (LicenseTypes): The type of the license.
+        _features (dict): List of features that are enabled by the license.
 
     Authors:
         Attila Kovacs
@@ -36,8 +41,7 @@ class LicenseDescriptor:
     @property
     def Key(self) -> 'UUID':
 
-        """
-        Provides access to the unique license key.
+        """Provides access to the unique license key.
 
         Authors:
             Attila Kovacs
@@ -48,8 +52,7 @@ class LicenseDescriptor:
     @property
     def Owner(self) -> 'UUID':
 
-        """
-        Provides access to the unique ID of the owner of the license.
+        """Provides access to the unique ID of the owner of the license.
 
         Authors:
             Attila Kovacs
@@ -60,8 +63,7 @@ class LicenseDescriptor:
     @property
     def Type(self) -> 'LicenseTypes':
 
-        """
-        Provides access to the type of the license.
+        """Provides access to the type of the license.
 
         Authors:
             Attila Kovacs
@@ -72,8 +74,7 @@ class LicenseDescriptor:
     @property
     def Features(self) -> list:
 
-        """
-        Provides access to the list of features associated with the license.
+        """Provides access to the list of features associated with the license.
 
         Authors:
             Attila Kovacs
@@ -87,49 +88,32 @@ class LicenseDescriptor:
             owner_id: 'UUID',
             license_type: 'LicenseTypes') -> None:
 
-        """
-        Creates a new LicenseDescriptor instance.
+        """Creates a new LicenseDescriptor instance.
 
         Args:
-            license_key:        The unique license key.
-            owner_id:           Unique ID of the owner of the license.
-            license_type:       The type of the license.
+            license_key (UUID): The unique license key.
+            owner_id (UUID): Unique ID of the owner of the license.
+            license_type (LicenseTypes): The type of the license.
 
         Authors:
             Attila Kovacs
         """
 
         self._license_key = license_key
-        """
-        The unique license key,
-        """
-
         self._owner_id = owner_id
-        """
-        Unique ID of the owner of the license.
-        """
-
         self._type = license_type
-        """
-        The type of the license.
-        """
-
         self._features = {}
-        """
-        List of features that are enabled by the license.
-        """
 
     def has_feature(self, feature_id: 'UUID') -> bool:
 
-        """
-        Returns whether or not a given feature is associated by the license.
+        """Returns whether or not a given feature is associated by the license.
 
         Args:
-            feature_id:     The feature id to check.
+            feature_id (UUIS): The feature id to check.
 
         Returns:
-            'True' if the given feature is covered by the license, 'False'
-            otherwise.
+            bool: 'True' if the given feature is covered by the license,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -142,13 +126,12 @@ class LicenseDescriptor:
 
     def add_feature(self, feature_id: 'UUID', metadata: dict) -> None:
 
-        """
-        Adds the given feature to the license.
+        """Adds the given feature to the license.
 
         Args:
-            feature_id:     The unique ID of the feature.
-            metadata:       Additional metadata associated with the license,
-                            e.g. capacity limitation.
+            feature_id (UUID): The unique ID of the feature.
+            metadata (dict): Additional metadata associated with the license,
+                e.g. capacity limitation.
 
         Authors:
             Attila Kovacs
@@ -161,11 +144,10 @@ class LicenseDescriptor:
 
     def remove_feature(self, feature_id: 'UUID') -> None:
 
-        """
-        Removes a given feature from the license.
+        """Removes a given feature from the license.
 
         Args:
-            feature_id:     The unique ID of the feature.
+            feature_id (UUID): The unique ID of the feature.
 
         Authors:
             Attila Kovacs
@@ -176,11 +158,10 @@ class LicenseDescriptor:
 
     def serialize(self) -> dict:
 
-        """
-        Returns the license descriptor serialized to a JSON format.
+        """Returns the license descriptor serialized to a JSON format.
 
         Returns:
-            The license descriptor as a dictionary.
+            dict: The license descriptor as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -198,8 +179,7 @@ class LicenseDescriptor:
 
     def _serialize_license_type(self) -> str:
 
-        """
-        Returns the type of the license serialized as a string.
+        """Returns the type of the license serialized as a string.
 
         Authors:
             Attila Kovacs

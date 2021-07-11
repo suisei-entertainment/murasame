@@ -153,13 +153,33 @@ SUPPORTED_LANGUAGES = \
 
 class Localizer(LogWriter):
 
-    """
-    Utility class to translate strings and fill in optional variables inside
-    them. It also supports automatic translation of strings through the
-    Google Translate API.
+    """Utility class to translate strings and fill in optional variables inside
+    them.
+
+    It also supports automatic translation of strings through the Google
+    Translate API.
 
     This localizer will load localization files from the virtual file system
     node /localization.
+
+    Attributes:
+        _language (str): The selected language of the application.
+
+        _default_language (str): The default language to use.
+
+        _auto_translate (bool): Whether or not missing translations should be
+            automatically translated through Google Translate.
+
+        _cache_default (bool): Whether or not the default language file should
+            also be loaded into memory.
+
+        _data (dict): The loaded language data.
+
+        _default_data (dict): The loaded default language data.
+
+        _localization_directory (str): The directory in the virtual file system
+            that contains the localization files.
+
 
     Authors:
         Attila Kovacs
@@ -173,61 +193,33 @@ class Localizer(LogWriter):
         auto_translate: bool = False,
         localization_directory='/localization') -> None:
 
-        """
-        Creates a new Localizer instance.
+        """Creates a new Localizer instance.
 
         Args:
-            language:               The selected language of the application.
-            default_language:       The default locale to use when looking for
-                                    texts.
-            cache_default:          Whether or not the default language file
-                                    should also be loaded.
-            auto_translate:         Automatically translate the text from the
-                                    default language if no translated version
-                                    was found.
-            localization_directory: The VFS directory in which the language
-                                    files are located.
+            language (str): The selected language of the application.
+
+            default_language (str): The default locale to use when looking for
+                texts.
+
+            cache_default (bool): Whether or not the default language file
+                should also be loaded.
+
+            auto_translate (bool): Automatically translate the text from the
+                default language if no translated version was found.
+
+            localization_directory (str): The VFS directory in which the
+                language files are located.
         """
 
         super().__init__(channel_name='murasame.localizer', cache_entries=True)
 
         self._language = language
-        """
-        The selected language of the application.
-        """
-
         self._default_language = default_language
-        """
-        The default language to use.
-        """
-
         self._auto_translate = auto_translate
-        """
-        Whether or not missing translations should be automatically translated
-        through Google Translate.
-        """
-
         self._cache_default = cache_default
-        """
-        Whether or not the default language file should also be loaded into
-        memory.
-        """
-
         self._data = None
-        """
-        The loaded language data.
-        """
-
         self._default_data = None
-        """
-        The loaded default language data.
-        """
-
         self._localization_directory = localization_directory
-        """
-        The directory in the virtual file system that contains the localization
-        files.
-        """
 
         self._load_language()
         if self._cache_default:
@@ -236,13 +228,12 @@ class Localizer(LogWriter):
 
     def get(self, key: str, attributes: dict = None) -> str:
 
-        """
-        Retrieves the localized version of the given localization key and also
-        fills any dynamic variables in the text.
+        """Retrieves the localized version of the given localization key and
+        also fills any dynamic variables in the text.
 
         Args:
-            key:            The localization key to retrieve.
-            attributes:     List of dynamic attributes to substitute.
+            key (str): The localization key to retrieve.
+            attributes (dict): List of dynamic attributes to substitute.
         """
 
         self.debug(f'Retrieving localized text for key {key}...')
@@ -274,14 +265,14 @@ class Localizer(LogWriter):
     @staticmethod
     def is_valid_language(language: str) -> bool:
 
-        """
-        Returns whether or not a given language code is valid.
+        """Returns whether or not a given language code is valid.
 
         Args:
-            language:       The language code to check.
+            language (str): The language code to check.
 
         Returns:
-            'True' if the given language code is supported, 'False' otherwise.
+            bool: 'True' if the given language code is supported, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -291,11 +282,10 @@ class Localizer(LogWriter):
 
     def switch_language(self, new_language: str) -> None:
 
-        """
-        Changes the language of the localizer.
+        """Changes the language of the localizer.
 
         Args:
-            new_language:       The new language to set in the localizer.
+            new_language: (str) The new language to set in the localizer.
 
         Authors:
             Attila Kovacs
@@ -311,8 +301,7 @@ class Localizer(LogWriter):
 
     def update_localizations(self) -> None:
 
-        """
-        Reloads the localization files to pick up updates.
+        """Reloads the localization files to pick up updates.
 
         Authors:
             Attila Kovacs
@@ -325,14 +314,13 @@ class Localizer(LogWriter):
 
     def _load_language_file(self, language: str) -> dict:
 
-        """
-        Loads a language file from the virtual file system.
+        """Loads a language file from the virtual file system.
 
         Args:
-            language:           The language file to load.
+            language (str): The language file to load.
 
         Returns:
-            The contents of the language file as a dictionary.
+            dict: The contents of the language file as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -362,13 +350,12 @@ class Localizer(LogWriter):
 
     def _load_language(self) -> None:
 
-        """
-        Loads the language file corresponding to the selected application
+        """Loads the language file corresponding to the selected application
         language into memory.
 
         Raises:
-            RuntimeError:       Raised when the virtual file system cannot be
-                                retrieved.
+            RuntimeError: Raised when the virtual file system cannot be
+                retrieved.
 
         Authors:
             Attila Kovacs
@@ -380,8 +367,7 @@ class Localizer(LogWriter):
 
     def _cache_default_language(self) -> None:
 
-        """
-        Loads the default language file into memory to speed up retrieval of
+        """Loads the default language file into memory to speed up retrieval of
         default language texts when the translation is missing.
 
         Authors:
@@ -396,14 +382,13 @@ class Localizer(LogWriter):
 
     def _load_default_text(self, key: str) -> str:
 
-        """
-        Loads the default version of the given localization key.
+        """Loads the default version of the given localization key.
 
         Args:
-            key:        The localization key to load.
+            key (str): The localization key to load.
 
         Returns:
-            The text corresponding to the given localization key from the
+            str: The text corresponding to the given localization key from the
             default language file.
 
         Authors:
@@ -429,14 +414,13 @@ class Localizer(LogWriter):
 
     def _translate_text(self, text: str) -> str:
 
-        """
-        Translates the given text using Google Translate.
+        """Translates the given text using Google Translate.
 
         Args:
-            text:       The text to translate.
+            text (str): The text to translate.
 
         Returns:
-            The translated text.
+            str: The translated text.
 
         Authors:
             Attila Kovacs

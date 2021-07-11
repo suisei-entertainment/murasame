@@ -29,8 +29,7 @@ from murasame.utils import JsonFile, RSAPrivate
 
 class LicenseGenerator:
 
-    """
-    Generates license files.
+    """Generates license files.
 
     License files are structured the following way:
 
@@ -56,6 +55,12 @@ class LicenseGenerator:
 
     }
 
+    Attributes:
+        _private_key (RSAPrivate): The private key to use to sign the password.
+
+        _cb_retrieve_encryption_password (Callable) : Callback function that is
+            called to retrieve the password used to encrypt the license file.
+
     Authors:
         Attila Kovacs
     """
@@ -66,34 +71,27 @@ class LicenseGenerator:
                  cb_retrieve_key_password: 'Callable' = None,
                  cb_retrieve_encryption_password: 'Callable' = None) -> None:
 
-        """
-        Creates a new LicenseGenerator instance.
+        """Creates a new LicenseGenerator instance.
 
         Args:
-            private_key_path:               Path to the private key to use.
-            private_key:                    The private key to use.
-            cb_retrieve_key_password:       Callback function that is called to
-                                            retrieve the passwort required to
-                                            decrypt the license file.
-            cb_retrieve_encryption_password:Callback function that is called to
-                                            retrieve the encrpyion password
-                                            that is used to encrypt the license
-                                            file.
+            private_key_path (str): Path to the private key to use.
+
+            private_key (RSAPrivate): The private key to use.
+
+            cb_retrieve_key_password (Callable): Callback function that is
+                called to retrieve the password required to decrypt the license
+                file.
+
+            cb_retrieve_encryption_password (Callable): Callback function that
+                is called to retrieve the encryption password that is used to
+                encrypt the license file.
 
         Authors:
             Attila Kovacs
         """
 
         self._private_key = None
-        """
-        The private key to use to sign the password.
-        """
-
         self._cb_retrieve_encryption_password = cb_retrieve_encryption_password
-        """
-        Callback function that is called to retrieve the password used to
-        encrypt the license file.
-        """
 
         if private_key is not None:
             self._private_key = private_key
@@ -107,14 +105,14 @@ class LicenseGenerator:
             output_path: str,
             license_descriptor: 'LicenseDescriptor') -> None:
 
-        """
-        Generates the license file and saves it to disk.
+        """Generates the license file and saves it to disk.
 
         Args:
-            output_path:        Path where the generated license file will be
-                                saved.
-            license_descriptor: The license descriptor to generate the license
-                                file for.
+            output_path (str): Path where the generated license file will be
+                saved.
+
+            license_descriptor (LicenseDescriptor): The license descriptor to
+                generate the license file for.
 
         Authors:
             Attila Kovacs

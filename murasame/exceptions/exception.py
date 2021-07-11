@@ -30,8 +30,25 @@ from .errorcodes import ErrorCodes
 
 class FrameworkError(Exception):
 
-    """
-    The base class for all Murasame framework errors.
+    """The base class for all Murasame framework errors.
+
+    Attributes:
+        errorcode (ErrorCodes): The platform error code that identifies the
+            exact issue.
+
+        errormessage (str): Custom error message specified by the user when
+            raising the exception.
+
+        package (str): Name of the package that raised the expcetion.
+
+        file (str): Name of the source file where the exception was raised.
+
+        line (int): The source line where the exception has been raised.
+
+        function (str): The function that raised the exception.
+
+        wrapped_exception (Exception): An exception that was asked to be
+            wrapped within a framework exception.
 
     Authors:
         Attila Kovacs
@@ -39,7 +56,7 @@ class FrameworkError(Exception):
 
     def __init__(self,
                  message: str = '',
-                 errorcode: int = ErrorCodes.NOT_SET,
+                 errorcode: ErrorCodes = ErrorCodes.NOT_SET,
                  package: str = __package__,
                  file: str = '',
                  line: str = '',
@@ -47,27 +64,31 @@ class FrameworkError(Exception):
                  wrapped_exception: Exception = None,
                  inspect_caller: bool = True) -> None:
 
-        """
-        Creates a new Exception instance.
+        """Creates a new FrameworkError instance.
 
         Args:
-            message:            The user message that clarifies the exception.
-            errorcode:          The platform errorcode that identifies the
-                                actual error.
-            package:            Name of the Python package that raised the
-                                exception.
-            file:               Name of the source file where the exception was
-                                raised.
-            line:               The line number in the source code where the
-                                exception was raised.
-            function:           Name of the funtion that raised the exception.
-            wrapped_exception:  Another, non-SEED exception that is wrapped
-                                inside the SEED exception.
-            inspect_caller:     Whether or not the caller should be inspected
-                                to retrieve the raising location of the
-                                exception. Should only be True in the topmost
-                                exception in the inheritance tree, otherwise
-                                should be passed down as False.
+            message (str): The user message that clarifies the exception.
+
+            errorcode (ErrorCodes): The platform error code that identifies the
+                actual error.
+
+            package (str): Name of the Python package that raised the
+                exception.
+
+            file (str): Name of the source file where the exception was raised.
+
+            line (int): The line number in the source code where the exception
+                was raised.
+
+            function (str): Name of the function that raised the exception.
+
+            wrapped_exception (Exception):  Another exception that is wrapped
+                 inside the Murasame exception.
+
+            inspect_caller (bool): Whether or not the caller should be
+                inspected to retrieve the raising location of the exception.
+                Should only be 'True' in the topmost exception in the
+                inheritance tree, otherwise should be passed down as 'False'.
 
         Authors:
             Attila Kovacs
@@ -76,39 +97,12 @@ class FrameworkError(Exception):
         super().__init__(message)
 
         self.errorcode = errorcode
-        """
-        The platform error code that identifies the exact issue.
-        """
-
         self.errormessage = message
-        """
-        Custom error message specified by the user when raising the exception.
-        """
-
         self.package = package
-        """
-        Name of the package that raised the expcetion.
-        """
-
         self.file = file
-        """
-        Name of the source file where the exception was raised.
-        """
-
         self.line = line
-        """
-        The source line where the exception has been raised.
-        """
-
         self.function = function
-        """
-        The function that raised the exception.
-        """
-
         self.wrapped_exception = wrapped_exception
-        """
-        An exception that was asked to be wrapped within a SEED exception.
-        """
 
         # When inspect_caller is set to True, then the caller function will be
         # inspected to retrieve the correct location of where the exception
@@ -129,8 +123,7 @@ class FrameworkError(Exception):
     @staticmethod
     def inspect_exception() -> tuple:
 
-        """
-        Inspects the caller frame of the expcetion to determine the location
+        """Inspects the caller frame of the expcetion to determine the location
         in the code where it has been called.
 
         This function should be called in the constructor of the top level
@@ -141,6 +134,9 @@ class FrameworkError(Exception):
             the exception constructor was called, the second is the function
             that called the exception constructor, and the third is the line
             number of the source file where the exception was created.
+
+        Authors:
+            Attila Kovacs
         """
 
         caller_frame_record = inspect.stack()[2]

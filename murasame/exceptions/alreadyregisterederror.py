@@ -27,8 +27,7 @@ from murasame.exceptions.exception import FrameworkError
 
 class AlreadyRegisteredError(FrameworkError):
 
-    """
-    Exception raised when trying to register something twice.
+    """Exception raised when trying to register something twice.
 
     Authors:
         Attila Kovacs
@@ -36,7 +35,7 @@ class AlreadyRegisteredError(FrameworkError):
 
     def __init__(self,
                  message: str = '',
-                 errorcode: int = ErrorCodes.ALREADY_REGISTERED,
+                 errorcode: ErrorCodes = ErrorCodes.ALREADY_REGISTERED,
                  package: str = __package__,
                  file: str = '',
                  line: str = '',
@@ -44,27 +43,31 @@ class AlreadyRegisteredError(FrameworkError):
                  wrapped_exception: Exception = None,
                  inspect_caller: bool = True) -> None:
 
-        """
-        Creates a new AlreadyRegisteredError instance.
+        """Creates a new AlreadyRegisteredError instance.
 
         Args:
-            message:            The user message that clarifies the exception.
-            errorcode:          The platform errorcode that identifies the
-                                actual error.
-            package:            Name of the Python package that raised the
-                                exception.
-            file:               Name of the source file where the exception was
-                                raised.
-            line:               The line number in the source code where the
-                                exception was raised.
-            function:           Name of the funtion that raised the exception.
-            wrapped_exception:  Another, non-SEED exception that is wrapped
-                                inside the SEED exception.
-            inspect_caller:     Whether or not the caller should be inspected
-                                to retrieve the raising location of the
-                                exception. Should only be True in the topmost
-                                exception in the inheritance tree, otherwise
-                                should be passed down as False.
+            message (str): The user message that clarifies the exception.
+
+            errorcode (ErrorCodes): The platform error code that identifies the
+                actual error.
+
+            package (str): Name of the Python package that raised the
+                exception.
+
+            file (str): Name of the source file where the exception was raised.
+
+            line (int): The line number in the source code where the exception
+                was raised.
+
+            function (str): Name of the function that raised the exception.
+
+            wrapped_exception (Exception):  Another exception that is wrapped
+                 inside the Murasame exception.
+
+            inspect_caller (bool): Whether or not the caller should be
+                inspected to retrieve the raising location of the exception.
+                Should only be 'True' in the topmost exception in the
+                inheritance tree, otherwise should be passed down as 'False'.
 
         Authors:
             Attila Kovacs

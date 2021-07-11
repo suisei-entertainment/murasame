@@ -26,26 +26,49 @@ from enum import IntEnum
 
 class ErrorCodes(IntEnum):
 
-    """
-    Contains the list of error codes supported by the framework.
+    """Contains the list of error codes supported by the framework.
+
+    Arguments:
+        NOT_SET: Default value when an exact error code is not set.
+
+        INPUT_ERROR: Indicates an error in the input values.
+
+        PERMISSION_ERROR: Indicates a permission violation error.
+
+        RUNTIME_ERROR: Indicates a runtime error.
+
+        ALREADY_REGISTERED: Indicates that something has already been
+            registered.
+
+        ALREADY_EXISTS: Indicates that something already exists.
+
+        NOT_REGISTERED: Indicates that something is not registered.
+
+        UNCAUGHT_EXCEPTION: Indicates that an exception is not handled
+            properly.
+
+        MISSING_REQUIREMENT: Indicates that a required component is missing.
+
+        INSTALL_FAILED: Indicates that installation of a required component has
+            failed.
+
+        LICENSE_ERROR: Indicates an invalid license key.
+
+        DATABASE_ERROR: Indicates a database operation error.
 
     Authors:
         Attila Kovacs
     """
 
-    NOT_SET = 0             # Default value when an exact error code is not set
-
-    INPUT_ERROR = 1         # Indicates an error in the input values
-    PERMISSION_ERROR = 2    # Indicates a permission violation error
-    RUNTIME_ERROR = 3       # Indicates a runtime error
-    ALREADY_REGISTERED = 4  # Indicates that something has already beed
-                            # registered
-    ALREADY_EXISTS = 5      # Indicates that something already exists
-    NOT_REGISTERED = 6      # Indicates that something is not registered
-    UNCAUGHT_EXCEPTION = 7  # Indicates that an exception is not handled
-                            # properly.
-    MISSING_REQUIREMENT = 8 # Indicates that a required component is missing
-    INSTALL_FAILED = 9      # Indicates that installation of a required
-                            # component has failed.
-    LICENSE_ERROR = 10      # Indicates an invalid license key
-    DATABASE_ERROR = 11     # Indicates a database operation error
+    NOT_SET = 0
+    INPUT_ERROR = 1
+    PERMISSION_ERROR = 2
+    RUNTIME_ERROR = 3
+    ALREADY_REGISTERED = 4
+    ALREADY_EXISTS = 5
+    NOT_REGISTERED = 6
+    UNCAUGHT_EXCEPTION = 7
+    MISSING_REQUIREMENT = 8
+    INSTALL_FAILED = 9
+    LICENSE_ERROR = 10
+    DATABASE_ERROR = 11

@@ -28,8 +28,11 @@ from murasame.licensing.licensedescriptor import LicenseDescriptor
 
 class LicenseFile:
 
-    """
-    Represents a single license file loaded into memory.
+    """Represents a single license file loaded into memory.
+
+    Attributes:
+        _signature (str): The signature of the license file.
+        _license (LicenseDescriptor): The license descriptor.
 
     Authors:
         Attila Kovacs
@@ -38,8 +41,7 @@ class LicenseFile:
     @property
     def Signature(self) -> bytes:
 
-        """
-        Provides access to the signature of the license.
+        """Provides access to the signature of the license.
 
         Authors:
             Attila Kovacs
@@ -50,8 +52,7 @@ class LicenseFile:
     @property
     def License(self) -> 'LicenseDescriptor':
 
-        """
-        Provides access to the license descriptor.
+        """Provides access to the license descriptor.
         """
 
         return self._license
@@ -60,28 +61,19 @@ class LicenseFile:
                  license_file_path: str,
                  cb_retrieve_password: 'Callable' = None) -> None:
 
-        """
-        Creates a new LicenseFile instance.
+        """Creates a new LicenseFile instance.
 
         Args:
-            license_file_path:      Path to the license file.
-            cb_retrieve_password:   Callback function that is called to
-                                    retrieve the passwort required to decrypt
-                                    the license file.
+            license_file_path (str): Path to the license file.
+            cb_retrieve_password (Callable): Callback function that is called
+                to retrieve the password required to decrypt the license file.
 
         Authors:
             Attila Kovacs
         """
 
         self._signature = None
-        """
-        The signature of the license file.
-        """
-
         self._license = None
-        """
-        The license descriptor.
-        """
 
         self._load_license_file(license_file_path, cb_retrieve_password)
 
@@ -89,14 +81,12 @@ class LicenseFile:
                            license_file_path: str,
                            cb_retrieve_password: 'Callable') -> None:
 
-        """
-        Loads and decrypts the license file.
+        """Loads and decrypts the license file.
 
         Args:
-            license_file_path:      Path to the license file.
-            cb_retrieve_password:   Callback function that is called to
-                                    retrieve the passwort required to decrypt
-                                    the license file.
+            license_file_path (str): Path to the license file.
+            cb_retrieve_password (Callable): Callback function that is called
+                to retrieve the password required to decrypt the license file.
 
         Authors:
             Attila Kovacs
