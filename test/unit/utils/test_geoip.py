@@ -89,15 +89,15 @@ class TestGeoIP:
         sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
                     database_path=DATABASE_PATH)
 
-        result = sut.query('5.187.173.113')
+        result = sut.query('94.21.95.68')
         assert result is not None
-        assert result.IPAddress == '5.187.173.113'
+        assert result.IPAddress == '94.21.95.68'
         assert result.Continent == 'Europe'
         assert result.Country == 'Hungary'
-        assert result.City == 'God'
-        assert result.PostalCode in ('2131', '2132')
-        assert result.Latitude == 47.6838
-        assert result.Longitude == 19.1401
+        assert result.City in ('Budapest', 'God')
+        assert result.PostalCode in ('2131', '2132', '1115')
+        assert result.Latitude in (47.6838, 47.5636)
+        assert result.Longitude in (19.1401, 19.0947)
 
     def test_geoip_with_local_ip_address(self):
 
