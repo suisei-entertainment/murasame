@@ -32,8 +32,22 @@ from murasame.logging.logtarget import LogTarget
 
 class FileLogTarget(LogTarget):
 
-    """
-    Represents a log target that writes messages to a file in the file system.
+    """Represents a log target that writes messages to a local file.
+
+    Attributes:
+        _filename (str): Name of the log file.
+
+        _max_size (int): The maximum size of the log file in bytes.
+
+        _backup_count (int): The amount of backup files to keep.
+
+        _format_string (str): Optional format string to use for logging to
+            console.
+
+        _date_format_string (str): Optional date format string to use for
+            logging to console.
+
+        _handler (object): The actual log handler object.
 
     Authors:
         Attila Kovacs
@@ -45,15 +59,15 @@ class FileLogTarget(LogTarget):
         configuration: dict,
         root_path: str) -> None:
 
-        """
-        Creates a new FileLogTarget entry.
+        """Creates a new FileLogTarget entry.
 
         Args:
-            logger:             The logger object that will be used for
-                                logging.
-            configuration:      The configuration of the target in serialized
-                                format.
-            root_path:          Root path of the logging system.
+            logger (Logger): The logger object that will be used for logging.
+
+            configuration (dict): The configuration of the target in serialized
+                format.
+
+            root_path (str): Root path of the logging system.
 
         Authors:
             Attila Kovacs
@@ -61,22 +75,11 @@ class FileLogTarget(LogTarget):
 
         super().__init__(logger=logger)
 
-        # Name of the log size
         self._filename = None
-
-        # The maximum size of the log file
         self._max_size = None
-
-        # The amount of backup files to keep
         self._backup_count = None
-
-        # Optional format string to use for logging to console.
         self._format_string = None
-
-        # Optional date format string to use for logging to console.
         self._date_format_string = None
-
-        # The actual log handler object.
         self._handler = None
 
         # Parse the configuration
@@ -91,13 +94,13 @@ class FileLogTarget(LogTarget):
         configuration: dict,
         root_path: str) -> None:
 
-        """
-        Loads the configuration of the target from its serialized format.
+        """Loads the configuration of the target from its serialized format.
 
         Args:
-            configuration:      The configuration of the log target in
-                                serialized format.
-            root_path:          Root path of the logging system.
+            configuration (dict): The configuration of the log target in
+                serialized format.
+
+            root_path (str): Root path of the logging system.
 
         Authors:
             Attila Kovacs
@@ -140,8 +143,7 @@ class FileLogTarget(LogTarget):
 
     def _apply_configuration(self) -> None:
 
-        """
-        Applies the configuration to the underlying logger object.
+        """Applies the configuration to the underlying logger object.
 
         Authors:
             Attila Kovacs

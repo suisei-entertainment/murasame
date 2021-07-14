@@ -26,12 +26,13 @@ from enum import IntEnum
 
 class LogLevels(IntEnum):
 
-    """
-    Contains the list of supported log levels. This maps to log levels
+    """Contains the list of supported log levels.
+
+    This maps to log levels
     supported by syslog. For Python logging, some log levels are merged
     according to the following table:
 
-    SEED Log Level | Syslog Log Level | Python Log Level
+    Murasame Log Level | Syslog Log Level | Python Log Level
     =====================================================
      TRACE         |      DEBUG       |     DEBUG
      DEBUG         |      DEBUG       |     DEBUG

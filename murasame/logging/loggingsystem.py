@@ -33,8 +33,7 @@ from murasame.logging.defaultlogconfig import DEFAULT_LOG_CONFIG
 
 class LoggingAPI:
 
-    """
-    Common interface for logging system implementations.
+    """Common interface for logging system implementations.
 
     Authors:
         Attila Kovacs
@@ -42,15 +41,15 @@ class LoggingAPI:
 
     def has_channel(self, name: str) -> bool:
 
-        """
-        Returns whether or not a given log channel is registered in the
+        """Returns whether or not a given log channel is registered in the
         logging system.
 
         Args:
-            name:       The name of the log channel to check.
+            name (str): The name of the log channel to check.
 
         Returns:
-            'True' if the given log channel is registered, 'False' otherwise.
+            bool: 'True' if the given log channel is registered, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -63,11 +62,10 @@ class LoggingAPI:
 
     def get_channel(self, name: str) -> 'LogChannel':
 
-        """
-        Returns a given log channel.
+        """Returns a given log channel.
 
         Args:
-            name:       Name of the channel to retrieve.
+            name (str): Name of the channel to retrieve.
 
         Authors:
             Attila Kovacs
@@ -79,8 +77,13 @@ class LoggingAPI:
 
 class LoggingSystem:
 
-    """
-    Default logging system implementation.
+    """Default logging system implementation.
+
+    Attributes:
+        _channels (dict): The log channels registered in the logging system.
+
+        _root_path (str): The root path in the file system where log files are 
+            written.
 
     Authors:
         Attila Kovacs
@@ -89,8 +92,7 @@ class LoggingSystem:
     @property
     def RootPath(self) -> str:
 
-        """
-        The root path of the logging system where log files for file log
+        """The root path of the logging system where log files for file log
         targets are written.
 
         Authors:
@@ -101,8 +103,7 @@ class LoggingSystem:
 
     def __init__(self) -> None:
 
-        """
-        Creates a new LoggingSystem instance.
+        """Creates a new LoggingSystem instance.
 
         Since logging is one of the most basic functionalities, it should work
         even if the higher level systems fail, so logging doesn't use the
@@ -117,29 +118,22 @@ class LoggingSystem:
         """
 
         self._channels = {}
-        """
-        The log channels registered in the logging system.
-        """
-
         self._root_path = None
-        """
-        The root path in the file system where log files are written.
-        """
 
         if not self._load_configuration():
             self._load_default_configuration()
 
     def has_channel(self, name: str) -> bool:
 
-        """
-        Returns whether or not a given log channel is registered in the
+        """Returns whether or not a given log channel is registered in the
         logging system.
 
         Args:
-            name:       The name of the log channel to check.
+            name (str): The name of the log channel to check.
 
         Returns:
-            'True' if the given log channel is registered, 'False' otherwise.
+            bool: 'True' if the given log channel is registered, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -149,11 +143,10 @@ class LoggingSystem:
 
     def get_channel(self, name: str) -> Union['LogChannel', None]:
 
-        """
-        Returns a given log channel.
+        """Returns a given log channel.
 
         Args:
-            name:       Name of the channel to retrieve.
+            name (str): Name of the channel to retrieve.
 
         Authors:
             Attila Kovacs
@@ -166,12 +159,11 @@ class LoggingSystem:
 
     def _load_configuration(self) -> bool:
 
-        """
-        Loads the logging configuration from the config file.
+        """Loads the logging configuration from the config file.
 
         Returns:
-            'True' if the configuration was loaded successfully 'False'
-            otherwise.
+            bool: 'True' if the configuration was loaded successfully 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -226,14 +218,14 @@ class LoggingSystem:
 
     def _load_default_configuration(self) -> None:
 
-        """
-        Loads the default logging system configuration.
+        """Loads the default logging system configuration.
 
         Raises:
-            RuntimeError:       Raised if the root logging directory cannot be
-                                created.
-            InvalidInputError:  Raised if the default logging configuration
-                                contains an error.
+            RuntimeError: Raised if the root logging directory cannot be
+                created.
+
+            InvalidInputError: Raised if the default logging configuration
+                contains an error.
 
         Authors:
             Attila Kovacs

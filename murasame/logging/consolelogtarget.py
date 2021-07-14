@@ -33,8 +33,18 @@ from .logtarget import LogTarget
 
 class ConsoleLogTarget(LogTarget):
 
-    """
-    Represents a log target that writes messages to the system console.
+    """Represents a log target that writes messages to the system console.
+
+    Attributes:
+        _colored_logs (bool): Whether or not console log should be colored.
+
+        _format_string (str): Optional format string to use for logging to
+            console.
+
+        _date_format_string (str): Optional date format string to use for
+            logging to console.
+
+        _handler (object): The actual log handler object.
 
     Authors:
         Attila Kovacs
@@ -42,14 +52,13 @@ class ConsoleLogTarget(LogTarget):
 
     def __init__(self, logger: 'Logger', configuration: dict) -> None:
 
-        """
-        Creates a new ConsoleLogTarget entry.
+        """Creates a new ConsoleLogTarget entry.
 
         Args:
-            logger:             The logger object that will be used for
-                                logging.
-            configuration:      The configuration of the target in serialized
-                                format.
+            logger (Logger): The logger object that will be used for logging.
+
+            configuration (dict): The configuration of the target in serialized
+                format.
 
         Authors:
             Attila Kovacs
@@ -57,32 +66,24 @@ class ConsoleLogTarget(LogTarget):
 
         super().__init__(logger=logger)
 
-        # Whether or not console log should be colored.
         self._colored_logs = False
-
-        # Optional format string to use for logging to console.
         self._format_string = None
-
-        # Optional date format string to use for logging to console.
         self._date_format_string = None
-
-        # The actual log handler object.
         self._handler = None
 
-        # Parse the configuration
+        # Parse the configuration data
         self._load_configuration(configuration=configuration)
 
-        # Apply the configuration to the logger.
+        # Apply the configuration to the logger
         self._apply_configuration()
 
     def _load_configuration(self, configuration: dict) -> None:
 
-        """
-        Loads the configuration of the target from its serialized format.
+        """Loads the configuration of the target from its serialized format.
 
         Args:
-            configuration:      The configuration of the log target in
-                                serialized format.
+            configuration (dict): The configuration of the log target in
+                serialized format.
 
         Authors:
             Attila Kovacs
@@ -114,8 +115,7 @@ class ConsoleLogTarget(LogTarget):
 
     def _apply_configuration(self) -> None:
 
-        """
-        Applies the configuration to the underlying logger object.
+        """Applies the configuration to the underlying logger object.
 
         Authors:
             Attila Kovacs

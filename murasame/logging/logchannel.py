@@ -33,8 +33,17 @@ from murasame.logging.filelogtarget import FileLogTarget
 
 class LogChannel:
 
-    """
-    Represents a single log channel.
+    """Represents a single log channel.
+
+    Attributes:
+
+        _name (str): The name of the channel.
+
+        _default_log_level (LogLevels): The default log level for the channel.
+
+        _targets (list): List of log targets this channel is writing to.
+
+        _logger (Logger)
 
     Authors:
         Attila Kovacs
@@ -43,8 +52,7 @@ class LogChannel:
     @property
     def Name(self) -> str:
 
-        """
-        The name of the channel.
+        """The name of the channel.
 
         Authors:
             Attila Kovacs
@@ -55,8 +63,7 @@ class LogChannel:
     @property
     def DefaultLogLevel(self) -> LogLevels:
 
-        """
-        The default log level of the channel.
+        """The default log level of the channel.
 
         Authors:
             Attila Kovacs
@@ -66,23 +73,17 @@ class LogChannel:
 
     def __init__(self, configuration: dict) -> None:
 
-        """
-        Creates a new log channel instance.
+        """Creates a new log channel instance.
 
         Args:
-            configuration:      The configuration of the channel.
+            configuration (dict): The configuration of the channel.
 
         Authors:
             Attila Kovacs
         """
 
-        # The name of the channel.
         self._name = None
-
-        # The default log level for the channel.
         self._default_log_level = None
-
-        # List of log targets this channel is writing to.
         self._targets = []
 
         self._load_configuration(configuration)
@@ -99,11 +100,10 @@ class LogChannel:
 
     def write(self, entry: LogEntry) -> None:
 
-        """
-        Writes a new log entry to the channel.
+        """Writes a new log entry to the channel.
 
         Args:
-            entry:          The log entry to write.
+            entry (LogEntry): The log entry to write.
 
         Authors:
             Attila Kovacs
@@ -129,15 +129,14 @@ class LogChannel:
 
     def _load_configuration(self, configuration: dict) -> None:
 
-        """
-        Loads the configuration of the channel from its serialized version.
+        """Loads the configuration of the channel from its serialized version.
 
         Args:
-            configuration:      The configuration of the channel.
+            configuration (dict): The configuration of the channel.
 
         Raises:
-            InvalidInputError:  Raised when there is no channel name found in
-                                the configuration.
+            InvalidInputError: Raised when there is no channel name found in
+                the configuration.
 
         Authors:
             Attila Kovacs
@@ -162,11 +161,10 @@ class LogChannel:
 
     def _load_targets(self, configuration: dict) -> None:
 
-        """
-        Loads the log targets of the channel from its serialized version.
+        """Loads the log targets of the channel from its serialized version.
 
         Args:
-            configuration:      The configuration of the channel.
+            configuration (dict): The configuration of the channel.
 
         Authors:
             Attila Kovacs

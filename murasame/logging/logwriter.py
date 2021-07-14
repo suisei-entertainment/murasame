@@ -32,8 +32,26 @@ from murasame.logging.loggingsystem import LoggingAPI
 
 class LogWriter:
 
-    """
-    Utility class that represents an object that wants to write into the log.
+    """Utility class that represents an object that wants to write into the log.
+
+    Attributes:
+        _cache_entries (bool): Whether or not log entries should be cached if
+            the log service is unavailable.
+
+        _cache (list): Stores cached log entries until they are sent to the log
+            channel after attach.
+
+        _channel_name (str): Name of the channel this writer logs to.
+
+        _log_level (LogLevels): Current log level of the writer.
+
+        _log_level_overwritten (bool): Whether or not the log level has been
+            overwritten for this writer.
+
+        _channel (LogChannel): The log channel object to log to.
+
+        _log_writer_suspended (bool): Whether or not the log writer has been
+            suspended.
 
     Authors:
         Attila Kovacs
@@ -42,8 +60,7 @@ class LogWriter:
     @property
     def LogLevel(self) -> LogLevels:
 
-        """
-        The current log level of the writer.
+        """The current log level of the writer.
 
         Authors:
             Attila Kovacs
@@ -54,8 +71,7 @@ class LogWriter:
     @property
     def IsLogLevelOverwritten(self) -> bool:
 
-        """
-        Whether or not the log level of the channel this writer logs to has
+        """Whether or not the log level of the channel this writer logs to has
         been overwritten by the writer.
 
         Authors:
@@ -67,8 +83,7 @@ class LogWriter:
     @property
     def IsLoggingSuspended(self) -> bool:
 
-        """
-        Returns whether or not logging has been suspended in this writer.
+        """Returns whether or not logging has been suspended in this writer.
 
         Authors:
             Attila Kovacs
@@ -79,8 +94,7 @@ class LogWriter:
     @property
     def CachedLogEntries(self) -> list:
 
-        """
-        Provides access to the list of cached log entries.
+        """Provides access to the list of cached log entries.
 
         Authors:
             Attila Kovacs
@@ -90,49 +104,32 @@ class LogWriter:
 
     def __init__(self, channel_name: str, cache_entries: bool = False) -> None:
 
-        """
-        Creates a new LogWriter instance.
+        """Creates a new LogWriter instance.
 
         Args:
-            channel_name:       Name of the channel this writer logs to.
-            cache_entries:      Whether or not log entries should be cached if
-                                the log service is not available.
+            channel_name (str): Name of the channel this writer logs to.
+            cache_entries (bool): Whether or not log entries should be cached
+                if the log service is not available.
 
         Authors:
             Attila Kovacs
         """
 
-        # Whether or not log entries should be cached if the log service is
-        # unavailable.
         self._cache_entries = cache_entries
-
-        # Stores cached log entries until they are sent to the log channel
-        # after attach.
         self._cache = []
-
-        # Name of the channel this writer logs to.
         self._channel_name = channel_name
-
-        # Current log level of the writer.
         self._log_level = None
-
-        # Whether or not the log level has been overwritten for this writer.
         self._log_level_overwritten = False
-
-        # The log channel object to log to.
         self._channel = self._attach()
-
-        # Whether or not the log writer has been suspended.
         self._log_writer_suspended = False
 
     def overwrite_log_level(self, new_log_level: LogLevels) -> None:
 
-        """
-        Overwrites the log level of the writer.
+        """Overwrites the log level of the writer.
 
         Args:
-            new_log_level:      The new log level that will be used by the
-                                writer.
+            new_log_level (LogLevels): The new log level that will be used by
+                the writer.
 
         Authors:
             Attila Kovacs
@@ -143,8 +140,7 @@ class LogWriter:
 
     def reset_log_level(self) -> None:
 
-        """
-        Resets the log level of the writer to the default value set by its
+        """Resets the log level of the writer to the default value set by its
         parent channel.
 
         Authors:
@@ -160,8 +156,7 @@ class LogWriter:
 
     def suspend_logging(self) -> None:
 
-        """
-        Suspends all logging from this writer.
+        """Suspends all logging from this writer.
 
         Authors:
             Attila Kovacs
@@ -171,8 +166,7 @@ class LogWriter:
 
     def resume_logging(self) -> None:
 
-        """
-        Resumes logging from this writer.
+        """Resumes logging from this writer.
 
         Authors:
             Attila Kovacs
@@ -182,12 +176,11 @@ class LogWriter:
 
     def trace(self, message: str) -> None:
 
-        """
-        Writes a new trace level log message to the log channel, if the
+        """Writes a new trace level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -202,12 +195,11 @@ class LogWriter:
 
     def debug(self, message: str) -> None:
 
-        """
-        Writes a new debug level log message to the log channel, if the
+        """Writes a new debug level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -222,12 +214,11 @@ class LogWriter:
 
     def info(self, message: str) -> None:
 
-        """
-        Writes a new info level log message to the log channel, if the
+        """Writes a new info level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -242,12 +233,11 @@ class LogWriter:
 
     def notice(self, message: str) -> None:
 
-        """
-        Writes a new notice level log message to the log channel, if the
+        """Writes a new notice level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -262,12 +252,11 @@ class LogWriter:
 
     def warning(self, message: str) -> None:
 
-        """
-        Writes a new warning level log message to the log channel, if the
+        """Writes a new warning level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -282,12 +271,11 @@ class LogWriter:
 
     def error(self, message: str) -> None:
 
-        """
-        Writes a new error level log message to the log channel, if the
+        """Writes a new error level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -302,12 +290,11 @@ class LogWriter:
 
     def critical(self, message: str) -> None:
 
-        """
-        Writes a new critical level log message to the log channel, if the
+        """Writes a new critical level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -322,12 +309,11 @@ class LogWriter:
 
     def alert(self, message: str) -> None:
 
-        """
-        Writes a new alert level log message to the log channel, if the
+        """Writes a new alert level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -342,12 +328,11 @@ class LogWriter:
 
     def emergency(self, message: str) -> None:
 
-        """
-        Writes a new emergency level log message to the log channel, if the
+        """Writes a new emergency level log message to the log channel, if the
         configured log level allows it.
 
         Args:
-            message:        The log message to write.
+            message (str): The log message to write.
 
         Authors:
             Attila Kovacs.
@@ -361,11 +346,10 @@ class LogWriter:
 
     def _log(self, entry: LogEntry) -> None:
 
-        """
-        Adds a new log entry to the log.
+        """Adds a new log entry to the log.
 
         Args:
-            entry:      The log entry to add.
+            entry (LogEntry): The log entry to add.
 
         Authors:
             Attila Kovacs
@@ -384,11 +368,11 @@ class LogWriter:
 
     def _attach(self) -> 'LogChannel':
 
-        """
-        Attaches this log writer to a log channel the writer needs to write to.
+        """Attaches this log writer to a log channel the writer needs to write
+            to.
 
         Returns:
-            The log channel object that has been attached to.
+            LogChannel: The log channel object that has been attached to.
 
         Authors:
             Attila Kovacs
@@ -417,12 +401,12 @@ class LogWriter:
 
     def _make_entry(self, level: LogLevels, message: str) -> LogEntry:
 
-        """
-        Creates a new log entry.
+        """Creates a new log entry.
 
         Args:
-            level:      The log level the message was sent with.
-            message:    The log message.
+            level (LogLevels): The log level the message was sent with.
+
+            message (str): The log message.
 
         Authors:
             Attila Kovacs
@@ -435,11 +419,10 @@ class LogWriter:
 
     def _cache_entry(self, entry: LogEntry) -> None:
 
-        """
-        Adds a new entry to the log cache.
+        """Adds a new entry to the log cache.
 
         Args:
-            entry:      The log entry to cache.
+            entry (LogEntry): The log entry to cache.
 
         Authors:
             Attila Kovacs
@@ -449,8 +432,10 @@ class LogWriter:
 
     def _flush_cache(self) -> None:
 
-        """
-        Sends all cached log entries to the channel.
+        """Sends all cached log entries to the channel.
+
+        Authors:
+            Attila Kovacs
         """
 
         for entry in self._cache:

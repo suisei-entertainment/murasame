@@ -23,8 +23,16 @@ Contains the implementation of the LogEntry class.
 
 class LogEntry:
 
-    """
-    Representation of a single log entry.
+    """Representation of a single log entry.
+
+    Attributes:
+        _level (LogLevels): The log level of the entry.
+
+        _timestamp (datetime): The time when the entry has been created.
+
+        _message (str): The actual log message.
+
+        _classname (str): Name of the class that sent the message.
 
     Authors:
         Attila Kovacs
@@ -33,8 +41,7 @@ class LogEntry:
     @property
     def LogLevel(self) -> 'LogLevels':
 
-        """
-        The log level of the entry.
+        """The log level of the entry.
 
         Authors:
             Attila Kovacs
@@ -45,8 +52,7 @@ class LogEntry:
     @property
     def Timestamp(self) -> 'datetime':
 
-        """
-        The time when the entry has been created.
+        """The time when the entry has been created.
 
         Authors:
             Attila Kovacs
@@ -57,8 +63,7 @@ class LogEntry:
     @property
     def Message(self) -> str:
 
-        """
-        The actual log message.
+        """The actual log message.
 
         Authors:
             Attila Kovacs
@@ -69,8 +74,7 @@ class LogEntry:
     @property
     def Classname(self) -> str:
 
-        """
-        Name of the class that created the log entry.
+        """Name of the class that created the log entry.
 
         Authors:
             Attila Kovacs
@@ -84,27 +88,22 @@ class LogEntry:
                  message: str,
                  classname: str) -> None:
 
-        """
-        Creates a new LogEntry instance.
+        """Creates a new LogEntry instance.
 
         Args:
-            level:      The log level of the entry.
-            timestamp:  The time when the entry has been created.
-            message:    The actual log message.
-            classname:  Name of the class that created the log entry.
+            level (LogLevels): The log level of the entry.
+
+            timestamp (datetime): The time when the entry has been created.
+
+            message (str): The actual log message.
+
+            classname (str): Name of the class that created the log entry.
 
         Authors:
             Attila Kovacs
         """
 
-        # The log level of the entry
         self._level = level
-
-        # The time when the entry has been created
         self._timestamp = timestamp
-
-        # The actual log message
         self._message = message
-
-        # Name of the class that sent the message
         self._classname = classname
