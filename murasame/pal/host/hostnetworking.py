@@ -33,9 +33,19 @@ from murasame.pal.host.hostlocation import HostLocation
 
 class HostNetworking(LogWriter):
 
-    """
-    Utility class that represents the networking capabilities of the host
+    """Utility class that represents the networking capabilities of the host
     system.
+
+    Attributes:
+        _physical_interfaces (dict): List of physical network interfaces in the
+            host system.
+
+        _public_ip (str): The public IP address of the host system.
+
+        _host_location (HostLocation): The location descriptor of the public IP
+            address.
+
+        _geoip_database_path (str): Path to the GeoIP database to use.
 
     Authors:
         Attila Kovacs
@@ -44,8 +54,7 @@ class HostNetworking(LogWriter):
     @property
     def PhysicalInterfaces(self) -> dict:
 
-        """
-        Provides access to the identified physical network interfaces of the
+        """Provides access to the identified physical network interfaces of the
         host system.
 
         Authors:
@@ -57,8 +66,7 @@ class HostNetworking(LogWriter):
     @property
     def PublicIP(self) -> str:
 
-        """
-        Provides access to the public IP address of the machine.
+        """Provides access to the public IP address of the machine.
 
         Authors:
             Attila Kovacs
@@ -69,8 +77,7 @@ class HostNetworking(LogWriter):
     @property
     def HostLocation(self) -> 'HostLocation':
 
-        """
-        Provides access to the host location descriptor.
+        """Provides access to the host location descriptor.
 
         Authors:
             Attila Kovacs
@@ -84,15 +91,16 @@ class HostNetworking(LogWriter):
             auto_download_geoip_database: bool = False,
             geoip_license_key: str = None) -> None:
 
-        """
-        Creates a new HostNetworking instance.
+        """Creates a new HostNetworking instance.
 
         Args:
-            geoip_database_path:            Path to the GeoIP database.
-            auto_download_geoip_database:   Whether or not the GeoIP database
-                                            should be downloaded automatically.
-            geoip_license_key:              The license key to use when
-                                            downloading the GeoIP database.
+            geoip_database_path (str): Path to the GeoIP database.
+
+            auto_download_geoip_database (bool): Whether or not the GeoIP
+                database should be downloaded automatically.
+
+            geoip_license_key (str): The license key to use when downloading
+                the GeoIP database.
 
         Authors:
             Attila Kovacs
@@ -100,16 +108,9 @@ class HostNetworking(LogWriter):
 
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
-        # List of phyisical network interfaces in the host system.
         self._physical_interfaces = {}
-
-        # The public IP address of the host system.
         self._public_ip = None
-
-        # The location descriptor of the public IP address.
         self._host_location = None
-
-        # Path to the GeoIP database to use.
         self._geoip_database_path = geoip_database_path
 
         self._detect_networking(self._get_interfaces())
@@ -119,14 +120,13 @@ class HostNetworking(LogWriter):
 
     def has_network_interface(self, interface_name: str) -> bool:
 
-        """
-        Returns whether or not the given network interface exists.
+        """Returns whether or not the given network interface exists.
 
         Args:
-            interface_name:     Name of the network interface to check.
+            interface_name (str): Name of the network interface to check.
 
         Returns:
-            'True' if the interface exists, 'False' otherwise.
+            bool: 'True' if the interface exists, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -139,12 +139,11 @@ class HostNetworking(LogWriter):
 
     def _has_netifaces(self) -> bool:
 
-        """
-        Checks whether or not the netifaces package is available on the host
+        """Checks whether or not the netifaces package is available on the host
         system.
 
         Returns:
-            'True' if the package is available, 'False' otherwise.
+            bool: 'True' if the package is available, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -167,11 +166,10 @@ class HostNetworking(LogWriter):
 
     def _get_interfaces(self) -> list:
 
-        """
-        Collects the network interfaces on the host system using netifaces.
+        """Collects the network interfaces on the host system using netifaces.
 
         Returns:
-            A list of all interfaces found by netifaces.
+            list: A list of all interfaces found by netifaces.
 
         Authors:
             Attila Kovacs
@@ -193,11 +191,13 @@ class HostNetworking(LogWriter):
 
     def _add_physical_interface(self, nwif: str) -> PhysicalInterface:
 
-        """
-        Create the physical interface if it doesn't exist already.
+        """Create the physical interface if it doesn't exist already.
 
         Args:
-            nwif:       The name of the network interface.
+            nwif (str): The name of the network interface.
+
+        Returns:
+            PhysicalInterface: The new physical interface object.
 
         Authors:
             Attila Kovacs
@@ -209,15 +209,16 @@ class HostNetworking(LogWriter):
         return self._physical_interfaces[nwif]
 
     def _add_link_addresses(self,
-                            physical_interface: PhysicalInterfaces,
+                            physical_interface: PhysicalInterface,
                             addresses: list) -> None:
 
-        """
-        Adds all link layer addresses to a physical interface.
+        """Adds all link layer addresses to a physical interface.
 
         Args:
-            physical_interface: The PhysicalInterface instance to add to.
-            addresses: List of addresses returned by netifaces.
+            physical_interface (PhysicalInterface): The PhysicalInterface
+                instance to add to.
+
+            addresses (list): List of addresses returned by netifaces.
 
         Authors:
             Attila Kovacs
@@ -238,15 +239,16 @@ class HostNetworking(LogWriter):
                            f'{physical_interface.Name}')
 
     def _add_ipv4_addresses(self,
-                            physical_interface: PhysicalInterfaces,
+                            physical_interface: PhysicalInterface,
                             addresses: list) -> None:
 
-        """
-        Adds all IPv4 addresses to a physical interface.
+        """Adds all IPv4 addresses to a physical interface.
 
         Args:
-            physical_interface: The PhysicalInterface instance to add to.
-            addresses: List of addresses returned by netifaces.
+            physical_interface (PhysicalInterface): The PhysicalInterface
+                instance to add to.
+
+            addresses (list): List of addresses returned by netifaces.
 
         Authors:
             Attila Kovacs
@@ -283,15 +285,16 @@ class HostNetworking(LogWriter):
                            f'{physical_interface.Name}')
 
     def _add_ipv6_addresses(self,
-                            physical_interface: PhysicalInterfaces,
+                            physical_interface: PhysicalInterface,
                             addresses: list) -> None:
 
-        """
-        Adds all IPv6 addresses to a physical interface.
+        """Adds all IPv6 addresses to a physical interface.
 
         Args:
-            physical_interface: The PhysicalInterface instance to add to.
-            addresses: List of addresses returned by netifaces.
+            physical_interface (PhysicalInterface): The PhysicalInterface
+                instance to add to.
+
+            addresses (list): List of addresses returned by netifaces.
 
         Authors:
             Attila Kovacs
@@ -329,11 +332,11 @@ class HostNetworking(LogWriter):
 
     def _detect_networking(self, interfaces: list) -> None:
 
-        """
-        Processes all network interfaces returned by netifaces.
+        """Processes all network interfaces returned by netifaces.
 
         Args:
-            interfaces:     List of network interfaces returned by netifaces.
+            interfaces (list): List of network interfaces returned by
+                netifaces.
 
         Authors:
             Attila Kovacs
@@ -364,11 +367,10 @@ class HostNetworking(LogWriter):
 
     def _create_network_interface(self, interface_name: str) -> None:
 
-        """
-        Creates a new physical network interface.
+        """Creates a new physical network interface.
 
         Args:
-            interface_name:         Name of the physical interface to create.
+            interface_name (str): Name of the physical interface to create.
 
         Authors:
             Attila Kovacs
@@ -386,18 +388,18 @@ class HostNetworking(LogWriter):
                    f'been created.')
 
     def _detect_public_ip(
-            self,
-            auto_download_geoip_database: bool = False,
-            geoip_license_key: str = None) -> None:
+        self,
+        auto_download_geoip_database: bool = False,
+        geoip_license_key: str = None) -> None:
 
-        """
-        Detects the public IP of the host by calling the ipify API.
+        """Detects the public IP of the host by calling the ipify API.
 
         Args:
-            auto_download_geoip_database:   Whether or not the GeoIP database
-                                            should be downloaded automatically.
-            geoip_license_key:              The license key to use when
-                                            downloading the GeoIP database.
+            auto_download_geoip_database (bool): Whether or not the GeoIP
+                database should be downloaded automatically.
+
+            geoip_license_key (str): The license key to use when downloading
+                the GeoIP database.
 
         Authors:
             Attila Kovacs

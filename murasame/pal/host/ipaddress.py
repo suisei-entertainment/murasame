@@ -23,8 +23,21 @@ Contains the implementation of the IPAddress class.
 
 class IPAddress:
 
-    """
-    Representation of an IP address of a physical network interface.
+    """Representation of an IP address of a physical network interface.
+
+    Attributes:
+        _address (str): The actual IP address.
+
+        _netmask (str): The netmask associated with the IP address.
+
+        _broadcast_address (str): The broadcast address associated with the IP
+            address.
+
+        _is_localhost (bool): Whether or not the address is a localhost
+            address.
+
+        _is_link_local_address (bool): Whether or not the address is a link
+            local address.
 
     Authors:
         Attila Kovacs
@@ -33,8 +46,7 @@ class IPAddress:
     @property
     def Address(self) -> str:
 
-        """
-        The link address.
+        """The IP address.
 
         Authors:
             Attila Kovacs
@@ -45,8 +57,7 @@ class IPAddress:
     @property
     def Netmask(self) -> str:
 
-        """
-        The netmask associated with the address.
+        """The netmask associated with the address.
 
         Authors:
             Attila Kovacs
@@ -57,8 +68,7 @@ class IPAddress:
     @property
     def BroadcastAddress(self) -> str:
 
-        """
-        The broadcast address associated with the address.
+        """The broadcast address associated with the address.
 
         Authors:
             Attila Kovacs
@@ -73,8 +83,21 @@ class IPAddress:
                  is_localhost: bool = False,
                  is_link_local_address: bool = False) -> None:
 
-        """
-        Creates a new IPAddress instance.
+        """Creates a new IPAddress instance.
+
+        Args:
+            address (str): The actual IP address.
+
+            netmask (str): The netmask associated with the IP address.
+
+            broadcast_address (str): The broadcast address associated with the
+                IP address.
+
+            is_localhost (bool): Whether or not the address is a localhost
+                address.
+
+            is_link_local_address (bool): Whether or not the address is a link
+                local address.
 
         Authors:
             Attila Kovacs
@@ -88,11 +111,11 @@ class IPAddress:
 
     def is_localhost(self) -> bool:
 
-        """
-        Returns whether or not the address represents a localhost address.
+        """Returns whether or not the address represents a localhost address.
 
         Returns:
-            'True' if the address is a localhost address, 'False' otherwise.
+            bool: 'True' if the address is a localhost address, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -102,11 +125,11 @@ class IPAddress:
 
     def is_link_local_address(self) -> bool:
 
-        """
-        Returns whether or not the address represents a link local address.
+        """Returns whether or not the address represents a link local address.
 
         Returns:
-            'True' if the address is a link local address, 'False' otherwise.
+            bool: 'True' if the address is a link local address, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs

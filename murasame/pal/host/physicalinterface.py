@@ -30,8 +30,19 @@ from murasame.pal.host.ipv6address import IPv6Address
 
 class PhysicalInterface(LogWriter):
 
-    """
-    Represents a single physical network interface.
+    """Represents a single physical network interface.
+
+    Attributes:
+        _name (str): Name of the physical interface.
+
+        _link_addresses (dict): The list of link layer addresses associated
+            with the interface.
+
+        _ipv4_addresses (dict): The list of IPv4 addresses associated with the
+            interface.
+
+        _ipv6_addresses (dict): The list of IPv6 addresses associated with the
+            interface.
 
     Authors:
         Attila Kovacs
@@ -40,8 +51,7 @@ class PhysicalInterface(LogWriter):
     @property
     def Name(self) -> str:
 
-        """
-        Returns the name of the physical interface.
+        """Returns the name of the physical interface.
 
         Authors:
             Attila Kovacs
@@ -51,11 +61,10 @@ class PhysicalInterface(LogWriter):
 
     def __init__(self, interface_name: str) -> str:
 
-        """
-        Creates a new PhysicalInterface instance.
+        """Creates a new PhysicalInterface instance.
 
         Args:
-            interface_name:     Name of the physical interface.
+            interface_name (str): Name of the physical interface.
 
         Authors:
             Attila Kovacs
@@ -64,37 +73,21 @@ class PhysicalInterface(LogWriter):
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
         self._name = interface_name
-        """
-        Name of the physical interface.
-        """
-
         self._link_addresses = {}
-        """
-        The list of link layer addresses associated with the interface.
-        """
-
         self._ipv4_addresses = {}
-        """
-        The list of IPv4 addresses associated with the interface.
-        """
-
         self._ipv6_addresses = {}
-        """
-        The list of IPv6 addresses associated with the interface.
-        """
 
     def has_link_address(self, address: str) -> bool:
 
-        """
-        Returns whether or not the link address already exists in the
+        """Returns whether or not the link address already exists in the
         interface.
 
         Args:
-            address:        The link address to check.
+            address (str): The link address to check.
 
         Returns:
-            'True' if the given link address is already associated with the
-            network interface, 'False' otherwise.
+            bool: 'True' if the given link address is already associated with
+                the network interface, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -110,11 +103,10 @@ class PhysicalInterface(LogWriter):
 
     def add_link_address(self, address: str) -> None:
 
-        """
-        Adds a new link address to the interface.
+        """Adds a new link address to the interface.
 
         Args:
-            address:        The address to add.
+            address (str): The address to add.
 
         Authors:
             Attila Kovacs
@@ -131,16 +123,15 @@ class PhysicalInterface(LogWriter):
 
     def has_ipv4_address(self, address: str) -> bool:
 
-        """
-        Returns whether or not the IPv4 already exists in the
+        """Returns whether or not the IPv4 already exists in the
         interface.
 
         Args:
-            address:        The IPv4 address to check.
+            address (str): The IPv4 address to check.
 
         Returns:
-            'True' if the given IPv4 address is already associated with the
-            network interface, 'False' otherwise.
+            bool: 'True' if the given IPv4 address is already associated with
+            the network interface, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -161,18 +152,21 @@ class PhysicalInterface(LogWriter):
                          is_localhost: bool = False,
                          is_link_local_address: bool = False) -> None:
 
-        """
-        Adds a new IPv4 address to the interface.
+        """Adds a new IPv4 address to the interface.
 
         Args:
-            address:                The IPv4 address.
-            netmask:                The netmask of the address.
-            broadcast_address:      The broadcast address associated with the
-                                    address.
-            is_localhost:           Marks whether or not the address is a
-                                    localhost address.
-            is_link_local_address:  Marks whether or not the address is a link
-                                    local address.
+            address (str): The IPv4 address.
+
+            netmask (str): The netmask of the address.
+
+            broadcast_address (str): The broadcast address associated with the
+                address.
+
+            is_localhost (bool): Marks whether or not the address is a
+                localhost address.
+
+            is_link_local_address (bool): Marks whether or not the address is a
+                link local address.
 
         Authors:
             Attila Kovacs
@@ -192,16 +186,15 @@ class PhysicalInterface(LogWriter):
 
     def has_ipv6_address(self, address: str) -> bool:
 
-        """
-        Returns whether or not the IPv6 already exists in the
+        """Returns whether or not the IPv6 already exists in the
         interface.
 
         Args:
-            address:        The IPv6 address to check.
+            address (str): The IPv6 address to check.
 
         Returns:
-            'True' if the given IPv6 address is already associated with the
-            network interface, 'False' otherwise.
+            bool: 'True' if the given IPv6 address is already associated with
+                the network interface, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -222,18 +215,21 @@ class PhysicalInterface(LogWriter):
                          is_localhost: bool = False,
                          is_link_local_address: bool = False) -> None:
 
-        """
-        Adds a new IPv6 address to the interface.
+        """Adds a new IPv6 address to the interface.
 
         Args:
-            address:                The IPv6 address.
-            netmask:                The netmask of the address.
-            broadcast_address:      The broadcast address associated with the
-                                    address.
-            is_localhost:           Marks whether or not the address is a
-                                    localhost address.
-            is_link_local_address:  Marks whether or not the address is a link
-                                    local address.
+            address (str): The IPv6 address.
+
+            netmask (str): The netmask of the address.
+
+            broadcast_address (str): The broadcast address associated with the
+                address.
+
+            is_localhost (bool): Marks whether or not the address is a
+                localhost address.
+
+            is_link_local_address (bool): Marks whether or not the address is a
+                link local address.
 
         Authors:
             Attila Kovacs

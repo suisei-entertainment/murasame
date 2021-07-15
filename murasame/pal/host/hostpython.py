@@ -26,8 +26,16 @@ import sys
 
 class HostPython:
 
-    """
-    Utility class that represents the Python environment on the host system.
+    """Utility class that represents the Python environment on the host system.
+
+    Attributes:
+        _major (int): The major Python version on the host system.
+
+        _minor (int): The minor Python version on the host system.
+
+        _patch (int): The patch level of the Python version on the host system.
+
+        _location (str): Location of the Python interpreter on the host system.
 
     Authors:
         Attila Kovacs
@@ -36,8 +44,7 @@ class HostPython:
     @property
     def MajorVersion(self) -> int:
 
-        """
-        The major version of Python on the host system.
+        """The major version of Python on the host system.
 
         Authors:
             Attila Kovacs
@@ -48,8 +55,7 @@ class HostPython:
     @property
     def MinorVersion(self) -> int:
 
-        """
-        The minor version of Python on the host system.
+        """The minor version of Python on the host system.
 
         Authors:
             Attila Kovacs
@@ -60,8 +66,7 @@ class HostPython:
     @property
     def PatchLevel(self) -> int:
 
-        """
-        The patch level of Python on the host system.
+        """The patch level of Python on the host system.
 
         Authors:
             Attila Kovacs
@@ -72,8 +77,7 @@ class HostPython:
     @property
     def PythonVersion(self) -> str:
 
-        """
-        The full version of Python on the host system as a string.
+        """The full version of Python on the host system as a string.
 
         Authors:
             Attila Kovacs
@@ -84,8 +88,7 @@ class HostPython:
     @property
     def Location(self) -> str:
 
-        """
-        The location of the Python executable on the host system.
+        """The location of the Python executable on the host system.
 
         Authors:
             Attila Kovacs
@@ -95,8 +98,10 @@ class HostPython:
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostPython instance.
+        """Creates a new HostPython instance.
+
+        Authors:
+            Attila Kovacs
         """
 
         self._major = -1
@@ -110,11 +115,10 @@ class HostPython:
     @staticmethod
     def is_virtual_env() -> bool:
 
-        """
-        Returns whether or not the application was started inside virtualenv.
+        """Returns whether or not the application was started inside virtualenv.
 
         Returns:
-            'True' if the application is running inside virtualenv, 'False'
+            bool: 'True' if the application is running inside virtualenv, 'False'
             otherwise.
 
         Authors:
@@ -129,8 +133,7 @@ class HostPython:
 
     def _detect_version(self) -> None:
 
-        """
-        Detection logic for the Python version.
+        """Detection logic for the Python version.
 
         Authors:
             Attila Kovacs
@@ -142,8 +145,7 @@ class HostPython:
 
     def _detect_location(self) -> None:
 
-        """
-        Detects the location of the Python executable on the host system.
+        """Detects the location of the Python executable on the host system.
 
         Authors:
             Attila Kovacs

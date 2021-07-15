@@ -21,15 +21,22 @@
 Contains the implementation of the HostHardware class.
 """
 
-# SEED Imports
+# Murasame Imports
 from murasame.pal.host.hostcpu import HostCPU
 from murasame.pal.host.hostmemory import HostMemory
 from murasame.pal.host.hostnetworking import HostNetworking
 
 class HostHardware:
 
-    """
-    Utility class that represents the hardware of the host system.
+    """Utility class that represents the hardware of the host system.
+
+    Attributes:
+        _cpu (HostCPU): The descriptor of the CPU of the host system.
+
+        _memory (HostMemory): The descriptor of the host system's memory.
+
+        _networking (HostNetworking): The descriptor of the available
+            networking in the host system.
 
     Authors:
         Attila Kovacs
@@ -38,8 +45,7 @@ class HostHardware:
     @property
     def CPU(self) -> HostCPU:
 
-        """
-        Provides access to the information of the host CPU.
+        """Provides access to the information of the host CPU.
 
         Authors:
             Attila Kovacs
@@ -50,8 +56,7 @@ class HostHardware:
     @property
     def Memory(self) -> HostMemory:
 
-        """
-        Provides access to the information of the host memory.
+        """Provides access to the information of the host memory.
 
         Authors:
             Attila Kovacs
@@ -62,8 +67,7 @@ class HostHardware:
     @property
     def Networking(self) -> HostNetworking:
 
-        """
-        Provides access to the information of the host's networkig
+        """Provides access to the information of the host's networkig
         capabilities.
 
         Authors:
@@ -78,15 +82,16 @@ class HostHardware:
             auto_download_geoip_database: bool = False,
             geoip_license_key: str = None) -> None:
 
-        """
-        Creates a new HostHardware instance.
+        """Creates a new HostHardware instance.
 
         Args:
-            geoip_database_path:            Path to the local GeoIP database.
-            auto_download_geoip_database:   Whether or not the GeoIP database
-                                            should be downloaded automatically.
-            geoip_license_key:              The license key to use when
-                                            downloading the GeoIP database.
+            geoip_database_path (str): Path to the local GeoIP database.
+
+            auto_download_geoip_database (bool): Whether or not the GeoIP
+                database should be downloaded automatically.
+
+            geoip_license_key (str): The license key to use when downloading
+                the GeoIP database.
 
         Authors:
             Attila Kovacs

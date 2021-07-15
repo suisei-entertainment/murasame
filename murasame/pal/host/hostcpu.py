@@ -30,8 +30,32 @@ from murasame.logging import LogWriter
 
 class HostCPU(LogWriter):
 
-    """
-    Utility class to inspect the host CPU of the system.
+    """Utility class to inspect the host CPU of the system.
+
+    Attributes:
+        _architecture (str): The CPU architecture of the host system.
+
+        _num_cores (int): The amount of CPU cores in the host system, including
+            any virtual cores, such as Intel HyperThreading.
+
+        _num_physical_cores (int): The amount of physical CPU cores in the host
+            system.
+
+        _vendor_id (str): The vendor ID of the CPU manufacturer.
+
+        _cpu_name (str): The name of the CPU.
+
+        _max_speed (str): The maximum advertised CPU speed.
+
+        _l2_cache_size (int): Size of the L2 cache.
+
+        _stepping (str): The stepping of the CPU.
+
+        _model (str): The model of the CPU.
+
+        _extended_model (str): The extended model of the CPU.
+
+        _family (str): The family of the CPU.
 
     Authors:
         Attila Kovacs
@@ -40,8 +64,7 @@ class HostCPU(LogWriter):
     @property
     def Architecture(self) -> str:
 
-        """
-        The CPU architecture of the host system.
+        """The CPU architecture of the host system.
 
         Authors:
             Attila Kovacs
@@ -52,8 +75,7 @@ class HostCPU(LogWriter):
     @property
     def NumCores(self) -> int:
 
-        """
-        The amount of CPU cores in the host system, including any virtual
+        """The amount of CPU cores in the host system, including any virtual
         cores, such as Intel HyperThreading.
 
         Authors:
@@ -65,8 +87,7 @@ class HostCPU(LogWriter):
     @property
     def NumPhysicalCores(self) -> int:
 
-        """
-        The amount of physical CPU cores in the host system.
+        """The amount of physical CPU cores in the host system.
 
         Authors:
             Attila Kovacs
@@ -77,8 +98,7 @@ class HostCPU(LogWriter):
     @property
     def VendorID(self) -> str:
 
-        """
-        The vendor ID of the CPU manufacturer.
+        """The vendor ID of the CPU manufacturer.
 
         Authors:
             Attila Kovacs
@@ -89,8 +109,7 @@ class HostCPU(LogWriter):
     @property
     def Name(self) -> str:
 
-        """
-        The name of the CPU.
+        """The name of the CPU.
 
         Authors:
             Attila Kovacs
@@ -101,8 +120,7 @@ class HostCPU(LogWriter):
     @property
     def MaxSpeed(self) -> str:
 
-        """
-        The maximum advertised CPU speed.
+        """The maximum advertised CPU speed.
 
         Authors:
             Attila Kovacs
@@ -113,8 +131,7 @@ class HostCPU(LogWriter):
     @property
     def L2CacheSize(self) -> int:
 
-        """
-        Size of the L2 cache.
+        """Size of the L2 cache.
 
         Authors:
             Attila Kovacs
@@ -125,8 +142,7 @@ class HostCPU(LogWriter):
     @property
     def Stepping(self) -> int:
 
-        """
-        The stepping of the CPU.
+        """The stepping of the CPU.
 
         Authors:
             Attila Kovacs
@@ -137,8 +153,7 @@ class HostCPU(LogWriter):
     @property
     def Model(self) -> int:
 
-        """
-        The model of the CPU.
+        """The model of the CPU.
 
         Authors:
             Attila Kovacs
@@ -149,8 +164,7 @@ class HostCPU(LogWriter):
     @property
     def ExtendedModel(self) -> int:
 
-        """
-        The extended model of the CPU.
+        """The extended model of the CPU.
 
         Authors:
             Attila Kovacs
@@ -161,8 +175,7 @@ class HostCPU(LogWriter):
     @property
     def Family(self) -> int:
 
-        """
-        The family of the CPU.
+        """The family of the CPU.
 
         Authors:
             Attila Kovacs
@@ -172,8 +185,7 @@ class HostCPU(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostCPU instance.
+        """Creates a new HostCPU instance.
 
         Authors:
             Attila Kovacs
@@ -182,67 +194,22 @@ class HostCPU(LogWriter):
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
         self._architecture = ''
-        """
-        The CPU architecture of the host system.
-        """
-
         self._num_cores = -1
-        """
-        The amount of CPU cores in the host system, including any virtual
-        cores, such as Intel HyperThreading.
-        """
-
         self._num_physical_cores = -1
-        """
-        The amount of physical CPU cores in the host system.
-        """
-
         self._vendor_id = ''
-        """
-        The vendor ID of the CPU manufacturer.
-        """
-
         self._cpu_name = ''
-        """
-        The name of the CPU.
-        """
-
         self._max_speed = ''
-        """
-        The maximum advertised CPU speed.
-        """
-
         self._l2_cache_size = 0
-        """
-        Size of the L2 cache.
-        """
-
         self._stepping = ''
-        """
-        The stepping of the CPU.
-        """
-
         self._model = ''
-        """
-        The model of the CPU.
-        """
-
         self._extended_model = ''
-        """
-        The extended model of the CPU.
-        """
-
         self._family = ''
-        """
-        The family of the CPU.
-        """
 
         self._detect_cpu()
 
     def _detect_cpu(self) -> None:
 
-        """
-        Executes the detection logic of the CPU.
+        """Executes the detection logic of the CPU.
 
         Authors:
             Attila Kovacs
@@ -271,8 +238,7 @@ class HostCPU(LogWriter):
 
     def _detect_architecture(self, info: dict) -> None:
 
-        """
-        Detection logic for the CPU architecture.
+        """Detection logic for the CPU architecture.
 
         Args:
             info:       The raw data returned by the cpuinfo package.
@@ -297,8 +263,7 @@ class HostCPU(LogWriter):
 
     def _detect_cpu_count(self, info: dict) -> None:
 
-        """
-        Detection logic for the amount of CPU cores.
+        """Detection logic for the amount of CPU cores.
 
         Args:
             info:       The raw data returned by the cpuinfo package.
@@ -339,8 +304,7 @@ class HostCPU(LogWriter):
 
     def _detect_cpu_type(self, info: dict) -> None:
 
-        """
-        Detection logic for the CPU type.
+        """Detection logic for the CPU type.
 
         Args:
             info:       The raw data returned by the cpuinfo package.
@@ -399,8 +363,7 @@ class HostCPU(LogWriter):
 
     def _detect_cpu_speed(self, info: dict) -> None:
 
-        """
-        Detection logic for the CPU speed.
+        """Detection logic for the CPU speed.
 
         Args:
             info:       The raw data returned by the cpuinfo package.
@@ -418,8 +381,7 @@ class HostCPU(LogWriter):
 
     def _detect_cache_data(self, info: dict) -> None:
 
-        """
-        Detection logic for the CPU cache size.
+        """Detection logic for the CPU cache size.
 
         Args:
             info:       The raw data returned by the cpuinfo package.

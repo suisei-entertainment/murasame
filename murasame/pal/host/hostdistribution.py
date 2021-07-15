@@ -26,11 +26,31 @@ from murasame.exceptions import MissingRequirementError
 
 class HostDistribution:
 
-    """
-    Utility class that provides additional details on the host OS distribution
-    on Unix systems.
+    """Utility class that provides additional details on the host OS
+    distribution on Unix systems.
 
     This class requires the distro package to be installed on the host system.
+
+    Attributes:
+        _id (str): ID of the host operating system.
+
+        _name (str): Name of the host operating system.
+
+        _fullname (str): Full name of the host operating system.
+
+        _major (int): Major product version of the host operating system.
+
+        _minor (int): Minor product version of the host operating system.
+
+        _build (int): Build number of the host operating system.
+
+        _versionstring (str): The string representation of the operating system
+            version.
+
+        _codename (str): The codename of the operating system's version.
+
+        _like (str): Family description of the operating system, e.g. 'Debian'
+            for Ubuntu.
 
     Authors:
             Attila Kovacs
@@ -39,8 +59,7 @@ class HostDistribution:
     @property
     def ID(self) -> str:
 
-        """
-        Returns the distro ID of the host operating system's distribution.
+        """Returns the distro ID of the host operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -51,8 +70,7 @@ class HostDistribution:
     @property
     def Name(self) -> str:
 
-        """
-        Returns the short name of the host operating system's distribution.
+        """Returns the short name of the host operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -63,8 +81,7 @@ class HostDistribution:
     @property
     def FullName(self) -> str:
 
-        """
-        Returns the full name of the host operating system's distribution,
+        """Returns the full name of the host operating system's distribution,
         including the version number and release codename.
 
         Authors:
@@ -76,8 +93,7 @@ class HostDistribution:
     @property
     def MajorVersion(self) -> int:
 
-        """
-        Returns the major version of the operating system's distribution.
+        """Returns the major version of the operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -88,8 +104,7 @@ class HostDistribution:
     @property
     def MinorVersion(self) -> int:
 
-        """
-        Returns the minor version of the operating system's distribution.
+        """Returns the minor version of the operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -100,8 +115,7 @@ class HostDistribution:
     @property
     def BuildNumber(self) -> int:
 
-        """
-        Returns the build number of the operating system's distribution.
+        """Returns the build number of the operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -112,8 +126,7 @@ class HostDistribution:
     @property
     def VersionString(self) -> str:
 
-        """
-        Returns the version string of the operating system's distribution.
+        """Returns the version string of the operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -124,8 +137,7 @@ class HostDistribution:
     @property
     def Codename(self) -> str:
 
-        """
-        Returns the release codename of the operating system's distribution.
+        """Returns the release codename of the operating system's distribution.
 
         Authors:
             Attila Kovacs
@@ -136,8 +148,7 @@ class HostDistribution:
     @property
     def Like(self) -> str:
 
-        """
-        Returns a space separated distribution list that are similar to
+        """Returns a space separated distribution list that are similar to
         this one.
 
         Authors:
@@ -148,8 +159,7 @@ class HostDistribution:
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostDistribution instance.
+        """Creates a new HostDistribution instance.
 
         Authors:
             Attila Kovacs

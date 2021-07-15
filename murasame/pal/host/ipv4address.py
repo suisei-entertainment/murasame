@@ -26,8 +26,7 @@ from murasame.pal.host.ipaddress import IPAddress
 
 class IPv4Address(IPAddress):
 
-    """
-    Representation of an IPv4 address of a physical network interface.
+    """Representation of an IPv4 address of a physical network interface.
 
     Authors:
         Attila Kovacs

@@ -29,9 +29,18 @@ from murasame.pal.host.hostuser import HostUser
 
 class HostDescriptor:
 
-    """
-    Utility class that inspects the host system upon creation and stores basic
-    system information about it.
+    """Utility class that inspects the host system upon creation and stores
+    basic system information about it.
+
+    Attributes:
+        _hardware (HostHardware): The descriptor object for the host hardware.
+
+        _os = (HostOS): The descriptor object for the host operating system.
+
+        _python = (HostPython): The descriptor object of the Python runtime.
+
+        _user = (HostUser): The descriptor object for the user account used to
+            execute the application.
 
     Authors:
         Attila Kovacs
@@ -40,8 +49,7 @@ class HostDescriptor:
     @property
     def Hardware(self) -> str:
 
-        """
-        Provides access to the information of the host hardware.
+        """Provides access to the information of the host hardware.
 
         Authors:
             Attila Kovacs
@@ -52,8 +60,7 @@ class HostDescriptor:
     @property
     def OS(self) -> str:
 
-        """
-        Provides access to the information of the host operating system.
+        """Provides access to the information of the host operating system.
 
         Authors:
             Attila Kovacs
@@ -64,8 +71,7 @@ class HostDescriptor:
     @property
     def Python(self) -> HostPython:
 
-        """
-        Provides access to the information of the host Python environment.
+        """Provides access to the information of the host Python environment.
 
         Authors:
             Attila Kovacs
@@ -76,8 +82,7 @@ class HostDescriptor:
     @property
     def User(self) -> HostUser:
 
-        """
-        Provides access to the information of the host user account.
+        """Provides access to the information of the host user account.
 
         Authors:
             Attila Kovacs
@@ -91,16 +96,17 @@ class HostDescriptor:
             auto_download_geoip_database: bool = False,
             geoip_license_key: str = None) -> None:
 
-        """
-        Creates a new HostDescriptor instance.
+        """Creates a new HostDescriptor instance.
 
         Args:
-            geoip_database_path:            Path to the directory where the
-                                            GeoIP database is located.
-            auto_download_geoip_database:   Whether or not the GeoIP database
-                                            should be downloaded automatically.
-            geoip_license_key:              The license key to use when
-                                            downloading the GeoIP database.
+            geoip_database_path (str): Path to the directory where the GeoIP
+                database is located.
+
+            auto_download_geoip_database (bool): Whether or not the GeoIP
+                database should be downloaded automatically.
+
+            geoip_license_key (str): The license key to use when downloading
+                the GeoIP database.
 
         Authors:
             Attila Kovacs

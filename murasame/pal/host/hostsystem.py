@@ -26,8 +26,10 @@ from murasame.pal.host.hostdescriptor import HostDescriptor
 
 class HostSystem:
 
-    """
-    Common implementation for host systems.
+    """Common implementation for host systems.
+
+    Attributes:
+        _host_descriptor (HostDescriptor): The host descriptor instance.
 
     Authors:
         Attila Kovacs
@@ -36,8 +38,7 @@ class HostSystem:
     @property
     def HostDescriptor(self) -> 'HostDescriptor':
 
-        """
-        Provides access to the host descriptor.
+        """Provides access to the host descriptor.
 
         Authors:
             Attila Kovacs
@@ -47,23 +48,20 @@ class HostSystem:
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostSystem instance.
+        """Creates a new HostSystem instance.
 
         Authors:
             Attila Kovacs
         """
 
-        # The host descriptor instance.
         self._host_descriptor = None
 
     def initialize(self, geoip_database_path: str = '/data/geoip') -> None:
 
-        """
-        Initializes the host service.
+        """Initializes the host service.
 
         Args:
-            geoip_database_path:        Path to the local GeoIP database.
+            geoip_database_path (str): Path to the local GeoIP database.
 
         Authors:
             Attila Kovacs

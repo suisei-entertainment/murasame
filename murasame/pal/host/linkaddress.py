@@ -23,9 +23,11 @@ Contains the implementation of the LinkAddress class.
 
 class LinkAddress:
 
-    """
-    Representation of a link layer address, e.g. a MAC address of a physical
+    """Representation of a link layer address, e.g. a MAC address of a physical
     network interface.
+
+    Attributes:
+        _address (str): The link address.
 
     Authors:
         Attila Kovacs
@@ -34,8 +36,7 @@ class LinkAddress:
     @property
     def Address(self) -> str:
 
-        """
-        The link address.
+        """The link address.
 
         Authors:
             Attila Kovacs
@@ -45,8 +46,10 @@ class LinkAddress:
 
     def __init__(self, address: str) -> None:
 
-        """
-        Creates a new LinkAddress instance.
+        """Creates a new LinkAddress instance.
+
+        Args:
+            address (str): The link address.
 
         Authors:
             Attila Kovacs

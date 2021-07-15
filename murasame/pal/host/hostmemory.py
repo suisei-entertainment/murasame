@@ -26,8 +26,10 @@ from murasame.logging import LogWriter
 
 class HostMemory(LogWriter):
 
-    """
-    Utility class that represents the memory of the host system.
+    """Utility class that represents the memory of the host system.
+
+    Attributes:
+        _total_ram (str): Total amount of system memory.
 
     Authors:
         Attila Kovacs
@@ -36,8 +38,7 @@ class HostMemory(LogWriter):
     @property
     def TotalSystemMemory(self) -> str:
 
-        """
-        The total amount of system memory in the host system.
+        """The total amount of system memory in the host system.
 
         Authors:
             Attila Kovacs
@@ -47,8 +48,7 @@ class HostMemory(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostMemory instance.
+        """Creates a new HostMemory instance.
 
         Authors:
             Attila Kovacs
@@ -57,16 +57,12 @@ class HostMemory(LogWriter):
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
         self._total_ram = 0
-        """
-        Total amount of system memory.
-        """
 
         self._get_total_ram()
 
     def _get_total_ram(self) -> None:
 
-        """
-        Retrieves the total amount of RAM available on the host system.
+        """Retrieves the total amount of RAM available on the host system.
 
         Authors:
             Attila Kovacs

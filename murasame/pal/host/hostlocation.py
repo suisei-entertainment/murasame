@@ -43,12 +43,22 @@ PACKAGE_DOWNLOAD_LOCATION = '/tmp'
 
 class HostLocation(LogWriter):
 
-    """
-    Utility class to determine the location of the host based on it's GeoIP
+    """Utility class to determine the location of the host based on it's GeoIP
     data.
 
     At the moment this class uses MaxMind's GeoIP 2 Lite database to determine
     the location of a given IP address.
+
+    Attributes:
+        _continent (str): The continent where the IP address is located.
+
+        _country (str): The country where the IP address is located.
+
+        _city (str): The city where the UP address is located.
+
+        _location (tuple): The geographical coordinates of the IP address.
+
+        _postal_code (int): The postal code where the IP address is located.
 
     Authors:
         Attila Kovacs
@@ -57,8 +67,7 @@ class HostLocation(LogWriter):
     @property
     def Continent(self) -> str:
 
-        """
-        The continent where the IP address is located.
+        """The continent where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -69,8 +78,7 @@ class HostLocation(LogWriter):
     @property
     def Country(self) -> str:
 
-        """
-        The country where the IP address is located.
+        """The country where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -81,8 +89,7 @@ class HostLocation(LogWriter):
     @property
     def City(self) -> str:
 
-        """
-        The city where the IP address is located.
+        """The city where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -93,9 +100,8 @@ class HostLocation(LogWriter):
     @property
     def Location(self) -> tuple:
 
-        """
-        The geographical location of the IP address represented as latitude and
-        longitude.
+        """The geographical location of the IP address represented as latitude
+        and longitude.
 
         Authors:
             Attila Kovacs
@@ -106,8 +112,7 @@ class HostLocation(LogWriter):
     @property
     def PostalCode(self) -> str:
 
-        """
-        The postal code where the IP address is located.
+        """The postal code where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -121,15 +126,16 @@ class HostLocation(LogWriter):
             database_path: str,
             geoip_license_key: str = None) -> None:
 
-        """
-        Creates a new HostLocation instance.
+        """Creates a new HostLocation instance.
 
         Args:
-            public_ip:          The public IP of the host.
-            database_path:      Path to the diretory where the GeoIP database
-                                is located.
-            geoip_license_key:  The license key to use when downloading the
-                                GeoIP database.
+            public_ip (str): The public IP of the host.
+
+            database_path (str): Path to the diretory where the GeoIP database
+                is located.
+
+            geoip_license_key (str): The license key to use when downloading
+                the GeoIP database.
 
         Raises:
             InvalidInputError:  Raised if the GeoIP database was not found.
@@ -140,19 +146,10 @@ class HostLocation(LogWriter):
 
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
-        # The continent where the IP address is located
         self._continent = 'UNKNOWN'
-
-        # The country where the IP address is located
         self._country = 'UNKNOWN'
-
-        # The city where the UP address is located
         self._city = 'UNKNOWN'
-
-        # The geographical coordinates of the IP address
         self._location = (0, 0)
-
-        # The postal code where the IP address is located
         self._postal_code = 'UNKNOWN'
 
         self._identify_location(public_ip=public_ip,
@@ -165,24 +162,26 @@ class HostLocation(LogWriter):
             database_path: str,
             geoip_license_key: str = None) -> None:
 
-        """
-        Executes the host location logic.
+        """Executes the host location logic.
 
         Args:
-            public_ip:          The public IP of the host.
-            database_path:      Path to the diretory where the GeoIP database
-                                is located.
-            geoip_license_key:  The license key to use when downloading the
-                                GeoIP database.
+            public_ip (str): The public IP of the host.
+
+            database_path (str): Path to the diretory where the GeoIP database
+                is located.
+
+            geoip_license_key (str): The license key to use when downloading
+                the GeoIP database.
 
         Raises:
-            RuntimeError:       Raised when it is not possible to connect to
-                                the GeoIP download server.
+            RuntimeError: Raised when it is not possible to connect to the
+                GeoIP download server.
+
             RuntimeError:       Raised if the GeoIP database cannot be
-                                downloaded.
-            InvalidInputError:  Raised if the GeoIP database was not found and
-                                there is no license key provided to download
-                                one automatically.
+                downloaded.
+
+            InvalidInputError: Raised if the GeoIP database was not found and
+                there is no license key provided to download one automatically.
 
         Authors:
             Attila Kovacs

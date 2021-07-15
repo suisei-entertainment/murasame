@@ -32,8 +32,19 @@ from murasame.pal.host.hostdistribution import HostDistribution
 
 class HostOS(LogWriter):
 
-    """
-    Utility class that represents the host operating system.
+    """Utility class that represents the host operating system.
+
+    Attributes:
+        _platform (str): Name of the host platform.
+
+        _os (str): Name of the host operating system.
+
+        _os_release (str): The release name of the host operating system.
+
+        _os_version (str): The version of the host operating system.
+
+        _distro (HostDistribution): Contains detailed information on the host
+            Linux distribution.
 
     Authors:
         Attila Kovacs
@@ -42,8 +53,7 @@ class HostOS(LogWriter):
     @property
     def Platform(self) -> str:
 
-        """
-        Name of the host platform.
+        """Name of the host platform.
 
         Authors:
             Attila Kovacs
@@ -54,8 +64,7 @@ class HostOS(LogWriter):
     @property
     def Name(self) -> str:
 
-        """
-        Name of the host operating system.
+        """Name of the host operating system.
 
         Authors:
             Attila Kovacs
@@ -66,8 +75,7 @@ class HostOS(LogWriter):
     @property
     def Release(self) -> str:
 
-        """
-        The release name of the host operating system.
+        """The release name of the host operating system.
 
         Authors:
             Attila Kovacs
@@ -78,8 +86,7 @@ class HostOS(LogWriter):
     @property
     def Version(self) -> str:
 
-        """
-        The version of the host operating system.
+        """The version of the host operating system.
 
         Authors:
             Attila Kovacs
@@ -90,8 +97,7 @@ class HostOS(LogWriter):
     @property
     def Distribution(self) -> HostDistribution:
 
-        """
-        Provides access to the detailed distribution information on Linux
+        """Provides access to the detailed distribution information on Linux
         systems.
 
         Authors:
@@ -102,8 +108,7 @@ class HostOS(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostOS instance.
+        """Creates a new HostOS instance.
 
         Authors:
             Attila Kovacs
@@ -112,36 +117,16 @@ class HostOS(LogWriter):
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
         self._platform = ''
-        """
-        Name of the host platform.
-        """
-
         self._os = ''
-        """
-        Name of the host operating system.
-        """
-
         self._os_release = ''
-        """
-        The release name of the host operating system.
-        """
-
         self._os_version = ''
-        """
-        The version of the host operating system.
-        """
-
         self._distro = None
-        """
-        Contains detailed information on the host Linux distribution.
-        """
 
         self._detect_os()
 
     def _detect_os(self) -> None:
 
-        """
-        Executes the OS detection logic.
+        """Executes the OS detection logic.
 
         Authors:
             Attila Kovacs

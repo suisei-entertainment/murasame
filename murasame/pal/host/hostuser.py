@@ -33,9 +33,19 @@ from murasame.logging import LogWriter
 
 class HostUser(LogWriter):
 
-    """
-    Utility class that provides information about the user running the
+    """Utility class that provides information about the user running the
     application.
+
+    Attributes:
+        _username (str): The login name of the user.
+
+        _user_id (int): The user ID of the user.
+
+        _group_id (int): The group ID of the user.
+
+        _group_name (str): The group name of the user.
+
+        _home_dir (str): The home directory of the user.
 
     Authors:
         Attila Kovacs
@@ -44,8 +54,7 @@ class HostUser(LogWriter):
     @property
     def Username(self) -> str:
 
-        """
-        The login name of the user.
+        """The login name of the user.
 
         Authors:
             Attila Kovacs
@@ -56,8 +65,7 @@ class HostUser(LogWriter):
     @property
     def UserID(self) -> int:
 
-        """
-        The user ID of the user.
+        """The user ID of the user.
 
         Authors:
             Attila Kovacs
@@ -68,8 +76,7 @@ class HostUser(LogWriter):
     @property
     def GroupID(self) -> int:
 
-        """
-        The group ID of the user.
+        """The group ID of the user.
 
         Authors:
             Attila Kovacs
@@ -80,8 +87,7 @@ class HostUser(LogWriter):
     @property
     def GroupName(self) -> str:
 
-        """
-        The group name of the user.
+        """The group name of the user.
 
         Authors:
             Attila Kovacs
@@ -92,8 +98,7 @@ class HostUser(LogWriter):
     @property
     def HomeDirectory(self) -> Path:
 
-        """
-        Path to the home directory of the user.
+        """Path to the home directory of the user.
 
         Authors:
             Attila Kovacs
@@ -104,8 +109,7 @@ class HostUser(LogWriter):
     @property
     def IsRootUser(self) -> bool:
 
-        """
-        Returns whether or not the user is root.
+        """Returns whether or not the user is root.
 
         Authors:
             Attila Kovacs
@@ -116,8 +120,7 @@ class HostUser(LogWriter):
     @property
     def HasRootPermissions(self) -> bool:
 
-        """
-        Returns whether or not the user has root permissions.
+        """Returns whether or not the user has root permissions.
 
         Authors:
             Attila Kovacs
@@ -127,8 +130,7 @@ class HostUser(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new HostUser instannce.
+        """Creates a new HostUser instannce.
 
         Authors:
             Attila Kovacs
@@ -137,36 +139,16 @@ class HostUser(LogWriter):
         super().__init__(channel_name='murasame.pal', cache_entries=True)
 
         self._username = None
-        """
-        The login name of the user.
-        """
-
         self._user_id = None
-        """
-        The user ID of the user.
-        """
-
         self._group_id = None
-        """
-        The group ID of the user.
-        """
-
         self._group_name = None
-        """
-        The group name of the user.
-        """
-
         self._home_dir = None
-        """
-        The home directory of the user.
-        """
 
         self._detect_user()
 
     def _detect_user(self) -> None:
 
-        """
-        Executes the user detection logic.
+        """Executes the user detection logic.
 
         Authors:
             Attila Kovacs
