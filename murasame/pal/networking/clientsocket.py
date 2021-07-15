@@ -31,8 +31,15 @@ from murasame.pal.networking.basesocket import BaseSocket
 
 class ClientSocket(BaseSocket):
 
-    """
-    Represents a socket to be used by a client connecting to a remote host.
+    """Represents a socket to be used by a client connecting to a remote host.
+
+    Attributes:
+        _host (str): The remote host to connect to.
+
+        _port (int): The remote port to connect to.
+
+        _transformer (SocketMessageTransformer): The message transformer object
+            to use.
 
     Authors:
         Attila Kovacs
@@ -41,8 +48,7 @@ class ClientSocket(BaseSocket):
     @property
     def Host(self) -> str:
 
-        """
-        The host the socket is connected to.
+        """The host the socket is connected to.
 
         Authors:
             Attila Kovacs
@@ -53,8 +59,7 @@ class ClientSocket(BaseSocket):
     @property
     def Port(self) -> int:
 
-        """
-        The port the socket is connected to.
+        """The port the socket is connected to.
 
         Authors:
             Attila Kovacs
@@ -62,36 +67,44 @@ class ClientSocket(BaseSocket):
 
         return self._port
 
-    def __init__(self,
-                 host: str,
-                 port: int,
-                 name: str = None,
-                 transformer: 'SocketMessageTransformer' = None,
-                 ssl_protocol: BaseSocket.Protocols = BaseSocket.Protocols.UNENCRYPTED,
-                 cert_file: str = None,
-                 ca_list: str = None,
-                 require_cert: bool = True) -> None:
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        name: str = None,
+        transformer: 'SocketMessageTransformer' = None,
+        ssl_protocol: BaseSocket.Protocols = BaseSocket.Protocols.UNENCRYPTED,
+        cert_file: str = None,
+        ca_list: str = None,
+        require_cert: bool = True) -> None:
 
         """
         Creates a new ClientSocket instance.
 
         Args:
-            host:               The remote host to connect to.
-            port:               The remote port to connect to.
-            name:               The name of the socket.
-            transformer:        The message transformer to use.
-            ssl_protocol:       The SSL protocol to use when setting up the
-                                socket.
-            cert_file:          The certificate file to use when establishing
-                                the connection.
-            ca_list:            The certificate authority to use when
-                                validating the SSL connection.
-            require_cert:       Whether or not a valid certificate is required
-                                during authentication.
+            host (str): The remote host to connect to.
+
+            port (int): The remote port to connect to.
+
+            name (str): The name of the socket.
+
+            transformer (SocketMessageTransformer): The message transformer to
+                use.
+
+            ssl_protocol (Protocols): The SSL protocol to use when setting up
+                the socket.
+
+            cert_file (str): The certificate file to use when establishing the
+                connection.
+
+            ca_list (str): The certificate authority to use when validating the
+                SSL connection.
+
+            require_cert (bool): Whether or not a valid certificate is required
+                during authentication.
 
         Raises:
-            InvalidInputError:      Raised when an invalid port number is
-                                    provided.
+            InvalidInputError: Raised when an invalid port number is provided.
 
         Authors:
             Attila Kovacs
@@ -105,19 +118,8 @@ class ClientSocket(BaseSocket):
                          purpose=BaseSocket.Purposes.SERVER_AUTH)
 
         self._host = host
-        """
-        The remote host to connect to.
-        """
-
         self._port = port
-        """
-        The remote port to connect to.
-        """
-
         self._transformer = transformer
-        """
-        The message transformer object to use.
-        """
 
         try:
             self._validate_port(port)
@@ -129,8 +131,7 @@ class ClientSocket(BaseSocket):
 
     def __del__(self) -> None:
 
-        """
-        Destructor. Makes sure that the socket is closed upon destruction.
+        """Destructor. Makes sure that the socket is closed upon destruction.
 
         Authors:
             Attila Kovacs
@@ -144,15 +145,15 @@ class ClientSocket(BaseSocket):
 
     def connect(self, new_host: str = None, new_port: int = None) -> None:
 
-        """
-        Establishes the connection to the specified host on the configured
+        """Establishes the connection to the specified host on the configured
         port.
 
         Args:
-            new_host:       Optional new host that overwrites the existing host
-                            if specified.
-            new_port:       Optional new port that overwrites the existing port
-                            if specified.
+            new_host (str): Optional new host that overwrites the existing host
+                if specified.
+
+            new_port (int): Optional new port that overwrites the existing port
+                if specified.
 
         Authors:
             Attila Kovacs
@@ -196,8 +197,7 @@ class ClientSocket(BaseSocket):
 
     def disconnect(self) -> None:
 
-        """
-        Disconnects the socket.
+        """Disconnects the socket.
 
         Authors:
             Attila Kovacs
@@ -210,11 +210,10 @@ class ClientSocket(BaseSocket):
 
     def send(self, message: Any) -> None:
 
-        """
-        Sends a message over the socket.
+        """Sends a message over the socket.
 
         Args:
-            message:        The message to send.
+            message (Any): The message to send.
 
         Authors:
             Attila Kovacs
@@ -242,11 +241,11 @@ class ClientSocket(BaseSocket):
 
     def receive(self) -> Any:
 
-        """
-        Receives a message through the socket.
+        """Receives a message through the socket.
 
         Returns:
-            The message that has been received in the application's format.
+            Any: The message that has been received in the application's
+                format.
 
         Authors:
             Attila Kovacs
@@ -276,15 +275,13 @@ class ClientSocket(BaseSocket):
 
     def _validate_port(self, port: int) -> None:
 
-        """
-        Validates the given port,
+        """Validates the given port,
 
         Args:
-            port:       The port number to validate.
+            port (int): The port number to validate.
 
         Raises:
-            InvalidInputError:      Raised when an invalid port number is
-                                    provided.
+            InvalidInputError: Raised when an invalid port number is provided.
 
         Authors:
             Attila Kovacs

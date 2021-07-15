@@ -30,8 +30,8 @@ from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class SocketMessageTransformer(LogWriter):
 
-    """
-    Utility class used to transform messages sent or received through a socket.
+    """Utility class used to transform messages sent or received through a
+    socket.
 
     Users need to supply their own transformer implementations.
 
@@ -41,8 +41,7 @@ class SocketMessageTransformer(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new SocketMessageTransformer object.
+        """Creates a new SocketMessageTransformer object.
 
         Authors:
             Attila Kovacs
@@ -53,15 +52,14 @@ class SocketMessageTransformer(LogWriter):
 
     def serialize(self, message: Any) -> bytes:
 
-        """
-        Transformation function used to transform all messages sent
+        """Transformation function used to transform all messages sent
         through a socket.
 
         Args:
-            message:        The message to send in the application's format.
+            message (Any): The message to send in the application's format.
 
         Returns:
-            The message transformed to a byte array.
+            bytes: The message transformed to a byte array.
 
         Authors:
             Attila Kovacs
@@ -73,15 +71,14 @@ class SocketMessageTransformer(LogWriter):
 
     def deserialize(self, message: bytes) -> Any:
 
-        """
-        Transformation function used to transform all messages received through
-        a socket.
+        """Transformation function used to transform all messages received
+        through a socket.
 
         Args:
-            message:        The message that has been received.
+            message (bytes): The message that has been received.
 
         Returns:
-            The messages transformed to the application's format.
+            Any: The messages transformed to the application's format.
 
         Authors:
             Attila Kovacs

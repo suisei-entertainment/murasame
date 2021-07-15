@@ -31,8 +31,28 @@ from murasame.pal.networking.basesocket import BaseSocket
 
 class ServerSocket(BaseSocket):
 
-    """
-    Represents a socket running on the server side serving client connections.
+    """Represents a socket running on the server side serving client
+    connections.
+
+    Arguments:
+        _host (str): The local network interface to listen on.
+
+        _port (int): The local port to listen on.
+
+        _transformer (SocketMessageTransformer): The message transformer object
+            to use.
+
+        _client_handler (ClientHandler): The client handler class that will be
+            created for each connecting client.
+
+        _socket_thread (Thread): The thread that is running the listen loop of
+            the socket.
+
+        _client_threads (list): The list of client threads handling a client
+            connection.
+
+        _handler_running (bool): Whether or not the connection handler thread
+            should run.
 
     Authors:
         Attila Kovacs
@@ -41,8 +61,7 @@ class ServerSocket(BaseSocket):
     @property
     def Host(self) -> str:
 
-        """
-        The host the socket is listening on.
+        """The host the socket is listening on.
 
         Authors:
             Attila Kovacs
@@ -53,8 +72,7 @@ class ServerSocket(BaseSocket):
     @property
     def Port(self) -> int:
 
-        """
-        The port the socket is listening on.
+        """The port the socket is listening on.
 
         Authors:
             Attila Kovacs
@@ -73,27 +91,35 @@ class ServerSocket(BaseSocket):
                  ca_list: str = None,
                  require_cert: bool = True) -> None:
 
-        """
-        Creates a new ServerSocket instance.
+        """Creates a new ServerSocket instance.
 
         Args:
-            port:               The network port to listen on.
-            host:               The network interface to listen on.
-            name:               The name of the socket.
-            transformer:        The message transformer object.
-            client_handler:     A ClientThread class that will handle client
-                                connections.
-            ssl_protocol:       The SSL protocol to use when setting up the
-                                socket.
-            cert_file:          The certificate file to use when establishing
-                                the connection.
-            ca_list:            The certificate authority to use when
-                                validating the SSL connection.
-            require_cert:       Whether or not a valid certificate is required
-                                during authentication.
+            port (int): The network port to listen on.
+
+            host (str): The network interface to listen on.
+
+            name (str): The name of the socket.
+
+            transformer (SocketMessageTransformer): The message transformer
+                object.
+
+            client_handler (ClientThread): A ClientThread class that will
+                handle client connections.
+
+            ssl_protocol (Protocols): The SSL protocol to use when setting up
+                the socket.
+
+            cert_file (str): The certificate file to use when establishing the
+                connection.
+
+            ca_list (str): The certificate authority to use when validating the
+                SSL connection.
+
+            require_cert (bool): Whether or not a valid certificate is required
+                during authentication.
 
         Raises:
-            RuntimeError:       Raised when the socket cannot be created.
+            RuntimeError: Raised when the socket cannot be created.
 
         Authors:
             Attila Kovacs
@@ -107,40 +133,12 @@ class ServerSocket(BaseSocket):
                          purpose=BaseSocket.Purposes.CLIENT_AUTH)
 
         self._host = host
-        """
-        The local network interface to listen on.
-        """
-
         self._port = port
-        """
-        The local port to listen on.
-        """
-
         self._transformer = transformer
-        """
-        The message transformer object to use.
-        """
-
         self._client_handler = client_handler
-        """
-        The client handler class that will be created for each connecting
-        client.
-        """
-
         self._socket_thread = None
-        """
-        The thread that is running the listen loop of the socket.
-        """
-
         self._client_threads = []
-        """
-        The list of client threads handling a client connection.
-        """
-
         self._handler_running = False
-        """
-        Whether or not the connection handler thread should run.
-        """
 
         self.debug(f'Creating server socket for {host}:{port}...')
 
@@ -174,8 +172,7 @@ class ServerSocket(BaseSocket):
 
     def __del__(self) -> None:
 
-        """
-        Destructor. Makes sure that the socket is closed upon destruction.
+        """Destructor. Makes sure that the socket is closed upon destruction.
 
         Authors:
             Attila Kovacs
@@ -196,15 +193,13 @@ class ServerSocket(BaseSocket):
 
     def _validate_port(self, port: int) -> None:
 
-        """
-        Validates the given port,
+        """Validates the given port.
 
         Args:
-            port:       The port number to validate.
+            port (int): The port number to validate.
 
         Raises:
-            InvalidInputError:      Raised when an invalid port number is
-                                    provided.
+            InvalidInputError: Raised when an invalid port number is provided.
 
         Authors:
             Attila Kovacs
@@ -227,8 +222,7 @@ class ServerSocket(BaseSocket):
 
     def _main_loop(self) -> None:
 
-        """
-        The main listening loop of the server socket.
+        """The main listening loop of the server socket.
 
         Authors:
             Attila Kovacs

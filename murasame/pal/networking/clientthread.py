@@ -32,8 +32,28 @@ from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class ClientThread(Thread):
 
-    """
-    Prototype for the thread that is created for each client connection.
+    """Prototype for the thread that is created for each client connection.
+
+    Attributes:
+
+        _parent_socket (ClientSocket): The parent socket this thread belongs
+            to.
+
+        _connection (Connection): The connection object to the client.
+
+        _ip_address (str): The IP address of the client.
+
+        _port (int): The port the client is connected from.
+
+        _transformer (SocketMessageTransformer): The message transformer object
+            to use.
+
+        _handler_running (bool): Whether or not the connection handler thread
+            should run.
+
+        _receive_buffer_size (int): Size of the receive buffer.
+
+        _logger (LogWriter): The log writer object to use when writing logs.
 
     Authors:
         Attila Kovacs
@@ -42,8 +62,7 @@ class ClientThread(Thread):
     @property
     def Connection(self) -> object:
 
-        """
-        The connection object to the client.
+        """The connection object to the client.
 
         Authors:
             Attila Kovacs
@@ -54,8 +73,7 @@ class ClientThread(Thread):
     @property
     def IPAddress(self) -> str:
 
-        """
-        The IP address of the client.
+        """The IP address of the client.
 
         Authors:
             Attila Kovacs
@@ -66,8 +84,10 @@ class ClientThread(Thread):
     @property
     def Port(self) -> int:
 
-        """
-        The port the client connected from.
+        """The port the client connected from.
+
+        Authors:
+            Attila Kovacs
         """
 
         return self._port
@@ -75,8 +95,11 @@ class ClientThread(Thread):
     @property
     def IsRunning(self) -> bool:
 
-        """
-        Returns whether or not the main loop of the handler should be running.
+        """Returns whether or not the main loop of the handler should be
+        running.
+
+        Authors:
+            Attila Kovacs
         """
 
         return self._handler_running
@@ -90,16 +113,23 @@ class ClientThread(Thread):
         receive_buffer_size: int = 4096,
         transformer: 'SocketMessageTransformer' = None) -> None:
 
-        """
-        Creates a new ClientThread instance.
+        """Creates a new ClientThread instance.
 
         Args:
-            parent_socket:          The server socket this thread belongs to.
-            connection:             The connection object to the client.
-            ip_address:             The IP address of the client.
-            port:                   The port the client connected from.
-            receive_buffer_size:    Size of the receive buffer of the socket.
-            transformer:            The message transformer object to use.
+            parent_socket (ServerSocket): The server socket this thread belongs
+                to.
+
+            connection (object): The connection object to the client.
+
+            ip_address (str): The IP address of the client.
+
+            port (int): The port the client connected from.
+
+            receive_buffer_size (int): Size of the receive buffer of the
+                socket.
+
+            transformer (SocketMessageTransformer): The message transformer
+                object to use.
 
         Authors:
             Attila Kovacs
@@ -108,40 +138,12 @@ class ClientThread(Thread):
         super().__init__(name=f'ClientThread-{ip_address}:{port}', daemon=True)
 
         self._parent_socket = parent_socket
-        """
-        The parent socket this thread belongs to.
-        """
-
         self._connection = connection
-        """
-        The connection object to the client.
-        """
-
         self._ip_address = ip_address
-        """
-        The IP address of the client.
-        """
-
         self._port = port
-        """
-        The port the client is connected from.
-        """
-
         self._transformer = transformer
-        """
-        The message transformer object to use.
-        """
-
         self._handler_running = True
-        """
-        Whether or not the connection handler thread should run.
-        """
-
         self._receive_buffer_size = receive_buffer_size
-        """
-        Size of the receive buffer.
-        """
-
         self._logger = LogWriter(
             channel_name=SOCKET_LOG_CHANNEL,
             cache_entries=True)
@@ -151,8 +153,7 @@ class ClientThread(Thread):
 
     def abort(self) -> None:
 
-        """
-        Aborts the main loop of the thread on the next execution if needed.
+        """Aborts the main loop of the thread on the next execution if needed.
 
         Authors:
             Attila Kovacs
@@ -162,8 +163,7 @@ class ClientThread(Thread):
 
     def run(self) -> None:
 
-        """
-        Main socket connection handler function.
+        """Main socket connection handler function.
 
         Authors:
             Attila Kovacs
@@ -205,11 +205,10 @@ class ClientThread(Thread):
 
     def send(self, message: Any) -> None:
 
-        """
-        Sends a message to the connected client.
+        """Sends a message to the connected client.
 
         Args:
-            message:        The message to send in the application's format.
+            message (Any): The message to send in the application's format.
 
         Authors:
             Attila Kovacs
@@ -237,16 +236,15 @@ class ClientThread(Thread):
 
     def handle_message(self, message: Any) -> None:
 
-        """
-        Message handler function that has to be implemented by all client
+        """Message handler function that has to be implemented by all client
         handler objects.
 
         Args:
-            message:        The message that was received on the socket.
+            message (Any): The message that was received on the socket.
 
         Raises:
-            NotImplementedError:        Raised if the function is not
-                                        implemented by the derived class.
+            NotImplementedError: Raised if the function is not implemented by
+                the derived class.
 
         Authors:
             Attila Kovacs
@@ -260,8 +258,7 @@ class ClientThread(Thread):
 
     def on_handler_start(self) -> None:
 
-        """
-        Handler function that can be implemented by derived classes to
+        """Handler function that can be implemented by derived classes to
         execute logic just before the client handler loop starts.
 
         Authors:
@@ -273,9 +270,8 @@ class ClientThread(Thread):
 
     def on_abort(self) -> None:
 
-        """
-        Handler function that can be implemented by derived classes to execute
-        logic when the connection is closed.
+        """Handler function that can be implemented by derived classes to
+        execute logic when the connection is closed.
 
         Authors:
             Attila Kovacs

@@ -33,9 +33,36 @@ from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class BaseSocket(LogWriter):
 
-    """
-    Utility class that encapsulates basic socket functionality for
+    """Utility class that encapsulates basic socket functionality for
     communicating over the network.
+
+    Attributes:
+        _name (str): Name of the socket.
+
+        _socket (Socket): The underlying socket object that is used.
+
+        _raw_socket (Socket): The actual native socket object that is either
+            unencrypted or wrapped in an SSL context when exposed for use.
+
+        _context (Context): The SSL context used by socket in encrypted mode.
+
+        _connected (bool): Marks whether or not the socket is connected to a
+            remote end.
+
+        _ssl_protocol (Protocols): The SSL protocol that is used by the socket.
+
+        _cert_file (str): The certificate file to use when establishing a
+            connection.
+
+        _ca_list (str): The certificate authority to use when validating
+            the connection.
+
+        _require_cert (bool): Whether or not a valid certificate is required
+            during authentication.
+
+        _bytes_sent (int): The amount of bytes sent through the socket.
+
+        _bytes_received (int): The amount of bytes received through the socket.
 
     Authors:
         Attila Kovacs
@@ -43,39 +70,44 @@ class BaseSocket(LogWriter):
 
     class Protocols(IntEnum):
 
-        """
-        The list of supported SSL protocol versions.
+        """The list of supported SSL protocol versions.
+
+        Attributes:
+            UNKNOWN: Unknown protocol.
+            UNENCRYPTED: Unencrypted
+            TLSv12: TLS v1.2
+            TLSv13: TLS v1.3
 
         Authors:
             Attila Kovacs
         """
 
         UNKNOWN = 0 # Unknown
-
         UNENCRYPTED = 1 # Unencrypted
-
         TLSv12 = 2  # TLS v1.2
         TLSv13 = 3  # TLS v1.3
 
     class Purposes(IntEnum):
 
-        """
-        The list of supported authentication purposes for the SSL context.
+        """The list of supported authentication purposes for the SSL context.
+
+        Attributes:
+            UNKNOWN: Unknown authentication purpose.
+            CLIENT_AUTH: Client authentication.
+            SERVER_AUTH: Server authentication.
 
         Authors:
             Attila Kovacs
         """
 
         UNKNOWN = 0
-
         CLIENT_AUTH = 1
         SERVER_AUTH = 2
 
     @property
     def Name(self) -> str:
 
-        """
-        Name of the socket.
+        """Name of the socket.
 
         Authors:
             Attila Kovacs
@@ -86,8 +118,7 @@ class BaseSocket(LogWriter):
     @property
     def IsConnected(self) -> bool:
 
-        """
-        Returns whether or not the socket is connected to the remote end.
+        """Returns whether or not the socket is connected to the remote end.
 
         Authors:
             Attila Kovacs
@@ -98,8 +129,7 @@ class BaseSocket(LogWriter):
     @property
     def Protocol(self) -> 'BaseSocket.Protocols':
 
-        """
-        The SSL protocol the socket is using.
+        """The SSL protocol the socket is using.
 
         Authors:
             Attila Kovacs
@@ -110,8 +140,7 @@ class BaseSocket(LogWriter):
     @property
     def NumBytesSent(self) -> int:
 
-        """
-        The amount of bytes sent through the socket.
+        """The amount of bytes sent through the socket.
 
         Authors:
             Attila Kovacs
@@ -122,8 +151,7 @@ class BaseSocket(LogWriter):
     @property
     def NumBytesReceived(self) -> int:
 
-        """
-        The amount of bytes received through the socket.
+        """The amount of bytes received through the socket.
 
         Authors:
             Attila Kovacs
@@ -141,22 +169,27 @@ class BaseSocket(LogWriter):
         require_cert: bool = True,
         purpose: 'BaseSocket.Purposes' = 'BaseSocket.Purposes.SERVER_AUTH') -> None:
 
-        """
-        Creates a new BaseSocket instance.
+        """Creates a new BaseSocket instance.
 
         Args:
-            name:               Name of the socket.
-            blocking:           Whether or not the socket is created with
-                                blocking turned on.
-            ssl_protocol:       The SSL protocol to use when setting up the
-                                socket.
-            cert_file:          The certificate file to use when establishing
-                                the connection.
-            ca_list:            The certificate authority to use when
-                                validating the SSL connection.
-            require_cert:       Whether or not a valid certificate is required
-                                during authentication.
-            purpose:            The purpose of the SSL connection.
+            name (str): Name of the socket.
+
+            blocking (bool): Whether or not the socket is created with blocking
+                turned on.
+
+            ssl_protocol (Protocols): The SSL protocol to use when setting up
+                the socket.
+
+            cert_file (str): The certificate file to use when establishing the
+                connection.
+
+            ca_list (str): The certificate authority to use when validating the
+                SSL connection.
+
+            require_cert (bool): Whether or not a valid certificate is required
+                during authentication.
+
+            purpose (Purposes): The purpose of the SSL connection.
 
         Authors:
             Attila Kovacs
@@ -166,60 +199,16 @@ class BaseSocket(LogWriter):
                          cache_entries=True)
 
         self._name = '' if name is None else name
-        """
-        Name of the socket.
-        """
-
         self._socket = None
-        """
-        The underlying socket object that is used.
-        """
-
         self._raw_socket = None
-        """
-        The actual native socket object that is either unencrypted or
-        wrapped in an SSL context when exposed for use.
-        """
-
         self._context = None
-        """
-        The SSL context used by socket in encrypted mode.
-        """
-
         self._connected = False
-        """
-        Marks whether or not the socket is connected to a remote end.
-        """
-
         self._ssl_protocol = ssl_protocol
-        """
-        The SSL protocol that is used by the socket.
-        """
-
         self._cert_file = cert_file
-        """
-        The certificate file to use when establishing a connection.
-        """
-
         self._ca_list = ca_list
-        """
-        The certificate authority to use when validating the connection.
-        """
-
         self._require_cert = require_cert
-        """
-        Whether or not a valid certificate is required during authentication.
-        """
-
         self._bytes_sent = 0
-        """
-        The amount of bytes sent through the socket.
-        """
-
         self._bytes_received = 0
-        """
-        The amount of bytes received through the socket.
-        """
 
         try:
             self._create_socket(purpose=purpose, blocking=blocking)
@@ -230,11 +219,10 @@ class BaseSocket(LogWriter):
 
     def set_blocking(self, blocking: bool = True) -> None:
 
-        """
-        Allows enabling or disabling socket blocking.
+        """Allows enabling or disabling socket blocking.
 
         Args:
-            blocking:       Whether or not the socket should block.
+            blocking (bool): Whether or not the socket should block.
 
         Authors:
             Attila Kovacs
@@ -249,11 +237,11 @@ class BaseSocket(LogWriter):
 
     def increase_bytes_sent(self, bytes_sent: int) -> None:
 
-        """
-        Increases the counter for the amount of bytes sent through the socket.
+        """Increases the counter for the amount of bytes sent through the
+        socket.
 
         Args:
-            bytes_sent:     The amount of bytes sent through the socket.
+            bytes_sent (int): The amount of bytes sent through the socket.
 
         Authors:
             Attila Kovacs
@@ -263,13 +251,12 @@ class BaseSocket(LogWriter):
 
     def increase_bytes_received(self, bytes_received) -> None:
 
-        """
-        Increases the counter for the amount of bytes received through the
+        """Increases the counter for the amount of bytes received through the
         socket.
 
         Args:
-            bytes_received:     The amount of bytes received through the
-                                socket.
+            bytes_received (int): The amount of bytes received through the
+                socket.
 
         Authors:
             Attila Kovacs
@@ -279,8 +266,7 @@ class BaseSocket(LogWriter):
 
     def reset_counters(self) -> None:
 
-        """
-        Resets the traffic counters.
+        """Resets the traffic counters.
 
         Authors:
             Attila Kovacs
@@ -294,13 +280,13 @@ class BaseSocket(LogWriter):
         purpose: 'BaseSocket.Purposes',
         blocking: bool = True) -> None:
 
-        """
-        Creates the socket based on the initial configuration.
+        """Creates the socket based on the initial configuration.
 
         Args:
-            purpose:            The purpose of the SSL connection.
-            blocking:           Whether or not the socket should be created
-                                with blocking enabled.
+            purpose (Purposes): The purpose of the SSL connection.
+
+            blocking (bool): Whether or not the socket should be created with
+                blocking enabled.
 
         Authors:
             Attila Kovacs
@@ -322,20 +308,21 @@ class BaseSocket(LogWriter):
 
     def _encrypt_socket(self, purpose: 'BaseSocket.Purposes') -> None:
 
-        """
-        Encrypts the socket based on the selected encryption protocol.
+        """Encrypts the socket based on the selected encryption protocol.
 
         Raises:
-            InvalidInputError:          Raised when trying to encrpyt by using
-                                        an unsupported protocol.
-            InvalidInputError:          Raised when trying to use an
-                                        unsupported SSL context purpose.
-            MissingRequirementError:    Raised when TLS v1.2 or TLS v1.3 is not
-                                        supported by the plaform but the socket
-                                        is configured to use it.
+            InvalidInputError: Raised when trying to encrpyt by using an
+                unsupported protocol.
+
+            InvalidInputError: Raised when trying to use an unsupported SSL
+                context purpose.
+
+            MissingRequirementError: Raised when TLS v1.2 or TLS v1.3 is not
+                supported by the plaform but the socket is configured to use
+                it.
 
         Args:
-            purpose:            The purpose of the SSL connection.
+            purpose (Purposes): The purpose of the SSL connection.
 
         Authors:
             Attila Kovacs
