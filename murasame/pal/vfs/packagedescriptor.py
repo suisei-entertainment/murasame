@@ -26,8 +26,7 @@ from murasame.logging import LogWriter
 
 class PackageDescriptor(LogWriter):
 
-    """
-    Contains the description of a single VFS resource package.
+    """Contains the description of a single VFS resource package.
 
     Authors:
         Attila Kovacs
@@ -35,8 +34,7 @@ class PackageDescriptor(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new PackageDescriptor instance.
+        """Creates a new PackageDescriptor instance.
 
         Authors:
             Attila Kovacs

@@ -26,8 +26,7 @@ from murasame.logging import LogWriter
 
 class VFSResourceDescriptor(LogWriter):
 
-    """
-    Base class for for the descriptors of VFS resource types.
+    """Base class for for the descriptors of VFS resource types.
 
     Authors:
         Attila Kovacs
@@ -35,8 +34,7 @@ class VFSResourceDescriptor(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new VFSResourceDescriptor instance.
+        """Creates a new VFSResourceDescriptor instance.
 
         Authors:
             Attila Kovacs
@@ -46,16 +44,16 @@ class VFSResourceDescriptor(LogWriter):
 
     def serialize(self) -> dict:
 
-        """
-        Function prototype for the serialization function of the descriptor.
+        """Function prototype for the serialization function of the descriptor.
+
         Needs to be implemented in every derived class.
 
         Returns:
-            The descriptor serialized as a dictionary.
+            dict: The descriptor serialized as a dictionary.
 
         Raises:
-            NotImplementedError:        Raised when the function is not
-                                        implemented in the derived class.
+            NotImplementedError: Raised when the function is not implemented in
+                the derived class.
 
         Authors:
             Attila Kovacs
@@ -66,16 +64,16 @@ class VFSResourceDescriptor(LogWriter):
 
     def deserialize(self, data: dict) -> bool:
 
-        """
-        Function prototype for the deserialization function of the descriptor.
+        """Function prototype for the deserialization function of the descriptor.
+
         Needs to be implemented in every derived class.
 
         Args:
-            data:       The descriptor serialized as a dictionary.
+            data (dict): The descriptor serialized as a dictionary.
 
         Raises:
-            NotImplementedError:        Raised when the function is not
-                                        implemented in the derived class.
+            NotImplementedError: Raised when the function is not implemented in
+                the derived class.
 
         Authors:
             Attila Kovacs
@@ -86,12 +84,12 @@ class VFSResourceDescriptor(LogWriter):
 
     def create_connector(self) -> 'VFSResourceConnector':
 
-        """
-        Function prototype for creating the resource connector for each type of
-        VFS resource.
+        """Function prototype for creating the resource connector for each type
+            of VFS resource.
 
         Returns:
-            An object that is derived from VFSResourceConnector.
+            VFSResourceConnector: An object that is derived from
+                VFSResourceConnector.
 
         Authors:
             Attila Kovacs

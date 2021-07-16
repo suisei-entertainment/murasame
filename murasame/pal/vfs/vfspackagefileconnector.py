@@ -31,8 +31,7 @@ from murasame.pal.vfs.vfspackagefile import VFSPackageFile
 
 class VFSPackageFileConnector(VFSResourceConnector):
 
-    """
-    Resource connector implementation for files in a resource package.
+    """Resource connector implementation for files in a resource package.
 
     Authors:
         Attila Kovacs
@@ -40,18 +39,18 @@ class VFSPackageFileConnector(VFSResourceConnector):
 
     def load(self, descriptor: 'VFSResourceDescriptor') -> Any:
 
-        """
-        Loads the content of the VFS resource into memory.
+        """Loads the content of the VFS resource into memory.
 
         Args:
-            descriptor:     The resource descriptor of the resource to load.
+            descriptor (VFSResourceDescriptor): The resource descriptor of the
+                resource to load.
 
         Raises:
-            InvalidInputError:      Raised when the provided descriptor is not
-                                    a VFSPackageFile.
+            InvalidInputError: Raised when the provided descriptor is not
+                a VFSPackageFile.
 
         Returns:
-            The loaded resource data.
+            Any: The loaded resource data.
 
         Authors:
             Attila Kovacs

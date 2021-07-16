@@ -27,8 +27,32 @@ import re
 
 class PasswordComplexity:
 
-    """
-    Utility class that implements a simple password complexity validator.
+    """Utility class that implements a simple password complexity validator.
+
+    Attributes:
+        _min_length (int): The minimum allowed password length. 0 means no
+            minimum length.
+
+        _max_length (int): The maximum allowed password length. 0 means no
+            maximum length.
+
+        _require_lower (bool): Whether or not the password must contain a
+            lowercase character.
+
+        _require_upper (bool): Whether or not the password must contain an
+            uppercase character.
+
+        _require_number (bool): Whether or not the password must contains an
+            uppercase character.
+
+        _require_symbol (bool): Whether or not the password must contains a
+            symbol.
+
+        _not_common (bool): Whether passwords on the most common password list
+            are accepted.
+
+        _common_pwd_path (str): Path to the file containing the passwords
+            considered common.
 
     Authors:
         Attila Kovacs
@@ -45,25 +69,32 @@ class PasswordComplexity:
         not_common: bool = False,
         common_pwds: str = None) -> None:
 
-        """
-        Creates a new PasswordComplexity instance.
+        """Creates a new PasswordComplexity instance.
 
         Args:
-            min_length:     The minimum allowed password length. 0 means no
-                            minimum length.
-            max_length:     The maximum allowed password length. 0 means no
-                            maximum length.
-            require_lower:  Whether or not the password must contain a
-                            lowercase character.
-            require_upper:  Whether or not the password must contain an
-                            uppercase character.
-            require_number: Whether or not the password must contains an
-                            uppercase character.
-            require_symbol: Whether or not the password must contains a symbol.
-            not_common:     Whether passwords on the most common password list
-                            are accepted.
-            common_pwds:    Path to the file containing the passwords
-                            considered common.
+            min_length (int): The minimum allowed password length. 0 means no
+                minimum length.
+
+            max_length (int):The maximum allowed password length. 0 means no
+                maximum length.
+
+            require_lower (bool): Whether or not the password must contain a
+                lowercase character.
+
+            require_upper (bool): Whether or not the password must contain an
+                uppercase character.
+
+            require_number (bool): Whether or not the password must contains an
+                uppercase character.
+
+            require_symbol (bool): Whether or not the password must contains a
+                symbol.
+
+            not_common: Whether passwords on the most common password list
+                are accepted.
+
+            common_pwds: Path to the file containing the passwords considered
+                common.
 
         Authors:
             Attila Kovacs
@@ -83,15 +114,14 @@ class PasswordComplexity:
 
     def validate_length(self, password: str) -> bool:
 
-        """
-        Validates the given password against configured length rules.
+        """Validates the given password against configured length rules.
 
         Args:
-            password:       The password to be validated.
+            password (str): The password to be validated.
 
         Returns:
-            'True' if the given password is valid, 'False' if it validates
-            at least one complexity requirement.
+            bool: 'True' if the given password is valid, 'False' if it
+                validates at least one complexity requirement.
 
         Authors:
             Attila Kovacs
@@ -110,15 +140,14 @@ class PasswordComplexity:
 
     def validate_case(self, password: str) -> bool:
 
-        """
-        Validates the given password against configured case rules.
+        """Validates the given password against configured case rules.
 
         Args:
-            password:       The password to be validated.
+            password (str): The password to be validated.
 
         Returns:
-            'True' if the given password is valid, 'False' if it validates
-            at least one complexity requirement.
+            bool: 'True' if the given password is valid, 'False' if it
+                validates at least one complexity requirement.
 
         Authors:
             Attila Kovacs
@@ -138,15 +167,14 @@ class PasswordComplexity:
 
     def validate_numbers(self, password: str) -> bool:
 
-        """
-        Validates the given password against the configured numeric rules.
+        """Validates the given password against the configured numeric rules.
 
         Args:
-            password:       The password to be validated.
+            password (str): The password to be validated.
 
         Returns:
-            'True' if the given password is valid, 'False' if it validates
-            at least one complexity requirement.
+            bool: 'True' if the given password is valid, 'False' if it
+                validates at least one complexity requirement.
 
         Authors:
             Attila Kovacs
@@ -161,15 +189,14 @@ class PasswordComplexity:
 
     def validate_symbols(self, password: str) -> bool:
 
-        """
-        Validates the given password against the configured symbol rules.
+        """Validates the given password against the configured symbol rules.
 
         Args:
-            password:       The password to be validated.
+            password (str): The password to be validated.
 
         Returns:
-            'True' if the given password is valid, 'False' if it validates
-            at least one complexity requirement.
+            bool: 'True' if the given password is valid, 'False' if it
+                validates at least one complexity requirement.
 
         Authors:
             Attila Kovacs
@@ -184,15 +211,14 @@ class PasswordComplexity:
 
     def validate_against_common_passwords(self, password: str) -> bool:
 
-        """
-        Validates the given password against the common passwords list.
+        """Validates the given password against the common passwords list.
 
         Args:
-            password:       The password to be validated.
+            password (str): The password to be validated.
 
         Returns:
-            'True' if the given password is valid, 'False' if it validates
-            at least one complexity requirement.
+            bool: 'True' if the given password is valid, 'False' if it
+                validates at least one complexity requirement.
 
         Authors:
             Attila Kovacs
@@ -205,15 +231,14 @@ class PasswordComplexity:
 
     def validate(self, password: str) -> bool:
 
-        """
-        Validates the given password against all the configured rules.
+        """Validates the given password against all the configured rules.
 
         Args:
-            password:       The password to be validated.
+            password (str): The password to be validated.
 
         Returns:
-            'True' if the given password is valid, 'False' if it validates
-            at least one complexity requirement.
+            bool: 'True' if the given password is valid, 'False' if it
+                validates at least one complexity requirement.
 
         Authors:
             Attila Kovacs
@@ -241,8 +266,7 @@ class PasswordComplexity:
 
     def reload(self) -> None:
 
-        """
-        Reloads the list of common passwords.
+        """Reloads the list of common passwords.
 
         Authors:
             Attila Kovacs
@@ -253,21 +277,21 @@ class PasswordComplexity:
 
     def _load_common_passwords(self, common_pwds: str) -> None:
 
-        """
-        Loads the common passwords list from a file to memory.
+        """Loads the common passwords list from a file to memory.
 
         The file is expected to be a simple text file with each line
         representing a single common password.
 
         Args:
-            common_pwds:    Path to the file containing the list of passwords
-                            that are to be considered common.
+            common_pwds (str): Path to the file containing the list of
+                passwords that are to be considered common.
 
         Raises:
-            FileNotFoundError:      Raised if the given password list file is
-                                    not found.
-            RuntimeError:           Raised if the given password list file
-                                    cannot be loaded.
+            FileNotFoundError: Raised if the given password list file is not
+                found.
+
+            RuntimeError: Raised if the given password list file cannot be
+                loaded.
 
         Authors:
             Attila Kovacs

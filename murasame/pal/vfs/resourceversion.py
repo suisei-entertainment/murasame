@@ -30,38 +30,40 @@ from murasame.logging import LogWriter
 
 class ResourceVersion(LogWriter):
 
-    """
-    Represents the resource version of a single VFS resource object.
+    """Represents the resource version of a single VFS resource object.
+
+    Attributes:
+        LATEST (int): Constant representing the latest resource version.
+
+        _version (int): The actual version number associated with the resource.
 
     Authors:
         Attila Kovacs
     """
 
     LATEST = sys.maxsize
-    """
-    Constant representing the latest resource version.
-    """
 
     @property
     def Version(self) -> int:
 
-        """
-        Provides access to the version number.
+        """Provides access to the version number.
+
+        Authors:
+            Attila Kovacs
         """
 
         return self._version
 
     def __init__(self, version: int) -> None:
 
-        """
-        Creates a new ResourceVersion instance.
+        """Creates a new ResourceVersion instance.
 
         Args:
-            version:        The version number.
+            version (int): The version number.
 
         Raises:
-            InvalidInputError:  Raised when trying to create an object with an
-                                invalid version number.
+            InvalidInputError: Raised when trying to create an object with an
+                invalid version number.
 
         Authors:
             Attila Kovacs
@@ -73,20 +75,18 @@ class ResourceVersion(LogWriter):
             raise InvalidInputError('Resource version must be greater than 0.')
 
         self._version = version
-        """
-        The actual version number associated with the resource.
-        """
 
     def __eq__(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Equality operator.
+        """Equality operator.
 
         Args:
-            other:      The resource version instance to compare with.
+            other (ResourceVersion): The resource version instance to compare
+                with.
 
         Returns:
-            'True' if the two resource versions are equal, 'False' otherwise.
+            bool: 'True' if the two resource versions are equal, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -99,15 +99,15 @@ class ResourceVersion(LogWriter):
 
     def __ne__(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Inequality operator.
+        """Inequality operator.
 
         Args:
-            other:      The resource version instance to compare with.
+            other (ResourceVersion): The resource version instance to compare
+                with.
 
         Returns:
-            'True' if the two resource versions are not equal, 'False'
-            otherwise.
+            bool: 'True' if the two resource versions are not equal, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -120,15 +120,15 @@ class ResourceVersion(LogWriter):
 
     def __lt__(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Less-than operator.
+        """Less-than operator.
 
         Args:
-            other:      The resource version instance to compare with.
+            other (ResourceVersion): The resource version instance to compare
+                with.
 
         Returns:
-            'True' if this resource version is older than the other one, 'False'
-            otherwise.
+            bool: 'True' if this resource version is older than the other one,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -141,15 +141,15 @@ class ResourceVersion(LogWriter):
 
     def __le__(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Less-than or equal operator.
+        """Less-than or equal operator.
 
         Args:
-            other:      The resource version instance to compare with.
+            other (ResourceVersion): The resource version instance to compare
+                with.
 
         Returns:
-            'True' if this resource version is the same or older than the other
-            one, 'False' otherwise.
+            bool: 'True' if this resource version is the same or older than the
+                other one, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -162,15 +162,15 @@ class ResourceVersion(LogWriter):
 
     def __gt__(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Greater-than operator.
+        """Greater-than operator.
 
         Args:
-            other:      The resource version instance to compare with.
+            other (ResourceVersion): The resource version instance to compare
+                with.
 
         Returns:
-            'True' if this resource version is newer than the other one, 'False'
-            otherwise.
+            bool: 'True' if this resource version is newer than the other one,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -183,15 +183,15 @@ class ResourceVersion(LogWriter):
 
     def __ge__(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Greater-than or equal operator.
+        """Greater-than or equal operator.
 
         Args:
-            other:      The resource version instance to compare with.
+            other (ResourceVersion): The resource version instance to compare
+                with.
 
         Returns:
-            'True' if this resource version is the same or newer than the other
-            one, 'False' otherwise.
+            bool: 'True' if this resource version is the same or newer than the
+                other one, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -204,8 +204,7 @@ class ResourceVersion(LogWriter):
 
     def __repr__(self) -> str:
 
-        """
-        Unambiguity operator.
+        """Unambiguity operator.
 
         Authors:
             Attila Kovacs
@@ -215,8 +214,7 @@ class ResourceVersion(LogWriter):
 
     def __str__(self) -> str:
 
-        """
-        Returns the string representation of this resource version.
+        """Returns the string representation of this resource version.
 
         Authors:
             Attila Kovacs
@@ -226,14 +224,14 @@ class ResourceVersion(LogWriter):
 
     def is_equal(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Returns whether or not this resource version equals to the given one.
+        """Returns whether or not this resource version equals to the given one.
 
         Args:
-            other:      The other resource version to compare with.
+            other (ResourceVersion): The other resource version to compare with.
 
         Returns:
-            'True' if the two resource versions are equal, 'False' otherwise.
+            bool: 'True' if the two resource versions are equal, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -246,14 +244,13 @@ class ResourceVersion(LogWriter):
 
     def is_newer(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Returns whether or not this resource is newer than an other one.
+        """Returns whether or not this resource is newer than an other one.
 
         Args:
-            other:      The other resource version to compare with.
+            other (ResourceVersion): The other resource version to compare with.
 
         Returns:
-            'True' if the twis resource versions is newer, 'False' otherwise.
+            bool: 'True' if this resource versions is newer, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -266,14 +263,14 @@ class ResourceVersion(LogWriter):
 
     def is_older(self, other: 'ResourceVersion') -> bool:
 
-        """
-        Returns whether or not this resource is older than an other one.
+        """Returns whether or not this resource is older than an other one.
 
         Args:
-            other:      The other resource version to compare with.
+            other (ResourceVersion): The other resource version to compare with.
 
         Returns:
-            'True' if the twis resource versions is older, 'False' otherwise.
+            bool: 'True' if the this resource versions is older, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -286,8 +283,7 @@ class ResourceVersion(LogWriter):
 
     def bump_version(self) -> None:
 
-        """
-        Increases the version number.
+        """Increases the version number.
 
         Authors:
             Attila Kovacs

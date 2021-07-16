@@ -26,8 +26,12 @@ from enum import IntEnum
 
 class VFSResourceTypes(IntEnum):
 
-    """
-    List of supported VFS resource types.
+    """List of supported VFS resource types.
+
+    Attributes:
+        UNKNOWN: Unknown resource type
+        LOCAL_FILE: File in the local file system
+        PACKAGE_FILE: File in a resource package
 
     Authors:
         Attila Kovacs

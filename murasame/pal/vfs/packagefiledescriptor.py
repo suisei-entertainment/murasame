@@ -26,8 +26,12 @@ from murasame.logging import LogWriter
 
 class PackageFileDescriptor(LogWriter):
 
-    """
-    Contains the description of a single package file.
+    """Contains the description of a single package file.
+
+    Attributes:
+        _path (str): Path to the package file in the file system.
+
+        _version (ResourceVersion): Version of the package file.
 
     Authors:
         Attila Kovacs
@@ -36,8 +40,10 @@ class PackageFileDescriptor(LogWriter):
     @property
     def Path(self) -> str:
 
-        """
-        Path to the package file in the file system.
+        """Path to the package file in the file system.
+
+        Authors:
+            Attila Kovacs
         """
 
         return self._path
@@ -45,19 +51,20 @@ class PackageFileDescriptor(LogWriter):
     @property
     def Version(self) -> 'ResourceVersion':
 
-        """
-        Version of the package file.
+        """Version of the package file.
+
+        Authors:
+            Attila Kovacs
         """
 
         return self._version
 
     def __init__(self, path: str) -> None:
 
-        """
-        Creates a new PackageFileDescriptor instance.
+        """Creates a new PackageFileDescriptor instance.
 
         Args:
-            path:       Path to the package file in the file system.
+            path (str): Path to the package file in the file system.
 
         Authors:
             Attila Kovacs
@@ -66,11 +73,4 @@ class PackageFileDescriptor(LogWriter):
         super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         self._path = path
-        """
-        Path to the package file in the file system.
-        """
-
         self._version = None
-        """
-        Version of the package file.
-        """

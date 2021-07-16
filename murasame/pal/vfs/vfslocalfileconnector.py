@@ -36,8 +36,7 @@ from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
 class VFSLocalFileConnector(VFSResourceConnector):
 
-    """
-    Resource connector implementation for files in the local file system.
+    """Resource connector implementation for files in the local file system.
 
     Authors:
         Attila Kovacs
@@ -45,18 +44,18 @@ class VFSLocalFileConnector(VFSResourceConnector):
 
     def load(self, descriptor: 'VFSResourceDescriptor') -> Any:
 
-        """
-        Loads the content of the VFS resource into memory.
+        """Loads the content of the VFS resource into memory.
 
         Args:
-            descriptor:     The resource descriptor of the resource to load.
+            descriptor (VFSResourceDescriptor): The resource descriptor of the
+                resource to load.
 
         Raises:
-            InvalidInputError:      Raised when the provided descriptor is not
-                                    a VFSLocalFile.
+            InvalidInputError: Raised when the provided descriptor is not a
+                VFSLocalFile.
 
         Returns:
-            The loaded resource data.
+            Any: The loaded resource data.
 
         Authors:
             Attila Kovacs
@@ -132,14 +131,13 @@ class VFSLocalFileConnector(VFSResourceConnector):
     @staticmethod
     def _load_as_json(path: str) -> dict:
 
-        """
-        Loads the content of the file expecting the file to be a JSON file.
+        """Loads the content of the file expecting the file to be a JSON file.
 
         Args:
-            path:       Path to the file to load.
+            path (str): Path to the file to load.
 
         Returns:
-            The parsed content of the file as a dictionary.
+            dict: The parsed content of the file as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -152,14 +150,13 @@ class VFSLocalFileConnector(VFSResourceConnector):
     @staticmethod
     def _load_as_yaml(path: str) -> dict:
 
-        """
-        Loads the content of the file expecting the file to be a YAML file.
+        """Loads the content of the file expecting the file to be a YAML file.
 
         Args:
-            path:       Path to the file to load.
+            path (str): Path to the file to load.
 
         Returns:
-            The parsed content of the file as a dictionary.
+            dict: The parsed content of the file as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -172,15 +169,14 @@ class VFSLocalFileConnector(VFSResourceConnector):
     @staticmethod
     def _load_as_text(path: str) -> str:
 
-        """
-        Loads the content of the file as a simple plaintext file without any
+        """Loads the content of the file as a simple plaintext file without any
         additional parsing.
 
         Args:
-            path:       Path to the file to load.
+            path (str): Path to the file to load.
 
         Returns:
-            The content of the file as a string.
+            str: The content of the file as a string.
 
         Authors:
             Attila Kovacs
@@ -192,15 +188,14 @@ class VFSLocalFileConnector(VFSResourceConnector):
     @staticmethod
     def _load_as_binary(path: str) -> dict:
 
-        """
-        Loads the content of the file as a simple binary without any additional
-        parsing.
+        """Loads the content of the file as a simple binary without any
+            additional parsing.
 
         Args:
-            path:       Path to the file to load.
+            path (str): Path to the file to load.
 
         Returns:
-            The raw content of the file.
+            dict: The raw content of the file.
 
         Authors:
             Attila Kovacs

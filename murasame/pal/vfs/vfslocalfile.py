@@ -28,9 +28,13 @@ from murasame.pal.vfs.vfsresourcetypes import VFSResourceTypes
 
 class VFSLocalFile(VFSResourceDescriptor):
 
-    """
-    Represents the resource descriptor of a file in file system that is
+    """Represents the resource descriptor of a file in file system that is
     added as a VFS node.
+
+    Attributes:
+        _path (str): Path fo the file.
+
+        _content (str): The content type of the file.
 
     Authors:
         Attila Kovacs
@@ -39,8 +43,7 @@ class VFSLocalFile(VFSResourceDescriptor):
     @property
     def Path(self) -> str:
 
-        """
-        Path to the file in the local file system.
+        """Path to the file in the local file system.
 
         Authors:
             Attila Kovacs
@@ -51,8 +54,7 @@ class VFSLocalFile(VFSResourceDescriptor):
     @property
     def ContentType(self) -> str:
 
-        """
-        The MIME type of the file located at the indicated path.
+        """The MIME type of the file located at the indicated path.
 
         Authors:
             Attila Kovacs
@@ -63,8 +65,7 @@ class VFSLocalFile(VFSResourceDescriptor):
     @property
     def Type(self) -> 'VFSResourceTypes':
 
-        """
-        Returns the type of the VFS resource.
+        """Returns the type of the VFS resource.
 
         Authors:
             Attila Kovacs
@@ -72,10 +73,9 @@ class VFSLocalFile(VFSResourceDescriptor):
 
         return VFSResourceTypes.LOCAL_FILE
 
-    def __init__(self):
+    def __init__(self) -> None:
 
-        """
-        Creates a new VFSSystemFile instance.
+        """Creates a new VFSSystemFile instance.
 
         Authors:
             Attila Kovacs
@@ -84,22 +84,14 @@ class VFSLocalFile(VFSResourceDescriptor):
         super().__init__()
 
         self._path = None
-        """
-        Path fo the file.
-        """
-
         self._content = None
-        """
-        The content type of the file.
-        """
 
     def serialize(self) -> dict:
 
-        """
-        Function prototype for the serialization function of the descriptor.
+        """Function prototype for the serialization function of the descriptor.
 
         Returns:
-            The descriptor serialized as a dictionary.
+            dict: The descriptor serialized as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -116,17 +108,18 @@ class VFSLocalFile(VFSResourceDescriptor):
 
     def deserialize(self, data: dict) -> None:
 
-        """
-        Function prototype for the deserialization function of the descriptor.
+        """Function prototype for the deserialization function of the
+        descriptor.
 
         Args:
-            data:       The descriptor serialized as a dictionary.
+            data (dict): The descriptor serialized as a dictionary.
 
         Raises:
-            InvalidInputError:      Raised if the data doesn't contain the
-                                    data of a VFSResourceDescriptor.
-            InvalidInputError:      Raised if the descriptor cannot be parsed
-                                    as a VFSLocalFile object.
+            InvalidInputError: Raised if the data doesn't contain the data of a
+                VFSResourceDescriptor.
+
+            InvalidInputError: Raised if the descriptor cannot be parsed as a
+                VFSLocalFile object.
 
         Authors:
             Attila Kovacs
@@ -152,11 +145,10 @@ class VFSLocalFile(VFSResourceDescriptor):
 
     def update_content_type(self, content_type: str) -> None:
 
-        """
-        Updates the content type.
+        """Updates the content type.
 
         Args:
-            content_type:       The content type to set.
+            content_type (str): The content type to set.
 
         Authors:
             Attila Kovacs
@@ -166,12 +158,12 @@ class VFSLocalFile(VFSResourceDescriptor):
 
     def create_connector(self) -> 'VFSResourceConnector':
 
-        """
-        Function prototype for creating the resource connector for each type of
-        VFS resource.
+        """Function prototype for creating the resource connector for each type
+        of VFS resource.
 
         Returns:
-            An object that is derived from VFSResourceConnector.
+            VFSResourceConnector: An object that is derived from
+                VFSResourceConnector.
 
         Authors:
             Attila Kovacs

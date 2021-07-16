@@ -35,23 +35,21 @@ from murasame.pal.vfs.vfspackage import VFSPackage
 
 class VFSAPI:
 
-    """
-    The root class of the Virtual File System.
+    """The root class of the Virtual File System.
 
     Authors:
         Attila Kovacs
     """
 
-    def get(self, key: str, version: 'ContentVersion' = None) -> 'VFSNode':
+    def get_node(self, key: str) -> 'VFSNode':
 
-        """
-        Retrieves a VFS node by its key.
+        """Retrieves a VFS node by its key.
 
         Args:
-            key:        The key of the VFS node to retrieve.
+            key (str): The key of the VFS node to retrieve.
 
         Returns:
-            The VFSNode object associated with the given key.
+            VFSNode: The VFSNode object associated with the given key.
 
         Authors:
             Attila Kovacs
@@ -62,13 +60,14 @@ class VFSAPI:
         del key
         del version
 
-    def get_content(self, key: str, version: 'ContentVersion' = None) -> Any:
+    def get_content(self, key: str, version: 'ResourceVersion' = None) -> Any:
 
-        """
-        Retrieves the content of a VFS node by its key.
+        """Retrieves the content of a VFS node by its key.
 
         Args:
-            key:        The key of the VFS node to retrieve.
+            key (str): The key of the VFS node to retrieve.
+
+            version (ResourceVersion): The version of the content to retrieve.
 
         Returns:
             The content of the file associated with the VFS key.
@@ -84,12 +83,13 @@ class VFSAPI:
 
     def register_source(self, path: str) -> None:
 
-        """
-        Registers a new VFS data source. This can be a directory or a package.
-        All resources from this data source will be added to the VFS tree.
+        """Registers a new VFS data source.
+
+        This can be a directory or a package. All resources from this data
+        source will be added to the VFS tree.
 
         Args:
-            path:       Path to the data source.
+            path (str): Path to the data source.
 
         Authors:
             Attila Kovacs
@@ -101,13 +101,15 @@ class VFSAPI:
 
     def add_node(self, node: 'VFSNode', parent: str = '') -> None:
 
-        """
-        Adds a new node to the VFS. By default the new node will be added to
-        the root node unless a different parent node is specified.
+        """Adds a new node to the VFS.
+
+        By default the new node will be added to the root node unless a
+        different parent node is specified.
 
         Args:
-            node:       The node to add.
-            parent:     Name of the parent node to add the new node to.
+            node (VFSNode): The node to add.
+
+            parent (str): Name of the parent node to add the new node to.
 
         Authors:
             Attila Kovacs
@@ -120,11 +122,10 @@ class VFSAPI:
 
     def remove_node(self, node_name: str) -> None:
 
-        """
-        Removes an existing VFS node from the node tree.
+        """Removes an existing VFS node from the node tree.
 
         Args:
-            node_name:      Name of the node to remove.
+            node_name (str): Name of the node to remove.
 
         Authors:
             Attila Kovacs
@@ -136,15 +137,14 @@ class VFSAPI:
 
     def has_node(self, name: str) -> bool:
 
-        """
-        Returns whether or not there is a VFS node with a given name in the
+        """Returns whether or not there is a VFS node with a given name in the
         VFS tree.
 
         Args:
-            name:       The name of the node to check for.
+            name (str): The name of the node to check for.
 
         Returns:
-            'True' if the there is a node with the given name in the VFS,
+            bool: 'True' if the there is a node with the given name in the VFS,
             ' False' otherwise.
 
         Authors:
@@ -161,19 +161,20 @@ class VFSAPI:
             recursive: bool = False,
             filename_filter: str = None) -> list:
 
-        """
-        Returns a list of all VFS file nodes under a given directory node.
+        """Returns a list of all VFS file nodes under a given directory node.
 
         Args:
-            node_name:          The name of the VFS node to retrieve the files
-                                from.
-            recursive:          Whether or not files in subdirectories should
-                                be returned as well.
-            filename_filter:    Optional filter string to only include files
-                                in the result list that match the given filter.
+            node_name (str): The name of the VFS node to retrieve the files
+                from.
+
+            recursive (bool): Whether or not files in subdirectories should be
+                returned as well.
+
+            filename_filter (str): Optional filter string to only include files
+                in the result list that match the given filter.
 
         Returns:
-            A list of VFS file nodes.
+            list: A list of VFS file nodes.
         """
 
         #pylint: disable=no-self-use
@@ -184,8 +185,14 @@ class VFSAPI:
 
 class VFS(LogWriter):
 
-    """
-    The root class of the Virtual File System.
+    """The root class of the Virtual File System.
+
+    Attributes:
+
+        _root (VFSNode): The root node of the virtual file system.
+
+        _packages (dict): Resource packages registered in the virtual file
+            system.
 
     Authors:
         Attila Kovacs
@@ -194,8 +201,7 @@ class VFS(LogWriter):
     @property
     def Root(self) -> 'VFSNode':
 
-        """
-        Provides access to the root node of the VFS.
+        """Provides access to the root node of the VFS.
 
         Authors:
             Attila Kovacs
@@ -206,8 +212,7 @@ class VFS(LogWriter):
     @property
     def Packages(self) -> dict:
 
-        """
-        Provides access to the resource packages registered in the virtual
+        """Provides access to the resource packages registered in the virtual
         file system.
 
         Authors:
@@ -218,8 +223,7 @@ class VFS(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new VFS instance.
+        """Creates a new VFS instance.
 
         Authors:
             Attila Kovacs
@@ -228,26 +232,21 @@ class VFS(LogWriter):
         super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         self._root = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
-        """
-        The root node of the virtual file system.
-        """
-
         self._packages = {}
-        """
-        Resource packages registered in the virtual file system.
-        """
 
         self.info('VFS has been created.')
 
     def add_node(self, node: 'VFSNode', parent: str = '') -> None:
 
-        """
-        Adds a new node to the VFS. By default the new node will be added to
-        the root node unless a different parent node is specified.
+        """Adds a new node to the VFS.
+
+        By default the new node will be added to the root node unless a
+        different parent node is specified.
 
         Args:
-            node:       The node to add.
-            parent:     Name of the parent node to add the new node to.
+            node (VFSNode): The node to add.
+
+            parent (str): Name of the parent node to add the new node to.
 
         Authors:
             Attila Kovacs
@@ -284,11 +283,10 @@ class VFS(LogWriter):
 
     def remove_node(self, node_name: str) -> None:
 
-        """
-        Removes an existing VFS node from the node tree.
+        """Removes an existing VFS node from the node tree.
 
         Args:
-            node_name:      Name of the node to remove.
+            node_name (str): Name of the node to remove.
 
         Authors:
             Attila Kovacs
@@ -306,14 +304,13 @@ class VFS(LogWriter):
 
     def get_node(self, key: str) -> 'VFSNode':
 
-        """
-        Retrieves a VFS node by its key.
+        """Retrieves a VFS node by its key.
 
         Args:
-            key:        The key of the VFS node to retrieve.
+            key (str): The key of the VFS node to retrieve.
 
         Returns:
-            The VFSNode object associated with the given key.
+            VFSNode: The VFSNode object associated with the given key.
 
         Authors:
             Attila Kovacs
@@ -322,17 +319,18 @@ class VFS(LogWriter):
         self.debug(f'Retrieving VFS node {key}...')
         return self._root.get_node(name=key)
 
-    def get_content(self, key: str, version: 'ContentVersion' = None) -> Any:
+    def get_content(self, key: str, version: 'ResourceVersion' = None) -> Any:
 
-        """
-        Retrieves the content of a VFS node by its key.
+        """Retrieves the content of a VFS node by its key.
 
         Args:
-            key:        The key of the VFS node to retrieve.
+            key (str): The key of the VFS node to retrieve.
+
+            version (ResourceVersion): The version of the content to retrieve.
 
         Returns:
-            The content of the file associated with the VFS key, or None if
-            it was not found.
+            Any: The content of the file associated with the VFS key, or None
+                if it was not found.
 
         Authors:
             Attila Kovacs
@@ -343,7 +341,7 @@ class VFS(LogWriter):
         node = self._root.get_node(name=key)
 
         if not node:
-            self.error(f'Trying to retrieve resource from non-existend '
+            self.error(f'Trying to retrieve resource from non-existent '
                        f'VFS node: {key}.')
             return None
 
@@ -359,16 +357,16 @@ class VFS(LogWriter):
 
     def register_source(self, path: str) -> None:
 
-        """
-        Registers a new VFS data source. This can be a directory or a package.
+        """Registers a new VFS data source. This can be a directory or a
+        package.
+
         All resources from this data source will be added to the VFS tree.
 
         Args:
-            path:       Path to the data source.
+            path (str): Path to the data source.
 
         Raises:
-            InvalidInputError:  Raised when trying to add an invalid data
-                                source.
+            InvalidInputError: Raised when trying to add an invalid data source.
 
         Authors:
             Attila Kovacs
@@ -394,16 +392,15 @@ class VFS(LogWriter):
 
     def has_node(self, name: str) -> bool:
 
-        """
-        Returns whether or not there is a VFS node with a given name in the
+        """Returns whether or not there is a VFS node with a given name in the
         VFS tree.
 
         Args:
-            name:       The name of the node to check for.
+            name (str): The name of the node to check for.
 
         Returns:
-            'True' if the there is a node with the given name in the VFS,
-            ' False' otherwise.
+            bool: 'True' if the there is a node with the given name in the VFS,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -424,19 +421,23 @@ class VFS(LogWriter):
             recursive: bool = False,
             filename_filter: str = None) -> list:
 
-        """
-        Returns a list of all VFS file nodes under a given directory node.
+        """Returns a list of all VFS file nodes under a given directory node.
 
         Args:
-            node_name:          The name of the VFS node to retrieve the files
-                                from.
-            recursive:          Whether or not files in subdirectories should
-                                be returned as well.
-            filename_filter:    Optional filter string to only include files
-                                in the result list that match the given filter.
+            node_name (str): The name of the VFS node to retrieve the files
+                from.
+
+            recursive (bool): Whether or not files in subdirectories should
+                be returned as well.
+
+            filename_filter (str): Optional filter string to only include files
+                in the result list that match the given filter.
 
         Returns:
-            A list of VFS file nodes.
+            list: A list of VFS file nodes.
+
+        Authors:
+            Attila Kovacs
         """
 
         if recursive:
@@ -468,11 +469,10 @@ class VFS(LogWriter):
 
     def _register_directory(self, path: str) -> None:
 
-        """
-        Registers a file system directory as a VFS data source.
+        """Registers a file system directory as a VFS data source.
 
         Args:
-            path:       Path to the directory to add.
+            path (str): Path to the directory to add.
 
         Authors:
             Attila Kovacs
@@ -500,11 +500,10 @@ class VFS(LogWriter):
 
     def _register_package(self, path: str) -> None:
 
-        """
-        Registers a resource package as a VFS data source.
+        """Registers a resource package as a VFS data source.
 
         Args:
-            path:       Path to the package to add.
+            path (str): Path to the package to add.
 
         Authors:
             Attila Kovacs
@@ -517,15 +516,14 @@ class VFS(LogWriter):
 
     def _load_from_vfs_config(self, vfs_config: dict) -> None:
 
-        """
-        Loads the contents of a VFS data source based on a VFS configuration
+        """Loads the contents of a VFS data source based on a VFS configuration
         file.
 
         Args:
-            vfs_config:     THe contents of the VFS configuration file.
+            vfs_config (dict): The contents of the VFS configuration file.
 
         Authors:
-            Attila Kovcs
+            Attila Kovacs
         """
 
         self.debug('Registering directory contents from VFS configuration '
@@ -535,11 +533,10 @@ class VFS(LogWriter):
 
     def _load_from_directory_contents(self, path: str) -> None:
 
-        """
-        Loads the contents of a directory and creates a VFS tree out of it.
+        """Loads the contents of a directory and creates a VFS tree out of it.
 
         Args:
-            path:       Path to the directory to add.
+            path (str): Path to the directory to add.
 
         Authors:
             Attila Kovacs

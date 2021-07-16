@@ -29,8 +29,7 @@ from murasame.logging import LogWriter
 
 class VFSResourceConnector(LogWriter):
 
-    """
-    Common base class for resource connector implementations.
+    """Common base class for resource connector implementations.
 
     Authors:
         Attila Kovacs
@@ -38,8 +37,7 @@ class VFSResourceConnector(LogWriter):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new VFSResourceConnector instance.
+        """Creates a new VFSResourceConnector instance.
 
         Authors:
             Attila Kovacs
@@ -49,14 +47,14 @@ class VFSResourceConnector(LogWriter):
 
     def load(self, descriptor: 'VFSResourceDescriptor') -> Any:
 
-        """
-        Loads the content of the VFS resource into memory.
+        """Loads the content of the VFS resource into memory.
 
         Args:
-            descriptor:     The resource descriptor of the resource to load.
+            descriptor (VFSResourceDescriptor): The resource descriptor of the
+                resource to load.
 
         Returns:
-            The loaded resource data.
+            Any: The loaded resource data.
 
         Authors:
             Attila Kovacs

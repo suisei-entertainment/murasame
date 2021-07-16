@@ -28,9 +28,21 @@ from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class VFSResource(LogWriter):
 
-    """
-    Represents a single entity associated with a VFS node. Typically this is
-    one version of the file that is associated with the VFS node.
+    """Represents a single entity associated with a VFS node.
+
+    Typically this is one version of the file that is associated with the VFS
+    node.
+
+    Attributes:
+        _version (ResourceVersion): The version of the content.
+
+        _descriptor (VFSResourceDescriptor): The resource descriptor of the
+            underlying resource.
+
+        _resource_connector (VFSResourceConnector): The resource connector that
+            is to be used when accessing the resource.
+
+        _resource (Any): The actual resource embedded in this VFS resource.
 
     Authors:
         Attila Kovacs
@@ -39,8 +51,7 @@ class VFSResource(LogWriter):
     @property
     def Version(self) -> 'ResourceVersion':
 
-        """
-        Provides access to the version of the VFS resource.
+        """Provides access to the version of the VFS resource.
 
         Authors:
             Attila Kovacs
@@ -51,12 +62,11 @@ class VFSResource(LogWriter):
     @property
     def Resource(self) -> object:
 
-        """
-        Provides access to the actual resource.
+        """Provides access to the actual resource.
 
         Raises:
-            RuntimeError:       Raised when trying to access the resource
-                                without specifying a resource loader.
+            RuntimeError: Raised when trying to access the resource without
+                specifying a resource loader.
 
         Authors:
             Attila Kovacs
@@ -74,10 +84,9 @@ class VFSResource(LogWriter):
         return self._resource
 
     @property
-    def Descriptor(self) -> object:
+    def Descriptor(self) -> 'VFSResourceDescriptor':
 
-        """
-        The descriptor of the underlying resource.
+        """The descriptor of the underlying resource.
 
         Authors:
             Attila Kovacs
@@ -88,8 +97,7 @@ class VFSResource(LogWriter):
     @property
     def Type(self) -> 'VFSResourceTypes':
 
-        """
-        The type of the underlying resource.
+        """The type of the underlying resource.
 
         Authors:
             Attila Kovacs
@@ -103,13 +111,15 @@ class VFSResource(LogWriter):
         version: 'ResourceVersion' = None,
         data: dict = None) -> None:
 
-        """
-        Creates a new VFSResource instance.
+        """Creates a new VFSResource instance.
 
         Args:
-            descriptor:     The resource descriptor of the resource.
-            version:        The version of the resource.
-            data:           The serialized form of the resource.
+            descriptor (VFSResourceDescriptor): The resource descriptor of the
+                resource.
+
+            version (ResourceVersion): The version of the resource.
+
+            data (dict): The serialized form of the resource.
 
         Authors:
             Attila Kovacs
@@ -118,24 +128,9 @@ class VFSResource(LogWriter):
         super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
 
         self._version = version
-        """
-        The version of the content.
-        """
-
         self._descriptor = descriptor
-        """
-        The resource descriptor of the underlying resource.
-        """
-
         self._resource_connector = None
-        """
-        The resource connector that is to be used when accessing the resource.
-        """
-
         self._resource = None
-        """
-        The actual resource embedded in this VFS resource.
-        """
 
         if data is not None:
             self.deserialize(data=data)
@@ -145,11 +140,10 @@ class VFSResource(LogWriter):
 
     def serialize(self) -> dict:
 
-        """
-        Serializes the contents of the resource into a dictionary.
+        """Serializes the contents of the resource into a dictionary.
 
         Returns:
-            The resource serialized as a dictionary.
+            dict: The resource serialized as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -162,19 +156,20 @@ class VFSResource(LogWriter):
 
     def deserialize(self, data: dict) -> None:
 
-        """
-        Deserializes the resource from a dictionary.
+        """Deserializes the resource from a dictionary.
 
         Args:
-            data:       The resources serialized as a dictionary.
+            data (dict): The resources serialized as a dictionary.
 
         Raises:
-            InvalidInputError:      Raised when the VFS resource descriptor is
-                                    not serialized as a dictionary.
-            InvalidInputError:      Raised when the resource version is not
-                                    found in the serialized data.
-            InvalidInputError:      Raised when the resource descriptor is not
-                                    found in the serialized data.
+            InvalidInputError: Raised when the VFS resource descriptor is not
+                serialized as a dictionary.
+
+            InvalidInputError: Raised when the resource version is not found in
+                the serialized data.
+
+            InvalidInputError: Raised when the resource descriptor is not found
+                in the serialized data.
 
         Authors:
             Attila Kovacs

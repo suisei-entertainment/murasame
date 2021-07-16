@@ -37,8 +37,13 @@ from murasame.utils import SystemLocator, JsonFile
 
 class VFSPackage(LogWriter):
 
-    """
-    Represents a single VFS resource package.
+    """Represents a single VFS resource package.
+
+    Attributes:
+        _path (str): Path to the resource package in the file system.
+
+        _extract_directory (str): Path to a random directory where files from
+            the archive will be extracted.
 
     Authors:
         Attila Kovacs
@@ -47,8 +52,7 @@ class VFSPackage(LogWriter):
     @property
     def Path(self) -> str:
 
-        """
-        Path to the resource package in the file system.
+        """Path to the resource package in the file system.
 
         Authors:
             Attila Kovacs
@@ -56,28 +60,15 @@ class VFSPackage(LogWriter):
 
         return  self._path
 
-    @property
-    def Content(self) -> 'VFSNode':
-
-        """
-        Provides access to the content of the package.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        return self._content
-
     def __init__(self, path: str) -> None:
 
-        """
-        Creates a new VFSPackage instance.
+        """Creates a new VFSPackage instance.
 
         Args:
-            path:       Path to the resource package in the file system.
+            path (str): Path to the resource package in the file system.
 
         Raises:
-            InvalidInputError:      Raised when the package file doesn't exist.
+            InvalidInputError: Raised when the package file doesn't exist.
 
         Authors:
             Attila Kovacs
@@ -89,27 +80,13 @@ class VFSPackage(LogWriter):
             raise InvalidInputError(f'Resource package {path} doesn\'t exist.')
 
         self._path = os.path.abspath(os.path.expanduser(path))
-        """
-        Path to the resource package in the file system.
-        """
-
-        self._content = None
-        """
-        The content of the resource package.
-        """
-
         self._extract_directory = None
-        """
-        Path to a random directory where files from the archive will be
-        extracted.
-        """
 
         self._load()
 
     def __del__(self) -> None:
 
-        """
-        Destructor.
+        """Destructor.
 
         Authors:
             Attila Kovacs
@@ -121,14 +98,14 @@ class VFSPackage(LogWriter):
 
     def _load(self) -> None:
 
-        """
-        Loads the resource package.
+        """Loads the resource package.
 
         Raises:
-            InvalidInputError:      Raised if the given path does not
-                                    correspond to a tar file.
-            InvalidInputError:      Raised if the archive does not contain a
-                                    .vfs VFS descriptor file.
+            InvalidInputError: Raised if the given path does not correspond to
+                a tar file.
+
+            InvalidInputError: Raised if the archive does not contain a .vfs
+                VFS descriptor file.
 
         Authors:
             Attila Kovacs
@@ -180,16 +157,16 @@ class VFSPackage(LogWriter):
 
     def _inject_package_path(self, descriptor: dict) -> dict:
 
-        """
-        Injects the real path to the resource package into the resource
+        """Injects the real path to the resource package into the resource
         descriptor.
 
         Args:
-            descriptor:     The vfs package descriptor to inject the path into.
+            descriptor (dict): The vfs package descriptor to inject the path
+                into.
 
         Returns:
-            The modified package descriptor that now contains the real path
-            to the resource package.
+            dict: The modified package descriptor that now contains the real
+                path to the resource package.
 
         Authors:
             Attila Kovacs
@@ -202,15 +179,14 @@ class VFSPackage(LogWriter):
 
     def _inject_path_to_subdirectories(self, descriptor: dict) -> dict:
 
-        """
-        Inject the real path of the resource package to all subdirectories of
-        the resource package.
+        """Inject the real path of the resource package to all subdirectories
+            of the resource package.
 
         Args:
-            descriptor:     The descriptor to inject the path into.
+            descriptor (dict): The descriptor to inject the path into.
 
         Returns:
-            The modified package descriptor.
+            dict: The modified package descriptor.
 
         Authors:
             Attila Kovacs
@@ -232,12 +208,11 @@ class VFSPackage(LogWriter):
 
     def _inject_path_to_files(self, descriptor: dict) -> dict:
 
-        """
-        Inject the real path of the resource package to all resource files of
-        the resource package.
+        """Inject the real path of the resource package to all resource files
+            of the resource package.
 
         Args:
-            descriptor:     The descriptor to inject the path into.
+            descriptor (dict): The descriptor to inject the path into.
 
         Returns:
             The modified package descriptor.

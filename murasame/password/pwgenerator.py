@@ -27,8 +27,7 @@ import random
 
 class PasswordGenerator:
 
-    """
-    Utility class to generate simple passwords.
+    """Utility class to generate simple passwords.
 
     Authors:
         Attila Kovacs
@@ -39,15 +38,14 @@ class PasswordGenerator:
             pwd_length: int = 12,
             allowed_chars: int = string.ascii_letters + string.digits + string.punctuation) -> str:
 
-        """
-        Generates a password.
+        """Generates a password.
 
         Args:
-            pwd_length:     The length of the password to generate.
-            allowed_chars:  The list of allowed characters in the password.
+            pwd_length (int): The length of the password to generate.
+            allowed_chars (int): The list of allowed characters in the password.
 
         Returns:
-            The generated password as a string.
+            str: The generated password as a string.
 
         Authors:
             Attila Kovacs

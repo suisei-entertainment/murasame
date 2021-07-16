@@ -36,8 +36,12 @@ from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class VFSNodeTypes(IntEnum):
 
-    """
-    List of supported VFS node types.
+    """List of supported VFS node types.
+
+    Attributes:
+        UNKNOWN: Unknown node type
+        FILE: File node
+        DIRECTORY: Directory node
 
     Authors:
         Attila Kovacs
@@ -49,9 +53,20 @@ class VFSNodeTypes(IntEnum):
 
 class VFSNode(LogWriter):
 
-    """
-    Represents a single VFS node in the virtual file system. A node either
-    represents a directory or all versions of a VFS resource.
+    """Represents a single VFS node in the virtual file system.
+
+    A node either represents a directory or all versions of a VFS resource.
+
+    Attributes:
+        _type (VFSNodeTypes): The type of the node.
+
+        _name (str): The name of the node.
+
+        _directories (dict): All subdirectories of this node.
+
+        _files (dict): All file nodes of this node.
+
+        _resources (list): The actual resources attached to the node.
 
     Authors:
         Attila Kovacs
@@ -64,8 +79,7 @@ class VFSNode(LogWriter):
     @property
     def Type(self) -> VFSNodeTypes:
 
-        """
-        Type of the node.
+        """Type of the node.
 
         Authors:
             Attila Kovacs
@@ -76,8 +90,7 @@ class VFSNode(LogWriter):
     @property
     def Name(self) -> str:
 
-        """
-        The name of the node.
+        """The name of the node.
 
         Authors:
             Attila Kovacs
@@ -88,8 +101,7 @@ class VFSNode(LogWriter):
     @property
     def Subdirectories(self) -> dict:
 
-        """
-        All subdirectory nodes of this node.
+        """All subdirectory nodes of this node.
 
         Authors:
             Attila Kovacs
@@ -100,8 +112,7 @@ class VFSNode(LogWriter):
     @property
     def Files(self) -> dict:
 
-        """
-        All file nodes of this node.
+        """All file nodes of this node.
 
         Authors:
             Attila Kovacs
@@ -112,8 +123,7 @@ class VFSNode(LogWriter):
     @property
     def Resources(self) -> list:
 
-        """
-        List of all resources attached to this node.
+        """List of all resources attached to this node.
 
         Authors:
             Attila Kovacs
@@ -124,9 +134,8 @@ class VFSNode(LogWriter):
     @property
     def Latest(self) -> Union[VFSResource, None]:
 
-        """
-        Provides access to the latest resource attached to this node according
-        to its resource version.
+        """Provides access to the latest resource attached to this node
+        according to its resource version.
 
         Authors:
             Attila Kovacs
@@ -140,8 +149,7 @@ class VFSNode(LogWriter):
     @property
     def NumResources(self) -> int:
 
-        """
-        The amount of resources contained in this node.
+        """The amount of resources contained in this node.
 
         Authors:
             Attila Kovacs
@@ -153,8 +161,12 @@ class VFSNode(LogWriter):
                  node_name: str,
                  node_type: 'VFSNodeTypes'= VFSNodeTypes.DIRECTORY) -> None:
 
-        """
-        Creates a new VFSNode instance.
+        """Creates a new VFSNode instance.
+
+        Args:
+            node_name (str): Name of the node.
+
+            node_type (VFSNodeTypes): The type of the node.
 
         Authors:
             Attila Kovacs
@@ -170,34 +182,14 @@ class VFSNode(LogWriter):
         # Set a predefined name for the root node
 
         self._type = node_type
-        """
-        THe type of the node.
-        """
-
         self._name = node_name if node_name != '' else 'ROOT'
-        """
-        The name of the node.
-        """
-
         self._directories = {}
-        """
-        All subdirectories of this node.
-        """
-
         self._files = {}
-        """
-        All file nodes of this node.
-        """
-
         self._resources = []
-        """
-        The actual resources attached to the node.
-        """
 
     def __del__(self) -> None:
 
-        """
-        Destroys the VFSNode instance.
+        """Destroys the VFSNode instance.
 
         Authors:
             Attila Kovacs
@@ -209,8 +201,7 @@ class VFSNode(LogWriter):
 
     def reset(self) -> None:
 
-        """
-        Allows resetting the node to initial state.
+        """Allows resetting the node to initial state.
 
         This function will not change the name or the type of the node, it
         will only clean any resources or child nodes from it.
@@ -229,11 +220,10 @@ class VFSNode(LogWriter):
 
     def isdir(self) -> bool:
 
-        """
-        Returns whether or not the node represents a directory node.
+        """Returns whether or not the node represents a directory node.
 
         Returns:
-            'True' if the node represents a directrory, 'False' otherwise.
+            bool: 'True' if the node represents a directory, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -241,13 +231,12 @@ class VFSNode(LogWriter):
 
         return self._type == VFSNodeTypes.DIRECTORY
 
-    def isfile(self) -> bool:
+    def is_file(self) -> bool:
 
-        """
-        Returns whether or not the node represents a file node.
+        """Returns whether or not the node represents a file node.
 
         Returns:
-            'True' if the node represents a file, 'False' otherwise.
+            bool: 'True' if the node represents a file, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -255,14 +244,13 @@ class VFSNode(LogWriter):
 
         return self._type == VFSNodeTypes.FILE
 
-    def isroot(self) -> bool:
+    def is_root(self) -> bool:
 
-        """
-        Returns whether or not the node represents the root of the VFS tree.
+        """Returns whether or not the node represents the root of the VFS tree.
 
         Returns:
-            'True' if the node represents the root of the VFS tree, 'False'
-            otherwise.
+            bool: 'True' if the node represents the root of the VFS tree,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -272,16 +260,15 @@ class VFSNode(LogWriter):
 
     def has_node(self, name: str) -> bool:
 
-        """
-        Returns whether or not this VFS node contains a child with the given
+        """Returns whether or not this VFS node contains a child with the given
         name.
 
         Args:
-            name:       Name of the child node to check.
+            name (str): Name of the child node to check.
 
         Returns:
-            'True' if the node has a child with the given name, 'False'
-            otherwise.
+            bool: 'True' if the node has a child with the given name, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -310,11 +297,10 @@ class VFSNode(LogWriter):
 
     def add_node(self, node: 'VFSNode') -> None:
 
-        """
-        Adds a new VFS child node to this node.
+        """Adds a new VFS child node to this node.
 
         Args:
-            node:       The node to add.
+            node (VFSNode): The node to add.
 
         Authors:
             Attila Kovacs
@@ -340,11 +326,10 @@ class VFSNode(LogWriter):
 
     def remove_node(self, name: str) -> None:
 
-        """
-        Removes a child node with the given name.
+        """Removes a child node with the given name.
 
         Args:
-            name:       The name of the node to remove.
+            name (str): The name of the node to remove.
 
         Authors:
             Attila Kovacs
@@ -364,11 +349,10 @@ class VFSNode(LogWriter):
 
     def remove_subdirectory(self, name: str) -> None:
 
-        """
-        Removes a subdirectory with the given name.
+        """Removes a subdirectory with the given name.
 
         Args:
-            name:       Name of the subdirectory to remove.
+            name (str): Name of the subdirectory to remove.
 
         Authors:
             Attila Kovacs
@@ -386,8 +370,7 @@ class VFSNode(LogWriter):
 
     def remove_all_subdirectories(self) -> None:
 
-        """
-        Removes all subdirectories from this node.
+        """Removes all subdirectories from this node.
 
         Authors:
             Attila Kovacs
@@ -403,11 +386,10 @@ class VFSNode(LogWriter):
 
     def remove_file(self, name: str) -> None:
 
-        """
-        Removes a file wit the given name.
+        """Removes a file wit the given name.
 
         Args:
-            name:       The name of the file to remove.
+            name (str): The name of the file to remove.
 
         Authors:
             Attila Kovacs
@@ -424,8 +406,7 @@ class VFSNode(LogWriter):
 
     def remove_all_files(self) -> None:
 
-        """
-        Removes all files from the node.
+        """Removes all files from the node.
 
         Authors:
             Attila Kovacs
@@ -440,14 +421,13 @@ class VFSNode(LogWriter):
 
     def get_node(self, name: str) -> Union['VFSNode', None]:
 
-        """
-        Returns a child of this node.
+        """Returns a child of this node.
 
         Args:
-            name:       The name of the child node to retrieve.
+            name (str): The name of the child node to retrieve.
 
         Returns:
-            The child node, or 'None' if it doesn't exist.
+            Union[VFSNode, None]: The child node, or 'None' if it doesn't exist.
 
         Authors:
             Attila Kovacs
@@ -474,11 +454,10 @@ class VFSNode(LogWriter):
 
     def merge_with(self, node: 'VFSNode') -> None:
 
-        """
-        Merges the other VFS node into this one.
+        """Merges the other VFS node into this one.
 
         Args:
-            node:       The VFS node to merge into this one.
+            node (VFSNode): The VFS node to merge into this one.
 
         Authors:
             Attila Kovacs
@@ -513,17 +492,16 @@ class VFSNode(LogWriter):
         self,
         version: Union[int, None] = None) -> Union[VFSResource, None]:
 
-        """
-        Returns the resource stored in the node.
+        """Returns the resource stored in the node.
 
         Args:
-            version:        The version of the resource to retrieve. If no
-                            version is provided, the latest version will be
-                            returned.
+            version (Union[int, None]): The version of the resource to
+                retrieve. If no version is provided, the latest version will be
+                returned.
 
         Returns:
-            The VFS resource object matching the requested version, or None
-            if it was not found.
+            Union[VFSResource, None]: The VFS resource object matching the
+                requested version, or 'None' if it was not found.
 
         Authors:
             Attila Kovacs
@@ -546,15 +524,14 @@ class VFSNode(LogWriter):
 
     def has_resource(self, version: int) -> bool:
 
-        """
-        Returns whether or not the node contains a resource with the given
+        """Returns whether or not the node contains a resource with the given
         resource version.
 
         Args:
-            version:        The resource version to check.
+            version (int): The resource version to check.
 
         Returns:
-            'True' if the requested resource version is found, 'False'
+            bool: 'True' if the requested resource version is found, 'False'
             otherwise.
 
         Authors:
@@ -572,15 +549,15 @@ class VFSNode(LogWriter):
         resource: 'VFSResource',
         skip_sorting: bool = False) -> None:
 
-        """
-        Adds a new resource to the VFS node.
+        """Adds a new resource to the VFS node.
 
         Args:
-            resource:       The resource to add.
-            skip_sorting:   Do not sort the resource list after adding the
-                            resource. Useful when adding multiple resources to
-                            the same node. Only the last add_resource() call
-                            should trigger a sort to improve performance.
+            resource (VFSResource): The resource to add.
+
+            skip_sorting (bool): Do not sort the resource list after adding the
+                resource. Useful when adding multiple resources to the same
+                node. Only the last add_resource() call should trigger a sort
+                to improve performance.
 
         Authors:
             Attila Kovacs
@@ -613,11 +590,10 @@ class VFSNode(LogWriter):
 
     def remove_resource(self, version: int = None) -> None:
 
-        """
-        Removes a resource with the given version from the resource list.
+        """Removes a resource with the given version from the resource list.
 
         Args:
-            version:        The version of the resource to remove.
+            version (int): The version of the resource to remove.
 
         Authors:
             Attila Kovacs
@@ -636,8 +612,7 @@ class VFSNode(LogWriter):
 
     def remove_all_resources(self) -> None:
 
-        """
-        Removes all resources from the node.
+        """Removes all resources from the node.
 
         Authors:
             Attila Kovacs
@@ -652,11 +627,10 @@ class VFSNode(LogWriter):
 
     def serialize(self) -> dict:
 
-        """
-        Serializes the content of the VFS node into a dictionary.
+        """Serializes the content of the VFS node into a dictionary.
 
         Returns:
-            The content of the node as a dictionary.
+            dict: The content of the node as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -707,11 +681,10 @@ class VFSNode(LogWriter):
 
     def deserialize(self, data: dict) -> None:
 
-        """
-        Loads the content of the node from its serialized format.
+        """Loads the content of the node from its serialized format.
 
         Args:
-            data:       The dictionary containing the serialized node data.
+            data (dict): The dictionary containing the serialized node data.
 
         Authors:
             Attila Kovacs
@@ -808,14 +781,14 @@ class VFSNode(LogWriter):
             recursive: bool = False,
             filename_filter: str = None) -> list:
 
-        """
-        Returns a list of all VFS file nodes under this node.
+        """Returns a list of all VFS file nodes under this node.
 
         Args:
-            recursive:          Whether or not files in subdirectories should
-                                be returned as well.
-            filename_filter:    Optional filter string to only include files
-                                in the result list that match the given filter.
+            recursive (bool): Whether or not files in subdirectories should be
+                returned as well.
+
+            filename_filter (str): Optional filter string to only include files
+                in the result list that match the given filter.
 
         Returns:
             A list of VFS file nodes.
@@ -838,11 +811,10 @@ class VFSNode(LogWriter):
 
     def populate_from_directory(self, path: str) -> None:
 
-        """
-        Populates this VFS node with the contents of the given directory.
+        """Populates this VFS node with the contents of the given directory.
 
         Args:
-            path:       Path to the directory to use as source.
+            path (str): Path to the directory to use as source.
 
         Authors:
             Attila Kovacs
@@ -857,14 +829,14 @@ class VFSNode(LogWriter):
             else:
                 self._add_file_from_directory(element, full_path)
 
-    def _add_subdirectory_from_directory(self, name:str, path: str) -> None:
+    def _add_subdirectory_from_directory(self, name: str, path: str) -> None:
 
-        """
-        Adds a new subdirectory node from a file system directory.
+        """Adds a new subdirectory node from a file system directory.
 
         Args:
-            name:       The name of the subdirectory to add.
-            path:       Path to the subdirectory to add.
+            name (str): The name of the subdirectory to add.
+
+            path (str): Path to the subdirectory to add.
 
         Authors:
             Attila Kovacs
@@ -880,12 +852,12 @@ class VFSNode(LogWriter):
 
     def _add_file_from_directory(self, name: str, path: str) -> None:
 
-        """
-        Adds a new file node from file system directory.
+        """Adds a new file node from file system directory.
 
         Args:
-            name:       The name of the file to add.
-            path:       Path to the file to add.
+            name (str): The name of the file to add.
+
+            path (str): Path to the file to add.
 
         Authors:
             Attila Kovacs

@@ -28,8 +28,14 @@ from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor
 
 class VFSPackageFile(VFSResourceDescriptor):
 
-    """
-    Represents a single file in a resource package.
+    """Represents a single file in a resource package.
+
+    Attributes:
+        _path (str): Path fo the file.
+
+        _content (str): The content type of the file.
+
+        _package_path (str): Path to the resource package the file is part of.
 
     Authors:
         Attila Kovacs
@@ -38,8 +44,7 @@ class VFSPackageFile(VFSResourceDescriptor):
     @property
     def Path(self) -> str:
 
-        """
-        Path to the file in the package.
+        """Path to the file in the package.
 
         Authors:
             Attila Kovacs
@@ -50,8 +55,7 @@ class VFSPackageFile(VFSResourceDescriptor):
     @property
     def PackagePath(self) -> str:
 
-        """
-        Path to the resource package the file is part of.
+        """Path to the resource package the file is part of.
 
         Authors:
             Attila Kovacs
@@ -62,8 +66,7 @@ class VFSPackageFile(VFSResourceDescriptor):
     @property
     def ContentType(self) -> str:
 
-        """
-        The MIME type of the file located at the indicated path.
+        """The MIME type of the file located at the indicated path.
 
         Authors:
             Attila Kovacs
@@ -74,8 +77,7 @@ class VFSPackageFile(VFSResourceDescriptor):
     @property
     def Type(self) -> 'VFSResourceTypes':
 
-        """
-        Returns the type of the VFS resource.
+        """Returns the type of the VFS resource.
 
         Authors:
             Attila Kovacs
@@ -85,8 +87,7 @@ class VFSPackageFile(VFSResourceDescriptor):
 
     def __init__(self) -> None:
 
-        """
-        Creates a new VFSPackageFile instance.
+        """Creates a new VFSPackageFile instance.
 
         Authors:
             Attila Kovacs
@@ -95,27 +96,15 @@ class VFSPackageFile(VFSResourceDescriptor):
         super().__init__()
 
         self._path = None
-        """
-        Path fo the file.
-        """
-
         self._content = None
-        """
-        The content type of the file.
-        """
-
         self._package_path = None
-        """
-        Path to the resource package the file is part of.
-        """
 
     def serialize(self) -> dict:
 
-        """
-        Function prototype for the serialization function of the descriptor.
+        """Function prototype for the serialization function of the descriptor.
 
         Returns:
-            The descriptor serialized as a dictionary.
+            dict: The descriptor serialized as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -130,28 +119,30 @@ class VFSPackageFile(VFSResourceDescriptor):
 
     def deserialize(self, data: dict) -> None:
 
-        """
-        Function prototype for the deserialization function of the descriptor.
+        """Function prototype for the deserialization function of the
+        descriptor.
 
         Args:
-            data:       The descriptor serialized as a dictionary.
+            data (dict): The descriptor serialized as a dictionary.
 
         Raises:
-            InvalidInputError:      Raised if the data doesn't contain the
-                                    data of a VFSResourceDescriptor.
-            InvalidInputError:      Raised if the descriptor cannot be parsed
-                                    as a VFSPackageFile object.
-            InvalidInputError:      Raised if the descriptor does not contain
-                                    a content type.
-            InvalidInputError:      Raised if the descriptor does not contain
-                                    the path to the resource package.
+            InvalidInputError: Raised if the data doesn't contain the data of a
+                VFSResourceDescriptor.
+
+            InvalidInputError: Raised if the descriptor cannot be parsed as a
+                VFSPackageFile object.
+
+            InvalidInputError: Raised if the descriptor does not contain a
+                content type.
+
+            InvalidInputError: Raised if the descriptor does not contain the
+                path to the resource package.
 
         Authors:
             Attila Kovacs
         """
 
         try:
-
             if data['type'] != 'packagefile':
                 raise InvalidInputError(
                     f'The descriptor does not contain the data of a '
@@ -181,11 +172,10 @@ class VFSPackageFile(VFSResourceDescriptor):
 
     def update_content_type(self, content_type: str) -> None:
 
-        """
-        Updates the content type.
+        """Updates the content type.
 
         Args:
-            content_type:       The content type to set.
+            content_type (str): The content type to set.
 
         Authors:
             Attila Kovacs
@@ -195,12 +185,12 @@ class VFSPackageFile(VFSResourceDescriptor):
 
     def create_connector(self) -> 'VFSResourceConnector':
 
-        """
-        Function prototype for creating the resource connector for each type of
-        VFS resource.
+        """Function prototype for creating the resource connector for each type
+            of VFS resource.
 
         Returns:
-            An object that is derived from VFSResourceConnector.
+            VFSResourceConnector: An object that is derived from
+                VFSResourceConnector.
 
         Authors:
             Attila Kovacs

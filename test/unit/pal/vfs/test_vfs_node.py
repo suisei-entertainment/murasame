@@ -96,7 +96,7 @@ class TestVFSNode:
 
         sut = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
-        assert sut.isroot()
+        assert sut.is_root()
         assert sut.Name == 'ROOT'
 
     def test_creation_non_root_node(self):
@@ -111,7 +111,7 @@ class TestVFSNode:
 
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
         assert sut is not None
-        assert not sut.isroot()
+        assert not sut.is_root()
         assert sut.Name == 'test'
         assert not sut.Files
         assert not sut.Subdirectories
@@ -142,7 +142,7 @@ class TestVFSNode:
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
         assert sut.Type == VFSNodeTypes.DIRECTORY
         assert sut.isdir()
-        assert not sut.isfile()
+        assert not sut.is_file()
 
     def test_type_checking_of_file_node(self):
 
@@ -156,7 +156,7 @@ class TestVFSNode:
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.FILE)
         assert sut.Type == VFSNodeTypes.FILE
         assert not sut.isdir()
-        assert sut.isfile()
+        assert sut.is_file()
 
     def test_adding_single_resource(self):
 
