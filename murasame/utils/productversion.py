@@ -34,6 +34,17 @@ class ProductVersion:
     compatible with the Semantic Versioning 2.0.0 standard as described at
     https://semver.org/spec/v2.0.0.html.
 
+    Attributes:
+        _major (int): Major product version
+
+        _minor (int): Minor product version
+
+        _patch (int): Patch level
+
+        _release_level (ReleaseLevels): Release level
+
+        _meta (dict): Additional metadata
+
     Authors:
         Attila Kovacs
     """
@@ -41,8 +52,7 @@ class ProductVersion:
     @property
     def MajorVersion(self) -> int:
 
-        """
-        The major product version.
+        """The major product version.
 
         Authors:
             Attila Kovacs
@@ -53,8 +63,7 @@ class ProductVersion:
     @property
     def MinorVersion(self) -> int:
 
-        """
-        The minor product version.
+        """The minor product version.
 
         Authors:
             Attila Kovacs
@@ -65,8 +74,7 @@ class ProductVersion:
     @property
     def PatchLevel(self) -> int:
 
-        """
-        The patch level.
+        """The patch level.
 
         Authors:
             Attila Kovacs
@@ -77,8 +85,7 @@ class ProductVersion:
     @property
     def ReleaseLevel(self) -> str:
 
-        """
-        The configured release level.
+        """The configured release level.
 
         Authors:
             Attila Kovacs
@@ -89,8 +96,7 @@ class ProductVersion:
     @property
     def MetaData(self) -> dict:
 
-        """
-        The content of the metadata field as a dictionary.
+        """The content of the metadata field as a dictionary.
 
         Authors:
             Attila Kovacs
@@ -101,8 +107,7 @@ class ProductVersion:
     @property
     def MetaString(self) -> str:
 
-        """
-        The version metadata in string format.
+        """The version metadata in string format.
 
         Authors:
             Attila Kovacs
@@ -113,9 +118,10 @@ class ProductVersion:
     @property
     def Codename(self) -> str:
 
-        """
-        The codename of the product version. Returns 'UNKNOWN' if there is no
-        codename specified in the metadata field.
+        """The codename of the product version.
+
+        Returns 'UNKNOWN' if there is no codename specified in the metadata
+        field.
 
         Authors:
             Attila Kovacs
@@ -132,9 +138,9 @@ class ProductVersion:
     @property
     def SCM(self) -> str:
 
-        """
-        The SCM identifier from which the product was built. Returns 'UNKNOWN'
-        if there is no scm specified in the metadata field.
+        """The SCM identifier from which the product was built.
+
+        Returns 'UNKNOWN' if there is no scm specified in the metadata field.
 
         Authors:
             Attila Kovacs
@@ -151,9 +157,10 @@ class ProductVersion:
     @property
     def Build(self) -> str:
 
-        """
-        The build number. Returns '0' if there is no build number specified in
-        the metadata field.
+        """The build number.
+
+        Returns '0' if there is no build number specified in the metadata
+        field.
 
         Authors:
             Attila Kovacs
@@ -170,44 +177,47 @@ class ProductVersion:
     @property
     def VersionString(self) -> str:
 
-        """
-        The string representation of the product version.
+        """The string representation of the product version.
 
         Authors:
             Attila Kovacs
         """
 
         if self._meta is not None:
-            return '{}.{}.{}-{}+{}'.format(
-                self._major,
-                self._minor,
-                self._patch,
-                self._get_release_level_string(),
-                self._get_metadata_string())
+            return f'{self._major}.' \
+                   f'{self._minor}.' \
+                   f'{self._patch}-' \
+                   f'{self._get_release_level_string()}+' \
+                   f'{self._get_metadata_string()}'
 
-        return '{}.{}.{}-{}'.format(
-            self._major,
-            self._minor,
-            self._patch,
-            self._get_release_level_string())
+        return f'{self._major}.' \
+               f'{self._minor}.' \
+               f'{self._patch}-' \
+               f'{self._get_release_level_string()}'
 
     @property
     def ShortVersionString(self) -> str:
 
-        """
-        Returns the short string representation of the product version only
+        """Returns the short string representation of the product version only
         containing the major version, minor version and the patch number.
 
         Authors:
             Attila Kovacs
         """
 
-        return '{}.{}.{}'.format(self._major, self._minor, self._patch)
+        return f'{self._major}.{self._minor}.{self._patch}'
 
     class ReleaseLevels(IntEnum):
 
-        """
-        List of supported release levels.
+        """List of supported release levels.
+
+        Attributes:
+            INTERNAL: Marks an internal, non-public release.
+            ALPHA: Marks an alpha release
+            BETA: Marks a closed beta release
+            EAP: Marks an early access program release
+            RC: Marks a release candidate release
+            GA: Marks a general availability release
 
         Authors:
             Attila Kovacs
@@ -222,34 +232,34 @@ class ProductVersion:
 
     def __init__(self, version_data: dict) -> None:
 
-        """
-        Creates a new ProductVersion instance.
+        """Creates a new ProductVersion instance.
 
         Args:
-            version_data:       The product version in serialized JSON format.
+            version_data (dict): The product version in serialized JSON format.
 
         Authors:
             Attila Kovacs
         """
 
-        self._major = None             # Major product version
-        self._minor = None             # Minor product version
-        self._patch = None             # Patch level
-        self._release_level = None     # Release level
-        self._meta = None              # Additional metadata
+        self._major = None
+        self._minor = None
+        self._patch = None
+        self._release_level = None
+        self._meta = None
 
         self.load(version_data)
 
     def __eq__(self, other: 'ProductVersion') -> bool:
 
-        """
-        Equality operator.
+        """Equality operator.
 
         Args:
-            other:      The product version instance to compare with.
+            other (ProductVersion): The product version instance to compare
+                with.
 
         Returns:
-            'True' if the two product versions are equal, 'False' otherwise.
+            bool: 'True' if the two product versions are equal, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -262,15 +272,15 @@ class ProductVersion:
 
     def __ne__(self, other: 'ProductVersion') -> bool:
 
-        """
-        Inequality operator.
+        """Inequality operator.
 
         Args:
-            other:      The product version instance to compare with.
+            other (ProductVersion): The product version instance to compare
+                with.
 
         Returns:
-            'True' if the two product versions are not equal, 'False'
-            otherwise.
+            bool: 'True' if the two product versions are not equal, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -283,15 +293,15 @@ class ProductVersion:
 
     def __lt__(self, other: 'ProductVersion') -> bool:
 
-        """
-        Less-than operator.
+        """Less-than operator.
 
         Args:
-            other:      The product version instance to compare with.
+            other (ProductVersion): The product version instance to compare
+                with.
 
         Returns:
-            'True' if this product version is older than the other one, 'False'
-            otherwise.
+            bool: 'True' if this product version is older than the other one,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -304,15 +314,15 @@ class ProductVersion:
 
     def __le__(self, other: 'ProductVersion') -> bool:
 
-        """
-        Less-than or equal operator.
+        """Less-than or equal operator.
 
         Args:
-            other:      The product version instance to compare with.
+            other (ProductVersion): The product version instance to compare
+                with.
 
         Returns:
-            'True' if this product version is the same or older than the other
-            one, 'False' otherwise.
+            bool: 'True' if this product version is the same or older than the
+                other one, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -325,15 +335,15 @@ class ProductVersion:
 
     def __gt__(self, other: 'ProductVersion') -> bool:
 
-        """
-        Greater-than operator.
+        """Greater-than operator.
 
         Args:
-            other:      The product version instance to compare with.
+            other (ProductVersion): The product version instance to compare
+                with.
 
         Returns:
-            'True' if this product version is newer than the other one, 'False'
-            otherwise.
+            bool: 'True' if this product version is newer than the other one,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -346,15 +356,15 @@ class ProductVersion:
 
     def __ge__(self, other: 'ProductVersion') -> bool:
 
-        """
-        Greater-than or equal operator.
+        """Greater-than or equal operator.
 
         Args:
-            other:      The product version instance to compare with.
+            other (ProductVersion): The product version instance to compare
+                with.
 
         Returns:
-            'True' if this product version is the same or newer than the other
-            one, 'False' otherwise.
+            bool: 'True' if this product version is the same or newer than the
+                other one, 'False' otherwise.
 
         Authors:
             Attila Kovacs
@@ -367,19 +377,17 @@ class ProductVersion:
 
     def __repr__(self) -> str:
 
-        """
-        Unambiguity operator.
+        """Unambiguity operator.
 
         Authors:
             Attila Kovacs
         """
 
-        return 'ProductVersion({})'.format(self.VersionString)
+        return f'ProductVersion({self.VersionString})'
 
     def __str__(self) -> str:
 
-        """
-        Returns the string representation of this product version.
+        """Returns the string representation of this product version.
 
         Authors:
             Attila Kovacs
@@ -389,8 +397,7 @@ class ProductVersion:
 
     def __hash__(self) -> int:
 
-        """
-        Provides the hash for this product version.
+        """Provides the hash for this product version.
 
         Authors:
             Attila Kovacs
@@ -400,11 +407,10 @@ class ProductVersion:
 
     def load(self, version_data: dict) -> None:
 
-        """
-        Loads the product version from its serialized JSON format.
+        """Loads the product version from its serialized JSON format.
 
         Args:
-            version_data:       The version data to load.
+            version_data (dict): The version data to load.
 
         Authors:
             Attila Kovacs
@@ -418,14 +424,14 @@ class ProductVersion:
 
     def is_equal(self, other: 'ProductVersion') -> bool:
 
-        """
-        Returns whether or not this product version equals to the given one.
+        """Returns whether or not this product version equals to the given one.
 
         Args:
-            other:      The other product version to compare with.
+            other (ProductVersion): The other product version to compare with.
 
         Returns:
-            'True' if the two product versions are equal, 'False' otherwise.
+            bool: 'True' if the two product versions are equal, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -440,14 +446,15 @@ class ProductVersion:
 
     def is_newer(self, other: 'ProductVersion') -> bool:
 
-        """
-        Returns whether or not this ProductVersion is newer than an other one.
+        """Returns whether or not this ProductVersion is newer than an other
+            one.
 
         Args:
-            other:      The other product version to compare with.
+            other (ProductVersion): The other product version to compare with.
 
         Returns:
-            'True' if the twis product versions is newer, 'False' otherwise.
+            bool: 'True' if the this product versions is newer, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -468,14 +475,15 @@ class ProductVersion:
 
     def is_older(self, other: 'ProductVersion') -> bool:
 
-        """
-        Returns whether or not this ProductVersion is older than an other one.
+        """Returns whether or not this ProductVersion is older than an other
+            one.
 
         Args:
-            other:      The other product version to compare with.
+            other (ProductVersion): The other product version to compare with.
 
         Returns:
-            'True' if the twis product versions is older, 'False' otherwise.
+            bool: 'True' if the twis product versions is older, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -496,8 +504,7 @@ class ProductVersion:
 
     def bump_major_version(self) -> None:
 
-        """
-        Bumps the major version of the product version.
+        """Bumps the major version of the product version.
 
         Authors:
             Attila Kovacs
@@ -509,8 +516,7 @@ class ProductVersion:
 
     def bump_minor_version(self) -> None:
 
-        """
-        Bumps the minor version of the product version.
+        """Bumps the minor version of the product version.
 
         Authors:
             Attila Kovacs
@@ -521,8 +527,7 @@ class ProductVersion:
 
     def bump_patch_level(self) -> None:
 
-        """
-        Bumps the patch level of the product version.
+        """Bumps the patch level of the product version.
 
         Authors:
             Attila Kovacs
@@ -532,8 +537,7 @@ class ProductVersion:
 
     def bump_build_number(self) -> None:
 
-        """
-        Bumps the build number if it's available as metadata.
+        """Bumps the build number if it's available as metadata.
 
         Authors:
             Attila Kovacs
@@ -544,12 +548,11 @@ class ProductVersion:
 
     def _get_release_level_string(self) -> str:
 
-        """
-        Returns the string representation of the configured product release
+        """Returns the string representation of the configured product release
         level.
 
         Returns:
-            The release level in string format.
+            str: The release level in string format.
 
         Authors:
             Attila Kovacs
@@ -574,13 +577,12 @@ class ProductVersion:
 
     def _get_metadata_string(self) -> str:
 
-        """
-        Returns the version metadata in string format. It will include the SCM
-        version or the build number as well. If both are available as metadata
-        fields, then only the build number will be included.
+        """Returns the version metadata in string format. It will include the
+        SCM version or the build number as well. If both are available as
+        metadata fields, then only the build number will be included.
 
         Returns:
-            The version metadata in string format.
+            str: The version metadata in string format.
 
         Authors:
             Attila Kovacs
@@ -613,17 +615,25 @@ class ProductVersion:
             scm = 'UNKNOWN'
 
         if has_build:
-            return '{}(Build {})'.format(codename, build)
+            return f'{codename}(Build {build})'
 
         if has_scm:
-            return '{}({})'.format(codename, scm)
+            return f'{codename}({scm})'
 
-        return '{}(UNKNOWN)'.format(codename)
+        return f'{codename}(UNKNOWN)'
 
     def _load_major_version(self, version_data: dict) -> None:
 
-        """
-        Loads the major product version from the configuration.
+        """Loads the major product version from the configuration.
+
+        Raises:
+            InvalidInputError: Raised when the major version is a negative
+                number.
+
+            InvalidInputError: Raised when the major version is not found in
+                the serialized data.
+
+            InvalidInputError: Raised when the major version is not an integer.
 
         Authors:
             Attila Kovacs
@@ -647,8 +657,16 @@ class ProductVersion:
 
     def _load_minor_version(self, version_data: dict) -> None:
 
-        """
-        Loads the minor product version from the configuration.
+        """Loads the minor product version from the configuration.
+
+        Raises:
+            InvalidInputError: Raised when the minor version is a negative
+                number.
+
+            InvalidInputError: Raised when the minor version is not found in
+                the serialized data.
+
+            InvalidInputError: Raised when the minor version is not an integer.
 
         Authors:
             Attila Kovacs
@@ -672,8 +690,16 @@ class ProductVersion:
 
     def _load_patch_level(self, version_data: dict) -> None:
 
-        """
-        Loads the patch level from the configuration.
+        """Loads the patch level from the configuration.
+
+        Raises:
+            InvalidInputError: Raised when the patch level is a negative
+                number.
+
+            InvalidInputError: Raised when the patch level is not found in
+                the serialized data.
+
+            InvalidInputError: Raised when the patch level is not an integer.
 
         Authors:
             Attila Kovacs
@@ -697,8 +723,11 @@ class ProductVersion:
 
     def _load_release_level(self, version_data: dict) -> None:
 
-        """
-        Loads the release level from the configuration.
+        """Loads the release level from the configuration.
+
+        Raises:
+            InvalidInputError: Raised if an unknown release level is specified
+                in the serialized data.
 
         Authors:
             Attila Kovacs
@@ -721,16 +750,14 @@ class ProductVersion:
                 self._release_level = ProductVersion.ReleaseLevels.GA
             else:
                 raise InvalidInputError(
-                    'Unknown release level is configured: {}'.format(
-                        release_level))
+                    f'Unknown release level is configured: {release_level}')
 
         except KeyError:
             self._release_level = ProductVersion.ReleaseLevels.GA
 
     def _load_metadata(self, version_data: dict) -> None:
 
-        """
-        Loads the version metadata from the configuration.
+        """Loads the version metadata from the configuration.
 
         Authors:
             Attila Kovacs

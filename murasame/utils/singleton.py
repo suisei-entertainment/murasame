@@ -23,8 +23,7 @@ Contains the implementation of a basic singleton class.
 
 class Singleton:
 
-    """
-    A non-thread-safe helper class to ease implementing singletons.
+    """A non-thread-safe helper class to ease implementing singletons.
 
     This should be used as a decorator -- not a metaclass -- to the class that
     should be a singleton.
@@ -36,17 +35,21 @@ class Singleton:
     To get the singleton instance, use the `instance` method. Trying to use
     `__call__` will result in a `TypeError` being raised.
 
+    Attributes:
+        _decorated (object): The actual class to declare as Singleton.
+
+        _instance (object): The actual instance of the wrapped object.
+
     Authors:
         Attila Kovacs
     """
 
     def __init__(self, decorated: object) -> None:
 
-        """
-        Creates a new Singleton instance.
+        """Creates a new Singleton instance.
 
         Args:
-            decorated:      The actual class that is created as a singleton.
+            decorated (object): The actual class that is created as a singleton.
 
         Authors:
             Attila Kovacs
@@ -56,10 +59,11 @@ class Singleton:
 
     def instance(self) -> object:
 
-        """
-        Returns the singleton instance. Upon its first call, it creates a
-        new instance of the decorated class and calls its `__init__` method.
-        On all subsequent calls, the already created instance is returned.
+        """Returns the singleton instance.
+
+        Upon its first call, it creates a new instance of the decorated class
+        and calls its `__init__` method. On all subsequent calls, the already
+        created instance is returned.
 
         Authors:
             Attila Kovacs
@@ -75,12 +79,11 @@ class Singleton:
 
     def __call__(self) -> None:
 
-        """
-        Prevents direct calls to the singleton class.
+        """Prevents direct calls to the singleton class.
 
         Raises:
-            TypeError:      Called when someone tries to access the decorated
-                            class outside the instance() call.
+            TypeError: Called when someone tries to access the decorated class
+                outside the instance() call.
 
         Authors:
             Attila Kovacs
@@ -90,15 +93,15 @@ class Singleton:
 
     def __instancecheck__(self, inst: object) -> bool:
 
-        """
-        Checks whether or not an object is the instance of the decorated class.
+        """Checks whether or not an object is the instance of the decorated
+        class.
 
         Args:
-            inst:       The object instance to check.
+            inst (object): The object instance to check.
 
         Returns:
-            'True' if the object is an instance of the decorated calss, 'False'
-            otherwise.
+            bool: 'True' if the object is an instance of the decorated class,
+                'False' otherwise.
 
         Authors:
             Attila Kovacs

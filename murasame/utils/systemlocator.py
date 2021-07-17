@@ -25,16 +25,21 @@ Contains the implementation of the system locator design pattern.
 import os
 import glob
 import importlib
-from typing import Callable
+from typing import Callable, Union
 
 # Murasame Imports
 from .singleton import Singleton
 
 class SystemPath:
 
-    """
-    Represents a directory that contains the systems to be registered in the
+    """Represents a directory that contains the systems to be registered in the
     system locator.
+
+    Attributes:
+        _path (str): The path to the directory where the systems are located.
+
+        _package (str): Name of the package to import for importing the system
+            module.
 
     Authors:
         Attila Kovacs
@@ -43,8 +48,7 @@ class SystemPath:
     @property
     def Path(self) -> str:
 
-        """
-        The path to the directory where the systems are located.
+        """The path to the directory where the systems are located.
 
         Authors:
             Attila Kovacs
@@ -55,8 +59,7 @@ class SystemPath:
     @property
     def Package(self) -> str:
 
-        """
-        Name of the package to import for importing the system module.
+        """Name of the package to import for importing the system module.
 
         Authors:
             Attila Kovacs
@@ -66,8 +69,14 @@ class SystemPath:
 
     def __init__(self, path: str, package: str) -> None:
 
-        """
-        Creates a new SystemPath instance.
+        """Creates a new SystemPath instance.
+
+        Args:
+            path (str): The path to the directory where the systems are
+                located.
+
+            package (str): Name of the package to import for importing the
+                system module.
 
         Authors:
             Attila Kovacs
@@ -79,12 +88,21 @@ class SystemPath:
 @Singleton
 class SystemLocator:
 
-    """
-    Central class of the system locator pattern. Stores the list of available
-    systems and handles system disovery.
+    """Central class of the system locator pattern.
+
+    Stores the list of available systems and handles system discovery.
 
     This implementation is based on the one by yujanshrestha.
         https://github.com/innolitics/service-locator
+
+    Attributes:
+        _systems (dict): List of registered srvice providers grouped by the
+            system they provide.
+
+        _system_paths (list): List of directories where system implementations
+            are stored.
+
+        _modules (list): List of modules loaded by the system locator.
 
     Authors:
         Attila Kovacs
@@ -92,37 +110,24 @@ class SystemLocator:
 
     def __init__(self) -> None:
 
-        """
-        Creates a new SystemLocator instance.
+        """Creates a new SystemLocator instance.
 
         Authors:
             Attila Kovacs
         """
 
         self._systems = {}
-        """
-        List of registered srvice providers grouped by the system they
-        provide.
-        """
-
         self._system_paths = []
-        """
-        List of directories where system implementations are stored.
-        """
-
         self._modules = []
-        """
-        List of modules loaded by the system locator.
-        """
 
     def register_provider(self, system: object, instance: object) -> None:
 
-        """
-        Registers a new system provider for a given system.
+        """Registers a new system provider for a given system.
 
         Args:
-            system:         The system to register a provider for.
-            instance:       The system provider instance to register.
+            system (object): The system to register a provider for.
+
+            instance (object): The system provider instance to register.
 
         Authors:
             Attila Kovacs
@@ -138,12 +143,12 @@ class SystemLocator:
 
     def unregister_provider(self, system: object, instance: object) -> None:
 
-        """
-        Unregisters a provider from a given system.
+        """Unregisters a provider from a given system.
 
         Args:
-            system:         The system to unregister the provider from.
-            instance:       The system provider instance to unregister.
+            system (object): The system to unregister the provider from.
+
+            instance (object): The system provider instance to unregister.
 
         Authors:
             Attila Kovacs
@@ -161,11 +166,10 @@ class SystemLocator:
 
     def unregister_all_providers(self, system: object) -> None:
 
-        """
-        Unregisters all providers of a given system.
+        """Unregisters all providers of a given system.
 
         Args:
-            system:        The system to unregister the providers from.
+            system (object): The system to unregister the providers from.
 
         Authors:
             Attila Kovacs
@@ -177,8 +181,7 @@ class SystemLocator:
 
     def reset(self) -> None:
 
-        """
-        Resets the system locator.
+        """Resets the system locator.
 
         Authors:
             Attila Kovacs
@@ -193,16 +196,15 @@ class SystemLocator:
 
     def get_all_providers(self, system: object) -> list:
 
-        """
-        Returns all providers for a given system.
+        """Returns all providers for a given system.
 
         Args:
-            system:     The system to get the providers for.
+            system (object): The system to get the providers for.
 
         Returns:
-            A list of system providers that provide the requested system, or
-            an empty list if there are no providers registered that provide
-            the requested system.
+            list: A list of system providers that provide the requested system,
+                or an empty list if there are no providers registered that
+                provide the requested system.
 
         Authors:
             Attila Kovacs
@@ -211,20 +213,20 @@ class SystemLocator:
         providers = self._systems.get(system) or []
         return providers
 
-    def get_provider(self, system: object) -> object:
+    def get_provider(self, system: object) -> Union[object, None]:
 
-        """
-        Returns a provider for a given system.
+        """Returns a provider for a given system.
 
         This function will always return the first registered system provider
         for the given system.
 
         Args:
-            system:         The system to get a provider for.
+            system (object): The system to get a provider for.
 
         Returns:
-            A provicer for the given system, or None if there are no providers
-            registered that provide the requested system.
+            Union[object, None]: A provider for the given system, or None if
+                there are no providers registered that provide the requested
+                system.
 
         Authors:
             Attila Kovacs
@@ -241,15 +243,15 @@ class SystemLocator:
 
     def has_system_path(self, path: str) -> bool:
 
-        """
-        Returns wheter or not the given path is already registered as a system
-        path.
+        """Returns whether or not the given path is already registered as a
+        system path.
 
         Args:
-            path:       The path to check.
+            path (str): The path to check.
 
         Returns:
-            'True' if the given path is already registered, 'False' otherwise.
+            bool: 'True' if the given path is already registered, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -263,13 +265,13 @@ class SystemLocator:
 
     def register_path(self, path: str, package: str) -> None:
 
-        """
-        Registers a new system path with the service locator.
+        """Registers a new system path with the service locator.
 
         Args:
-            path:       The path to the directory containing the systems.
-            package:    The package that will be used to include the systems
-                        inside that path.
+            path (str): The path to the directory containing the systems.
+
+            package (str): The package that will be used to include the systems
+                inside that path.
 
         Authors:
             Attila Kovacs
@@ -283,8 +285,7 @@ class SystemLocator:
 
     def discover_systems(self) -> None:
 
-        """
-        System discovery logic to load all systems from all registered
+        """System discovery logic to load all systems from all registered
         system paths.
 
         Authors:
@@ -333,18 +334,18 @@ class SystemLocator:
 #pylint: disable=invalid-name
 def System(*systems):
 
-    """
-    Class decorator that declares a class to provide a set of systems. It is
-    expected that the class has a no-arg constructor and will be instantiated
-    as a singleton.
+    """Class decorator that declares a class to provide a set of systems.
+
+    It is expected that the class has a no-arg constructor and will be
+    instantiated as a singleton.
 
     This decorator only works once. So if this system is unregistered manually
     or reset() is called on SystemLocator then all systems using this
     decorator has to be registered manually again.
 
     Args:
-        systems:        The list of systems that the decorated class will
-                        provide.
+        systems (list): The list of systems that the decorated class will
+            provide.
 
     Authors:
         Attila Kovacs
@@ -352,11 +353,13 @@ def System(*systems):
 
     def real_decorator(system_class: Callable) -> object:
 
-        """
-        Creates the decorated class.
+        """Creates the decorated class.
 
         Args:
-            system_class:       The class that will provide the system.
+            system_class (Callable): The class that will provide the system.
+
+        Returns:
+            object: The system class this decorator wraps.
 
         Authors:
             Attila Kovacs

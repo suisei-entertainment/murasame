@@ -39,23 +39,26 @@ from murasame.exceptions import InvalidInputError
 
 class RSAKeyLengths(IntEnum):
 
-    """
-    List of supported RSA key lengths.
+    """List of supported RSA key lengths.
+
+    Attributes:
+        KEY_LENGTH_2048: 2048 bit key
+
+        KEY_LENGTH_4096: 4096 bit key
 
     Authors:
         Attila Kovacs
     """
 
-    # 2048 bit key
     KEY_LENGTH_2048 = 2048
-
-    # 4096 bit key
     KEY_LENGTH_4096 = 4096
 
 class RSAPublic:
 
-    """
-    Represents a single RSA public key.
+    """Represents a single RSA public key.
+
+    Attributes:
+        _public_key (object): The public key object.
 
     Authors:
         Attila Kovacs
@@ -64,8 +67,7 @@ class RSAPublic:
     @property
     def Key(self) -> object:
 
-        """
-        Provides access to the public key.
+        """Provides access to the public key.
 
         Authors:
             Attila Kovacs
@@ -75,23 +77,19 @@ class RSAPublic:
 
     def __init__(self, key_path: str) -> None:
 
-        """
-        Creates a new RSAPublicKey instance.
+        """Creates a new RSAPublicKey instance.
 
         Args:
-            key_path:       Path to the file containing the public key.
+            key_path (str): Path to the file containing the public key.
 
         Raises:
-            InvalidInputError:      Raised when the key file doesn't exist.
+            InvalidInputError: Raised when the key file doesn't exist.
 
         Authors:
             Attila Kovacs
         """
 
         self._public_key = None
-        """
-        The public key object.
-        """
 
         # Check that the file actually exists
         key_path = os.path.abspath(os.path.expanduser(key_path))
@@ -110,13 +108,20 @@ class RSAPublic:
                hashing_algorithm: Callable = hashes.SHA512,
                encoded: bool = False) -> bool:
 
-        """
-        Verifies a given message using the stored public key.
+        """Verifies a given message using the stored public key.
 
         Args:
-            message:        The message to verify.
-            signature:      The signature of the message.
-            encoded:        Whether or not the signature is base64 encoded.
+            message (str): The message to verify.
+
+            signature (str): The signature of the message.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
+
+            encoded (bool): Whether or not the signature is base64 encoded.
+
+        Return:
+            bool: 'True' if the message was successfully verified, 'False'
+                otherwise.
 
         Authors:
             Attila Kovacs
@@ -143,15 +148,15 @@ class RSAPublic:
                 message: str,
                 hashing_algorithm: Callable = hashes.SHA512) -> str:
 
-        """
-        Encrypts the given message using the public key.
+        """Encrypts the given message using the public key.
 
         Args:
-            message:            The message to encrypt.
-            hashing_algorithm:  The hashing algorithm to use.
+            message (str): The message to encrypt.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
 
         Returns:
-            The encrypted message as a string.
+            str: The encrypted message as a string.
 
         Authors:
             Attila Kovacs
@@ -165,8 +170,10 @@ class RSAPublic:
 
 class RSAPrivate:
 
-    """
-    Represents a single RSA private key.
+    """Represents a single RSA private key.
+
+    Attributes:
+        _private_key (object): The private key object.
 
     Authors:
         Attila Kovacs
@@ -175,8 +182,7 @@ class RSAPrivate:
     @property
     def Key(self) -> object:
 
-        """
-        Provides access to the private key.
+        """Provides access to the private key.
 
         Authors:
             Attila Kovacs
@@ -188,27 +194,23 @@ class RSAPrivate:
                  key_path: str,
                  cb_retrieve_password: Callable = None) -> None:
 
-        """
-        Creates a new RSAPrivateKey instance.
+        """Creates a new RSAPrivateKey instance.
 
         Args:
-            key_path:               Path to the file containing the private
-                                    key.
-            cb_retrieve_password:   Callback function that when called, should
-                                    return the password to be used to protect
-                                    the key when saved to disk.
+            key_path (str): Path to the file containing the private key.
+
+            cb_retrieve_password (Callable): Callback function that when
+                called, should return the password to be used to protect the
+                key when saved to disk.
 
         Raises:
-            InvalidInputError:      Raised when the key file doesn't exist.
+            InvalidInputError: Raised when the key file doesn't exist.
 
         Authors:
             Attila Kovacs
         """
 
         self._private_key = None
-        """
-        The private key object.
-        """
 
         # Check that the file actually exists
         key_path = os.path.abspath(os.path.expanduser(key_path))
@@ -237,17 +239,18 @@ class RSAPrivate:
              hashing_algorithm: Callable = hashes.SHA512,
              encode: bool = False) -> str:
 
-        """
-        Signs the given message using the private key.
+        """Signs the given message using the private key.
 
         Args:
-            message:            The message to sign.
-            hashing_algorithm:  The hashing algorithm to use.
-            encode:             Whether or not the signature should be returned
-                                in a base64 encoded form.
+            message (str): The message to sign.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
+
+            encode (bool): Whether or not the signature should be returned in
+                a base64 encoded form.
 
         Returns:
-            The message signature.
+            str: The message signature.
 
         Authors:
             Attila Kovacs
@@ -271,15 +274,15 @@ class RSAPrivate:
                 message: str,
                 hashing_algorithm: Callable = hashes.SHA512) -> str:
 
-        """
-        Decrypts the given message using the private key.
+        """Decrypts the given message using the private key.
 
         Args:
-            message:            The message to decrypt.
-            hashing_algorithm:  The hashing algorithm to use.
+            message (str): The message to decrypt.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
 
         Returns:
-            The decrypted message.
+            str: The decrypted message.
 
         Authors:
             Attila Kovacs
@@ -295,8 +298,13 @@ class RSAPrivate:
 
 class RSAKeyGenerator:
 
-    """
-    Utility class to generate an RSA key pair.
+    """Utility class to generate an RSA key pair.
+
+    Attributes:
+        _cb_retrieve_password (Callable): Callback function to retrieve the
+            password to be used to encrypt the key.
+
+        _private_key (object): The generated private key.
 
     Authors:
         Attila Kovacs
@@ -322,20 +330,17 @@ class RSAKeyGenerator:
         Creates a new RSAKeyGenerator instance.
 
         Args:
-            key_length:             The length of the modulus in bits.
-            cb_retrieve_password:   Callback function that when called, should
-                                    return the password to be used to protect
-                                    the key when saved to disk.
+            key_length (RSAKeyLengths): The length of the modulus in bits.
+
+            cb_retrieve_password (Callable): Callback function that when
+                called, should return the password to be used to protect the
+                key when saved to disk.
 
         Authors:
             Attila Kovacs
         """
 
         self._cb_retrieve_password = cb_retrieve_password
-        """
-        Callback function to retrieve the password to be used to encrypt the
-        key.
-        """
 
         # Generate the key
         self._private_key = rsa.generate_private_key(
@@ -347,14 +352,14 @@ class RSAKeyGenerator:
                       private_key_path: str,
                       public_key_path: str) -> None:
 
-        """
-        Saves both the public and private keys to disk.
+        """Saves both the public and private keys to disk.
 
         Args:
-            private_key_path:       Path to the file where the private key
-                                    will be saved.
-            public_key_path:        Path to the file where the public key will
-                                    be saved.
+            private_key_path (str): Path to the file where the private key will
+                be saved.
+
+            public_key_path (str): Path to the file where the public key will
+                be saved.
 
         Authors:
             Attila Kovacs
@@ -365,12 +370,11 @@ class RSAKeyGenerator:
 
     def save_private_key(self, private_key_path: str) -> None:
 
-        """
-        Saves the private key to disk.
+        """Saves the private key to disk.
 
         Args:
-            private_key_path:       Path to the file where the private key
-                                    will be saved.
+            private_key_path (str): Path to the file where the private key will
+                be saved.
 
         Authors:
             Attila Kovacs
@@ -402,12 +406,11 @@ class RSAKeyGenerator:
 
     def save_public_key(self, public_key_path: str) -> None:
 
-        """
-        Saves the public key to disk.
+        """Saves the public key to disk.
 
         Args:
-            public_key_path:        Path to the file where the public key
-                                    will be saved.
+            public_key_path (str): Path to the file where the public key will
+                be saved.
 
         Authors:
             Attila Kovacs
@@ -427,8 +430,12 @@ class RSAKeyGenerator:
 
 class RSASigner:
 
-    """
-    Utility class to help with signing messages.
+    """Utility class to help with signing messages.
+
+    Attributes:
+        _hashing_algorithm (Callable): The hashing algorithm to use.
+
+        _private_key (RSAPrivate): The private key to use.
 
     Authors:
         Attila Kovacs
@@ -437,33 +444,30 @@ class RSASigner:
     def __init__(self,
                  private_key_path: str = None,
                  private_key: RSAPrivate = None,
-                 cb_retrieve_password: str = None,
+                 cb_retrieve_password: Callable = None,
                  hashing_algorithm: Callable = hashes.SHA512) -> None:
 
-        """
-        Creates a new RSASigner instance.
+        """Creates a new RSASigner instance.
 
         Args:
-            private_key_path:       Path to the file containing the private
-                                    key.
-            cb_retrieve_password:   Callback function that when called, should
-                                    return the password to be used to protect
-                                    the key when saved to disk.
-            hashing_algorithm:      The hashing algorithm to use.
+            private_key_path (str): Path to the file containing the private
+                key.
+
+            private_key (RSAPrivate): An existing private key object to use
+                for signing.
+
+            cb_retrieve_password (Callable): Callback function that when
+                called, should return the password to be used to protect the
+                key when saved to disk.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
 
         Authors:
             Attila Kovacs
         """
 
         self._hashing_algorithm = hashing_algorithm
-        """
-        The hashing algorithm to use.
-        """
-
         self._private_key = None
-        """
-        The private key to use for signing.
-        """
 
         if private_key is not None:
             self._private_key = private_key
@@ -474,16 +478,16 @@ class RSASigner:
 
     def sign(self, message: str, encode: bool = False) -> bytes:
 
-        """
-        Signs the given message using the private key.
+        """Signs the given message using the private key.
 
         Args:
-            message:            The message to sign.
-            encode:             Whether or not the signature should be returned
-                                in a base64 encoded form.
+            message (str): The message to sign.
+
+            encode (bool): Whether or not the signature should be returned in a
+                base64 encoded form.
 
         Returns:
-            The message signature.
+            bytes: The message signature.
 
         Authors:
             Attila Kovacs
@@ -494,8 +498,13 @@ class RSASigner:
 
 class RSAVerifier:
 
-    """
-    Utility class to verify messages using a public key.
+    """Utility class to verify messages using a public key.
+
+    Attributes:
+        _hashing_algorithm (Callable): The hashing algorithm to use.
+
+        _public_key (RSAPublic): The public key to use for verifying the
+            messages.
 
     Authors:
         Attila Kovacs
@@ -507,26 +516,19 @@ class RSAVerifier:
             public_key: str = None,
             hashing_algorithm: Callable = hashes.SHA512) -> None:
 
-        """
-        Creates a new RSAVerifier instance.
+        """Creates a new RSAVerifier instance.
 
         Args:
-            public_key_path:        Path to the file containing the public key.
-            hashing_algorithm:      THe hashing algorithm to use.
+            public_key_path (str): Path to the file containing the public key.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
 
         Authors:
             Attila Kovacs
         """
 
         self._hashing_algorithm = hashing_algorithm
-        """
-        The hashing algorithm to use.
-        """
-
         self._public_key = None
-        """
-        The public key to use for verifying the messages.
-        """
 
         if public_key is not None:
             self._public_key = public_key
@@ -534,18 +536,19 @@ class RSAVerifier:
             self._public_key = RSAPublic(key_path=public_key_path)
 
     def verify(
-            self,
-            message: str,
-            signature: bytes,
-            encoded: bool = False) -> bool:
+        self,
+        message: str,
+        signature: bytes,
+        encoded: bool = False) -> bool:
 
-        """
-        Verifies a given message using the stored public key.
+        """Verifies a given message using the stored public key.
 
         Args:
-            message:        The message to verify.
-            signature:      The signature of the message.
-            encoded:        Whether or not the signature is base64 encoded.
+            message (str): The message to verify.
+
+            signature (bytes): The signature of the message.
+
+            encoded (bool): Whether or not the signature is base64 encoded.
 
         Authors:
             Attila Kovacs
@@ -559,8 +562,12 @@ class RSAVerifier:
 
 class RSAEncryptor:
 
-    """
-    Utility class to encrypt a string using an RSA private key.
+    """Utility class to encrypt a string using an RSA private key.
+
+    Attributes:
+        _hashing_algorithm (Callable): The hashing algorithm to use.
+
+        _public_key (RSAPublic): The public key to use for the encryption.
 
     Authors:
         Attila Kovacs
@@ -572,30 +579,23 @@ class RSAEncryptor:
             public_key: RSAPublic = None,
             hashing_algorithm: Callable = hashes.SHA512) -> None:
 
-        """
-        Creates a new RSAEncryptor instance.
+        """Creates a new RSAEncryptor instance.
 
         Args:
-            public_key_path:        Path to the file containing the RSA public
-                                    key.
-            public_key:             The public key object to use for
-                                    encryption.
+            public_key_path (str): Path to the file containing the RSA public
+                key.
 
-            hashing_algorithm:      The hashing algorithm to use.
+            public_key (RSAPublic): The public key object to use for
+                encryption.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
 
         Authors:
             Attila Kovacs
         """
 
         self._hashing_algorithm = hashing_algorithm
-        """
-        The hashing algorithm to use.
-        """
-
         self._public_key = None
-        """
-        The public key to use for the encryption.
-        """
 
         if public_key is not None:
             self._public_key = public_key
@@ -604,14 +604,13 @@ class RSAEncryptor:
 
     def encrypt(self, message: str) -> str:
 
-        """
-        Encrypts the given message using the private key.
+        """Encrypts the given message using the private key.
 
         Args:
-            message:        The message to encrypt.
+            message (str): The message to encrypt.
 
         Returns:
-            The encrypted message.
+            str: The encrypted message.
 
         Authors:
             Attila Kovacs
@@ -623,8 +622,12 @@ class RSAEncryptor:
 
 class RSADecryptor:
 
-    """
-    Utility class to decrypt a string using an RSA public key.
+    """Utility class to decrypt a string using an RSA public key.
+
+    Attributes:
+        _hashing_algorithm (Callable): The hashing algorithm to use.
+
+        _private_key (RSAPrivate): The private key to use for the decrpytion.
 
     Authors:
         Attila Kovacs
@@ -637,31 +640,26 @@ class RSADecryptor:
             cb_retrieve_password: Callable = None,
             hashing_algorithm: Callable = hashes.SHA512) -> None:
 
-        """
-        Creates a new RSADecryptor instance.
+        """Creates a new RSADecryptor instance.
 
         Args:
-            private_key_path:       Path to the file containing the RSA private
-                                    key.
-            private_key:            The private key to use for decrpyion.
-            cb_retrieve_password:   Callback function that when called, should
-                                    return the password to be used to protect
-                                    the key when saved to disk.
-            hashing_algorithm:      The hashing algorithm to use.
+            private_key_path (str): Path to the file containing the RSA private
+                key.
+
+            private_key (RSAPrivate): The private key to use for decrpyion.
+
+            cb_retrieve_password (Callable): Callback function that when
+                called, should return the password to be used to protect the
+                key when saved to disk.
+
+            hashing_algorithm (Callable): The hashing algorithm to use.
 
         Authors:
             Attila Kovacs
         """
 
         self._hashing_algorithm = hashing_algorithm
-        """
-        The hashing algorithm to use.
-        """
-
         self._private_key = None
-        """
-        The private key to use for the decrpytion.
-        """
 
         if private_key is not None:
             self._private_key = private_key
@@ -672,14 +670,13 @@ class RSADecryptor:
 
     def decrypt(self, message: str) -> str:
 
-        """
-        Decrypts the given string using the public key.
+        """Decrypts the given string using the public key.
 
         Args:
-            message:        The message to decrypt.
+            message (str): The message to decrypt.
 
         Returns:
-            The decrypted message.
+            str: The decrypted message.
 
         Authors:
             Attila Kovacs

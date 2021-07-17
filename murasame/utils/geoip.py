@@ -40,8 +40,25 @@ PACKAGE_DOWNLOAD_LOCATION = '/tmp/'
 
 class GeoIPData:
 
-    """
-    Represents the result of a single GeoIP search query.
+    """Represents the result of a single GeoIP search query.
+
+    Attributes:
+        _ip_address (str): The IP address whose data is stored.
+
+        _continent (str): The continent where the IP address is located.
+
+        _country (str): The country where the IP address is located.
+
+        _city (str): The city where the IP address is located.
+
+        _postal_code (str): The postal code of the city where the IP address is
+            located.
+
+        _latitude (float): The approximate latitude of the location where the
+            IP address is located.
+
+        _longitude (float): The approximate longitude of the location where the
+            IP address is located.
 
     Authors:
         Attila Kovacs
@@ -50,8 +67,7 @@ class GeoIPData:
     @property
     def IPAddress(self) -> str:
 
-        """
-        The IP address whose data is stored.
+        """The IP address whose data is stored.
 
         Authors:
             Attila Kovacs
@@ -62,8 +78,7 @@ class GeoIPData:
     @property
     def Continent(self) -> str:
 
-        """
-        The continent where the IP address is located.
+        """The continent where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -74,8 +89,7 @@ class GeoIPData:
     @property
     def Country(self) -> str:
 
-        """
-        The country where the IP address is located.
+        """The country where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -86,8 +100,7 @@ class GeoIPData:
     @property
     def City(self) -> str:
 
-        """
-        The city where the IP address is located.
+        """The city where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -98,8 +111,7 @@ class GeoIPData:
     @property
     def PostalCode(self) -> str:
 
-        """
-        The postal code of the city where the IP address is located.
+        """The postal code of the city where the IP address is located.
 
         Authors:
             Attila Kovacs
@@ -110,8 +122,7 @@ class GeoIPData:
     @property
     def Latitude(self) -> str:
 
-        """
-        The approximate latitude of the location where the IP address is
+        """The approximate latitude of the location where the IP address is
         located.
 
         Authors:
@@ -123,8 +134,7 @@ class GeoIPData:
     @property
     def Longitude(self) -> str:
 
-        """
-        The approximate longitude of the location where the IP address is
+        """The approximate longitude of the location where the IP address is
         located.
 
         Authors:
@@ -142,66 +152,48 @@ class GeoIPData:
                  latitude: str = 'UNKNOWN',
                  longitude: str = 'UNKNOWN') -> None:
 
-        """
-        Creates a new GeoIPData instance.
+        """Creates a new GeoIPData instance.
 
         Args:
-            ip_address:     The IP address whose data is stored.
-            continent:      The continent where the IP address is located.
-            country:        The country where the IP address is located.
-            city:           The city where the IP address is located.
-            postal_code:    The postal code of the city where the IP address is
-                            located.
-            latitude:       The approximate latitude of the location where the
-                            IP address is located.
-            longitude:      The approximate longitude of the location where the
-                            IP address is located.
+            ip_address (str): The IP address whose data is stored.
+
+            continent (str): The continent where the IP address is located.
+
+            country (str): The country where the IP address is located.
+
+            city (str): The city where the IP address is located.
+
+            postal_code (str): The postal code of the city where the IP address
+                is located.
+
+            latitude (str): The approximate latitude of the location where the
+                IP address is located.
+
+            longitude (str): The approximate longitude of the location where
+                the IP address is located.
 
         Authors:
             Attila Kovacs
         """
 
         self._ip_address = ip_address
-        """
-        The IP address whose data is stored.
-        """
-
         self._continent = continent
-        """
-        The continent where the IP address is located.
-        """
-
         self._country = country
-        """
-        The country where the IP address is located.
-        """
-
         self._city = city
-        """
-        The city where the IP address is located.
-        """
-
         self._postal_code = postal_code
-        """
-        The postal code of the city where the IP address is located.
-        """
-
         self._latitude = latitude
-        """
-        The approximate latitude of the location where the IP address is
-        located.
-        """
-
         self._longitude = longitude
-        """
-        The approximate longitude of the location where the IP address is
-        located.
-        """
 
 class GeoIP:
 
-    """
-    Utility class to execute GeoIP queries and database updates.
+    """Utility class to execute GeoIP queries and database updates.
+
+    Attributes:
+        _update_link (str): The update link from where the GeoIP database can
+            be downloaded.
+
+        _database_path (str): Path to the directory where the GeoIP database
+            will be stored.
 
     Authors:
         Attila Kovacs
@@ -211,14 +203,14 @@ class GeoIP:
                  update_link: str = None,
                  database_path: str = None) -> None:
 
-        """
-        Creates a new GeoIP instance.
+        """Creates a new GeoIP instance.
 
         Args:
-            update_link:        The URL from which the GeoIP database can be
-                                downloaded.
-            database_path:      Path to the directory where the GeoIP database
-                                should be stored.
+            update_link (str): The URL from which the GeoIP database can be
+                downloaded.
+
+            database_path (str): Path to the directory where the GeoIP database
+                should be stored.
         """
 
         # The update link from where the GeoIP database can be downloaded.
@@ -234,8 +226,7 @@ class GeoIP:
 
     def update_database(self) -> None:
 
-        """
-        Updates the GeoIP database.
+        """Updates the GeoIP database.
 
         Authors:
             Attila Kovacs
@@ -279,15 +270,15 @@ class GeoIP:
 
     def query(self, ip_address: str) -> GeoIPData:
 
-        """
-        Queries the data of the given IP address.
+        """Queries the data of the given IP address.
 
         Args:
-            ip_address:     The IP address to look up in the database.
+            ip_address (str): The IP address to look up in the database.
 
         Returns:
-            A GeoIPData object containing the information about the IP address,
-            or None, if the IP address was not found in the database.
+            GeoIPData: A GeoIPData object containing the information about the
+                IP address, or 'None', if the IP address was not found in the
+                database.
 
         Authors:
             Attila Kovacs
@@ -318,16 +309,15 @@ class GeoIP:
         return result
 
     @staticmethod
-    def _find_mmdb(members: list):
+    def _find_mmdb(members: list) -> object:
 
-        """
-        Finds the GeoIP database inside the downloaded package.
+        """Finds the GeoIP database inside the downloaded package.
 
         Args:
-            members:        List of files in the update package
+            members (list): List of files in the update package.
 
         Returns:
-            The database file inside the update package.
+            object: The database file inside the update package.
 
         Authors:
             Attila Kovacs

@@ -26,8 +26,7 @@ import random
 
 class Dices:
 
-    """
-    Utility class to help generate random numbers simulating dice rolls.
+    """Utility class to help generate random numbers simulating dice rolls.
 
     Authors:
         Attila Kovacs
@@ -44,18 +43,24 @@ class Dices:
         dice_d100: int = 0,
         base: int = 0):
 
-        """
-        Rolls the requested amount of dices.
+        """Rolls the requested amount of dices.
 
         Args:
-            dice_d4:     The amount of D4 dices to roll.
-            dice_d6:     The amount of D6 dices to roll.
-            dice_d8:     The amount of D8 dices to roll.
-            dice_d10:    The amount of D10 dices to roll.
-            dice_d12:    The amount of D12 dices to roll.
-            dice_d20:    The amount of D20 dices to roll.
-            dice_d100:   The amount of D100 dices to roll.
-            base:   The base value to add the dice results to.
+            dice_d4 (int): The amount of D4 dices to roll.
+
+            dice_d6 (int): The amount of D6 dices to roll.
+
+            dice_d8 (int): The amount of D8 dices to roll.
+
+            dice_d10 (int): The amount of D10 dices to roll.
+
+            dice_d12 (int): The amount of D12 dices to roll.
+
+            dice_d20 (int): The amount of D20 dices to roll.
+
+            dice_d100 (int): The amount of D100 dices to roll.
+
+            base (int): The base value to add the dice results to.
         """
 
         result = base

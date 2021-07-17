@@ -51,8 +51,10 @@ AES block size.
 
 class AESCipher:
 
-    """
-    Simple utility class to encode and decode content using AES256.
+    """Simple utility class to encode and decode content using AES256.
+
+    Attributes:
+        _key (bytes): Password to use for encryption and decryption. Always 32 bytes.
 
     Authors:
         Attila Kovacs
@@ -60,28 +62,23 @@ class AESCipher:
 
     def __init__(self, key: str) -> None:
 
-        """
-        Creates a new AESCipher instance.
+        """Creates a new AESCipher instance.
 
         Authors:
             Attila Kovacs
         """
 
         self._key = hashlib.sha256(key.encode()).digest()
-        """
-        Password to use for encryption and decryption. Always 32 bytes.
-        """
 
     def encrypt(self, content: str) -> bytes:
 
-        """
-        Encrypts the content using AES.
+        """Encrypts the content using AES.
 
         Args:
-            content:        The content to encrypt.
+            content (str): The content to encrypt.
 
         Returns:
-            The encrypted content in a base64 encoded format.
+            bytes: The encrypted content in a base64 encoded format.
 
         Authors:
             Attila Kovacs
@@ -115,19 +112,18 @@ class AESCipher:
 
     def decrypt(self, content: bytes) -> str:
 
-        """
-        Decrypts the content using AES.
+        """Decrypts the content using AES.
 
         Args:
-            encoded_contet:         The encrypted content encoded in a base64
-                                    format.
+            encoded_contet (bytes): The encrypted content encoded in a base64
+                format.
 
         Raises:
-            InvalidInputError:      Raised if the input file is not properly
-                                    encoded.
+            InvalidInputError: Raised if the input file is not properly
+                encoded.
 
         Returns:
-            The decrypted content.
+            str: The decrypted content.
 
         Authors:
             Attila Kovacs

@@ -32,8 +32,7 @@ from murasame.utils.contentfile import ContentFile
 
 class JsonFile(ContentFile):
 
-    """
-    Represents a single JSON file on disk. The content of the file can be
+    """Represents a single JSON file on disk. The content of the file can be
     encrypted.
 
     Authors:
@@ -42,13 +41,13 @@ class JsonFile(ContentFile):
 
     def __init__(self, path: str, cb_retrieve_key: Callable = None) -> None:
 
-        """
-        Creates a new JsonFile instance.
+        """Creates a new JsonFile instance.
 
         Args:
-            path:               Path to the JSON file on disk.
-            cb_retrieve_key:    Optional callback function that will be called
-                                to retrieve the key to decrypt the file.
+            path (str): Path to the JSON file on disk.
+
+            cb_retrieve_key (Callable): Optional callback function that will be
+                called to retrieve the key to decrypt the file.
 
         Authors:
             Attila Kovacs
@@ -58,17 +57,15 @@ class JsonFile(ContentFile):
 
     def save_unencrypted(self, compact: bool = True) -> None:
 
-        """
-        Saves the content of the file unencrypted to disk.
+        """Saves the content of the file unencrypted to disk.
 
         Args:
-            compact:    Specifies whether or not the file should be saved in a
-                        compact, less readable format, or in a properly
-                        indented and formatted way. This has no effect on
-                        encrypted files.
+            compact (bool): Specifies whether or not the file should be saved
+                in a compact, less readable format, or in a properly indented
+                and formatted way. This has no effect on encrypted files.
 
         Raises:
-            RuntimeError:   Raised when the file cannot be saved.
+            RuntimeError: Raised when the file cannot be saved.
 
         Authors:
             Attila Kovacs
@@ -91,13 +88,13 @@ class JsonFile(ContentFile):
 
     def load_unencrypted(self) -> None:
 
-        """
-        Try to load the file as an unencrypted JSON file.
+        """Try to load the file as an unencrypted JSON file.
 
         Raises:
-            InvalidInputError:      Raised when the file cannot be loaded.
-            InvalidInputError:      Raised when the content of the file cannot
-                                    be parsed by the parser.
+            InvalidInputError: Raised when the file cannot be loaded.
+
+            InvalidInputError: Raised when the content of the file cannot be
+                parsed by the parser.
 
         Authors:
             Attila Kovacs
@@ -120,18 +117,16 @@ class JsonFile(ContentFile):
 
     def save_encrypted(self, compact: bool = True) -> None:
 
-        """
-        Encrypt the content of the file and save it to disk.
+        """Encrypt the content of the file and save it to disk.
 
         Args:
-            compact:    Specifies whether or not the file should be saved in a
-                        compact, less readable format, or in a properly
-                        indented and formatted way. This has no effect on
-                        encrypted files.
+            compact (bool): Specifies whether or not the file should be saved
+                in a compact, less readable format, or in a properly indented
+                and formatted way. This has no effect on encrypted files.
 
         Raises:
-            RuntimeError:       Raised if the content of the file cannot
-                                be saved to disk.
+            RuntimeError: Raised if the content of the file cannot be saved to
+                disk.
 
         Authors:
             Attila Kovacs
@@ -151,13 +146,13 @@ class JsonFile(ContentFile):
 
     def load_encrypted(self) -> None:
 
-        """
-        Try to load and decrypt the file.
+        """Try to load and decrypt the file.
 
         Raises:
-            InvalidInputError:      Raised when the file cannot be loaded.
-            InvalidInputError:      Raised when the content of the file cannot
-                                    be parsed.
+            InvalidInputError: Raised when the file cannot be loaded.
+
+            InvalidInputError: Raised when the content of the file cannot be
+                parsed.
 
         Authors:
             Attila Kovacs

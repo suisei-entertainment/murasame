@@ -27,9 +27,17 @@ from typing import Callable
 
 class ContentFile:
 
-    """
-    Represents a single content file on disk. The content of the file can be
-    encrypted.
+    """Represents a single content file on disk.
+
+    The content of the file can be encrypted.
+
+    Attributes:
+        _path (str): Path to the file.
+
+        _content (dict): The content of the file.
+
+        _cb_retrieve_key (Callable): Optional callback function that will be
+            called to retrieve the key to decrypt the file.
 
     Authors:
         Attila Kovacs
@@ -38,8 +46,7 @@ class ContentFile:
     @property
     def Path(self) -> str:
 
-        """
-        Provides access to the path of the file.
+        """Provides access to the path of the file.
 
         Authors:
             Attila Kovacs
@@ -50,8 +57,7 @@ class ContentFile:
     @property
     def Content(self) -> dict:
 
-        """
-        Provides access to the content of the file.
+        """Provides access to the content of the file.
 
         Authors:
             Attila Kovacs
@@ -61,40 +67,31 @@ class ContentFile:
 
     def __init__(self, path: str, cb_retrieve_key: Callable = None) -> None:
 
-        """
-        Creates a new ContentFile instance.
+        """Creates a new ContentFile instance.
 
         Args:
-            path:               Path to the file on disk.
-            cb_retrieve_key:    Optional callback function that will be called
-                                to retrieve the key to decrypt the file.
+            path (str): Path to the file on disk.
+
+            cb_retrieve_key (Callable): Optional callback function that will be
+                called to retrieve the key to decrypt the file.
 
         Authors:
             Attila Kovacs
         """
 
         self._path = os.path.abspath(path)
-        """
-        Path to the file.
-        """
-
         self._content = {}
-        """
-        The content of the file.
-        """
-
         self._cb_retrieve_key = cb_retrieve_key
 
     def load(self) -> None:
 
-        """
-        Attempts to load the file from disk. If the file doesn't exist, it will
-        create an empty structure in memory.
+        """Attempts to load the file from disk.
+
+        If the file doesn't exist, it will create an empty structure in memory.
 
         Raises:
-            InvalidInputError:      Raised when the file cannot be loaded from
-                                    disk or its content cannot be parsed as a
-                                    valid file.
+            InvalidInputError: Raised when the file cannot be loaded from disk
+                or its content cannot be parsed as a valid file.
 
         Authors:
             Attila Kovacs
@@ -112,17 +109,15 @@ class ContentFile:
 
     def save(self, compact: bool = True) -> None:
 
-        """
-        Saves the content of the file to disk.
+        """Saves the content of the file to disk.
 
         Args:
-            compact:    Specifies whether or not the file should be saved in a
-                        compact, less readable format, or in a properly
-                        indented and formatted way. This has no effect on
-                        encrypted files.
+            compact (bool): Specifies whether or not the file should be saved
+                in a compact, less readable format, or in a properly indented
+                and formatted way. This has no effect on encrypted files.
 
         Raises:
-            RuntimeError:       Raised when the file cannot be saved to disk.
+            RuntimeError: Raised when the file cannot be saved to disk.
 
         Authors:
             Attila Kovacs
@@ -135,12 +130,11 @@ class ContentFile:
 
     def overwrite_content(self, content: dict) -> None:
 
-        """
-        Overwrites the content of the file with the content of a
+        """Overwrites the content of the file with the content of a
         dictionary.
 
         Args:
-            content:            The new content of the file.
+            content (dict): The new content of the file.
 
         Authors:
             Attila Kovacs
@@ -154,13 +148,12 @@ class ContentFile:
         Saves the content of the file unencrypted to disk.
 
         Args:
-            compact:    Specifies whether or not the file should be saved in a
-                        compact, less readable format, or in a properly
-                        indented and formatted way. This has no effect on
-                        encrypted files.
+            compact (bool): Specifies whether or not the file should be saved
+                in a compact, less readable format, or in a properly indented
+                and formatted way. This has no effect on encrypted files.
 
         Raises:
-            RuntimeError:   Raised when the file cannot be saved.
+            RuntimeError: Raised when the file cannot be saved.
 
         Authors:
             Attila Kovacs
@@ -174,13 +167,13 @@ class ContentFile:
 
     def load_unencrypted(self) -> None:
 
-        """
-        Try to load the file as an unencrypted JSON file.
+        """Try to load the file as an unencrypted file.
 
         Raises:
-            InvalidInputError:      Raised when the file cannot be loaded.
-            InvalidInputError:      Raised when the content of the file cannot
-                                    be parsed by the parser.
+            InvalidInputError: Raised when the file cannot be loaded.
+
+            InvalidInputError: Raised when the content of the file cannot be
+                parsed by the parser.
 
         Authors:
             Attila Kovacs
@@ -192,18 +185,16 @@ class ContentFile:
 
     def save_encrypted(self, compact: bool = True) -> None:
 
-        """
-        Encrypt the content of the file and save it to disk.
+        """Encrypt the content of the file and save it to disk.
 
         Args:
-            compact:    Specifies whether or not the file should be saved in a
-                        compact, less readable format, or in a properly
-                        indented and formatted way. This has no effect on
-                        encrypted files.
+            compact (bool): Specifies whether or not the file should be saved
+                in a compact, less readable format, or in a properly indented
+                and formatted way. This has no effect on encrypted files.
 
         Raises:
-            RuntimeError:       Raised if the content of the file cannot
-                                be saved to disk.
+            RuntimeError: Raised if the content of the file cannot be saved to
+                disk.
 
         Authors:
             Attila Kovacs
@@ -217,13 +208,13 @@ class ContentFile:
 
     def load_encrypted(self) -> None:
 
-        """
-        Try to load and decrypt the file.
+        """Try to load and decrypt the file.
 
         Raises:
-            InvalidInputError:      Raised when the file cannot be loaded.
-            InvalidInputError:      Raised when the content of the file cannot
-                                    be parsed.
+            InvalidInputError: Raised when the file cannot be loaded.
+
+            InvalidInputError: Raised when the content of the file cannot
+                be parsed.
 
         Authors:
             Attila Kovacs

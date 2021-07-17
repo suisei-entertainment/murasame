@@ -33,9 +33,11 @@ from murasame.utils.jsonfile import JsonFile
 
 class CliProcessor:
 
-    """
-    Utility class based on argparse to simplify the configuration and
+    """Utility class based on argparse to simplify the configuration and
     processing of CLI commands.
+
+    Attributes:
+        _parser (ArgumentParser): The wrapped ArgumentParser instance.
 
     Authors:
         Attila Kovacs
@@ -44,8 +46,7 @@ class CliProcessor:
     @property
     def Parser(self) -> argparse.ArgumentParser:
 
-        """
-        Provides access to the underlying ArgumentParser object.
+        """Provides access to the underlying ArgumentParser object.
 
         Authors:
             Attila Kovacs
@@ -60,24 +61,27 @@ class CliProcessor:
                  usage_string: str = None,
                  epilog_string: str = None) -> None:
 
-        """
-        Creates a new CliProcessor instance.
+        """Creates a new CliProcessor instance.
 
         Args:
-            command_map:            The command map to use to configure the
-                                    class.
-            config_file:            Optional path to config file containing the
-                                    command map to use. If a path is provided,
-                                    it will overwrite the command map.
-            description_string:     Optional description string to pass to
-                                    argparse.
-            usage_string:           Optional usage string to pass to argparse.
-            epilog_string:          Optional epilog string to pass to argparse.
+            command_map (list): The command map to use to configure the class.
+
+            config_file (str): Optional path to config file containing the
+                command map to use. If a path is provided, it will overwrite
+                the command map.
+
+            description_string (str): Optional description string to pass to
+                argparse.
+
+            usage_string (str): Optional usage string to pass to argparse.
+
+            epilog_string (str): Optional epilog string to pass to argparse.
 
         Raises:
-            InvalidInputError:      Raised if the config file cannot be loaded
-                                    and there is no command map provided.
-            InvalidInputError:      Raised if command registration failed.
+            InvalidInputError: Raised if the config file cannot be loaded and
+                there is no command map provided.
+
+            InvalidInputError: Raised if command registration failed.
 
         Authors:
             Attila Kovacs
@@ -119,20 +123,19 @@ class CliProcessor:
                 cb_argument_processor: Callable,
                 args: list = None) -> argparse.Namespace:
 
-        """
-        Processes the command line arguments.
+        """Processes the command line arguments.
 
         Args:
-            cb_argument_processor:  A callback function that will be called
-                                    after the command line has been parsed.
-            args:                   The list of command line arguments the
-                                    application was called with. If this
-                                    parameter is not supplied, the arguments
-                                    will be automatically retrieved.
+            cb_argument_processor (Callable): A callback function that will be
+                called after the command line has been parsed.
+
+            args (list): The list of command line arguments the application was
+                called with. If this parameter is not supplied, the arguments
+                will be automatically retrieved.
 
         Returns:
-            The processed command line arguments as an argparse Namespace
-            object.
+            argparse.Namespace: The processed command line arguments as an
+                argparse Namespace object.
 
         Authors:
             Attila Kovacs
@@ -154,18 +157,18 @@ class CliProcessor:
 
     def _register_commands(self, command_map: list) -> None:
 
-        """
-        Registers all CLI commands from the command map with the argument
+        """Registers all CLI commands from the command map with the argument
         parser.
 
         Args:
-            command_map:        The command map to configure.
+            command_map (list): The command map to configure.
 
         Raises:
-            InvalidInputError:  Raised when the type of a command map element
-                                cannot be determined.
-            InvalidInputError:  Raised when the element cannot be properly
-                                parsed.
+            InvalidInputError: Raised when the type of a command map element
+                cannot be determined.
+
+            InvalidInputError: Raised when the element cannot be properly
+                parsed.
 
         Authors:
             Attila Kovacs
@@ -198,22 +201,23 @@ class CliProcessor:
 
     def _register_group(self, element: dict) -> None:
 
-        """
-        Registers a new command group in the parser.
+        """Registers a new command group in the parser.
 
         Args:
-            element:        The group descriptor to register.
+            element (dict): The group descriptor to register.
 
         Raises:
             InvalidInputError:  Raised when the name or description of a
-                                command group is not specified in the
-                                configuration.
+                command group is not specified in the configuration.
+
             InvalidInputError:  Raised when there is no command list specified
-                                in the configuration.
+                in the configuration.
+
             InvalidInputError:  Raised when there is no command type specified
-                                for a command in the command group.
-            InvalidInputError:  Raised when an invalid command tyhpe is
-                                encountered.
+                for a command in the command group.
+
+            InvalidInputError:  Raised when an invalid command type is
+                encountered.
 
         Authors:
             Attila Kovacs
@@ -264,17 +268,17 @@ class CliProcessor:
     @staticmethod
     def _register_switch(element: dict, target: object) -> None:
 
-        """
-        Registers a new switch type command in the parser.
+        """Registers a new switch type command in the parser.
 
         Args:
-            element:            The command descriptor to register.
-            target:             Where the command will be registered. Either
-                                the parser itself, or an argument group.
+            element (dict): The command descriptor to register.
+
+            target (object): Where the command will be registered. Either the
+                parser itself, or an argument group.
 
         Raises:
-            InvalidInputError:  Raised when a mandatory parameter is missing
-                                from the configuration.
+            InvalidInputError: Raised when a mandatory parameter is missing
+                from the configuration.
 
         Authors:
             Attila Kovacs
@@ -314,17 +318,17 @@ class CliProcessor:
     @staticmethod
     def _register_config(element: dict, target: object) -> None:
 
-        """
-        Registers a new config option type command in the parser.
+        """Registers a new config option type command in the parser.
 
         Args:
-            element:        The command descriptor to register.
-            target:         Where the command will be registered. Either the
-                            parser itself, or an argument group.
+            element (dict): The command descriptor to register.
+
+            target (object): Where the command will be registered. Either the
+                parser itself, or an argument group.
 
         Raises:
-            InvalidInputError:  Raised when a mandatory parameter is missing
-                                from the configuration.
+            InvalidInputError: Raised when a mandatory parameter is missing
+                from the configuration.
 
         Authors:
             Attila Kovacs

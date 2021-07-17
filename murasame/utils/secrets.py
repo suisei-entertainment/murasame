@@ -31,12 +31,15 @@ from murasame.utils.jsonfile import JsonFile
 
 class Secrets:
 
-    """
-    Simple utility class to load an encrypted JSON file from the application's
-    configuration directory and read keys from it.
+    """Simple utility class to load an encrypted JSON file from the
+    application's configuration directory and read keys from it.
 
     To decrypt the secrets file the decryption key is read from an environment
     variable.
+
+    Attributes:
+        _config_directory (str): Path to the directory where application
+            configuration is stored.
 
     Authors:
         Attila Kovacs
@@ -48,30 +51,54 @@ class Secrets:
 
     def __init__(self, config_directory: str) -> None:
 
-        """
-        Creates a new Secrets instance.
+        """Creates a new Secrets instance.
 
         Args:
-            config_directory:       Path to the directory where application
-                                    configuration is stored.
+            config_directory (str): Path to the directory where application
+                configuration is stored.
+
+        Raises:
+            InvalidInputError: Raised if an invalid configuration directory is
+                provided.
+
+            InvalidInputError: Raised if the provided configuration directory
+                does not exist.
+
+            InvalidInputError: Raised if the provided configuration directory
+                does not contain a secrets.conf file.
 
         Authors:
             Kovacs Attila
         """
 
-        # Path to the directory where application configuration is stored.
+        if config_directory is None:
+            raise InvalidInputError(
+                'Invalid configuration directory provided.')
+
+        config_directory = os.path.abspath(
+            os.path.expanduser(config_directory))
+
+        if not os.path.isdir(config_directory):
+            raise InvalidInputError(
+                f'The provided configuration directory ({config_directory}) '
+                f'does not exist, secrets cannot be loaded.')
+
+        if not os.path.isfile(f'{config_directory}/secrets.conf'):
+            raise InvalidInputError(
+                f'The specified configuration directory ({config_directory})'
+                f'does not contain a secrets.conf file.')
+
         self._config_directory = config_directory
 
     @staticmethod
     def retrieve_key() -> Union[str, None]:
 
-        """
-        Callback function to retrieve the decryption key for the secrets.conf
-        file.
+        """Callback function to retrieve the decryption key for the
+        secrets.conf file.
 
         Returns:
-            The decryption key as a string, or None if the key cannot be
-            retrieved.
+            Union[str, None]: The decryption key as a string, or None if the
+                key cannot be retrieved.
 
         Authors:
             Attila Kovacs
@@ -85,14 +112,14 @@ class Secrets:
 
     def get_secret(self, key: str) -> Union[str, None]:
 
-        """
-        Loads the secrets file to memory and reads the given key from it.
+        """Loads the secrets file to memory and reads the given key from it.
 
         Args:
-            key:        The key to read from the file.
+            key (str): The key to read from the file.
 
         Returns:
-            The value of the given key, or None if the key cannot be retrieved.
+            Union [str, None]: The value of the given key, or None if the key
+                cannot be retrieved.
 
         Authors:
             Attila Kovacs
