@@ -21,5 +21,5 @@
 Contains the implementation of the virtual file system.
 """
 
-from murasame.pal.vfs.vfs import VFSAPI, VFS
+from murasame.pal.vfs.vfs import VFS
 from murasame.pal.vfs.vfsresourcedescriptor import VFSResourceDescriptor

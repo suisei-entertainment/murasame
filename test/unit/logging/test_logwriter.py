@@ -33,7 +33,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.utils import SystemLocator
-from murasame.logging import LogLevels, LoggingAPI, LogWriter
+from murasame.logging import LogLevels, LogWriter
+from murasame.api import LoggingAPI
 
 class LoggingSystemTester:
     def __init__(self):

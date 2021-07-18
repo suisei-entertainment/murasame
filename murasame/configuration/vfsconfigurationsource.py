@@ -24,7 +24,7 @@ Contains the implementation of the VFSConfigurationSource class.
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.utils import SystemLocator
-from murasame.pal.vfs import VFSAPI
+from murasame.api import VFSAPI
 from murasame.configuration.configurationsource import ConfigurationSource
 from murasame.configuration.configurationgroup import ConfigurationGroup
 from murasame.configuration.configurationlist import ConfigurationList

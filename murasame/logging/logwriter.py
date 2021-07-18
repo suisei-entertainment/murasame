@@ -28,7 +28,6 @@ from datetime import datetime
 from murasame.utils.systemlocator import SystemLocator
 from murasame.logging.loglevels import LogLevels
 from murasame.logging.logentry import LogEntry
-from murasame.logging.loggingsystem import LoggingAPI
 
 class LogWriter:
 
@@ -383,7 +382,11 @@ class LogWriter:
         # Pylint cannot find the instance() method of ServiceLocator
         #pylint: disable=no-member
 
+        # Logging API has to be imported here to avoid circular imports
+        # pylint: disable=import-outside-toplevel
+
         # Get the channel based on its name
+        from murasame.api import LoggingAPI
         log_system= SystemLocator.instance().get_provider(LoggingAPI)
 
         if log_system:

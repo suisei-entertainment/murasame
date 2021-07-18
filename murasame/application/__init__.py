@@ -21,6 +21,6 @@
 Contains the application implementations of the framework.
 """
 
-from murasame.application.application import ApplicationAPI, Application
+from murasame.application.application import Application
 from murasame.application.businesslogic import BusinessLogic
 from murasame.application.applicationreturncodes import ApplicationReturnCodes

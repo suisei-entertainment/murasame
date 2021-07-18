@@ -21,4 +21,4 @@
 Contains the configuration handling implementations of the framework.
 """
 
-from murasame.configuration.configuration import ConfigurationAPI, Configuration
+from murasame.configuration.configuration import Configuration

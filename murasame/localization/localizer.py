@@ -30,7 +30,7 @@ from googletrans import Translator
 
 # Murasame Imports
 from murasame.logging.logwriter import LogWriter
-from murasame.pal.vfs import VFSAPI
+from murasame.api import VFSAPI
 from murasame.utils import SystemLocator
 
 """

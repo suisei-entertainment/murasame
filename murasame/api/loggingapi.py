@@ -18,12 +18,49 @@
 ## ============================================================================
 
 """
-Contains the logging system implementation.
+Contains the definition of the LoggingAPI.
 """
 
-from murasame.logging.loglevels import LogLevels
-from murasame.logging.logentry import LogEntry
-from murasame.logging.logchannel import LogChannel
-from murasame.logging.logtarget import LogTarget
-from murasame.logging.loggingsystem import LoggingSystem
-from murasame.logging.logwriter import LogWriter
+class LoggingAPI:
+
+    """Common interface for logging system implementations.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    def has_channel(self, name: str) -> bool:
+
+        """Returns whether or not a given log channel is registered in the
+        logging system.
+
+        Args:
+            name (str): The name of the log channel to check.
+
+        Returns:
+            bool: 'True' if the given log channel is registered, 'False'
+                otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        #pylint: disable=no-self-use
+
+        del name
+        return False
+
+    def get_channel(self, name: str) -> 'LogChannel':
+
+        """Returns a given log channel.
+
+        Args:
+            name (str): Name of the channel to retrieve.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        #pylint: disable=no-self-use
+
+        del name

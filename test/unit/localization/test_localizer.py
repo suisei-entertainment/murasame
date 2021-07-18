@@ -30,7 +30,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.utils import SystemLocator, YamlFile
-from murasame.pal.vfs import VFSAPI, VFS
+from murasame.api import VFSAPI
+from murasame.pal.vfs import VFS
 from murasame.localization import Localizer
 
 LANGUAGE_FILES_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/localizer/'))

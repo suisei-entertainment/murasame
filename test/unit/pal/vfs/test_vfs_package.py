@@ -35,8 +35,9 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
+from murasame.api import VFSAPI
 from murasame.pal.vfs.vfspackage import VFSPackage
-from murasame.pal.vfs.vfs import VFSAPI, VFS
+from murasame.pal.vfs.vfs import VFS
 from murasame.utils import SystemLocator
 
 TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfspackage.pkg'))

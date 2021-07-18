@@ -33,7 +33,8 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
 # Murasame Imports
-from murasame.pal.vfs.vfs import VFSAPI, VFS
+from murasame.api import VFSAPI
+from murasame.pal.vfs.vfs import VFS
 from murasame.pal.vfs.vfsnode import VFSNode
 from murasame.utils import SystemLocator
 

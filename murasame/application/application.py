@@ -35,25 +35,16 @@ from typing import Callable
 import sentry_sdk
 
 # Murasame Imports
+from murasame.api import LoggingAPI, ConfigurationAPI, VFSAPI, ApplicationAPI
 from murasame.exceptions import InvalidInputError, InvalidLicenseKeyError
-from murasame.logging import LogWriter, LoggingAPI, LoggingSystem
+from murasame.logging import LogWriter, LoggingSystem
 from murasame.licensing import LicenseValidator
 from murasame.utils import SystemLocator
 from murasame.application.applicationreturncodes import ApplicationReturnCodes
 from murasame.application.businesslogic import BusinessLogic
 from murasame.application.applicationtypes import ApplicationTypes
-from murasame.configuration import ConfigurationAPI, Configuration
-from murasame.pal.vfs import VFSAPI, VFS
-
-class ApplicationAPI:
-
-    """API definition for the Application.
-
-    Authors:
-        Attila Kovacs
-    """
-
-    pass
+from murasame.configuration import Configuration
+from murasame.pal.vfs import VFS
 
 class Application(LogWriter):
 

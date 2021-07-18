@@ -18,12 +18,10 @@
 ## ============================================================================
 
 """
-Contains the logging system implementation.
+Contains the various framework APIs.
 """
 
-from murasame.logging.loglevels import LogLevels
-from murasame.logging.logentry import LogEntry
-from murasame.logging.logchannel import LogChannel
-from murasame.logging.logtarget import LogTarget
-from murasame.logging.loggingsystem import LoggingSystem
-from murasame.logging.logwriter import LogWriter
+from murasame.api.applicationapi import ApplicationAPI
+from murasame.api.configurationapi import ConfigurationAPI
+from murasame.api.loggingapi import LoggingAPI
+from murasame.api.vfsapi import VFSAPI

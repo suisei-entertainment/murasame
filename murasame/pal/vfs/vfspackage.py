@@ -113,7 +113,7 @@ class VFSPackage(LogWriter):
 
         # Avoiding circular dependency between VFS components
         #pylint: disable=import-outside-toplevel
-        from murasame.pal.vfs.vfs import VFSAPI
+        from murasame.api import VFSAPI
         from murasame.pal.vfs.vfsnode import VFSNode
 
         # Check the content type of the file
