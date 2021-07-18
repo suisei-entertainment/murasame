@@ -75,17 +75,17 @@ class BaseSocket(LogWriter):
         Attributes:
             UNKNOWN: Unknown protocol.
             UNENCRYPTED: Unencrypted
-            TLSv12: TLS v1.2
-            TLSv13: TLS v1.3
+            TLS_V_1_2: TLS v1.2
+            TLS_V_1_3: TLS v1.3
 
         Authors:
             Attila Kovacs
         """
 
-        UNKNOWN = 0 # Unknown
-        UNENCRYPTED = 1 # Unencrypted
-        TLSv12 = 2  # TLS v1.2
-        TLSv13 = 3  # TLS v1.3
+        UNKNOWN = 0
+        UNENCRYPTED = 1
+        TLS_V_1_2 = 2
+        TLS_V_1_3 = 3
 
     class Purposes(IntEnum):
 
@@ -332,8 +332,8 @@ class BaseSocket(LogWriter):
 
         supported_protocols = \
         [
-            BaseSocket.Protocols.TLSv12,
-            BaseSocket.Protocols.TLSv13
+            BaseSocket.Protocols.TLS_V_1_2,
+            BaseSocket.Protocols.TLS_V_1_3
         ]
 
         if self._ssl_protocol not in supported_protocols:
@@ -361,7 +361,7 @@ class BaseSocket(LogWriter):
             ssl.OP_ALL|ssl.OP_NO_TLSv1|ssl.OP_NO_TLSv1_1|ssl.OP_NO_SSLv2|ssl.OP_NO_SSLv3
 
         # Overwrite the context options if TLS v1.3 is enforced
-        if self._ssl_protocol == BaseSocket.Protocols.TLSv13:
+        if self._ssl_protocol == BaseSocket.Protocols.TLS_V_1_3:
 
             if not ssl.HAS_TLSv1_3:
                 raise MissingRequirementError(

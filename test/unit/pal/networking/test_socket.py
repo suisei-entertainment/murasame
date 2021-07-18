@@ -313,13 +313,13 @@ class TestSocket:
             name='testsocket',
             host='localhost',
             port=11492,
-            ssl_protocol=BaseSocket.Protocols.TLSv12,
+            ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == 'localhost'
         assert sut.Port == 11492
-        assert sut.Protocol == BaseSocket.Protocols.TLSv12
+        assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_2
 
         del sut
 
@@ -336,21 +336,21 @@ class TestSocket:
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port='invalidport',
-                               ssl_protocol=BaseSocket.Protocols.TLSv12,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port=-1,
-                               ssl_protocol=BaseSocket.Protocols.TLSv12,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port=123456789,
-                               ssl_protocol=BaseSocket.Protocols.TLSv12,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
     def test_create_tls12_server_socket(self):
@@ -367,13 +367,13 @@ class TestSocket:
             name='testsocket',
             host='',
             port=11492,
-            ssl_protocol=BaseSocket.Protocols.TLSv12,
+            ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == ''
         assert sut.Port == 11492
-        assert sut.Protocol == BaseSocket.Protocols.TLSv12
+        assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_2
 
         del sut
 
@@ -390,21 +390,21 @@ class TestSocket:
             sut = ServerSocket(name='testsocket',
                                host='localhost',
                                port='invalidport',
-                               ssl_protocol=BaseSocket.Protocols.TLSv12,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ServerSocket(name='testsocket',
                                host='localhost',
                                port=-1,
-                               ssl_protocol=BaseSocket.Protocols.TLSv12,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ServerSocket(name='testsocket',
                                host='localhost',
                                port=123456789,
-                               ssl_protocol=BaseSocket.Protocols.TLSv12,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
     def test_create_tls13_client_socket(self):
@@ -421,13 +421,13 @@ class TestSocket:
             name='testsocket',
             host='localhost',
             port=11492,
-            ssl_protocol=BaseSocket.Protocols.TLSv13,
+            ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == 'localhost'
         assert sut.Port == 11492
-        assert sut.Protocol == BaseSocket.Protocols.TLSv13
+        assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_3
 
         del sut
 
@@ -444,21 +444,21 @@ class TestSocket:
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port='invalidport',
-                               ssl_protocol=BaseSocket.Protocols.TLSv13,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port=-1,
-                               ssl_protocol=BaseSocket.Protocols.TLSv13,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port=123456789,
-                               ssl_protocol=BaseSocket.Protocols.TLSv13,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
     def test_create_tls13_server_socket(self):
@@ -475,13 +475,13 @@ class TestSocket:
             name='testsocket',
             host='',
             port=11492,
-            ssl_protocol=BaseSocket.Protocols.TLSv13,
+            ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == ''
         assert sut.Port == 11492
-        assert sut.Protocol == BaseSocket.Protocols.TLSv13
+        assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_3
 
         del sut
 
@@ -498,21 +498,21 @@ class TestSocket:
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port='invalidport',
-                               ssl_protocol=BaseSocket.Protocols.TLSv13,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port=-1,
-                               ssl_protocol=BaseSocket.Protocols.TLSv13,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
         with pytest.raises(InvalidInputError):
             sut = ClientSocket(name='testsocket',
                                host='localhost',
                                port=123456789,
-                               ssl_protocol=BaseSocket.Protocols.TLSv13,
+                               ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
     def test_message_sending_from_client_socket(self):

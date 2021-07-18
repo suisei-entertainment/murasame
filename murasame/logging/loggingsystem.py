@@ -82,7 +82,7 @@ class LoggingSystem:
     Attributes:
         _channels (dict): The log channels registered in the logging system.
 
-        _root_path (str): The root path in the file system where log files are 
+        _root_path (str): The root path in the file system where log files are
             written.
 
     Authors:
