@@ -57,6 +57,8 @@ class ConfigurationAPI:
             Attila Kovacs
         """
 
+        #pylint: disable=no-self-use
+
         del backend_type
         del cb_retrieve_key
 
