@@ -95,7 +95,7 @@ class TestGeoIP:
         assert result.Continent == 'Europe'
         assert result.Country == 'Hungary'
         assert result.City in ('Budapest', 'God')
-        assert result.PostalCode in ('2131', '2132', '1115')
+        assert result.PostalCode in ('2131', '2132', '1115', '1048')
         assert result.Latitude in (47.6838, 47.5636)
         assert result.Longitude in (19.1401, 19.0947)
 
