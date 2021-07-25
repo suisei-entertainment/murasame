@@ -763,9 +763,11 @@ class X509Certificate:
         self,
         certificate_path: str,
         descriptor: 'X509GenericCertificateFields',
-        private_key: 'RSAPrivate' = None) -> None:
+        private_key: 'RSAPrivate' = None,
+        not_valid_before: datetime.datetime = None,
+        not_valid_after: datetime.datetime = None) -> None:
 
-        """Generates a new certificate.
+        """Generates a new self signed certificate.
 
         Args:
             certificate_path (str): Path where the new certificate will be
@@ -777,19 +779,32 @@ class X509Certificate:
             private_key (RSAPrivate): The private key to use to generate the
                 certificate.
 
+            not_valid_before (datetime): The time when the certificate becomes
+                valid.
+
+            not_valid_after (datetime): The time when the certificate expires.
+
         Authors:
             Attila Kovacs
         """
 
         self._private_key = private_key
 
+        # If there is no start date specified, use the current date
+        if not_valid_before is None:
+            not_valid_before = datetime.datetime.utcnow()
+
+        # If there is no expiry date specified, use 30 days
+        if not_valid_after is None:
+            not_valid_after = not_valid_before+datetime.timedelta(days=30)
+
         self._certificate = \
             cryptography.x509.CertificateBuilder().subject_name(descriptor.Subject)\
                 .issuer_name(descriptor.Subject)\
                 .public_key(self._private_key.Key.public_key())\
                 .serial_number(descriptor.Serial)\
-                .not_valid_before(datetime.datetime.utcnow())\
-                .not_valid_after(datetime.datetime.utcnow()+datetime.timedelta(days=10))\
+                .not_valid_before(not_valid_before)\
+                .not_valid_after(not_valid_after)\
                 .add_extension(cryptography.x509.SubjectAlternativeName([cryptography.x509.DNSName(descriptor.SAN)]), critical=False)\
             .sign(self._private_key.Key, hashes.SHA256())
 

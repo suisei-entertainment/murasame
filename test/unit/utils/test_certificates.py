@@ -22,6 +22,7 @@ Contains the unit tests for certificate handling.
 """
 
 # Runtime Imports
+import datetime
 import os
 import sys
 import uuid
@@ -189,6 +190,11 @@ class TestX509Certificate:
         with open(f'{CERT_BASE_PATH}/invalid_key.pem', 'w') as file:
             file.write('invalid')
 
+        generator = RSAKeyGenerator()
+        generator.save_key_pair(
+            private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem',
+            public_key_path=f'{CERT_BASE_PATH}/cert_signing_key_public.pem')
+
     @classmethod
     def teardown_class(cls):
 
@@ -332,18 +338,15 @@ class TestX509Certificate:
         assert sut.Extensions == sut.Extensions
         assert sut.CertificateBytes == sut.CertificateBytes
 
-    def test_certificate_generation(self):
+    def test_certificate_generation_with_default_parameters(self):
 
-        """Tests that a new certificate can be generated.
+        """Tests that a new certificate can be generated with default
+        parameters.
 
         Authors:
             Attila Kovacs
         """
 
-        generator = RSAKeyGenerator()
-        generator.save_key_pair(
-            private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem',
-            public_key_path=f'{CERT_BASE_PATH}/cert_signing_key_public.pem')
         key = RSAPrivate(key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
 
         sut = X509Certificate()
@@ -373,3 +376,49 @@ class TestX509Certificate:
             private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
 
         assert cert is not None
+        assert cert.IsValid
+
+    def test_certificate_generation_with_custom_validity(self):
+
+        """Tests that a new certificate can be generated with custom validity
+        parameters.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        key = RSAPrivate(key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
+
+        sut = X509Certificate()
+
+        testserial = uuid.uuid4()
+        descriptor = X509GenericCertificateFields(
+            common_name='testcommonname',
+            country='US',
+            state='teststate',
+            locality='testlocality',
+            address='testaddress',
+            organization='testorganization',
+            org_unit='testorgunit',
+            serial=1,
+            surname='testsurname',
+            given_name='testgivenname',
+            title='testtitle',
+            email='testemail',
+            san='testsan')
+
+        start_date = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+        end_date = start_date + datetime.timedelta(days=10)
+
+        sut.generate(certificate_path=f'{CERT_BASE_PATH}/generated.pem',
+                     private_key=key,
+                     descriptor=descriptor,
+                     not_valid_before=start_date,
+                     not_valid_after=end_date)
+
+        cert = X509Certificate(
+            certificate_path=f'{CERT_BASE_PATH}/generated.pem',
+            private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
+
+        assert cert is not None
+        assert not cert.IsValid
