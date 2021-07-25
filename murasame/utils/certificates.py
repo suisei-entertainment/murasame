@@ -32,7 +32,7 @@ from typing import Callable, Union
 import cryptography.x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+from cryptography.hazmat.primitives.serialization import Encoding
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
