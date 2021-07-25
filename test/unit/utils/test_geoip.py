@@ -97,7 +97,7 @@ class TestGeoIP:
         assert result.City == None
         assert result.PostalCode == None
         assert result.Latitude == 37.751
-        assert result.Longitude == -97.822 
+        assert result.Longitude == -97.822
 
     def test_geoip_with_local_ip_address(self):
 
