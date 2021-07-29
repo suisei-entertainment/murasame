@@ -81,6 +81,13 @@ def configure_arguments() -> argparse.ArgumentParser:
         action='store_true',
         help='Whether or not the release should be marked as a draft.')
 
+    parser.add_argument(
+        '--prerelease',
+        dest='release_prerelease',
+        default=False,
+        action='store_true',
+        help='Whether or not the release should be marked as a pre-release.')
+
     return parser
 
 def parse_command_line() -> argparse.Namespace:

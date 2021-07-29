@@ -33,9 +33,9 @@ from mde.constants import (
     VERSION_TEMPLATE_PATH)
 from mde.utils.travis import is_travis
 
-def get_version_string() -> str:
+def get_version_num() -> str:
 
-    """Returns the version string as stored in the version config file.
+    """Returns the version number as stored in the version config file.
 
     Authors:
         Attila Kovacs
@@ -71,7 +71,17 @@ def get_version_string() -> str:
     except KeyError as error:
         raise SystemExit from error
 
-    return f'v{major_version}.{minor_version}.{patch_level}'
+    return f'{major_version}.{minor_version}.{patch_level}'
+
+def get_version_string() -> str:
+
+    """Returns the version string as stored in the version config file.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    return f'v{get_version_num()}'
 
 def bump_version_number() -> None:
 

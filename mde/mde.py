@@ -30,6 +30,8 @@ from mde.constants import MDE_LOGGER_NAME
 from mde.utils.version import bump_version_number
 from mde.utils.constantsfile import create_constants_file
 from mde.packaging.wheel import create_wheel
+from mde.git.release import do_github_release
+from mde.utils.pypi import do_pypi_release
 
 class MDEModes(IntEnum):
 
@@ -127,8 +129,6 @@ def mde_build(arguments: 'argparse.Namespace') -> MDEReturnCodes:
         Attila Kovacs
     """
 
-    build_type = arguments.build_type
-
     bump_version_number()
     create_constants_file()
     create_wheel()
@@ -148,4 +148,8 @@ def mde_release(arguments: 'argparse.Namespace') -> MDEReturnCodes:
         Attila Kovacs
     """
 
-    pass
+    bump_version_number()
+    create_constants_file()
+    create_wheel()
+    do_github_release(arguments=arguments)
+    do_pypi_release()
