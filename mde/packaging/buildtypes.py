@@ -17,26 +17,25 @@
 ##
 ## ============================================================================
 
-# Documentation
-sphinx>=2.3.1
-sphinx-pdj-theme
+"""
+Contains the list of supported build types.
+"""
 
-# Tools
-pyinstaller>=3.4
-pydeps>=1.9.13
-pygithub>=1.55
+# Runtime Imports
+from enum import IntEnum
 
-# Testing
-pytest>=5.4.1
-pytest-cov>=2.7.1
-pytest-html>=2.1.1
-pytest-reraise>=1.0.3
-codecov>=2.0.15
-coverage>=4.5.2
-pylint>=2.6.1
-pylint-exit>=1.2.0
-semgrep>=0.39.1
+class BuildTypes(IntEnum):
 
-# Utilities
-py>=1.10
-coloredlogs>=15.0
+    """List of supported build types.
+
+    Attributes:
+        DEVELOPMENT: Marks a development build/
+
+        RELEASE: Marks a release build.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    DEVELOPMENT = 0     # Marks a development build
+    RELEASE = 1         # Marks a release build

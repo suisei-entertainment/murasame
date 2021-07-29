@@ -20,7 +20,7 @@
 SHELL := /bin/bash
 
 WORKSPACE_DIRECTORY =  ~/.murasame
-VIRTUALENV_DIRECTORY = ./.env
+VIRTUALENV_DIRECTORY = ${WORKSPACE_DIRECTORY}/.env
 
 SUBLIME_VERSION := $(shell subl --version 2> /dev/null)
 UNAME := $(shell uname)
@@ -46,8 +46,8 @@ configure:
 	mkdir -p $(WORKSPACE_DIRECTORY)/logs/unittest
 	@echo
 
-	@echo Creating virtual environment in ./.env...
-	virtualenv --python=python3.8 $(VIRTUALENV_DIRECTORY)
+	@echo Creating virtual environment in ~/.murasame/.env...
+	virtualenv --python=python3.9 $(VIRTUALENV_DIRECTORY)
 	@echo
 
 	@echo Installing requirements inside the virtual environment...
@@ -107,7 +107,7 @@ uninstall:
 ## ============================================================================
 build:
 	@echo Executing project build...
-	./scripts/build --type=development
+	python -m mde --build=development
 	@echo
 
 ## ============================================================================
@@ -147,7 +147,7 @@ coverage:
 ## ============================================================================
 release:
 	@echo Releasing new version...
-	./scripts/build --type=release
+	python -m mde --release
 	@echo
 
 ## ============================================================================

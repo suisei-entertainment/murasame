@@ -17,26 +17,27 @@
 ##
 ## ============================================================================
 
-# Documentation
-sphinx>=2.3.1
-sphinx-pdj-theme
+"""
+Contains utility functions for handling Git commits.
+"""
 
-# Tools
-pyinstaller>=3.4
-pydeps>=1.9.13
-pygithub>=1.55
+# Runtime Imports
+import subprocess
 
-# Testing
-pytest>=5.4.1
-pytest-cov>=2.7.1
-pytest-html>=2.1.1
-pytest-reraise>=1.0.3
-codecov>=2.0.15
-coverage>=4.5.2
-pylint>=2.6.1
-pylint-exit>=1.2.0
-semgrep>=0.39.1
+def get_git_commit_hash() -> str:
 
-# Utilities
-py>=1.10
-coloredlogs>=15.0
+    """Returns the commit hash of the current HEAD of the repository.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    scm_id = None
+
+    try:
+        scm_id = subprocess.check_output(
+            ['git', 'rev-parse', 'HEAD']).strip().decode('ascii')
+    except subprocess.CalledProcessError:
+        scm_id = None
+
+    return scm_id

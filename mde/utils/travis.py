@@ -17,26 +17,31 @@
 ##
 ## ============================================================================
 
-# Documentation
-sphinx>=2.3.1
-sphinx-pdj-theme
+"""
+Contains utility functions used for interacting with Travis.
+"""
 
-# Tools
-pyinstaller>=3.4
-pydeps>=1.9.13
-pygithub>=1.55
+# Runtime Imports
+import os
 
-# Testing
-pytest>=5.4.1
-pytest-cov>=2.7.1
-pytest-html>=2.1.1
-pytest-reraise>=1.0.3
-codecov>=2.0.15
-coverage>=4.5.2
-pylint>=2.6.1
-pylint-exit>=1.2.0
-semgrep>=0.39.1
+def is_travis() -> bool:
 
-# Utilities
-py>=1.10
-coloredlogs>=15.0
+    """Returns whether or not the tool is running in a Travis CI environment.
+
+    Returns:
+        bool: 'True', if MDE is running in a Travis environment, 'False'
+            otherwise.
+
+    Authors:
+        Attila Kovacs
+    """
+
+    result = False
+    try:
+        temp = os.environ['TRAVIS']
+        del temp
+        result = True
+    except KeyError:
+        result = False
+
+    return result

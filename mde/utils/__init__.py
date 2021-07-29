@@ -17,26 +17,6 @@
 ##
 ## ============================================================================
 
-# Documentation
-sphinx>=2.3.1
-sphinx-pdj-theme
-
-# Tools
-pyinstaller>=3.4
-pydeps>=1.9.13
-pygithub>=1.55
-
-# Testing
-pytest>=5.4.1
-pytest-cov>=2.7.1
-pytest-html>=2.1.1
-pytest-reraise>=1.0.3
-codecov>=2.0.15
-coverage>=4.5.2
-pylint>=2.6.1
-pylint-exit>=1.2.0
-semgrep>=0.39.1
-
-# Utilities
-py>=1.10
-coloredlogs>=15.0
+"""
+Contains various utility functions used by MDE.
+"""
