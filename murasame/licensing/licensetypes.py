@@ -22,7 +22,7 @@ Contains the implementation of the LicenseTypes class.
 """
 
 # Runtime Imports
-from enum import IntEnum
+from enum import IntEnum, auto
 
 class LicenseTypes(IntEnum):
 
@@ -36,5 +36,5 @@ class LicenseTypes(IntEnum):
         Attila Kovacs
     """
 
-    PRODUCTION = 0
-    DEVELOPMENT = 42
+    PRODUCTION = auto()
+    DEVELOPMENT = auto()

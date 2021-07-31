@@ -22,9 +22,10 @@ Contains the definition of the VFSAPI.
 """
 
 # Runtime Imports
+from abc import ABC, abstractmethod
 from typing import Any
 
-class VFSAPI:
+class VFSAPI(ABC):
 
     """The root class of the Virtual File System.
 
@@ -32,6 +33,7 @@ class VFSAPI:
         Attila Kovacs
     """
 
+    @abstractmethod
     def get_node(self, key: str) -> 'VFSNode':
 
         """Retrieves a VFS node by its key.
@@ -50,6 +52,7 @@ class VFSAPI:
 
         del key
 
+    @abstractmethod
     def get_content(self, key: str, version: 'ResourceVersion' = None) -> Any:
 
         """Retrieves the content of a VFS node by its key.
@@ -71,6 +74,7 @@ class VFSAPI:
         del key
         del version
 
+    @abstractmethod
     def register_source(self, path: str) -> None:
 
         """Registers a new VFS data source.
@@ -89,6 +93,7 @@ class VFSAPI:
 
         del path
 
+    @abstractmethod
     def add_node(self, node: 'VFSNode', parent: str = '') -> None:
 
         """Adds a new node to the VFS.
@@ -110,6 +115,7 @@ class VFSAPI:
         del node
         del parent
 
+    @abstractmethod
     def remove_node(self, node_name: str) -> None:
 
         """Removes an existing VFS node from the node tree.
@@ -125,6 +131,7 @@ class VFSAPI:
 
         del node_name
 
+    @abstractmethod
     def has_node(self, name: str) -> bool:
 
         """Returns whether or not there is a VFS node with a given name in the
@@ -146,6 +153,7 @@ class VFSAPI:
         del name
         return  False
 
+    @abstractmethod
     def get_all_files(
             self,
             node_name: str,

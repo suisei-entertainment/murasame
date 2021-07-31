@@ -22,7 +22,7 @@ Contains the implementation of the LogLevels class.
 """
 
 # Runtime Imports
-from enum import IntEnum
+from enum import IntEnum, auto
 
 class LogLevels(IntEnum):
 
@@ -48,15 +48,15 @@ class LogLevels(IntEnum):
         Attila Kovacs
     """
 
-    TRACE = 0
-    DEBUG = 1
-    INFO = 2
-    NOTICE = 3
-    WARNING = 4
-    ERROR = 5
-    CRITICAL = 6
-    ALERT = 7
-    EMERGENCY = 8
+    TRACE = auto()
+    DEBUG = auto()
+    INFO = auto()
+    NOTICE = auto()
+    WARNING = auto()
+    ERROR = auto()
+    CRITICAL = auto()
+    ALERT = auto()
+    EMERGENCY = auto()
 
 # Conversion map to use when reading the log level from a string.
 LOG_LEVEL_CONVERSION_MAP = \

@@ -22,7 +22,7 @@ Contains the list of error codes supported by the framework.
 """
 
 # Runtime Imports
-from enum import IntEnum
+from enum import IntEnum, auto
 
 class ErrorCodes(IntEnum):
 
@@ -60,15 +60,15 @@ class ErrorCodes(IntEnum):
         Attila Kovacs
     """
 
-    NOT_SET = 0
-    INPUT_ERROR = 1
-    PERMISSION_ERROR = 2
-    RUNTIME_ERROR = 3
-    ALREADY_REGISTERED = 4
-    ALREADY_EXISTS = 5
-    NOT_REGISTERED = 6
-    UNCAUGHT_EXCEPTION = 7
-    MISSING_REQUIREMENT = 8
-    INSTALL_FAILED = 9
-    LICENSE_ERROR = 10
-    DATABASE_ERROR = 11
+    NOT_SET = auto()
+    INPUT_ERROR = auto()
+    PERMISSION_ERROR = auto()
+    RUNTIME_ERROR = auto()
+    ALREADY_REGISTERED = auto()
+    ALREADY_EXISTS = auto()
+    NOT_REGISTERED = auto()
+    UNCAUGHT_EXCEPTION = auto()
+    MISSING_REQUIREMENT = auto()
+    INSTALL_FAILED = auto()
+    LICENSE_ERROR = auto()
+    DATABASE_ERROR = auto()

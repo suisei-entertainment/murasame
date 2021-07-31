@@ -21,7 +21,10 @@
 Contains the definition of the LoggingAPI.
 """
 
-class LoggingAPI:
+# Runtime Imports
+from abc import ABC, abstractmethod
+
+class LoggingAPI(ABC):
 
     """Common interface for logging system implementations.
 
@@ -29,6 +32,7 @@ class LoggingAPI:
         Attila Kovacs
     """
 
+    @abstractmethod
     def has_channel(self, name: str) -> bool:
 
         """Returns whether or not a given log channel is registered in the
@@ -50,6 +54,7 @@ class LoggingAPI:
         del name
         return False
 
+    @abstractmethod
     def get_channel(self, name: str) -> 'LogChannel':
 
         """Returns a given log channel.

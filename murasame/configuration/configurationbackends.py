@@ -22,7 +22,7 @@ Contains the implementation of the ConfigurationBackends enum.
 """
 
 # Platform Imports
-from enum import IntEnum
+from enum import IntEnum, auto
 
 class ConfigurationBackends(IntEnum):
 
@@ -38,7 +38,6 @@ class ConfigurationBackends(IntEnum):
             Attila Kovacs
     """
 
-    NOT_SET = 0         # Default value
-
-    DICTIONARY = 1      # In-memory dictionary
-    REDIS = 2           # Redis
+    NOT_SET = auto()         # Default value
+    DICTIONARY = auto()      # In-memory dictionary
+    REDIS = auto()           # Redis

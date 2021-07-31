@@ -22,9 +22,10 @@ Contains the definition of the ConfigurationAPI.
 """
 
 # Runtime Imports
+from abc import ABC, abstractmethod
 from typing import Callable, Any
 
-class ConfigurationAPI:
+class ConfigurationAPI (ABC):
 
     """System definition for the configuration system.
 
@@ -32,6 +33,7 @@ class ConfigurationAPI:
         Attila Kovacs
     """
 
+    @abstractmethod
     def initialize(
             self,
             backend_type: 'ConfigurationBackends' = 'ConfigurationBackends.DICTIONARY',
@@ -62,6 +64,7 @@ class ConfigurationAPI:
         del backend_type
         del cb_retrieve_key
 
+    @abstractmethod
     def get(self, attribute: str) -> Any:
 
         """Retrieves the value of a single configuration attribute.
@@ -80,6 +83,7 @@ class ConfigurationAPI:
 
         del attribute
 
+    @abstractmethod
     def set(self, attribute: str, value: Any) -> None:
 
         """Sets the value of a given configuration attribute.
@@ -97,6 +101,7 @@ class ConfigurationAPI:
         del attribute
         del value
 
+    @abstractmethod
     def load(self) -> None:
 
         """Loads the configuration to memory.
@@ -109,6 +114,7 @@ class ConfigurationAPI:
 
         return
 
+    @abstractmethod
     def save(self) -> None:
 
         """Saves the current configuration.

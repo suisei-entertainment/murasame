@@ -22,7 +22,7 @@ Contains the implementation of the ApplicationTypes enum.
 """
 
 # Runtime Imports
-from enum import IntEnum
+from enum import IntEnum, auto
 
 class ApplicationTypes(IntEnum):
 
@@ -36,5 +36,5 @@ class ApplicationTypes(IntEnum):
         Attila Kovacs
     """
 
-    DAEMON_APPLICATION = 0  # Unix daemon
-    CLI_APPLICATION  = 1 # CLI application
+    DAEMON_APPLICATION = auto()  # Unix daemon
+    CLI_APPLICATION  = auto() # CLI application

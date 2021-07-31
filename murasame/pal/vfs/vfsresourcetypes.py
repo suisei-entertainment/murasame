@@ -22,7 +22,7 @@ Contains the implementation of the VFSResourceTypes class.
 """
 
 # Runtime Imports
-from enum import IntEnum
+from enum import IntEnum, auto
 
 class VFSResourceTypes(IntEnum):
 
@@ -37,6 +37,6 @@ class VFSResourceTypes(IntEnum):
         Attila Kovacs
     """
 
-    UNKNOWN = 0 # Unknown resource type
-    LOCAL_FILE = 1 # File in the local file system
-    PACKAGE_FILE = 2 # File in a resource package
+    UNKNOWN = auto() # Unknown resource type
+    LOCAL_FILE = auto() # File in the local file system
+    PACKAGE_FILE = auto() # File in a resource package

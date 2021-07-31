@@ -21,7 +21,10 @@
 Contains the definition of the ApplicationAPI.
 """
 
-class ApplicationAPI:
+# Runtime Imports
+from abc import ABC
+
+class ApplicationAPI(ABC):
 
     """API definition for the Application.
 
