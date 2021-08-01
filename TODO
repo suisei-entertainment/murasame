@@ -17,6 +17,9 @@
     ✔ Support for basic debugging decorators.
   Entity-Component Management:
 
+  Events:
+    ☐ Support for basic event system.
+
   Exceptions:
     ✔ Basic exception support.
   Licensing:
@@ -69,6 +72,8 @@
 
   Entity-Component Management:
     ☐ Support for basic entity-component system.
+  Events:
+
   Exceptions:
 
   Licensing:
@@ -113,6 +118,8 @@
 
   Entity-Component Management:
 
+  Events:
+
   Exceptions:
 
   Licensing:
@@ -143,8 +150,9 @@
 
   Entity-Component Management:
 
-  Ex
-  ceptions:
+  Events:
+
+  Exceptions:
 
   Licensing:
 
@@ -175,6 +183,8 @@
   Debugging:
 
   Entity-Component Management:
+
+  Events:
 
   Exceptions:
 
@@ -208,6 +218,8 @@
 
   Entity-Component Management:
 
+  Events:
+
   Exceptions:
 
   Licensing:
@@ -237,6 +249,8 @@
   Debugging:
 
   Entity-Component Management:
+
+  Events:
 
   Exceptions:
 
@@ -268,6 +282,8 @@
 
   Entity-Component Management:
 
+  Events:
+
   Exceptions:
 
   Licensing:
@@ -297,6 +313,8 @@
   Debugging:
 
   Entity-Component Management:
+
+  Events:
 
   Exceptions:
 
@@ -328,6 +346,8 @@
 
   Entity-Component Management:
 
+  Events:
+
   Exceptions:
 
   Licensing:
@@ -358,6 +378,8 @@ FUTURE:
 
   Entity-Component Management:
 
+  Events:
+
   Exceptions:
 
   Licensing:
@@ -387,6 +409,8 @@ WISHLIST:
   Debugging:
 
   Entity-Component Management:
+
+  Events:
 
   Exceptions:
 
