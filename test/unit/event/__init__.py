@@ -18,11 +18,6 @@
 ## ============================================================================
 
 """
-Contains the various framework APIs.
+Contains the unit tests for the event system.
 """
 
-from murasame.api.applicationapi import ApplicationAPI
-from murasame.api.configurationapi import ConfigurationAPI
-from murasame.api.loggingapi import LoggingAPI
-from murasame.api.vfsapi import VFSAPI
-from murasame.api.eventapi import EventAPI
