@@ -18,7 +18,7 @@
   Entity-Component Management:
 
   Events:
-    ☐ Support for basic event system.
+    ✔ Support for basic event system.
 
   Exceptions:
     ✔ Basic exception support.
