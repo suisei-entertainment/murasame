@@ -37,7 +37,7 @@ import sentry_sdk
 # Murasame Imports
 from murasame.api import LoggingAPI, ConfigurationAPI, VFSAPI, ApplicationAPI
 from murasame.exceptions import InvalidInputError, InvalidLicenseKeyError
-from murasame.logging import LogWriter, LoggingSystem
+from murasame.log import LogWriter, LoggingSystem
 from murasame.licensing import LicenseValidator
 from murasame.utils import SystemLocator
 from murasame.application.applicationreturncodes import ApplicationReturnCodes
@@ -170,8 +170,8 @@ class Application(LogWriter):
         # Pylint doesn't recognize the instance() method of Singleton.
         #pylint: disable=no-member
 
-        # Initialize the logging system
-        self.info('Initializing logging system...')
+        # Initialize the log system
+        self.info('Initializing log system...')
         logging_system = LoggingSystem()
         SystemLocator.instance().register_provider(LoggingAPI, logging_system)
 

@@ -27,7 +27,7 @@ from enum import IntEnum
 from typing import Union
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresource import VFSResource
 from murasame.pal.vfs.vfslocalfile import VFSLocalFile

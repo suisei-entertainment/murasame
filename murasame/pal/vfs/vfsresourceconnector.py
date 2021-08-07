@@ -25,7 +25,7 @@ Contains the implementation of the VFSResourceConnector class.
 from typing import Any
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 class VFSResourceConnector(LogWriter):
 

@@ -119,14 +119,6 @@ documentation:
 	@echo
 
 ## ============================================================================
-##	Executes the unit tests of the framework
-## ============================================================================
-unittest:
-	@echo Executing unit tests...
-	pytest -vv --durations=10 --full-trace --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html
-	@echo
-
-## ============================================================================
 ##	Executes the linter on the framework's source code
 ## ============================================================================
 lint:
@@ -137,9 +129,9 @@ lint:
 ## ============================================================================
 ##	Measures the unit test coverage of the framework
 ## ============================================================================
-coverage:
-	@echo Measuring unit test coverage...
-	pytest -vv --durations=10 --full-trace --html=$(WORKSPACE_DIRECTORY)/logs/unittest/report.html --self-contained-html --cov=./murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+test:
+	@echo Executing framework tests...
+	pytest
 	@echo
 
 ## ============================================================================

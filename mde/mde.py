@@ -148,8 +148,5 @@ def mde_release(arguments: 'argparse.Namespace') -> MDEReturnCodes:
         Attila Kovacs
     """
 
-    bump_version_number()
-    create_constants_file()
-    create_wheel()
     do_github_release(arguments=arguments)
     do_pypi_release()

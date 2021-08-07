@@ -23,7 +23,7 @@ Contains the implementation of the VFSResource class.
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class VFSResource(LogWriter):

@@ -27,7 +27,7 @@ from threading import Thread
 from typing import Any
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class ClientThread(Thread):
@@ -176,6 +176,7 @@ class ClientThread(Thread):
             # Read from the socket
             try:
                 raw_data = self.Connection.recv(4096)
+                print(f'RAW data received: {raw_data}')
                 message_size = len(raw_data)
                 self._parent_socket.increase_bytes_received(
                     bytes_received=message_size)

@@ -26,11 +26,11 @@ from typing import Any, Callable
 from time import perf_counter
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 def debug(function: Callable) -> Any:
 
-    """Allows logging of a function call with the arguments it was called with.
+    """Allows log of a function call with the arguments it was called with.
 
     Args:
         function (Callable): The function to debug.
@@ -54,7 +54,7 @@ def debug(function: Callable) -> Any:
 
 def time(function: Callable) -> Any:
 
-    """Allows logging of the execution time of functions.
+    """Allows log of the execution time of functions.
 
     Args:
         *args: Variable argument list.

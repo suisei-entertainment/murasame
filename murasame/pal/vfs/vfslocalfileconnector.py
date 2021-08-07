@@ -114,7 +114,7 @@ class VFSLocalFileConnector(VFSResourceConnector):
 
         # The following block will throw a no-else return warning even though
         # there is a return statement after it. Pylint probably cannot handle
-        # the logging statement between the elif and the final return.
+        # the log statement between the elif and the final return.
         #pylint: disable=no-else-return
 
         if content_type == 'application/json':

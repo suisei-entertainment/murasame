@@ -26,7 +26,7 @@ from typing import Callable, Any
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.configuration.configurationbackends import ConfigurationBackends
 from murasame.configuration.dictionarybackend import DictionaryBackend
 from murasame.configuration.vfsconfigurationsource import VFSConfigurationSource

@@ -29,7 +29,7 @@ import httpx
 from googletrans import Translator
 
 # Murasame Imports
-from murasame.logging.logwriter import LogWriter
+from murasame.log.logwriter import LogWriter
 from murasame.api import VFSAPI
 from murasame.utils import SystemLocator
 

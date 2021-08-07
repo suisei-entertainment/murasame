@@ -18,7 +18,7 @@
 ## ============================================================================
 
 """
-Contains utility functions used for logging.
+Contains utility functions used for log.
 """
 
 # Runtime Imports
@@ -50,7 +50,7 @@ def enable_coloredlogs(log_level: int) -> None:
     """Enables colored logs, if the coloredlogs package is available.
 
     Args:
-        log_level (int): The log level that is configured for the logging
+        log_level (int): The log level that is configured for the log
             system.
 
     Authors:
@@ -65,7 +65,7 @@ def enable_coloredlogs(log_level: int) -> None:
 
 def initialize_logging(log_level: str = 'DEBUG') -> None:
 
-    """Initializes the logging of MDE.
+    """Initializes the log of MDE.
 
     Authors:
         Attila Kovacs

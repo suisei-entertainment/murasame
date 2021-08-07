@@ -26,7 +26,7 @@ from typing import Any
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 class ConfigurationList(LogWriter):
 

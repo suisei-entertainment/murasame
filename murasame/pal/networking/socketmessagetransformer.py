@@ -25,7 +25,7 @@ Contains the implementation of the SocketMessageTransformer class.
 from typing import Any
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class SocketMessageTransformer(LogWriter):

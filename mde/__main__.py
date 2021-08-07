@@ -58,7 +58,7 @@ def main() -> int:
     # Enable debug mode if requested through the command line
     log_level = 'DEBUG' if args.debug_mode else MDE_LOG_LEVEL
 
-    # Initialize logging according to the configured log level. This will also
+    # Initialize log according to the configured log level. This will also
     # enable colored logs, if the package is available in the host system.
     initialize_logging(log_level=log_level)
 

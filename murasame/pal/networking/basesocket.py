@@ -28,7 +28,7 @@ from enum import IntEnum
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError, MissingRequirementError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class BaseSocket(LogWriter):

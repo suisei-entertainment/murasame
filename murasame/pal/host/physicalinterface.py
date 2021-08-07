@@ -22,7 +22,7 @@ Contains the implementation of the PhysicalInterface class.
 """
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 from murasame.pal.host.linkaddress import LinkAddress
 from murasame.pal.host.ipv4address import IPv4Address

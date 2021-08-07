@@ -25,7 +25,7 @@ Contains the implementation of the ConfigurationBackend class.
 from typing import Any
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 class ConfigurationBackend(LogWriter):
 

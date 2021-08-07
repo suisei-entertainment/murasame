@@ -22,7 +22,7 @@ Contains the implementation of the ConfigurationSource class.
 """
 
 # Murasame Imports
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 class ConfigurationSource(LogWriter):
 

@@ -26,7 +26,7 @@ import platform
 
 # Murasame Imports
 from murasame.exceptions import MissingRequirementError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 from murasame.pal.host.hostdistribution import HostDistribution
 

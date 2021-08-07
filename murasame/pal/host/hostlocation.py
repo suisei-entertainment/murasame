@@ -37,7 +37,7 @@ import wget
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
 from murasame.utils import GeoIP
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 PACKAGE_DOWNLOAD_LOCATION = '/tmp'
 

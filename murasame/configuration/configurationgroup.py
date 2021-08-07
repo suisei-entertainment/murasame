@@ -23,7 +23,7 @@ Contains the implementation of the ConfigurationGroup class.
 
 # Murasame Imports
 from murasame.exceptions import AlreadyExistsError, InvalidInputError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.configuration.configurationattribute import ConfigurationAttribute
 from murasame.configuration.configurationlist import ConfigurationList
 

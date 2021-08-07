@@ -32,7 +32,7 @@ import magic
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 from murasame.utils import SystemLocator, JsonFile
 
 class VFSPackage(LogWriter):

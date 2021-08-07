@@ -26,7 +26,7 @@ import requests
 
 # SEED Imports
 from murasame.exceptions import InvalidInputError
-from murasame.logging import LogWriter
+from murasame.log import LogWriter
 
 from murasame.pal.host.physicalinterface import PhysicalInterface
 from murasame.pal.host.hostlocation import HostLocation

@@ -25,7 +25,7 @@ Contains the implementation of the event system.
 from typing import Callable
 
 # Murasame Imports
-from murasame.logging.logwriter import LogWriter
+from murasame.log.logwriter import LogWriter
 
 class EventSystem(LogWriter):
 

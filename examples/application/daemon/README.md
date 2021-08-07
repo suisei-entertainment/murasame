@@ -1,0 +1,1 @@
+Contains the implementation of a simple Unix daemon application.

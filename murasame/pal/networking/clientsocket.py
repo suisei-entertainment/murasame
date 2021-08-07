@@ -222,11 +222,11 @@ class ClientSocket(BaseSocket):
         raw_message = None
 
         if self._transformer:
-            raw_message = self._transformer.serialize(message)
+            raw_message = self._transformer.serialize(message=message)
         else:
             raw_message = message
 
-        message_size = len(raw_message)
+        message_size = len(raw_message) + 1
 
         try:
             self._socket.sendall(raw_message, message_size)

@@ -26,7 +26,7 @@ from abc import ABC, abstractmethod
 
 class LoggingAPI(ABC):
 
-    """Common interface for logging system implementations.
+    """Common interface for log system implementations.
 
     Authors:
         Attila Kovacs
@@ -36,7 +36,7 @@ class LoggingAPI(ABC):
     def has_channel(self, name: str) -> bool:
 
         """Returns whether or not a given log channel is registered in the
-        logging system.
+        log system.
 
         Args:
             name (str): The name of the log channel to check.

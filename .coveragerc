@@ -19,7 +19,7 @@ skip_covered = False
 
 [html]
 directory = ~/.murasame/logs/test/coverage
-title = Murasame Unit Test Coverage Report
+title = Murasame Test Coverage Report
 
 [xml]
 output = ~/.murasame/coverage.xml

@@ -27,10 +27,12 @@ pydeps>=1.9.13
 pygithub>=1.55
 
 # Testing
-pytest>=5.4.1
+pytest>=6.2.4
 pytest-cov>=2.7.1
 pytest-html>=2.1.1
 pytest-reraise>=1.0.3
+pytest-xprocess>=0.18.1
+pytest-xdist>=2.3.0
 codecov>=2.0.15
 coverage>=4.5.2
 pylint>=2.6.1
