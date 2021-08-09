@@ -41,7 +41,8 @@ from murasame.exceptions import InvalidInputError
 from murasame.utils.certificates import X509GenericCertificateFields, X509Certificate
 from murasame.utils.rsa import RSAPrivate, RSAKeyGenerator
 
-CERT_BASE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 class TestX509GenericCertificateFields:
 
@@ -173,58 +174,6 @@ class TestX509Certificate:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        command = f'openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout {CERT_BASE_PATH}/key.pem -out {CERT_BASE_PATH}/cert.pem -days 365 -subj "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com"'
-
-        try:
-            FNULL = open(os.devnull, 'w')
-            subprocess.run(command, shell=True, stdout=FNULL, check=True)
-        except subprocess.CalledProcessError:
-            assert False
-
-        with open(f'{CERT_BASE_PATH}/invalid_cert.pem', 'w') as file:
-            file.write('invalid')
-
-        with open(f'{CERT_BASE_PATH}/invalid_key.pem', 'w') as file:
-            file.write('invalid')
-
-        generator = RSAKeyGenerator()
-        generator.save_key_pair(
-            private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem',
-            public_key_path=f'{CERT_BASE_PATH}/cert_signing_key_public.pem')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/key.pem'):
-            os.remove(f'{CERT_BASE_PATH}/key.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/cert.pem'):
-            os.remove(f'{CERT_BASE_PATH}/cert.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/key2.pem'):
-            os.remove(f'{CERT_BASE_PATH}/key2.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/cert2.pem'):
-            os.remove(f'{CERT_BASE_PATH}/cert2.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/invalid_cert.pem'):
-            os.remove(f'{CERT_BASE_PATH}/invalid_cert.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/invalid_key.pem'):
-            os.remove(f'{CERT_BASE_PATH}/invalid_key.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/generated.pem'):
-            os.remove(f'{CERT_BASE_PATH}/generated.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/cert_signing_key.pem'):
-            os.remove(f'{CERT_BASE_PATH}/cert_signing_key.pem')
-
-        if os.path.isfile(f'{CERT_BASE_PATH}/cert_signing_key_public.pem'):
-            os.remove(f'{CERT_BASE_PATH}/cert_signing_key_public.pem')
-
     def test_creation(self):
 
         """Tests that a certificate object can be created.
@@ -259,8 +208,8 @@ class TestX509Certificate:
         """
 
         sut = X509Certificate(
-            certificate_path=f'{CERT_BASE_PATH}/cert.pem',
-            private_key_path=f'{CERT_BASE_PATH}/key.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/cert.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/key.pem')
 
         assert sut.Version == cryptography.x509.Version.v3
         assert sut.Fingerprint is not None
@@ -287,8 +236,8 @@ class TestX509Certificate:
 
         with pytest.raises(InvalidInputError):
             sut = X509Certificate(
-            certificate_path=f'{CERT_BASE_PATH}/invalid_cert.pem',
-            private_key_path=f'{CERT_BASE_PATH}/invalid_key.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/invalid_cert.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/invalid_key.pem')
 
     def test_loading_non_existent_certificate(self):
 
@@ -312,16 +261,16 @@ class TestX509Certificate:
         """
 
         sut = X509Certificate(
-            certificate_path=f'{CERT_BASE_PATH}/cert.pem',
-            private_key_path=f'{CERT_BASE_PATH}/key.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/cert.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/key.pem')
 
         sut.save(
-            certificate_path=f'{CERT_BASE_PATH}/cert2.pem',
-            private_key_path=f'{CERT_BASE_PATH}/key2.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/cert2.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/key2.pem')
 
         sut2 = X509Certificate(
-            certificate_path=f'{CERT_BASE_PATH}/cert2.pem',
-            private_key_path=f'{CERT_BASE_PATH}/key2.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/cert2.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/key2.pem')
 
         assert sut.Version == sut2.Version
         assert sut.Fingerprint == sut2.Fingerprint
@@ -347,7 +296,7 @@ class TestX509Certificate:
             Attila Kovacs
         """
 
-        key = RSAPrivate(key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
+        key = RSAPrivate(key_path=f'{TEST_FILES_DIRECTORY}/cert_signing_key.pem')
 
         sut = X509Certificate()
 
@@ -367,13 +316,13 @@ class TestX509Certificate:
             email='testemail',
             san='testsan')
 
-        sut.generate(certificate_path=f'{CERT_BASE_PATH}/generated.pem',
+        sut.generate(certificate_path=f'{TEST_FILES_DIRECTORY}/generated.pem',
                      private_key=key,
                      descriptor=descriptor)
 
         cert = X509Certificate(
-            certificate_path=f'{CERT_BASE_PATH}/generated.pem',
-            private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/generated.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/cert_signing_key.pem')
 
         assert cert is not None
         assert cert.IsValid
@@ -387,7 +336,7 @@ class TestX509Certificate:
             Attila Kovacs
         """
 
-        key = RSAPrivate(key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
+        key = RSAPrivate(key_path=f'{TEST_FILES_DIRECTORY}/cert_signing_key.pem')
 
         sut = X509Certificate()
 
@@ -410,15 +359,15 @@ class TestX509Certificate:
         start_date = datetime.datetime.utcnow() + datetime.timedelta(days=1)
         end_date = start_date + datetime.timedelta(days=10)
 
-        sut.generate(certificate_path=f'{CERT_BASE_PATH}/generated.pem',
+        sut.generate(certificate_path=f'{TEST_FILES_DIRECTORY}/generated.pem',
                      private_key=key,
                      descriptor=descriptor,
                      not_valid_before=start_date,
                      not_valid_after=end_date)
 
         cert = X509Certificate(
-            certificate_path=f'{CERT_BASE_PATH}/generated.pem',
-            private_key_path=f'{CERT_BASE_PATH}/cert_signing_key.pem')
+            certificate_path=f'{TEST_FILES_DIRECTORY}/generated.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/cert_signing_key.pem')
 
         assert cert is not None
         assert not cert.IsValid

@@ -44,7 +44,8 @@ from murasame.utils import (
     RSAPrivate,
     RSAPublic)
 
-TEST_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 def get_password():
     return b'testpassword'
@@ -61,32 +62,6 @@ class TestLicenseFile:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        key_generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_2048,
-            cb_retrieve_password=get_password)
-
-        key_generator.save_key_pair(
-            private_key_path=f'{TEST_PATH}/license_private.pem',
-            public_key_path=f'{TEST_PATH}/license_public.pem')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{TEST_PATH}/license_private.pem'):
-            os.remove(f'{TEST_PATH}/license_private.pem')
-
-        if os.path.isfile(f'{TEST_PATH}/license_public.pem'):
-            os.remove(f'{TEST_PATH}/license_public.pem')
-
-        if os.path.isfile(f'{TEST_PATH}/license.lic'):
-            os.remove(f'{TEST_PATH}/license.lic')
-
-        if os.path.isfile(f'{TEST_PATH}/license2.lic'):
-            os.remove(f'{TEST_PATH}/license2.lic')
-
     def test_creation_with_existing_private_key(self):
 
         """
@@ -98,17 +73,17 @@ class TestLicenseFile:
         """
 
         private_key = RSAPrivate(
-            key_path='{}/license_private.pem'.format(TEST_PATH),
+            key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_password=get_password)
 
         public_key = RSAPublic(
-            key_path='{}/license_public.pem'.format(TEST_PATH))
+            key_path=f'{TEST_FILES_DIRECTORY}/license_public.pem')
 
         generator = LicenseGenerator(
             private_key=private_key,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        license_path = f'{TEST_PATH}/license.lic'
+        license_path = f'{TEST_FILES_DIRECTORY}/license.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()
@@ -143,11 +118,11 @@ class TestLicenseFile:
         """
 
         generator = LicenseGenerator(
-            private_key_path=f'{TEST_PATH}/license_private.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_key_password=get_password,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        license_path = f'{TEST_PATH}/license2.lic'
+        license_path = f'{TEST_FILES_DIRECTORY}/license2.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()

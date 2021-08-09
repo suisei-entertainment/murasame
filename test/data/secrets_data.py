@@ -18,44 +18,33 @@
 ## ============================================================================
 
 """
-Contains unit test configuration.
+Contains the data used for secrets testing.
 """
 
 # Runtime Imports
 import os
-import shutil
-import py
-import socket
 
-# Dependency Imports
-import pytest
-from py.xml import html
-from xprocess import XProcess
+# Murasame Imports
+from murasame.utils import JsonFile
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
-from test.testdata import initialize_test_data
 
-def pytest_html_report_title(report):
-   report.title = 'Murasame Test Report'
+TEST_PASSWORD = 'testpassword'
 
-def pytest_sessionstart(session):
-   initialize_test_data()
+def get_password():
+    return TEST_PASSWORD
 
-def pytest_sessionfinish(session, exitstatus):
+TEST_DATA = \
+{
+    'testkey': 'testvalue'
+}
 
-   # Shut down all running XProcess processes
-   tw = py.io.TerminalWriter()
-   rootdir = session.config.rootdir.join(".xprocess").ensure(dir=1)
-   xproc = XProcess(session.config, rootdir)
-   xproc._xkill(tw)
+def create_secrets_data():
 
-   # Kill the socket server if it's still running (e.g. due to the server
-   # socket test not running)
-   try:
-      sock = socket.socket()
-      sock.connect(('localhost', 11492))
-      message = 'kill' + os.linesep
-      sock.sendall(message)
-   except socket.error:
-      pass
+    # Create the test file
+    config_file = JsonFile(
+        path=f'{TEST_FILES_DIRECTORY}/secrets.conf',
+        cb_retrieve_key=get_password)
+    config_file.overwrite_content(content=TEST_DATA)
+    config_file.save()

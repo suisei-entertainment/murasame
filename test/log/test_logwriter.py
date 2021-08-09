@@ -67,7 +67,7 @@ class TestLogWriter:
         """
 
         sut = LogWriter(channel_name='test', cache_entries=True)
-        assert sut.LogLevel == LogLevels.DEBUG
+        assert sut.LogLevel == LogLevels.INFO
 
     def test_creation_without_logging_service_and_caching_disabled(self):
 
@@ -80,7 +80,7 @@ class TestLogWriter:
         """
 
         sut = LogWriter(channel_name='test', cache_entries=False)
-        assert sut.LogLevel == LogLevels.DEBUG
+        assert sut.LogLevel == LogLevels.INFO
 
     def test_creation_with_logging_service(self):
 
@@ -106,7 +106,7 @@ class TestLogWriter:
         """
 
         sut = LogWriter(channel_name='test', cache_entries=False)
-        assert sut.LogLevel == LogLevels.DEBUG
+        assert sut.LogLevel == LogLevels.INFO
         sut.overwrite_log_level(new_log_level=LogLevels.WARNING)
         assert sut.LogLevel == LogLevels.WARNING
         assert sut.IsLogLevelOverwritten

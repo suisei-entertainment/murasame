@@ -41,18 +41,6 @@ COMMON_PASSWORD_LIST_2 = "password1\npassword2\npassword3\npassword4"
 
 class TestPasswordComplexity:
 
-    @classmethod
-    def setup_class(cls):
-
-        with open(COMMON_PASSWORD_LIST_PATH, 'w') as pwd_file:
-            pwd_file.write(COMMON_PASSWORD_LIST)
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(COMMON_PASSWORD_LIST_PATH):
-            os.remove(COMMON_PASSWORD_LIST_PATH)
-
     def test_creation(self):
 
         """

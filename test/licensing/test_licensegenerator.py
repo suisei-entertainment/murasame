@@ -43,7 +43,8 @@ from murasame.licensing import (
     LicenseDescriptor,
     LicenseTypes)
 
-TEST_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 def get_password():
     return b'testpassword'
@@ -60,29 +61,6 @@ class TestLicenseGenerator:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        key_generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_2048,
-            cb_retrieve_password=get_password)
-
-        key_generator.save_key_pair(
-            private_key_path=f'{TEST_PATH}/license_private.pem',
-            public_key_path=f'{TEST_PATH}/license_public.pem')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{TEST_PATH}/license_private.pem'):
-            os.remove(f'{TEST_PATH}/license_private.pem')
-
-        if os.path.isfile(f'{TEST_PATH}/license_public.pem'):
-            os.remove(f'{TEST_PATH}/license_public.pem')
-
-        if os.path.isfile(f'{TEST_PATH}/license.lic'):
-            os.remove(f'{TEST_PATH}/license.lic')
-
     def test_creation_with_existing_private_key(self):
 
         """
@@ -94,7 +72,7 @@ class TestLicenseGenerator:
         """
 
         private_key = RSAPrivate(
-            key_path=f'{TEST_PATH}/license_private.pem',
+            key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_password=get_password)
 
         sut = LicenseGenerator(
@@ -114,7 +92,7 @@ class TestLicenseGenerator:
         """
 
         sut = LicenseGenerator(
-            private_key_path=f'{TEST_PATH}/license_private.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_key_password=get_password,
             cb_retrieve_encryption_password=get_encryption_key)
 
@@ -130,14 +108,14 @@ class TestLicenseGenerator:
         """
 
         private_key = RSAPrivate(
-            key_path=f'{TEST_PATH}/license_private.pem',
+            key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_password=get_password)
 
         sut = LicenseGenerator(
             private_key=private_key,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        license_path = f'{TEST_PATH}/license.lic'
+        license_path = f'{TEST_FILES_DIRECTORY}/license.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()
@@ -154,4 +132,4 @@ class TestLicenseGenerator:
 
         sut.generate(output_path=license_path, license_descriptor=descriptor)
 
-        assert os.path.isfile(f'{TEST_PATH}/license.lic')
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/license.lic')

@@ -103,18 +103,24 @@ class CliProcessor:
         if config_file:
             config_file = os.path.abspath(os.path.expanduser(config_file))
 
-        if config_file and os.path.isfile(config_file):
-            conf = JsonFile(path=config_file)
+        if config_file:
+            if os.path.isfile(config_file):
+                conf = JsonFile(path=config_file)
 
-            try:
-                conf.load()
-                command_map = conf.Content
-            except InvalidInputError:
-                # If the config file cannot be loaded, fall back to the command
-                # map if it has been provided, only raise the exception if it's
-                # not available.
-                if not command_map:
-                    raise
+                try:
+                    conf.load()
+                    command_map = conf.Content
+                except InvalidInputError:
+                    # If the config file cannot be loaded, fall back to the
+                    # command map if it has been provided, only raise the
+                    # exception if it's not available.
+                    if not command_map:
+                        raise
+            elif not command_map:
+                raise InvalidInputError(
+                    f'The specified configuration file ({config_file}) '
+                    f'doesn\'t exist and there is no command map provided '
+                    'as fallback.')
 
         # Configure commands
         self._register_commands(command_map)
@@ -164,6 +170,9 @@ class CliProcessor:
             command_map (list): The command map to configure.
 
         Raises:
+            InvalidInputErrorL Raised when the provided command map does not
+                contain a valid command list.
+
             InvalidInputError: Raised when the type of a command map element
                 cannot be determined.
 
@@ -174,8 +183,15 @@ class CliProcessor:
             Attila Kovacs
         """
 
+        try:
+            commands = command_map['commands']
+        except KeyError:
+            raise InvalidInputError(
+                'The provided command map does not contain a valid command '
+                'list.')
+
         # Iterate over the command map and process the content
-        for element in command_map:
+        for element in commands:
             try:
                 element_type = element['type']
             except KeyError as exception:
@@ -196,8 +212,7 @@ class CliProcessor:
                 self._register_config(element=element, target=self._parser)
             else:
                 raise InvalidInputError(
-                    'Unknown command type {} encountered.'.format(
-                        element_type))
+                    f'Unknown command type {element_type} encountered.')
 
     def _register_group(self, element: dict) -> None:
 

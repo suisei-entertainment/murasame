@@ -27,11 +27,13 @@ import sys
 import shutil
 import subprocess
 import time
+import socket
 from typing import Any
 from string import Template
 
 # Dependency Imports
 import pytest
+import psutil
 from xprocess import ProcessStarter
 
 # Fix paths to make framework modules accessible
@@ -49,144 +51,10 @@ from murasame.pal.networking import \
 )
 from murasame.exceptions import InvalidInputError
 
-SERVER_PORT = 11492
+# Test Imports
+from test.constants import SHEBANG_STRING
 
 BASE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/socket'))
-
-TEST_SERVER = \
-"""
-#!$shebang
-
-import time
-import sys
-import _thread
-from typing import Any
-
-# Fix paths to make framework modules accessible without installation
-sys.path.insert(0, '$framework_dir')
-
-from murasame.pal.networking import ServerSocket, ClientThread, SocketMessageTransformer
-SERVER_PORT = $server_port
-
-class ExampleClientHandler(ClientThread):
-    def handle_message(self, message: Any) -> None:
-        print(f'Message received: {message}')
-        if message == 'testmessage':
-            print('Sending response...')
-            self.send('testresponse')
-            print('Response sent.')
-        elif message == 'kill':
-            print('Kill message received, interrupting main thread.')
-            _thread.interrupt_main()
-        else:
-            print('Unknown message')
-
-class ExampleMessageTransformer(SocketMessageTransformer):
-    def serialize(self, message: str) -> bytes:
-        return bytes(str(message), encoding='utf-8')
-    def deserialize(self, message: bytes) -> str:
-        print(f'RAW message: {message}')
-        deserialized = str(message, encoding='utf-8')
-        print(f'Deserialized message: {deserialized}') 
-        return deserialized
-
-def main() -> int:
-
-    print('Starting server...')
-
-    server = ServerSocket(
-        port=SERVER_PORT,
-        name='ServerSocketExample',
-        client_handler=ExampleClientHandler,
-        transformer=ExampleMessageTransformer())
-
-    print(f'Server is listening on port {SERVER_PORT}.')
-
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print('Exiting main loop...')
-        
-    print('Cleanup...')
-    del server
-
-    return 0
-
-if __name__ == '__main__':
-    main()
-"""
-
-TEST_SERVER = Template(TEST_SERVER).substitute(
-    shebang=os.path.abspath(os.path.expanduser('~/.murasame/.env/bin/python')),
-    server_port=SERVER_PORT,
-    framework_dir=FRAMEWORK_DIR)
-
-@pytest.fixture()
-def start_server(xprocess):
-
-    if not os.path.isdir(BASE_PATH):
-            os.mkdir(BASE_PATH)
-
-    server_script = f'{BASE_PATH}/server.py'
-
-    with open(server_script, 'w') as server_file:
-            server_file.write(TEST_SERVER)
-
-    class Starter(ProcessStarter):
-        pattern = f'Server is listening on port {SERVER_PORT}.'
-        args = ['python', server_script]
-        terminate_on_interrupt = True
-        timeout=10
-
-    logfile = xprocess.ensure('socketserver', Starter)
-
-    yield
-
-    xprocess.getinfo('socketserver').terminate()
-
-TEST_CLIENT = \
-"""
-#!$shebang
-
-import sys
-
-# Fix paths to make framework modules accessible without installation
-sys.path.insert(0, '$framework_dir')
-
-from murasame.pal.networking import ClientSocket, SocketMessageTransformer
-SERVER_PORT = $server_port
-
-class ExampleMessageTransformer(SocketMessageTransformer):
-    def serialize(self, message: str) -> bytes:
-        return bytes(message, encoding='utf-8')
-    def deserialize(self, message: bytes) -> str:
-        return str(message, encoding='utf-8')
-
-def main() -> int:
-
-    client = ClientSocket(
-        name='ClientSocketExample',
-        host='localhost',
-        port=SERVER_PORT,
-        transformer=ExampleMessageTransformer())
-
-    client.connect()
-    message = 'test'
-    client.send(message)
-    client.disconnect()
-    del client
-
-    return 0
-
-if __name__ == '__main__':
-    main()
-"""
-
-TEST_CLIENT = Template(TEST_CLIENT).substitute(
-    shebang=os.path.abspath(os.path.expanduser('~/.murasame/.env/bin/python')),
-    server_port=SERVER_PORT,
-    framework_dir=FRAMEWORK_DIR)
 
 class ExampleClientThread(ClientThread):
     def handle_message(self, message: Any) -> None:
@@ -195,10 +63,11 @@ class ExampleClientThread(ClientThread):
 
 class ExampleMessageTransformer(SocketMessageTransformer):
     def serialize(self, message: str) -> bytes:
+        message = message + os.linesep
         serialized_message = bytes(str(message), encoding='utf-8')
         return serialized_message
     def deserialize(self, message: bytes) -> str:
-        return str(message, encoding='utf-8')
+        return str(message, encoding='utf-8').strip()
 
 class TestSocket:
 
@@ -208,22 +77,6 @@ class TestSocket:
     Authors:
         Attila Kovacs
     """
-
-    @classmethod
-    def setup_class(cls):
-
-        if not os.path.isdir(BASE_PATH):
-            os.mkdir(BASE_PATH)
-
-        client_path = f'{BASE_PATH}/client.py'
-
-        with open(client_path, 'w') as client_file:
-            client_file.write(TEST_CLIENT)
-
-    @classmethod
-    def teardown_class(cls):
-
-        shutil.rmtree(BASE_PATH)
 
     def test_create_unencrypted_client_socket(self):
 
@@ -235,11 +88,11 @@ class TestSocket:
             Attila Kovacs
         """
 
-        sut = ClientSocket(name='testsocket', host='localhost', port=11492)
+        sut = ClientSocket(name='testsocket', host='localhost', port=11495)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == 'localhost'
-        assert sut.Port == 11492
+        assert sut.Port == 11495
         assert sut.Protocol == BaseSocket.Protocols.UNENCRYPTED
 
         del sut
@@ -281,7 +134,7 @@ class TestSocket:
             sut = ClientSocket(
                 name='testsocket',
                 host='localhost',
-                port=11492,
+                port=11496,
                 ssl_protocol='invalidprotocol')
 
     # This test seems to throw a warning about a non-raisable exception in
@@ -300,11 +153,11 @@ class TestSocket:
             Attila Kovacs
         """
 
-        sut = ServerSocket(name='testsocket', host='', port=11492)
+        sut = ServerSocket(name='testsocket', host='', port=11497)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == ''
-        assert sut.Port == 11492
+        assert sut.Port == 11497
         assert sut.Protocol == BaseSocket.Protocols.UNENCRYPTED
 
         del sut
@@ -368,13 +221,13 @@ class TestSocket:
         sut = ClientSocket(
             name='testsocket',
             host='localhost',
-            port=11492,
+            port=11499,
             ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == 'localhost'
-        assert sut.Port == 11492
+        assert sut.Port == 11499
         assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_2
 
         del sut
@@ -422,13 +275,13 @@ class TestSocket:
         sut = ServerSocket(
             name='testsocket',
             host='',
-            port=11492,
+            port=11500,
             ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == ''
-        assert sut.Port == 11492
+        assert sut.Port == 11500
         assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_2
 
         del sut
@@ -476,13 +329,13 @@ class TestSocket:
         sut = ClientSocket(
             name='testsocket',
             host='localhost',
-            port=11492,
+            port=11501,
             ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == 'localhost'
-        assert sut.Port == 11492
+        assert sut.Port == 11501
         assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_3
 
         del sut
@@ -530,13 +383,13 @@ class TestSocket:
         sut = ServerSocket(
             name='testsocket',
             host='',
-            port=11492,
+            port=11502,
             ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
             require_cert=False)
 
         assert sut.Name == 'testsocket'
         assert sut.Host == ''
-        assert sut.Port == 11492
+        assert sut.Port == 11502
         assert sut.Protocol == BaseSocket.Protocols.TLS_V_1_3
 
         del sut
@@ -571,27 +424,33 @@ class TestSocket:
                                ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
-    #def test_message_sending_from_client_socket(self, start_server):
+    def test_message_sending_from_client_socket(self):
 
-        #"""
-        #Messages can be sent between sockets from a client socket.
+        """
+        Messages can be sent between sockets from a client socket.
 
-        #Authors:
-        #    Attila Kovacs
-        #"""
+        Authors:
+            Attila Kovacs
+        """
 
-        #client = ClientSocket(name='testsocket',
-        #                      host='localhost',
-        #                      port=11492,
-        #                      transformer=ExampleMessageTransformer())
-        #client.connect(new_host='localhost', new_port=11492)
-        #assert client.IsConnected
+        client = ClientSocket(name='testsocket',
+                              host='localhost',
+                              port=11492,
+                              transformer=ExampleMessageTransformer())
+        client.connect(new_host='localhost', new_port=11492)
+        assert client.IsConnected
 
-        #client.send('testmessage')
-        #response = client.receive()
-        #assert response == 'testresponse'
+        client.send('testmessage')
+        response = client.receive()
+        if response != 'testresponse':
+            # Make sure that the server is stopped even if the check fails
+            client.send('kill')
+            assert False
 
-        #del client
+        # Shut down the server
+        client.send('kill')
+
+        del client
 
     def test_message_sending_from_server_socket(self):
 
@@ -603,7 +462,7 @@ class TestSocket:
         """
 
         server = ServerSocket(name='testsocket',
-                              port=11492,
+                              port=11493,
                               transformer=ExampleMessageTransformer(),
                               client_handler=ExampleClientThread)
 

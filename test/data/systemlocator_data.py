@@ -18,44 +18,47 @@
 ## ============================================================================
 
 """
-Contains unit test configuration.
+Contains the data used for system locator testing.
 """
 
 # Runtime Imports
 import os
-import shutil
-import py
-import socket
-
-# Dependency Imports
-import pytest
-from py.xml import html
-from xprocess import XProcess
+import sys
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
-from test.testdata import initialize_test_data
 
-def pytest_html_report_title(report):
-   report.title = 'Murasame Test Report'
+TEST_SYSTEM = \
+"""
+from murasame.utils import System, SystemLocator
 
-def pytest_sessionstart(session):
-   initialize_test_data()
+class AbstractSystem:
+    def system_function(self):
+        pass
 
-def pytest_sessionfinish(session, exitstatus):
+class AnotherAbstractSystem:
+    def system_function(self):
+        pass
 
-   # Shut down all running XProcess processes
-   tw = py.io.TerminalWriter()
-   rootdir = session.config.rootdir.join(".xprocess").ensure(dir=1)
-   xproc = XProcess(session.config, rootdir)
-   xproc._xkill(tw)
+@System(AbstractSystem)
+class ConcreteSystem(AbstractSystem):
+    def system_function(self):
+        return True
+"""
 
-   # Kill the socket server if it's still running (e.g. due to the server
-   # socket test not running)
-   try:
-      sock = socket.socket()
-      sock.connect(('localhost', 11492))
-      message = 'kill' + os.linesep
-      sock.sendall(message)
-   except socket.error:
-      pass
+SYSTEM_DIR = f'{TEST_FILES_DIRECTORY}/systems/'
+
+def create_systemlocator_data():
+
+    if not os.path.isdir(SYSTEM_DIR):
+        os.mkdir(SYSTEM_DIR)
+
+        # Create a test system file
+        system_file = f'{SYSTEM_DIR}/testsystem.py'
+        with open(system_file, 'w+') as test_file:
+            test_file.write(TEST_SYSTEM)
+
+        # Create an __init__.py file
+        init_file = f'{SYSTEM_DIR}/__init__.py'
+        with open(init_file, 'w+') as test_file:
+            test_file.write('\n')

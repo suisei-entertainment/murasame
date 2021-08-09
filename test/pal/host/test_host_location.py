@@ -24,12 +24,9 @@ Contains the unit tests of HostLocation class.
 # Runtime Imports
 import os
 import sys
-import tarfile
-import shutil
 
 # Dependency Imports
 import pytest
-import wget
 
 # Fix paths to make framework modules accessible
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
@@ -38,24 +35,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from murasame.pal.host.hostlocation import HostLocation
 from murasame.exceptions import InvalidInputError
 
-# Constants
-DATABASE_PACKAGE_PATH = os.path.abspath(
-    os.path.expanduser('/tmp/GeoLite2-City.tar.gz'))
-
-DATABASE_PATH = os.path.abspath(
-    os.path.expanduser('~/.murasame/testfiles/GeoLite2-City.mmdb'))
-
-DATABASE_DIR = os.path.abspath(
-    os.path.expanduser('~/.murasame/testfiles'))
-
-def find_mmdb(members):
-    for member in members:
-        if os.path.splitext(member.name)[1] == '.mmdb':
-            member.name = os.path.basename(member.name)
-            yield member
-
-GEOIP_DOWNLOAD_URL = \
-    'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=pELDCVUneMIsHhyU&suffix=tar.gz'
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 class TestHostLocation:
 
@@ -65,23 +46,6 @@ class TestHostLocation:
     Authors:
         Attila Kovacs
     """
-
-    @classmethod
-    def setup_class(cls):
-
-        # Download a new GeoIP database
-        wget.download(url=GEOIP_DOWNLOAD_URL, out=DATABASE_PACKAGE_PATH)
-        tar = tarfile.open(DATABASE_PACKAGE_PATH)
-        tar.extractall(path='/tmp', members=find_mmdb(tar))
-        tar.close()
-        shutil.move(src='/tmp/GeoLite2-City.mmdb', dst=DATABASE_PATH)
-        os.remove(DATABASE_PACKAGE_PATH)
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(DATABASE_PATH):
-            os.remove(DATABASE_PATH)
 
     def test_creation_with_valid_ip_without_database(self):
 
@@ -132,7 +96,7 @@ class TestHostLocation:
         """
 
         sut = HostLocation(public_ip='5.187.173.113',
-                           database_path=DATABASE_DIR)
+                           database_path=TEST_FILES_DIRECTORY)
         assert sut.Continent != 'UNKNOWN'
         assert sut.Country != 'UNKNOWN'
         assert sut.City != 'UNKNOWN'
@@ -150,7 +114,7 @@ class TestHostLocation:
         """
 
         sut = HostLocation(public_ip='192.168.0.1',
-                           database_path=DATABASE_DIR)
+                           database_path=TEST_FILES_DIRECTORY)
         assert sut.Continent == 'UNKNOWN'
         assert sut.Country == 'UNKNOWN'
         assert sut.City == 'UNKNOWN'

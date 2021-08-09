@@ -38,11 +38,26 @@ from murasame.utils import JsonFile
 TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/json_test.json'))
 
+TEST_FILE_PATH_2 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/json_test2.json'))
+
+TEST_FILE_PATH_3 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/json_test3.json'))
+
+TEST_FILE_PATH_4 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/json_test4.json'))
+
+TEST_FILE_PATH_5 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/json_test5.json'))
+
 INVALID_TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/nonexistent.json'))
 
 MALFORMED_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/malformed.json'))
+
+MALFORMED_FILE_PATH_2 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/malformed_2.json'))
 
 def get_password():
 
@@ -90,12 +105,12 @@ class TestJsonFile:
             Attila Kovacs
         """
 
-        sut1 = JsonFile(path=TEST_FILE_PATH)
+        sut1 = JsonFile(path=TEST_FILE_PATH_2)
         sut1.Content['test'] = 'test content'
         sut1.save()
         del sut1
 
-        sut2 = JsonFile(path=TEST_FILE_PATH)
+        sut2 = JsonFile(path=TEST_FILE_PATH_2)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
@@ -109,12 +124,12 @@ class TestJsonFile:
             Attila Kovacs
         """
 
-        sut1 = JsonFile(path=TEST_FILE_PATH)
+        sut1 = JsonFile(path=TEST_FILE_PATH_3)
         sut1.Content['test'] = 'test content'
         sut1.save(compact=False)
         del sut1
 
-        sut2 = JsonFile(path=TEST_FILE_PATH)
+        sut2 = JsonFile(path=TEST_FILE_PATH_3)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
@@ -128,11 +143,11 @@ class TestJsonFile:
             Attila Kovacs
         """
 
-        sut1 = JsonFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
+        sut1 = JsonFile(path=TEST_FILE_PATH_4, cb_retrieve_key=get_password)
         sut1.Content['test'] = 'test content'
         sut1.save()
 
-        sut2 = JsonFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
+        sut2 = JsonFile(path=TEST_FILE_PATH_4, cb_retrieve_key=get_password)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
@@ -210,10 +225,10 @@ class TestJsonFile:
         from murasame.utils import AESCipher
         cipher = AESCipher(get_password())
         content = cipher.encrypt(malformed_json)
-        with open(MALFORMED_FILE_PATH, 'wb') as malformed:
+        with open(MALFORMED_FILE_PATH_2, 'wb') as malformed:
             malformed.write(content)
 
-        sut = JsonFile(path=MALFORMED_FILE_PATH, cb_retrieve_key=get_password)
+        sut = JsonFile(path=MALFORMED_FILE_PATH_2, cb_retrieve_key=get_password)
         with pytest.raises(InvalidInputError):
             sut.load()
 
@@ -226,7 +241,7 @@ class TestJsonFile:
             Attila Kovacs
         """
 
-        sut1 = JsonFile(path=TEST_FILE_PATH)
+        sut1 = JsonFile(path=TEST_FILE_PATH_5)
         sut1.Content['test'] = 'test content'
         sut1.overwrite_content({'test': 'overwritten'})
         assert sut1.Content['test'] == 'overwritten'

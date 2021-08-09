@@ -38,11 +38,26 @@ from murasame.utils import YamlFile
 TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/yaml_test.yaml'))
 
+TEST_FILE_PATH_2 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/yaml_test2.yaml'))
+
+TEST_FILE_PATH_3 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/yaml_test3.yaml'))
+
+TEST_FILE_PATH_4 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/yaml_test4.yaml'))
+
+TEST_FILE_PATH_5 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/yaml_test5.yaml'))
+
 INVALID_TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/nonexistent.yaml'))
 
 MALFORMED_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/malformed.yaml'))
+
+MALFORMED_FILE_PATH_2 = os.path.abspath(os.path.expanduser(
+    '~/.murasame/testfiles/malformed2.yaml'))
 
 def get_password():
 
@@ -90,12 +105,12 @@ class TestYamlFile:
             Attila Kovacs
         """
 
-        sut1 = YamlFile(path=TEST_FILE_PATH)
+        sut1 = YamlFile(path=TEST_FILE_PATH_2)
         sut1.Content['test'] = 'test content'
         sut1.save()
         del sut1
 
-        sut2 = YamlFile(path=TEST_FILE_PATH)
+        sut2 = YamlFile(path=TEST_FILE_PATH_2)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
@@ -109,12 +124,12 @@ class TestYamlFile:
             Attila Kovacs
         """
 
-        sut1 = YamlFile(path=TEST_FILE_PATH)
+        sut1 = YamlFile(path=TEST_FILE_PATH_3)
         sut1.Content['test'] = 'test content'
         sut1.save(compact=False)
         del sut1
 
-        sut2 = YamlFile(path=TEST_FILE_PATH)
+        sut2 = YamlFile(path=TEST_FILE_PATH_3)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
@@ -128,11 +143,11 @@ class TestYamlFile:
             Attila Kovacs
         """
 
-        sut1 = YamlFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
+        sut1 = YamlFile(path=TEST_FILE_PATH_4, cb_retrieve_key=get_password)
         sut1.Content['test'] = 'test content'
         sut1.save()
 
-        sut2 = YamlFile(path=TEST_FILE_PATH, cb_retrieve_key=get_password)
+        sut2 = YamlFile(path=TEST_FILE_PATH_4, cb_retrieve_key=get_password)
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
@@ -186,20 +201,13 @@ class TestYamlFile:
         """
 
         # Create a malformed file
-        malformed_json = '{invalid yaml: [}'
+        malformed_yaml= '{invalid yaml: [}'
         with open(MALFORMED_FILE_PATH, 'w+') as malformed:
-            malformed.write(malformed_json)
+            malformed.write(malformed_yaml)
 
         sut = YamlFile(path=MALFORMED_FILE_PATH)
         with pytest.raises(InvalidInputError):
             sut.load()
-
-        # Create a malformed file and encrypt it
-        from murasame.utils import AESCipher
-        cipher = AESCipher(get_password())
-        content = cipher.encrypt(malformed_json)
-        with open(MALFORMED_FILE_PATH, 'wb') as malformed:
-            malformed.write(content)
 
     def test_loading_encrypted_malformed_yaml_file(self):
 
@@ -210,7 +218,15 @@ class TestYamlFile:
             Attila Kovacs
         """
 
-        sut = YamlFile(path=MALFORMED_FILE_PATH, cb_retrieve_key=get_password)
+        # Create a malformed file and encrypt it
+        malformed_yaml= '{invalid yaml: [}'
+        from murasame.utils import AESCipher
+        cipher = AESCipher(get_password())
+        content = cipher.encrypt(malformed_yaml)
+        with open(MALFORMED_FILE_PATH_2, 'wb') as malformed:
+            malformed.write(content)
+
+        sut = YamlFile(path=MALFORMED_FILE_PATH_2, cb_retrieve_key=get_password)
         with pytest.raises(InvalidInputError):
             sut.load()
 
@@ -223,7 +239,7 @@ class TestYamlFile:
             Attila Kovacs
         """
 
-        sut1 = YamlFile(path=TEST_FILE_PATH)
+        sut1 = YamlFile(path=TEST_FILE_PATH_5)
         sut1.Content['test'] = 'test content'
         sut1.overwrite_content({'test': 'overwritten'})
         assert sut1.Content['test'] == 'overwritten'

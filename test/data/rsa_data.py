@@ -18,44 +18,20 @@
 ## ============================================================================
 
 """
-Contains unit test configuration.
+Contains the data used for RSA testing.
 """
 
-# Runtime Imports
-import os
-import shutil
-import py
-import socket
-
-# Dependency Imports
-import pytest
-from py.xml import html
-from xprocess import XProcess
+# Murasame Imports
+from murasame.utils.rsa import RSAKeyLengths, RSAKeyGenerator
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
-from test.testdata import initialize_test_data
 
-def pytest_html_report_title(report):
-   report.title = 'Murasame Test Report'
+def create_rsa_data():
 
-def pytest_sessionstart(session):
-   initialize_test_data()
+    generator = RSAKeyGenerator(
+        key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
-def pytest_sessionfinish(session, exitstatus):
-
-   # Shut down all running XProcess processes
-   tw = py.io.TerminalWriter()
-   rootdir = session.config.rootdir.join(".xprocess").ensure(dir=1)
-   xproc = XProcess(session.config, rootdir)
-   xproc._xkill(tw)
-
-   # Kill the socket server if it's still running (e.g. due to the server
-   # socket test not running)
-   try:
-      sock = socket.socket()
-      sock.connect(('localhost', 11492))
-      message = 'kill' + os.linesep
-      sock.sendall(message)
-   except socket.error:
-      pass
+    generator.save_key_pair(
+        private_key_path=f'{TEST_FILES_DIRECTORY}/signing_private.pem',
+        public_key_path=f'{TEST_FILES_DIRECTORY}/signing_public.pem')

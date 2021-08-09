@@ -1,5 +1,3 @@
-#!/bin/bash
-
 ## ============================================================================
 ##             **** Murasame Application Development Framework ****
 ##                Copyright (C) 2019-2021, Suisei Entertainment
@@ -19,7 +17,6 @@
 ##
 ## ============================================================================
 
-#shellcheck disable=SC1091
-. ./scripts/ci/before.sh
-
-make test
+"""
+Contains the initialization functions for the test data needed for a test run.
+"""

@@ -36,25 +36,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from murasame.utils import SystemLocator, System
 from murasame.utils.systemlocator import SystemPath
 
-TEST_SYSTEM = \
-"""
-from murasame.utils import System, SystemLocator
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
-class AbstractSystem:
-    def system_function(self):
-        pass
-
-class AnotherAbstractSystem:
-    def system_function(self):
-        pass
-
-@System(AbstractSystem)
-class ConcreteSystem(AbstractSystem):
-    def system_function(self):
-        return True
-"""
-
-SYSTEM_DIR = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/systems/'))
+SYSTEM_DIR = f'{TEST_FILES_DIRECTORY}/systems/'
 
 class TestSystemLocator:
 
@@ -67,34 +52,7 @@ class TestSystemLocator:
 
     @classmethod
     def setup_class(cls):
-
-        sys.path.append(os.path.abspath(os.path.expanduser(
-            '~/.murasame/testfiles/')))
-
-        if not os.path.isdir(SYSTEM_DIR):
-            os.mkdir(SYSTEM_DIR)
-
-            # Create a test system file
-            system_file = f'{SYSTEM_DIR}/testsystem.py'
-            with open(system_file, 'w+') as test_file:
-                test_file.write(TEST_SYSTEM)
-
-            # Create an __init__.py file
-            init_file = f'{SYSTEM_DIR}/__init__.py'
-            with open(init_file, 'w+') as test_file:
-                test_file.write('\n')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{SYSTEM_DIR}/testsystem.py'):
-            os.remove(f'{SYSTEM_DIR}/testsystem.py')
-
-        if os.path.isfile(f'{SYSTEM_DIR}/__init__.py'):
-            os.remove(f'{SYSTEM_DIR}/__init__.py')
-
-        if os.path.isdir(SYSTEM_DIR):
-            shutil.rmtree(SYSTEM_DIR, ignore_errors=True)
+        sys.path.append(TEST_FILES_DIRECTORY)
 
     def test_system_path(self):
 

@@ -44,7 +44,8 @@ from murasame.utils import (
     RSAPrivate,
     RSAPublic)
 
-TEST_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 def get_password():
     return b'testpassword'
@@ -61,29 +62,6 @@ class TestLicenseValidator:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        key_generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_2048,
-            cb_retrieve_password=get_password)
-
-        key_generator.save_key_pair(
-            private_key_path=f'{TEST_PATH}/license_private.pem',
-            public_key_path=f'{TEST_PATH}/license_public.pem')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{TEST_PATH}/license_private_pem'):
-            os.remove(f'{TEST_PATH}/license_private_pem')
-
-        if os.path.isfile(f'{TEST_PATH}/license_public_pem'):
-            os.remove(f'{TEST_PATH}/license_public_pem')
-
-        if os.path.isfile(f'{TEST_PATH}/license.lic'):
-            os.remove(f'{TEST_PATH}/license.lic')
-
     def test_creation_with_public_key(self):
 
         """
@@ -95,7 +73,7 @@ class TestLicenseValidator:
         """
 
         public_key = RSAPublic(
-            key_path=f'{TEST_PATH}/license_public.pem')
+            key_path=f'{TEST_FILES_DIRECTORY}/license_public.pem')
 
         sut = LicenseValidator(public_key=public_key)
 
@@ -112,7 +90,7 @@ class TestLicenseValidator:
         """
 
         sut = LicenseValidator(
-            public_key_path=f'{TEST_PATH}/license_public.pem')
+            public_key_path=f'{TEST_FILES_DIRECTORY}/license_public.pem')
 
         assert sut is not None
 
@@ -126,18 +104,18 @@ class TestLicenseValidator:
         """
 
         private_key = RSAPrivate(
-            key_path=f'{TEST_PATH}/license_private.pem',
+            key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_password=get_password)
 
         public_key = RSAPublic(
-            key_path=f'{TEST_PATH}/license_public.pem')
+            key_path=f'{TEST_FILES_DIRECTORY}/license_public.pem')
 
         generator = LicenseGenerator(
-            private_key_path=f'{TEST_PATH}/license_private.pem',
+            private_key_path=f'{TEST_FILES_DIRECTORY}/license_private.pem',
             cb_retrieve_key_password=get_password,
             cb_retrieve_encryption_password=get_encryption_key)
 
-        license_path = f'{TEST_PATH}/license.lic'
+        license_path = f'{TEST_FILES_DIRECTORY}/license.lic'
 
         key = uuid.uuid4()
         owner = uuid.uuid4()
@@ -158,5 +136,5 @@ class TestLicenseValidator:
         sut = LicenseValidator(public_key=public_key)
 
         assert sut.validate(
-            license_path=f'{TEST_PATH}/license.lic',
+            license_path=f'{TEST_FILES_DIRECTORY}/license.lic',
             cb_retrieve_password=get_encryption_key)

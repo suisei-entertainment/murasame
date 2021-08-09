@@ -18,44 +18,10 @@
 ## ============================================================================
 
 """
-Contains unit test configuration.
+Contains the test data for the CLI tests.
 """
-
-# Runtime Imports
-import os
-import shutil
-import py
-import socket
-
-# Dependency Imports
-import pytest
-from py.xml import html
-from xprocess import XProcess
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
-from test.testdata import initialize_test_data
 
-def pytest_html_report_title(report):
-   report.title = 'Murasame Test Report'
-
-def pytest_sessionstart(session):
-   initialize_test_data()
-
-def pytest_sessionfinish(session, exitstatus):
-
-   # Shut down all running XProcess processes
-   tw = py.io.TerminalWriter()
-   rootdir = session.config.rootdir.join(".xprocess").ensure(dir=1)
-   xproc = XProcess(session.config, rootdir)
-   xproc._xkill(tw)
-
-   # Kill the socket server if it's still running (e.g. due to the server
-   # socket test not running)
-   try:
-      sock = socket.socket()
-      sock.connect(('localhost', 11492))
-      message = 'kill' + os.linesep
-      sock.sendall(message)
-   except socket.error:
-      pass
+def create_cli_data():

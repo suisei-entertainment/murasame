@@ -30,7 +30,7 @@ UNAME := $(shell uname)
 ## ============================================================================
 setup:
 	@echo Executing development environment setup...
-	sudo ./scripts/envinstall
+	sudo ./scripts/envsetup
 	@echo
 
 ## ============================================================================
@@ -44,6 +44,11 @@ configure:
 	mkdir -p $(WORKSPACE_DIRECTORY)/testfiles
 	mkdir -p $(WORKSPACE_DIRECTORY)/logs
 	mkdir -p $(WORKSPACE_DIRECTORY)/logs/unittest
+	@echo
+
+	@echo Copying .coveragerc to workspace directory...
+	cp ./.coveragerc $(WORKSPACE_DIRECTORY)/.coveragerc
+	cp ./.pylintrc $(WORKSPACE_DIRECTORY)/.pylintrc
 	@echo
 
 	@echo Creating virtual environment in ~/.murasame/.env...
@@ -127,11 +132,21 @@ lint:
 	@echo
 
 ## ============================================================================
-##	Measures the unit test coverage of the framework
+##	Executes all framework tests
 ## ============================================================================
 test:
 	@echo Executing framework tests...
 	pytest
+	pytest --xkill
+	@echo
+
+## ============================================================================
+##	Measures the test coverage of the framework
+## ============================================================================
+coverage:
+	@echo Executing coverage measurement...
+	pytest -n auto -vv --durations=10 --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest --xkill
 	@echo
 
 ## ============================================================================
@@ -167,5 +182,5 @@ depgraph:
 venvupdate:
 	pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
 
-.PHONY: unittest build
+.PHONY: unittest build test
 

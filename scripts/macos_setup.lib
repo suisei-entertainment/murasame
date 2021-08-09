@@ -42,6 +42,14 @@ macos_setup_directories()
     echo "[MURASAME.SETUP] > Directories configured."
 }
 
+macos_copy_files()
+{
+  # Installs the necessary files in the workspace directory.
+
+  echo "[MURASAME.SETUP] > Copying configuration files..."
+  echo "[MURASAME.SETUP] > Configuration files copied."
+}
+
 macos_install_python()
 {
     # Installs Python 3.9 on the host system.

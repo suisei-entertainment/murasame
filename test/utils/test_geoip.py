@@ -34,10 +34,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.utils import GeoIP, GeoIPData
 
-DATABASE_UPDATE_LINK = \
-    'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=pELDCVUneMIsHhyU&suffix=tar.gz'
-
-DATABASE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY, GEOIP_DOWNLOAD_URL
 
 class TestGeoIP:
 
@@ -48,19 +46,6 @@ class TestGeoIP:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        # Delete the database if it's already there
-        if os.path.isfile('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH)):
-            os.remove('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH)):
-            os.remove('{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
-
     def test_creation(self):
 
         """
@@ -70,12 +55,11 @@ class TestGeoIP:
             Attila Kovacs
         """
 
-        sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
-                    database_path=DATABASE_PATH)
+        sut = GeoIP(update_link=GEOIP_DOWNLOAD_URL,
+                    database_path=TEST_FILES_DIRECTORY)
 
         assert sut is not None
-        assert os.path.isfile(
-            '{}/GeoLite2-City.mmdb'.format(DATABASE_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/GeoLite2-City.mmdb')
 
     def test_geoip_query_with_valid_ip_address(self):
 
@@ -86,8 +70,8 @@ class TestGeoIP:
             Attila Kovacs
         """
 
-        sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
-                    database_path=DATABASE_PATH)
+        sut = GeoIP(update_link=GEOIP_DOWNLOAD_URL,
+                    database_path=TEST_FILES_DIRECTORY)
 
         result = sut.query('8.8.8.8')
         assert result is not None
@@ -108,8 +92,8 @@ class TestGeoIP:
             Attila Kovacs
         """
 
-        sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
-                    database_path=DATABASE_PATH)
+        sut = GeoIP(update_link=GEOIP_DOWNLOAD_URL,
+                    database_path=TEST_FILES_DIRECTORY)
 
         result = sut.query('192.168.0.1')
         assert result is not None
@@ -130,8 +114,8 @@ class TestGeoIP:
             Attila Kovacs
         """
 
-        sut = GeoIP(update_link=DATABASE_UPDATE_LINK,
-                    database_path=DATABASE_PATH)
+        sut = GeoIP(update_link=GEOIP_DOWNLOAD_URL,
+                    database_path=TEST_FILES_DIRECTORY)
 
         result = sut.query('256.256.0.1')
         assert result is not None

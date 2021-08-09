@@ -18,44 +18,24 @@
 ## ============================================================================
 
 """
-Contains unit test configuration.
+Contains common constants used during testing.
 """
 
 # Runtime Imports
 import os
-import shutil
-import py
-import socket
 
-# Dependency Imports
-import pytest
-from py.xml import html
-from xprocess import XProcess
+# Path to the Murasame workspace directory in the user's home directory
+WORKSPACE_DIRECTORY = os.path.abspath(os.path.expanduser('~/.murasame'))
 
-# Test Imports
-from test.constants import TEST_FILES_DIRECTORY
-from test.testdata import initialize_test_data
+# Path where files used during testing are located
+TEST_FILES_DIRECTORY = f'{WORKSPACE_DIRECTORY}/testfiles'
 
-def pytest_html_report_title(report):
-   report.title = 'Murasame Test Report'
+# The shebang string to use in the generated Python scripts.
+SHEBANG_STRING = f'#!{WORKSPACE_DIRECTORY}/.env/bin/python'
 
-def pytest_sessionstart(session):
-   initialize_test_data()
+# The license key to use when retrieving the GeoIP data
+GEOIP_LICENSE_KEY = 'pELDCVUneMIsHhyU'
 
-def pytest_sessionfinish(session, exitstatus):
-
-   # Shut down all running XProcess processes
-   tw = py.io.TerminalWriter()
-   rootdir = session.config.rootdir.join(".xprocess").ensure(dir=1)
-   xproc = XProcess(session.config, rootdir)
-   xproc._xkill(tw)
-
-   # Kill the socket server if it's still running (e.g. due to the server
-   # socket test not running)
-   try:
-      sock = socket.socket()
-      sock.connect(('localhost', 11492))
-      message = 'kill' + os.linesep
-      sock.sendall(message)
-   except socket.error:
-      pass
+# The link from where a new GeoIP database can be downloaded
+GEOIP_DOWNLOAD_URL = \
+    f'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={GEOIP_LICENSE_KEY}&suffix=tar.gz'

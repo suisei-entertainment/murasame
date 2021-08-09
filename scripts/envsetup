@@ -47,6 +47,7 @@ linux_setup()
 
     linux_install_dependencies
     linux_setup_directories
+    linux_copy_files
     linux_install_python
     linux_install_sublime
     linux_install_fonts
@@ -70,6 +71,7 @@ macos_setup()
 
     macos_install_dependencies
     macos_setup_directories
+    macos_copy_files
     macos_install_python
     macos_install_sublime
     macos_install_fonts

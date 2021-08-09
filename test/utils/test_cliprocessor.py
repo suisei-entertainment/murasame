@@ -37,44 +37,47 @@ from murasame.exceptions import InvalidInputError
 
 # Test data
 TEST_COMMAND_MAP = \
-[
-    {
-        'type': 'group',
-        'name': 'test group',
-        'description': 'test description',
-        'commands':
-        [
-            {
-                'type': 'switch',
-                'shortkey': '',
-                'command': '--switch-test',
-                'help': 'test',
-                'default': 'False'
-            },
-            {
-                'type': 'config',
-                'shortkey': '-t',
-                'command': '--config-test',
-                'help': 'test',
-                'metavar': 'VALUE'
-            }
-        ]
-    },
-    {
-        'type': 'switch',
-        'shortkey': '',
-        'command': '--switch-test2',
-        'help': 'test',
-        'default': 'False'
-    },
-    {
-        'type': 'config',
-        'shortkey': '-c',
-        'command': '--config-test2',
-        'help': 'test',
-        'metavar': 'VALUE'
-    }
-]
+{
+    'commands':
+    [
+        {
+            'type': 'group',
+            'name': 'test group',
+            'description': 'test description',
+            'commands':
+            [
+                {
+                    'type': 'switch',
+                    'shortkey': '',
+                    'command': '--switch-test',
+                    'help': 'test',
+                    'default': 'False'
+                },
+                {
+                    'type': 'config',
+                    'shortkey': '-t',
+                    'command': '--config-test',
+                    'help': 'test',
+                    'metavar': 'VALUE'
+                }
+            ]
+        },
+        {
+            'type': 'switch',
+            'shortkey': '',
+            'command': '--switch-test2',
+            'help': 'test',
+            'default': 'False'
+        },
+        {
+            'type': 'config',
+            'shortkey': '-c',
+            'command': '--config-test2',
+            'help': 'test',
+            'metavar': 'VALUE'
+        }
+    ]
+}
 
 TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/cli_test.conf'))
@@ -113,6 +116,7 @@ class TestCliProcessor:
         file = JsonFile(path=TEST_FILE_PATH)
         file.overwrite_content(content=TEST_COMMAND_MAP)
         file.save()
+
         sut = CliProcessor(config_file=TEST_FILE_PATH)
         assert sut.Parser is not None
 
@@ -169,7 +173,7 @@ class TestCliProcessor:
         """
 
         with pytest.raises(InvalidInputError):
-            sut = CliProcessor(config_file=TEST_FILE_PATH)
+            sut = CliProcessor(config_file='/invalid/config/file')
 
     @staticmethod
     def parser_callback(args: 'argparse.Namespace') -> None:

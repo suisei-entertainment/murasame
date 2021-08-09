@@ -18,44 +18,36 @@
 ## ============================================================================
 
 """
-Contains unit test configuration.
+Contains the test data for the certificate tests.
 """
 
 # Runtime Imports
 import os
-import shutil
-import py
-import socket
+import subprocess
 
-# Dependency Imports
-import pytest
-from py.xml import html
-from xprocess import XProcess
+# Murasame Imports
+from murasame.utils.rsa import RSAKeyGenerator
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
-from test.testdata import initialize_test_data
 
-def pytest_html_report_title(report):
-   report.title = 'Murasame Test Report'
+def create_certificate_data():
 
-def pytest_sessionstart(session):
-   initialize_test_data()
+    command = f'openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout {TEST_FILES_DIRECTORY}/key.pem -out {TEST_FILES_DIRECTORY}/cert.pem -days 365 -subj "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com"'
 
-def pytest_sessionfinish(session, exitstatus):
+    try:
+        FNULL = open(os.devnull, 'w')
+        subprocess.run(command, shell=True, stdout=FNULL, check=True)
+    except subprocess.CalledProcessError:
+        assert False
 
-   # Shut down all running XProcess processes
-   tw = py.io.TerminalWriter()
-   rootdir = session.config.rootdir.join(".xprocess").ensure(dir=1)
-   xproc = XProcess(session.config, rootdir)
-   xproc._xkill(tw)
+    with open(f'{TEST_FILES_DIRECTORY}/invalid_cert.pem', 'w') as file:
+        file.write('invalid')
 
-   # Kill the socket server if it's still running (e.g. due to the server
-   # socket test not running)
-   try:
-      sock = socket.socket()
-      sock.connect(('localhost', 11492))
-      message = 'kill' + os.linesep
-      sock.sendall(message)
-   except socket.error:
-      pass
+    with open(f'{TEST_FILES_DIRECTORY}/invalid_key.pem', 'w') as file:
+        file.write('invalid')
+
+    generator = RSAKeyGenerator()
+    generator.save_key_pair(
+        private_key_path=f'{TEST_FILES_DIRECTORY}/cert_signing_key.pem',
+        public_key_path=f'{TEST_FILES_DIRECTORY}/cert_signing_key_public.pem')

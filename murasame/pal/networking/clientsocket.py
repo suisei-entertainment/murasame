@@ -226,7 +226,7 @@ class ClientSocket(BaseSocket):
         else:
             raw_message = message
 
-        message_size = len(raw_message) + 1
+        message_size = len(raw_message)
 
         try:
             self._socket.sendall(raw_message, message_size)

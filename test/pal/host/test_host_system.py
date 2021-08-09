@@ -30,7 +30,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.pal.host.hostsystem import HostSystem
 
-GEOIP_DATABASE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 class TestHostSystem:
 
@@ -63,5 +64,5 @@ class TestHostSystem:
         """
 
         sut = HostSystem()
-        sut.initialize(geoip_database_path=GEOIP_DATABASE_PATH)
+        sut.initialize(geoip_database_path=TEST_FILES_DIRECTORY)
         assert sut.HostDescriptor is not None

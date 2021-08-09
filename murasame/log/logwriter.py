@@ -393,12 +393,12 @@ class LogWriter:
             channel = log_system.get_channel(self._channel_name)
 
             if not channel:
-                self._log_level = LogLevels.DEBUG
+                self._log_level = LogLevels.INFO
                 return None
 
             self._log_level = channel.DefaultLogLevel
         else:
-            self._log_level = LogLevels.DEBUG
+            self._log_level = LogLevels.INFO
 
         return channel
 

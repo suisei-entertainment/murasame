@@ -101,6 +101,14 @@ linux_setup_directories()
     echo "[MURASAME.SETUP] > Directories configured."
 }
 
+linux_copy_files()
+{
+  # Installs the necessary files in the workspace directory.
+
+  echo "[MURASAME.SETUP] > Copying configuration files..."
+  echo "[MURASAME.SETUP] > Configuration files copied."
+}
+
 linux_install_python()
 {
     # Installs Python 3.9 on the host system.

@@ -34,14 +34,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # Murasame Imports
 from murasame.utils import Secrets, JsonFile
 
-# Test data
-TEST_CONFIG_DIRECTORY = os.path.abspath(os.path.expanduser(
-    '~/.murasame/testfiles'))
-
-TEST_DATA = \
-{
-    'testkey': 'testvalue'
-}
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 TEST_PASSWORD = 'testpassword'
 
@@ -57,25 +51,6 @@ class TestSecrets:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        # Create the test file
-        config_file = JsonFile(
-            path=f'{TEST_CONFIG_DIRECTORY}/secrets.conf',
-            cb_retrieve_key=get_password)
-        config_file.overwrite_content(content=TEST_DATA)
-        config_file.save()
-
-        # Set the environment variable
-        os.environ['MURASAME_SECRETS_KEY'] = TEST_PASSWORD
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{TEST_CONFIG_DIRECTORY}/secrets.conf'):
-            os.remove(f'{TEST_CONFIG_DIRECTORY}/secrets.conf')
-
     def test_creation(self):
 
         """
@@ -85,7 +60,7 @@ class TestSecrets:
             Attila Kovacs
         """
 
-        sut = Secrets(config_directory=TEST_CONFIG_DIRECTORY)
+        sut = Secrets(config_directory=TEST_FILES_DIRECTORY)
         assert sut is not None
 
     def test_query(self):
@@ -97,5 +72,8 @@ class TestSecrets:
             Attila Kovacs
         """
 
-        sut = Secrets(config_directory=TEST_CONFIG_DIRECTORY)
+        # Set the environment variable
+        os.environ['MURASAME_SECRETS_KEY'] = TEST_PASSWORD
+
+        sut = Secrets(config_directory=TEST_FILES_DIRECTORY)
         assert sut.get_secret(key='testkey') == 'testvalue'

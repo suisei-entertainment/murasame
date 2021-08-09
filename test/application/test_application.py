@@ -38,58 +38,8 @@ sys.path.insert(0, FRAMEWORK_DIR)
 from murasame.exceptions import InvalidInputError
 from murasame.application import Application, BusinessLogic, ApplicationReturnCodes
 
-TEST_DAEMON = \
-"""
-#!$shebang
-
-import os
-import sys
-import time
-import log
-
-# Fix paths to make framework modules accessible without installation
-sys.path.insert(0, '$framework_dir')
-
-from murasame.application import Application, BusinessLogic
-from murasame.log import LogLevels
-
-TEST_FILE_1 = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon/daemontest1.txt'))
-TEST_FILE_2 = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon/daemontest2.txt'))
-
-class TestDaemon(BusinessLogic):
-
-    @property
-    def WorkingDirectory(self):
-        return os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon'))
-
-    def main_loop(*argc, **argv):
-        with open(TEST_FILE_1, 'w') as file:
-            file.write('test')
-
-if __name__ == '__main__':
-    print('Creating application...')
-    app = Application(business_logic=TestDaemon())
-    app.overwrite_log_level(new_log_level=LogLevels.DEBUG)
-    print('Starting application...')
-    for entry in app._cache:
-        print(entry.Message)
-    app.start()
-    print('Stopping application...')
-    for entry in app._cache:
-        print(entry.Message)
-    app.stop()
-    print('Restarting application...')
-    for entry in app._cache:
-        print(entry.Message)
-    app.restart()
-    print('Application logs:')
-    for entry in app._cache:
-        print(entry.Message)
-"""
-
-TEST_DAEMON = Template(TEST_DAEMON).substitute(
-    shebang=os.path.abspath(os.path.expanduser('~/.murasame/.env/bin/python')),
-    framework_dir=FRAMEWORK_DIR)
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 class DummyBusinessLogic(BusinessLogic):
 
@@ -126,23 +76,6 @@ class TestApplication:
     Authors:
         Attila Kovacs
     """
-
-    @classmethod
-    def setup_class(cls):
-
-        if not os.path.isdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest/'))):
-            os.mkdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest/')))
-
-        if not os.path.isdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest/config'))):
-            os.mkdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest/config')))
-
-        if not os.path.isdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest2/'))):
-            os.mkdir(os.path.abspath(os.path.expanduser('~/.murasame/testfiles/apptest2/')))
-
-    @classmethod
-    def teardown_class(cls):
-
-        return
 
     def test_creation_with_valid_business_logic(self):
 
@@ -203,33 +136,18 @@ class TestApplication:
             Attila Kovacs
         """
 
-        base_dir = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/daemon'))
+        daemon_path = f'{TEST_FILES_DIRECTORY}/daemon'
 
-        if not os.path.isdir(base_dir):
-            os.mkdir(base_dir)
-        else:
-            if os.path.isfile(f'{base_dir}/daemontest1.txt'):
-                os.remove(f'{base_dir}/daemontest1.txt')
-
-        if not os.path.isdir(f'{base_dir}/config'):
-            os.mkdir(f'{base_dir}/config')
-
-        with open(f'{base_dir}/daemon.py', 'w') as file:
-            file.write(TEST_DAEMON)
-            os.chmod(f'{base_dir}/daemon.py', 0o777)
-
-        current_dir = os.getcwd()
-        os.chdir(base_dir)
         try:
-            process = subprocess.run(f'python daemon.py', shell=True, check=False)
+            process = subprocess.run(f'python {daemon_path}/daemon.py',
+                                    shell=True,
+                                     check=False)
             if not process.returncode == ApplicationReturnCodes.SUCCESS:
                 return False
         except subprocess.CalledProcessError:
            assert False
 
-        os.chdir(current_dir)
-
-        assert os.path.isfile(f'{base_dir}/daemontest1.txt')
+        assert os.path.isfile(f'{daemon_path}/daemontest1.txt')
 
     def test_daemon_sigterm_signals(self):
 

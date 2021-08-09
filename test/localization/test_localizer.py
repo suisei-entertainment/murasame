@@ -34,24 +34,10 @@ from murasame.api import VFSAPI
 from murasame.pal.vfs import VFS
 from murasame.localization import Localizer
 
-LANGUAGE_FILES_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/localizer/'))
-LOCALIZATIONS_PATH = f'{LANGUAGE_FILES_PATH}/localization'
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
-EN = \
-{
-    'test_key': 'test_data_en',
-    'autotranslate_key': 'ship'
-}
-
-DE = \
-{
-    'test_key': 'test_data_de'
-}
-
-JA = \
-{
-    'test_key': 'test_data_ja'
-}
+LANGUAGE_FILES_PATH = f'{TEST_FILES_DIRECTORY}/localizer'
 
 class TestLocalizer:
 
@@ -64,34 +50,6 @@ class TestLocalizer:
 
     @classmethod
     def setup_class(cls):
-
-        if os.path.isfile(f'{LOCALIZATIONS_PATH}/en.yaml'):
-            os.remove(f'{LOCALIZATIONS_PATH}/en.yaml')
-
-        if os.path.isfile(f'{LOCALIZATIONS_PATH}/de.yaml'):
-            os.remove(f'{LOCALIZATIONS_PATH}/de.yaml')
-
-        if os.path.isfile(f'{LOCALIZATIONS_PATH}/ja.yaml'):
-            os.remove(f'{LOCALIZATIONS_PATH}/ja.yaml')
-
-        if os.path.isdir(LOCALIZATIONS_PATH):
-            os.rmdir(LOCALIZATIONS_PATH)
-
-        if os.path.isdir(LANGUAGE_FILES_PATH):
-            os.rmdir(LANGUAGE_FILES_PATH)
-
-        os.mkdir(LANGUAGE_FILES_PATH)
-        os.mkdir(LOCALIZATIONS_PATH)
-
-        en = YamlFile(path=f'{LOCALIZATIONS_PATH}/en.yaml')
-        en.overwrite_content(content=EN)
-        en.save()
-        de = YamlFile(path=f'{LOCALIZATIONS_PATH}/de.yaml')
-        de.overwrite_content(content=DE)
-        de.save()
-        ja = YamlFile(path=f'{LOCALIZATIONS_PATH}/ja.yaml')
-        ja.overwrite_content(content=JA)
-        ja.save()
 
         SystemLocator.instance().register_provider(VFSAPI, VFS())
         vfs = SystemLocator.instance().get_provider(VFSAPI)

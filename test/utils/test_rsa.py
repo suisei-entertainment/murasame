@@ -43,7 +43,8 @@ from murasame.utils import (
     RSAEncryptor,
     RSADecryptor)
 
-KEY_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles'))
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
 
 def get_password():
 
@@ -64,25 +65,6 @@ class TestRSA:
     Authors:
         Attila Kovacs
     """
-
-    @classmethod
-    def setup_class(cls):
-
-        generator = RSAKeyGenerator(
-            key_length=RSAKeyLengths.KEY_LENGTH_4096)
-
-        generator.save_key_pair(
-            private_key_path=f'{KEY_PATH}/signing_private.pem',
-            public_key_path=f'{KEY_PATH}/signing_public.pem')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(f'{KEY_PATH}/signing_private.pem'):
-            os.remove(f'{KEY_PATH}/signing_private.pem')
-
-        if os.path.isfile(f'{KEY_PATH}/signing_public.pem'):
-            os.remove(f'{KEY_PATH}/signing_public.pem')
 
     def test_2048_bit_key_generation_without_encryption(self):
 
@@ -156,9 +138,9 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
         sut.save_public_key(
-            public_key_path='{}/public_2048_1.pem'.format(KEY_PATH))
+            public_key_path=f'{TEST_FILES_DIRECTORY}/public_2048_1.pem')
 
-        assert os.path.isfile('{}/public_2048_1.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/public_2048_1.pem')
 
     def test_saving_4096_bit_public_key(self):
 
@@ -173,9 +155,9 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         sut.save_public_key(
-            public_key_path='{}/public_4096_1.pem'.format(KEY_PATH))
+            public_key_path=f'{TEST_FILES_DIRECTORY}/public_4096_1.pem')
 
-        assert os.path.isfile('{}/public_4096_1.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/public_4096_1.pem')
 
     def test_saving_2048_bit_unencrypted_private_key(self):
 
@@ -191,9 +173,9 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
         sut.save_private_key(
-            private_key_path='{}/private_2048_1.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/private_2048_1.pem')
 
-        assert os.path.isfile('{}/private_2048_1.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_2048_1.pem')
 
     def test_saving_4096_bit_unencrypted_private_key(self):
 
@@ -209,9 +191,9 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         sut.save_private_key(
-            private_key_path='{}/private_4096_1.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/private_4096_1.pem')
 
-        assert os.path.isfile('{}/private_4096_1.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_4096_1.pem')
 
     def test_saving_2048_bit_encrypted_private_key(self):
 
@@ -228,9 +210,9 @@ class TestRSA:
             cb_retrieve_password=get_password)
 
         sut.save_private_key(
-            private_key_path='{}/private_2048_2.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/private_2048_2.pem')
 
-        assert os.path.isfile('{}/private_2048_2.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_2048_2.pem')
 
     def test_saving_4096_bit_encrypted_private_key(self):
 
@@ -247,9 +229,9 @@ class TestRSA:
             cb_retrieve_password=get_password)
 
         sut.save_private_key(
-            private_key_path='{}/private_4096_2.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/private_4096_2.pem')
 
-        assert os.path.isfile('{}/private_4096_2.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_4096_2.pem')
 
     def test_saving_2048_bit_key_pair_unencrypted(self):
 
@@ -264,11 +246,11 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_2048)
 
         sut.save_key_pair(
-            private_key_path='{}/pair_private_2048_1.pem'.format(KEY_PATH),
-            public_key_path='{}/pair_public_2048_1.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/pair_private_2048_1.pem',
+            public_key_path=f'{TEST_FILES_DIRECTORY}/pair_public_2048_1.pem')
 
-        assert os.path.isfile('{}/pair_private_2048_1.pem'.format(KEY_PATH))
-        assert os.path.isfile('{}/pair_public_2048_1.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_2048_1.pem')
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_2048_1.pem')
 
     def test_saving_4096_bit_key_pair_unencrypted(self):
 
@@ -283,11 +265,11 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         sut.save_key_pair(
-            private_key_path='{}/pair_private_4096_1.pem'.format(KEY_PATH),
-            public_key_path='{}/pair_public_4096_1.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/pair_private_4096_1.pem',
+            public_key_path=f'{TEST_FILES_DIRECTORY}/pair_public_4096_1.pem')
 
-        assert os.path.isfile('{}/pair_private_4096_1.pem'.format(KEY_PATH))
-        assert os.path.isfile('{}/pair_public_4096_1.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_4096_1.pem')
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_4096_1.pem')
 
     def test_saving_2048_bit_key_pair_encrypted(self):
 
@@ -303,11 +285,11 @@ class TestRSA:
             cb_retrieve_password=get_password)
 
         sut.save_key_pair(
-            private_key_path='{}/pair_private_2048_2.pem'.format(KEY_PATH),
-            public_key_path='{}/pair_public_2048_2.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/pair_private_2048_2.pem',
+            public_key_path=f'{TEST_FILES_DIRECTORY}/pair_public_2048_2.pem')
 
-        assert os.path.isfile('{}/pair_private_2048_2.pem'.format(KEY_PATH))
-        assert os.path.isfile('{}/pair_public_2048_2.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_2048_2.pem')
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_2048_2.pem')
 
     def test_saving_4096_bit_key_pair_encrypted(self):
 
@@ -323,11 +305,11 @@ class TestRSA:
             cb_retrieve_password=get_password)
 
         sut.save_key_pair(
-            private_key_path='{}/pair_private_4096_2.pem'.format(KEY_PATH),
-            public_key_path='{}/pair_public_4096_2.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/pair_private_4096_2.pem',
+            public_key_path=f'{TEST_FILES_DIRECTORY}/pair_public_4096_2.pem')
 
-        assert os.path.isfile('{}/pair_private_4096_2.pem'.format(KEY_PATH))
-        assert os.path.isfile('{}/pair_public_4096_2.pem'.format(KEY_PATH))
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_4096_2.pem')
+        assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_4096_2.pem')
 
     def test_loading_existing_public_key(self):
 
@@ -342,9 +324,9 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         generator.save_public_key(
-            public_key_path='{}/load_test_public.pem'.format(KEY_PATH))
+            public_key_path=f'{TEST_FILES_DIRECTORY}/load_test_public.pem')
 
-        sut = RSAPublic(key_path='{}/load_test_public.pem'.format(KEY_PATH))
+        sut = RSAPublic(key_path=f'{TEST_FILES_DIRECTORY}/load_test_public.pem')
 
         assert sut.Key is not None
 
@@ -373,10 +355,10 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         generator.save_private_key(
-            private_key_path='{}/load_test_private.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/load_test_private.pem')
 
         sut = RSAPrivate(
-            key_path='{}/load_test_private.pem'.format(KEY_PATH))
+            key_path=f'{TEST_FILES_DIRECTORY}/load_test_private.pem')
 
         assert sut.Key is not None
 
@@ -394,10 +376,10 @@ class TestRSA:
             cb_retrieve_password=get_password)
 
         generator.save_private_key(
-            private_key_path='{}/load_test_private.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/load_test_private.pem')
 
         sut = RSAPrivate(
-            key_path='{}/load_test_private.pem'.format(KEY_PATH),
+            key_path=f'{TEST_FILES_DIRECTORY}/load_test_private.pem',
             cb_retrieve_password=get_password)
 
         assert sut.Key is not None
@@ -425,10 +407,10 @@ class TestRSA:
         """
 
         sut_signer = RSASigner(
-            private_key_path='{}/signing_private.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/signing_private.pem')
 
         sut_verifier = RSAVerifier(
-            public_key_path='{}/signing_public.pem'.format(KEY_PATH))
+            public_key_path=f'{TEST_FILES_DIRECTORY}/signing_public.pem')
 
         message = 'test message'
 
@@ -446,10 +428,10 @@ class TestRSA:
         """
 
         sut_signer = RSASigner(
-            private_key_path='{}/signing_private.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/signing_private.pem')
 
         sut_verifier = RSAVerifier(
-            public_key_path='{}/signing_public.pem'.format(KEY_PATH))
+            public_key_path=f'{TEST_FILES_DIRECTORY}/signing_public.pem')
 
         message = 'test message'
 
@@ -471,14 +453,14 @@ class TestRSA:
             key_length=RSAKeyLengths.KEY_LENGTH_4096)
 
         generator.save_key_pair(
-            private_key_path='{}/encryption_private.pem'.format(KEY_PATH),
-            public_key_path='{}/encryption_public.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/encryption_private.pem',
+            public_key_path=f'{TEST_FILES_DIRECTORY}/encryption_public.pem')
 
         sut_encryptor = RSAEncryptor(
-            public_key_path='{}/signing_public.pem'.format(KEY_PATH))
+            public_key_path=f'{TEST_FILES_DIRECTORY}/signing_public.pem')
 
         sut_decryptor = RSADecryptor(
-            private_key_path='{}/signing_private.pem'.format(KEY_PATH))
+            private_key_path=f'{TEST_FILES_DIRECTORY}/signing_private.pem')
 
         message = 'test message'
 

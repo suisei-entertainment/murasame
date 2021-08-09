@@ -139,43 +139,6 @@ class TestVFSLocalFileConnector:
         Attila Kovacs
     """
 
-    @classmethod
-    def setup_class(cls):
-
-        # Create test files
-        with open(JSON_PATH, 'w') as file:
-            file.write('{\"test\": \"value\"}')
-
-        if os.path.isfile(YAML_PATH):
-            os.remove(YAML_PATH)
-
-        with open(YAML_PATH, 'w') as file:
-            file.write('test: value')
-
-        if os.path.isfile(GENERIC_PATH):
-            os.remove(GENERIC_PATH)
-
-        with open(GENERIC_PATH, 'w') as file:
-            file.write('test')
-
-        if os.path.isfile(JSON_CONF_PATH):
-            os.remove(JSON_CONF_PATH)
-
-        with open(JSON_CONF_PATH, 'w') as file:
-            file.write('{\"test\": \"value\"}')
-
-        if os.path.isfile(YAML_CONF_PATH):
-            os.remove(YAML_CONF_PATH)
-
-        with open(YAML_CONF_PATH, 'w') as file:
-            file.write('test: value')
-
-    @classmethod
-    def teardown_class(cls):
-
-        if os.path.isfile(JSON_PATH):
-            os.remove(JSON_PATH)
-
     def test_creation(self):
 
         """
