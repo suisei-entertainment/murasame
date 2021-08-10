@@ -26,6 +26,7 @@ import os
 from typing import Union
 
 # Murasame Imports
+from murasame.constants import MURASAME_LOGGING_CONFIG
 from murasame.exceptions import InvalidInputError
 from murasame.utils import JsonFile
 from murasame.log.logchannel import LogChannel
@@ -125,7 +126,7 @@ class LoggingSystem:
             Attila Kovacs
         """
 
-        config_path = os.path.abspath('./config/log.conf')
+        config_path = MURASAME_LOGGING_CONFIG
 
         # Check whether or not there is a log configuration file in the
         # config directory of the application

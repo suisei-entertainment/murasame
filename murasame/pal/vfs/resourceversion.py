@@ -25,6 +25,7 @@ Contains the implementation of the ResourceVersion class.
 import sys
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log import LogWriter
 
@@ -69,7 +70,8 @@ class ResourceVersion(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                         cache_entries=True)
 
         if version < 1:
             raise InvalidInputError('Resource version must be greater than 0.')

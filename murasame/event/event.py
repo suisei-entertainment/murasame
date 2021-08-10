@@ -25,6 +25,7 @@ Contains the implementation of the event system.
 from typing import Callable
 
 # Murasame Imports
+from murasame.constants import MURASAME_EVENT_LOG_CHANNEL
 from murasame.log.logwriter import LogWriter
 
 class EventSystem(LogWriter):
@@ -58,7 +59,8 @@ class EventSystem(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.events', cache_entries=True)
+        super().__init__(channel_name=MURASAME_EVENT_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._events = {}
 

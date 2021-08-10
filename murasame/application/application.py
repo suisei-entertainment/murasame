@@ -35,6 +35,7 @@ from typing import Callable, Union
 import sentry_sdk
 
 # Murasame Imports
+from murasame.constants import MURASAME_APPLICATION_LOG_CHANNEL
 from murasame.api import LoggingAPI, ConfigurationAPI, VFSAPI, ApplicationAPI
 from murasame.exceptions import InvalidInputError, InvalidLicenseKeyError
 from murasame.log import LogWriter, LoggingSystem
@@ -119,7 +120,7 @@ class Application(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.application',
+        super().__init__(channel_name=MURASAME_APPLICATION_LOG_CHANNEL,
                          cache_entries=True)
 
         self._business_logic = business_logic

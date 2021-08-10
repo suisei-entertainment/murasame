@@ -29,11 +29,14 @@ import httpx
 from googletrans import Translator
 
 # Murasame Imports
+from murasame.constants import (
+    MURASAME_LOCALIZER_LOG_CHANNEL,
+    MURASAME_DEFAULT_LOCALIZATION_PATH)
 from murasame.log.logwriter import LogWriter
 from murasame.api import VFSAPI
 from murasame.utils import SystemLocator
 
-"""
+""" 
 List of supported languages as specified by Google at
 https://cloud.google.com/translate/docs/languages.
 """
@@ -191,7 +194,7 @@ class Localizer(LogWriter):
         default_language: str = 'en',
         cache_default: bool = False,
         auto_translate: bool = False,
-        localization_directory='/localization') -> None:
+        localization_directory=MURASAME_DEFAULT_LOCALIZATION_PATH) -> None:
 
         """Creates a new Localizer instance.
 
@@ -211,7 +214,8 @@ class Localizer(LogWriter):
                 language files are located.
         """
 
-        super().__init__(channel_name='murasame.localizer', cache_entries=True)
+        super().__init__(channel_name=MURASAME_LOCALIZER_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._language = language
         self._default_language = default_language
@@ -224,7 +228,6 @@ class Localizer(LogWriter):
         self._load_language()
         if self._cache_default:
             self._cache_default_language()
-
 
     def get(self, key: str, attributes: dict = None) -> str:
 

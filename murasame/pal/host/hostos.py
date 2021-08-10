@@ -25,6 +25,7 @@ Contains the implementation of the HostOS class.
 import platform
 
 # Murasame Imports
+from murasame.constants import MURASAME_PAL_LOG_CHANNEL
 from murasame.exceptions import MissingRequirementError
 from murasame.log import LogWriter
 
@@ -114,7 +115,8 @@ class HostOS(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal', cache_entries=True)
+        super().__init__(channel_name=MURASAME_PAL_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._platform = ''
         self._os = ''

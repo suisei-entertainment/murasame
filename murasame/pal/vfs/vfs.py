@@ -27,6 +27,7 @@ import os
 from typing import Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.utils import JsonFile
 from murasame.log import LogWriter
@@ -79,7 +80,8 @@ class VFS(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._root = VFSNode(node_name='', node_type=VFSNodeTypes.DIRECTORY)
         self._packages = {}

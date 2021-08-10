@@ -31,6 +31,7 @@ import shutil
 import magic
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log import LogWriter
 from murasame.utils import SystemLocator, JsonFile
@@ -74,7 +75,8 @@ class VFSPackage(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                                      cache_entries=True)
 
         if not os.path.isfile(path):
             raise InvalidInputError(f'Resource package {path} doesn\'t exist.')

@@ -26,6 +26,7 @@ from typing import Any, Callable
 from time import perf_counter
 
 # Murasame Imports
+from murasame.constants import MURASAME_DEBUG_LOG_CHANNEL
 from murasame.log import LogWriter
 
 def debug(function: Callable) -> Any:
@@ -43,7 +44,8 @@ def debug(function: Callable) -> Any:
     """
 
     def wrapper(*args, **kwargs) -> Any:
-        logger = LogWriter(channel_name='murasame.debug', cache_entries=True)
+        logger = LogWriter(channel_name=MURASAME_DEBUG_LOG_CHANNEL,
+                           cache_entries=True)
         logger.debug(f'Calling {function.__name__}')
         logger.debug(f'    - Args: {args}')
         logger.debug(f'    - Kwargs: {kwargs}')
@@ -52,7 +54,7 @@ def debug(function: Callable) -> Any:
         return result
     return wrapper
 
-def time(function: Callable) -> Any:
+def measure(function: Callable) -> Any:
 
     """Allows log of the execution time of functions.
 
@@ -68,7 +70,8 @@ def time(function: Callable) -> Any:
     """
 
     def wrapper(*args, **kwargs) -> Any:
-        logger = LogWriter(channel_name='murasame.debug', cache_entries=True)
+        logger = LogWriter(channel_name=MURASAME_DEBUG_LOG_CHANNEL,
+                           cache_entries=True)
         start_time = perf_counter()
         result = function(*args, **kwargs)
         end_time = perf_counter()

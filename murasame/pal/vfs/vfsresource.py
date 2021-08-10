@@ -22,6 +22,7 @@ Contains the implementation of the VFSResource class.
 """
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log import LogWriter
 from murasame.pal.vfs.resourceversion import ResourceVersion
@@ -125,7 +126,8 @@ class VFSResource(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._version = version
         self._descriptor = descriptor

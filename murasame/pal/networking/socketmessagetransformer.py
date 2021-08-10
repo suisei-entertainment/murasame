@@ -25,8 +25,8 @@ Contains the implementation of the SocketMessageTransformer class.
 from typing import Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_SOCKET_LOG_CHANNEL
 from murasame.log import LogWriter
-from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class SocketMessageTransformer(LogWriter):
 
@@ -47,7 +47,7 @@ class SocketMessageTransformer(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name=SOCKET_LOG_CHANNEL,
+        super().__init__(channel_name=MURASAME_SOCKET_LOG_CHANNEL,
                          cache_entries=True)
 
     def serialize(self, message: Any) -> bytes:

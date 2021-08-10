@@ -25,6 +25,7 @@ Contains the implementation of the ConfigurationList class.
 from typing import Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_CONFIGURATION_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log import LogWriter
 
@@ -107,7 +108,7 @@ class ConfigurationList(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.configuration',
+        super().__init__(channel_name=MURASAME_CONFIGURATION_LOG_CHANNEL,
                          cache_entries=True)
 
         self._name = name

@@ -22,6 +22,7 @@ Contains the implementation of the ConfigurationGroup class.
 """
 
 # Murasame Imports
+from murasame.constants import MURASAME_CONFIGURATION_LOG_CHANNEL
 from murasame.exceptions import AlreadyExistsError, InvalidInputError
 from murasame.log import LogWriter
 from murasame.configuration.configurationattribute import ConfigurationAttribute
@@ -133,7 +134,7 @@ class ConfigurationGroup(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.configuration',
+        super().__init__(channel_name=MURASAME_CONFIGURATION_LOG_CHANNEL,
                          cache_entries=True)
 
         self._name = name

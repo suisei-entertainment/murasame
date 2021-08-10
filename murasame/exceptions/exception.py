@@ -25,8 +25,9 @@ Contains the implementation of the basic exception class.
 import logging
 import inspect
 
-# Framework Imports
-from .errorcodes import ErrorCodes
+# Murasame Imports
+from murasame.constants import MURASAME_EXCEPTIONS_LOG_CHANNEL
+from murasame.exceptions.errorcodes import ErrorCodes
 
 class FrameworkError(Exception):
 
@@ -111,7 +112,7 @@ class FrameworkError(Exception):
             self.file, self.function, self.line = self.inspect_exception()
 
         # Log the exception
-        logger = logging.getLogger('murasame.exceptions')
+        logger = logging.getLogger(MURASAME_EXCEPTIONS_LOG_CHANNEL)
         logger.error(f'Framework exception was raised. '
                      f'Type: {self.__class__.__name__}\n'
                      f'Error Code: {self.errorcode}\n'

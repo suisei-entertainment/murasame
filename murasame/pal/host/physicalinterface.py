@@ -22,8 +22,8 @@ Contains the implementation of the PhysicalInterface class.
 """
 
 # Murasame Imports
+from murasame.constants import MURASAME_PAL_LOG_CHANNEL
 from murasame.log import LogWriter
-
 from murasame.pal.host.linkaddress import LinkAddress
 from murasame.pal.host.ipv4address import IPv4Address
 from murasame.pal.host.ipv6address import IPv6Address
@@ -70,7 +70,8 @@ class PhysicalInterface(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal', cache_entries=True)
+        super().__init__(channel_name=MURASAME_PAL_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._name = interface_name
         self._link_addresses = {}

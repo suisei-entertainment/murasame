@@ -25,6 +25,7 @@ Contains the implementation of the ConfigurationBackend class.
 from typing import Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_CONFIGURATION_LOG_CHANNEL
 from murasame.log import LogWriter
 
 class ConfigurationBackend(LogWriter):
@@ -43,7 +44,7 @@ class ConfigurationBackend(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.configuration',
+        super().__init__(channel_name=MURASAME_CONFIGURATION_LOG_CHANNEL,
                          cache_entries=True)
 
     def get(self, entry_name: str) -> Any:

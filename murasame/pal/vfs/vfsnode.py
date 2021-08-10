@@ -27,6 +27,7 @@ from enum import IntEnum
 from typing import Union
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.log import LogWriter
 from murasame.exceptions import InvalidInputError
 from murasame.pal.vfs.vfsresource import VFSResource
@@ -172,7 +173,8 @@ class VFSNode(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                         cache_entries=True)
 
         # Root node can only be a directory node
         if node_name == '' and node_type == VFSNodeTypes.FILE:

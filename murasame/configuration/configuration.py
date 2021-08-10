@@ -25,6 +25,7 @@ Contains the implementation of the Configuration class.
 from typing import Callable, Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_CONFIGURATION_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log import LogWriter
 from murasame.configuration.configurationbackends import ConfigurationBackends
@@ -57,7 +58,7 @@ class Configuration(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.configuration',
+        super().__init__(channel_name=MURASAME_CONFIGURATION_LOG_CHANNEL,
                          cache_entries=True)
 
         self._backend = None

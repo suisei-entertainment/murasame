@@ -22,6 +22,7 @@ Contains the implementation of the PackageFileDescriptor class.
 """
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.log import LogWriter
 
 class PackageFileDescriptor(LogWriter):
@@ -70,7 +71,8 @@ class PackageFileDescriptor(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._path = path
         self._version = None

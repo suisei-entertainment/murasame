@@ -25,9 +25,9 @@ Contains the implementation of the HostNetworking class.
 import requests
 
 # SEED Imports
+from murasame.constants import MURASAME_PAL_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log import LogWriter
-
 from murasame.pal.host.physicalinterface import PhysicalInterface
 from murasame.pal.host.hostlocation import HostLocation
 
@@ -106,7 +106,8 @@ class HostNetworking(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal', cache_entries=True)
+        super().__init__(channel_name=MURASAME_PAL_LOG_CHANNEL,
+                         cache_entries=True)
 
         self._physical_interfaces = {}
         self._public_ip = None

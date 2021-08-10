@@ -25,6 +25,7 @@ Contains the implementation of the VFSResourceConnector class.
 from typing import Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_VFS_LOG_CHANNEL
 from murasame.log import LogWriter
 
 class VFSResourceConnector(LogWriter):
@@ -43,7 +44,8 @@ class VFSResourceConnector(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name='murasame.pal.vfs', cache_entries=True)
+        super().__init__(channel_name=MURASAME_VFS_LOG_CHANNEL,
+                         cache_entries=True)
 
     def load(self, descriptor: 'VFSResourceDescriptor') -> Any:
 

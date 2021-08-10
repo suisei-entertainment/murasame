@@ -27,8 +27,8 @@ from threading import Thread
 from typing import Any
 
 # Murasame Imports
+from murasame.constants import MURASAME_SOCKET_LOG_CHANNEL
 from murasame.log import LogWriter
-from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class ClientThread(Thread):
 
@@ -145,7 +145,7 @@ class ClientThread(Thread):
         self._handler_running = True
         self._receive_buffer_size = receive_buffer_size
         self._logger = LogWriter(
-            channel_name=SOCKET_LOG_CHANNEL,
+            channel_name=MURASAME_SOCKET_LOG_CHANNEL,
             cache_entries=True)
 
         self._logger.debug(

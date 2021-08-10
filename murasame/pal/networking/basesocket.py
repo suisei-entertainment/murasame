@@ -27,9 +27,9 @@ import ssl
 from enum import IntEnum
 
 # Murasame Imports
+from murasame.constants import MURASAME_SOCKET_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError, MissingRequirementError
 from murasame.log import LogWriter
-from murasame.pal.networking.constants import SOCKET_LOG_CHANNEL
 
 class BaseSocket(LogWriter):
 
@@ -195,7 +195,7 @@ class BaseSocket(LogWriter):
             Attila Kovacs
         """
 
-        super().__init__(channel_name=SOCKET_LOG_CHANNEL,
+        super().__init__(channel_name=MURASAME_SOCKET_LOG_CHANNEL,
                          cache_entries=True)
 
         self._name = '' if name is None else name
