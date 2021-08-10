@@ -363,6 +363,7 @@ class VFS(LogWriter):
                    f'{path}...')
 
         package = VFSPackage(path=path)
+        self._packages[package.Path] = package
 
     def _load_from_vfs_config(self, vfs_config: dict) -> None:
 

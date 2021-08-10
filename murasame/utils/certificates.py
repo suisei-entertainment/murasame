@@ -499,7 +499,7 @@ class X509Certificate:
 
         if self._certificate is not None:
             time = datetime.datetime.now()
-            return time >= self.NotValidBefore and time <= self.NotValidAfter
+            return self.NotValidAfter >= time >= self.NotValidBefore
 
         return False
 

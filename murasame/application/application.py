@@ -29,7 +29,7 @@ import signal
 import errno
 import platform
 import atexit
-from typing import Callable
+from typing import Callable, Union
 
 # Dependency Imports
 import sentry_sdk
@@ -204,7 +204,7 @@ class Application(LogWriter):
         SystemLocator.instance().register_provider(
             ApplicationAPI, self)
 
-    def execute(self, *args: list, **kwargs: list) -> int:
+    def execute(self, *args: list, **kwargs: dict) -> int:
 
         """Contains the main execution logic of the application.
 
@@ -230,12 +230,12 @@ class Application(LogWriter):
             result = self._business_logic.before_main_loop(args, kwargs)
             result = self._business_logic.main_loop(args, kwargs)
             result = self._business_logic.after_main_loop(args, kwargs)
-        except SystemExit as error:
+        except SystemExit:
             # Delete the PID file of daemon applications before exiting
             # to avoid leftover files.
             if self._type == ApplicationTypes.DAEMON_APPLICATION:
                 self.delete_pid()
-            raise SystemExit from error
+            raise
         except Exception as error:
             self._business_logic.on_uncaught_exception(error)
             if self._business_logic.UseSentryIO:
@@ -277,6 +277,12 @@ class Application(LogWriter):
         self._daemonize()
 
         pid = self.get_pid()
+
+        if not pid:
+            message = 'No PID file was found, daemon has failed to start.'
+            sys.stderr.write(message)
+            sys.exit(ApplicationReturnCodes.NOT_RUNNING)
+
         message = f'Daemon created with PID {pid}'
         sys.stdout.write(message)
 
@@ -349,7 +355,7 @@ class Application(LogWriter):
         self.stop()
         self.start(*args, **kwargs)
 
-    def get_pid(self) -> int:
+    def get_pid(self) -> Union[int, None]:
 
         """Returns the PID of the running daemon process.
 
@@ -370,9 +376,9 @@ class Application(LogWriter):
                 pid = int(pid_file.read().strip())
         except IOError:
             pid = None
-        except SystemExit as error:
+        except SystemExit:
             pid = None
-            raise SystemExit from error
+            raise
 
         return  pid
 
@@ -437,10 +443,11 @@ class Application(LogWriter):
             else:
                 raise OSError from error
 
-    def _validate_license(self,
-                          public_key: str,
-                          license_file: str,
-                          cb_decryption_key_callback: Callable) -> None:
+    def _validate_license(
+        self,
+        public_key: str,
+        license_file: str,
+        cb_decryption_key_callback: Callable) -> None:
 
         """Validates the license key of the application.
 

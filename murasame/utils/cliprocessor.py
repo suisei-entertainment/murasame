@@ -185,10 +185,10 @@ class CliProcessor:
 
         try:
             commands = command_map['commands']
-        except KeyError:
+        except KeyError as error:
             raise InvalidInputError(
                 'The provided command map does not contain a valid command '
-                'list.')
+                'list.') from error
 
         # Iterate over the command map and process the content
         for element in commands:
@@ -199,10 +199,10 @@ class CliProcessor:
                     f'Failed to determine the type of an element in the '
                     f'command map. No type field was found. '
                     f'Element: {element}') from exception
-            except TypeError as exception:
+            except TypeError as error:
                 raise InvalidInputError(
                     f'Failed to parse the element descriptor {element} '
-                    'properly.') from exception
+                    'properly.') from error
 
             if element_type == 'group':
                 self._register_group(element)

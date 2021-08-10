@@ -141,7 +141,7 @@ class VFSConfigurationSource(ConfigurationSource):
             Attila Kovacs
         """
 
-        config_group = ConfigurationGroup(name=key, content=value)
+        dummy = ConfigurationGroup(name=key, content=value)
 
     def _parse_list(self, key: str, value: list) -> None:
 
@@ -155,7 +155,7 @@ class VFSConfigurationSource(ConfigurationSource):
             Attila Kovacs
         """
 
-        config_list = ConfigurationList(name=key, content=value)
+        dummy = ConfigurationList(name=key, content=value)
 
     def _parse_attribute(self, key: str, value: object) -> None:
 
@@ -183,9 +183,9 @@ class VFSConfigurationSource(ConfigurationSource):
             data_type = 'FLOAT'
         else:
             raise InvalidInputError(
-                f'Unsupported data type when trying to parse configuraiton '
+                f'Unsupported data type when trying to parse configuration '
                 f'attribute {key}:{value}.')
 
-        config_attribute = ConfigurationAttribute(name=key,
-                                                  value=value,
-                                                  data_type=data_type)
+        dummy = ConfigurationAttribute(name=key,
+                                       value=value,
+                                       data_type=data_type)

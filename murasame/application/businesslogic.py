@@ -418,5 +418,7 @@ class BusinessLogic:
             Attila Kovacs
         """
 
+        #pylint: disable=no-self-use
+
         del hint
         return event

@@ -227,6 +227,10 @@ class HostLocation(LogWriter):
 
                 # Extract the update package
                 with tarfile.open(package_filename) as tar:
+
+                    # Disable warning about using GeoIP internals
+                    #pylint: disable=protected-access
+
                     tar.extractall(path=PACKAGE_DOWNLOAD_LOCATION,
                                    members=GeoIP._find_mmdb(tar))
 
