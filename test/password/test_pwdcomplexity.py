@@ -248,7 +248,7 @@ class TestPasswordComplexity:
         assert not sut.validate(password='password1')
         assert not sut.validate(password='password2')
         assert not sut.validate(password='password3')
-        assert sut.validate(password='password4')
+        assert sut.validate(password='password5')
 
     def test_common_passwords_after_list_reload(self):
 
