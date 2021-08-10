@@ -23,7 +23,7 @@ Contains the implementation of the PasswordGenerator class.
 
 # Runtime Imports
 import string
-import random
+import secrets
 
 class PasswordGenerator:
 
@@ -35,8 +35,8 @@ class PasswordGenerator:
 
     @staticmethod
     def generate(
-            pwd_length: int = 12,
-            allowed_chars: int = string.ascii_letters + string.digits + string.punctuation) -> str:
+        pwd_length: int = 12,
+        allowed_chars: int = string.ascii_letters + string.digits + string.punctuation) -> str:
 
         """Generates a password.
 
@@ -51,4 +51,4 @@ class PasswordGenerator:
             Attila Kovacs
         """
 
-        return ''.join(random.choice(allowed_chars) for _ in range(pwd_length))
+        return ''.join(secrets.choice(allowed_chars) for _ in range(pwd_length))

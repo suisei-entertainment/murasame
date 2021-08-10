@@ -23,6 +23,8 @@ Contains the implementation of the Dices class.
 
 # Runtime Imports
 import random
+import secrets
+
 
 class Dices:
 
@@ -67,30 +69,30 @@ class Dices:
 
         # D4 dices
         for dummy in range(1, dice_d4 + 1):
-            result += random.randint(1, 4)
+            result += secrets.randbelow(5)
 
         # D6 dices
         for dummy in range(1, dice_d6 + 1):
-            result += random.randint(1, 6)
+            result += secrets.randbelow(7)
 
         # D8 dices
         for dummy in range(1, dice_d8 + 1):
-            result += random.randint(1, 8)
+            result += secrets.randbelow(9)
 
         # D10 dices
         for dummy in range(1, dice_d10 + 1):
-            result += random.randint(1, 10)
+            result += secrets.randbelow(11)
 
         # D12 dices
         for dummy in range(1, dice_d12 + 1):
-            result += random.randint(1, 12)
+            result += secrets.randbelow(13)
 
         # D20 dices
         for dummy in range(1, dice_d20 + 1):
-            result += random.randint(1, 20)
+            result += secrets.randbelow(21)
 
         # D100 dices
         for dummy in range(1, dice_d100 + 1):
-            result += random.randint(1, 100)
+            result += secrets.randbelow(101)
 
         return result
