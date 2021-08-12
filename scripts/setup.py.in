@@ -43,7 +43,7 @@ class CleanCommand(Command):
     def run(self):
         os.system('rm -vrf ./build ./*.egg-info')
 
-with open('./README.md', 'r') as readme_file:
+with open('./README.rst', 'r') as readme_file:
     long_description = readme_file.read()
 
 setup(
@@ -55,19 +55,23 @@ setup(
                 'Entertainment.',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    keywords=['MMO', 'AWS', 'online game', 'virtual world'],
     url='https://github.com/suisei-entertainment/murasame',
-    python_requires='>=3.8',
+    download_url='https://github.com/suisei-entertainment/murasame/archive/${source_archive}',
+    python_requires='>=3.9',
     namespace_packages=['murasame'],
     packages=${packages},
     install_requires=${install_requires},
     classifiers=[
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Information Technology',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: POSIX :: Linux',
         'Topic :: Games/Entertainment',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'Development Status :: 2 - Pre-Alpha'
     ],
     cmdclass={
         'clean': CleanCommand
