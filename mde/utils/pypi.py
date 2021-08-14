@@ -21,6 +21,14 @@
 Contains utility functions related to PyPi releases.
 """
 
+# Runtime Imports
+import logging
+import subprocess
+
+# MDE Imports
+from mde.constants import MDE_LOGGER_NAME, DIST_PATH
+from mde.utils.version import get_version_num
+
 def do_pypi_release() -> None:
 
     """Creates a new release on PyPi.
@@ -29,4 +37,20 @@ def do_pypi_release() -> None:
         Attila Kovacs
     """
 
-    pass
+    logger = logging.getLogger(MDE_LOGGER_NAME)
+    logger.debug('Releasing package on PyPi...')
+
+    command = \
+    [
+        'twine',
+        'upload',
+        f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl'
+    ]
+
+    try:
+        subprocess.check_call(command)
+    except subprocess.CalledProcessError as error:
+        logger.error('Failed to upload the release to PyPi.')
+        raise SystemExit from error
+
+    logger.debug('Package released on PyPi...')

@@ -32,6 +32,7 @@ from mde.utils.constantsfile import create_constants_file
 from mde.packaging.wheel import create_wheel
 from mde.git.release import do_github_release
 from mde.utils.pypi import do_pypi_release
+from mde.documentation.readthedocs import do_readthedocs_release
 
 class MDEModes(IntEnum):
 
@@ -131,7 +132,7 @@ def mde_build(arguments: 'argparse.Namespace') -> MDEReturnCodes:
 
     bump_version_number()
     create_constants_file()
-    create_wheel()
+    create_wheel(arguments=arguments)
 
 def mde_release(arguments: 'argparse.Namespace') -> MDEReturnCodes:
 

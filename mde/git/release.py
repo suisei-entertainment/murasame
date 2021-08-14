@@ -36,6 +36,7 @@ from mde.git.commit import get_git_commit_hash
 from mde.utils.snapshot import create_snapshot
 from mde.utils.constantsfile import create_constants_file
 from mde.packaging.wheel import create_wheel
+from mde.documentation.documentation import build_documentation, package_documentation
 
 def do_github_release(arguments: 'argparse.Namespace') -> None:
 
@@ -138,7 +139,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
     # Create the Python wheel
     bump_version_number()
     create_constants_file()
-    create_wheel()
+    create_wheel(arguments=arguments)
 
     # Create a snapshot of the source code
     tar_path = create_snapshot()
@@ -148,6 +149,14 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         raise SystemExit
 
     logger.debug(f'Creating git release {release_name} for object {obj}...')
+
+    # Create documentation
+    build_documentation()
+    documentation_archive_path = package_documentation()
+    if not documentation_archive_path:
+        logger.error('Cannot create release without a valid documentation '
+                     'package.')
+        raise SystemExit
 
     # Create the  the release on GitHub
     release = repository.create_git_release(
@@ -169,6 +178,11 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
     logger.debug(f'Uploading repository snapshot as release asset for {tag}...')
     release.upload_asset(path=tar_path)
     logger.debug('Snapshot uploaded.')
+
+    # Upload the documentation as a release asset.
+    logger.debug(f'Uploading documentation as release asset for {tag}...')
+    release.upload_asset(path=documentation_archive_path)
+    logger.dbeug('Documentation uploaded.')
 
     # Go back to the development branch
     checkout_command = 'git checkout development'

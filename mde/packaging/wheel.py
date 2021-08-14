@@ -97,9 +97,12 @@ def collect_dependencies() -> list:
 
     return result
 
-def create_wheel() -> None:
+def create_wheel(arguments: 'argparse.Namespace') -> None:
 
     """Creates the Python wheel.
+
+    Args:
+        arguments (argparse.Namespace): The parsed command line arguments.
 
     Authors:
         Attila Kovacs
@@ -173,15 +176,32 @@ def create_wheel() -> None:
     with open('./setup.py', 'w+') as setup_file:
         setup_file.write(setup_string)
 
+    build_command = None
+    if arguments.build_type is not None and arguments.build_type == 'release':
+        logger.debug('     - Running a release build...')
+        build_command = \
+        [
+            'python',
+            'setup.py',
+            'sdist',
+            'bdist_wheel',
+            '--dist-dir', DIST_PATH,
+            'clean'
+        ]
+    else:
+        logger.debug('     - Running a development build...')
+        build_command = \
+        [
+            'python',
+            'setup.py',
+            'bdist_wheel',
+            '--dist-dir', DIST_PATH,
+            'clean'
+        ]
+
     logger.debug('     - Running setup.py...')
     try:
-        subprocess.check_call(
-            [\
-                'python',
-                'setup.py',
-                'bdist_wheel',
-                '--dist-dir', DIST_PATH,
-                'clean'])
+        subprocess.check_call(build_command)
     except subprocess.CalledProcessError as error:
         logger.error('Failed to create wheel.')
         raise SystemExit from error

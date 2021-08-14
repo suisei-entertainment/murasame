@@ -109,3 +109,14 @@ MDE_DESCRIPTION = 'Utility tool used for development of the Murasame framework.'
 Epilog string of the MDE tool.
 """
 MDE_EPILOG = ''
+
+"""
+Path where the source for the framework documentation is located.
+"""
+DOCUMENTATION_SOURCE = os.path.abspath(os.path.expanduser('./doc'))
+
+"""
+Path where the generated framework documentation is located.
+"""
+DOCUMENTATION_TARGET = os.path.abspath(
+    os.path.expanduser(f'{DIST_PATH}/documentation'))

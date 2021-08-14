@@ -47,7 +47,7 @@ def create_snapshot() -> Union[str, None]:
     logger.debug('Creating snapshot of current repository state...')
 
     root_path = os.getcwd()
-    archive_path = f'{DIST_PATH}/murasame-{get_version_num()}.tar.gz'
+    archive_path = f'{DIST_PATH}/murasame-{get_version_num()}-source.tar.gz'
 
     with tarfile.open(archive_path, 'w:gz') as tar:
         tar.add(root_path)

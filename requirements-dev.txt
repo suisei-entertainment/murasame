@@ -25,6 +25,7 @@ sphinx-pdj-theme
 pyinstaller>=3.4
 pydeps>=1.9.13
 pygithub>=1.55
+twine>=3.4.2
 
 # Testing
 pytest>=6.2.4
