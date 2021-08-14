@@ -36,7 +36,7 @@ from murasame.log.logwriter import LogWriter
 from murasame.api import VFSAPI
 from murasame.utils import SystemLocator
 
-""" 
+"""
 List of supported languages as specified by Google at
 https://cloud.google.com/translate/docs/languages.
 """

@@ -21,4 +21,4 @@
 Utility package containing various debug tools.
 """
 
-from murasame.debug.decorators import debug, time
+from murasame.debug.decorators import debug, measure
