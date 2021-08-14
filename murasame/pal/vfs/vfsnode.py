@@ -220,7 +220,7 @@ class VFSNode(LogWriter):
 
         self.debug(f'Reset of node {self.Name} was completed.')
 
-    def isdir(self) -> bool:
+    def is_dir(self) -> bool:
 
         """Returns whether or not the node represents a directory node.
 

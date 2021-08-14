@@ -84,6 +84,21 @@ class VFSResourceDescriptor(LogWriter):
         raise NotImplementedError(
             f'{self.__class__.__name__}.deserialize() has to be implemented.')
 
+    def update_content_type(self, content_type: str) -> None:
+
+        """Updates the content type.
+
+        Args:
+            content_type (str): The content type to set.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        raise NotImplementedError(
+            f'{self.__class__.__name__}.update_content_type() has to be '
+            f'implemented.')
+
     def create_connector(self) -> 'VFSResourceConnector':
 
         """Function prototype for creating the resource connector for each type

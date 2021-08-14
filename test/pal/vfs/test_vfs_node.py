@@ -141,7 +141,7 @@ class TestVFSNode:
 
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.DIRECTORY)
         assert sut.Type == VFSNodeTypes.DIRECTORY
-        assert sut.isdir()
+        assert sut.is_dir()
         assert not sut.is_file()
 
     def test_type_checking_of_file_node(self):
@@ -155,7 +155,7 @@ class TestVFSNode:
 
         sut = VFSNode(node_name='test', node_type=VFSNodeTypes.FILE)
         assert sut.Type == VFSNodeTypes.FILE
-        assert not sut.isdir()
+        assert not sut.is_dir()
         assert sut.is_file()
 
     def test_adding_single_resource(self):
