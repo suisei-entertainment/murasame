@@ -136,6 +136,9 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
     if not commit_hash:
         logger.error(f'Failed to retrieve commit {commit_hash} from GitHub.')
 
+    # Force a release build even if it wasn't specified
+    arguments.build_type = 'release'
+
     # Create the Python wheel
     bump_version_number()
     create_constants_file()
