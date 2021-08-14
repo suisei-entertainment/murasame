@@ -59,7 +59,7 @@ Getting Started
 Requirements
 -----------------------------------------
 
-Murasame is a framework that requires Python version 3.8 or newer, and it is
+Murasame is a framework that requires Python version 3.9 or newer, and it is
 not compatible with Python 2.
 
 Applications developed with the framework are primarily meant to be run on a
