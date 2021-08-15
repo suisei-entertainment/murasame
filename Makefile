@@ -140,12 +140,24 @@ test:
 	pytest --xkill
 	@echo
 
+travistest:
+	@echo Executing framework tests...
+	pytest -n 1 -vv --durations=10 --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+	pytest --xkill
+	@echo
+
 ## ============================================================================
 ##	Measures the test coverage of the framework
 ## ============================================================================
 coverage:
 	@echo Executing coverage measurement...
 	pytest -n auto -vv --durations=10 --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest --xkill
+	@echo
+
+traviscoverage:
+	@echo Executing coverage measurement...
+	pytest -n 1 -vv --durations=10 --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	pytest --xkill
 	@echo
 

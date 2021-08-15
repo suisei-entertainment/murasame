@@ -22,4 +22,4 @@
 #shellcheck disable=SC1091
 . ./scripts/ci/before.sh
 
-make test
+make travistest
