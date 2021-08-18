@@ -89,8 +89,8 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         logger.debug('    Marking the release as draft.')
 
     # Merge the current development branch to the release branch
-    checkout_command = 'git checkout release'
-    merge_command = 'git merge development'
+    checkout_command = ['git', 'checkout', 'release']
+    merge_command = ['git', 'merge', 'development']
 
     try:
         subprocess.check_call(checkout_command)
@@ -106,7 +106,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         raise SystemExit from error
 
     # Create the release tag
-    tag_command = f'git tag -a {tag} -m {tag_message}'
+    tag_command = ['git', 'tag', '-a', 'f{tag}', '-m', 'f{tag_message}']
 
     try:
         subprocess.check_call(tag_command)
@@ -116,7 +116,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         raise SystemExit from error
 
     # Update GitHub
-    push_command = 'git push'
+    push_command = ['git', 'push']
 
     try:
         subprocess.check_call(push_command)
@@ -183,7 +183,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
     logger.debug('Documentation uploaded.')
 
     # Go back to the development branch
-    checkout_command = 'git checkout development'
+    checkout_command = ['git', 'checkout', 'development']
     try:
         subprocess.check_call(checkout_command)
     except subprocess.CalledProcessError:

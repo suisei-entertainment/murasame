@@ -31,7 +31,7 @@ from mde.utils.version import bump_version_number
 from mde.utils.constantsfile import create_constants_file
 from mde.packaging.wheel import create_wheel
 from mde.git.release import do_github_release
-from mde.utils.pypi import do_pypi_release
+from mde.release.pypi import do_pypi_release
 
 class MDEModes(IntEnum):
 
