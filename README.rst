@@ -4,9 +4,6 @@
    :alt: Murasame Logo
    :align: center
 
-Murasame Application Development Framework
-=======================================================
-
 Murasame is an application framework for Python to simplify the development of
 microservice based cloud applications, primarily the backend side of online
 games built using Docker containers running in Amazon ECS.

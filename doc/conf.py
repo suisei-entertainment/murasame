@@ -27,6 +27,8 @@
 
 # -- Imports --------------------------------------------------------------
 
+import os
+import sys
 import sphinx_pdj_theme
 
 # -- Path setup --------------------------------------------------------------
@@ -35,9 +37,10 @@ import sphinx_pdj_theme
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
-sys.path.insert(0, os.path.abspath('./../murasame/'))
+
+FRAMEWORK_PATH = os.path.abspath(os.path.expanduser('./../'))
+
+sys.path.insert(0, FRAMEWORK_PATH)
 
 html_theme_path = [sphinx_pdj_theme.get_html_theme_path()]
 
@@ -55,7 +58,6 @@ author = 'Suisei Entertainment'
 version = '0.1'
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
-
 
 # -- General configuration ---------------------------------------------------
 
