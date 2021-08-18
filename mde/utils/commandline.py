@@ -68,7 +68,7 @@ def configure_arguments() -> argparse.ArgumentParser:
         help='Enable debug mode of MDE.')
 
     parser.add_argument(
-        '--token',
+        '--github-token',
         dest='github_token',
         default=None,
         action='store',
@@ -80,13 +80,6 @@ def configure_arguments() -> argparse.ArgumentParser:
         default=False,
         action='store_true',
         help='Whether or not the release should be marked as a draft.')
-
-    parser.add_argument(
-        '--prerelease',
-        dest='release_prerelease',
-        default=False,
-        action='store_true',
-        help='Whether or not the release should be marked as a pre-release.')
 
     return parser
 

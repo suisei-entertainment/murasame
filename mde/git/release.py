@@ -88,11 +88,6 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         draft = True
         logger.debug('    Marking the release as draft.')
 
-    prerelease = False
-    if arguments.release_prerelease:
-        prerelease = True
-        logger.debug('    Marking the release as pre-release.')
-
     # Merge the current development branch to the release branch
     checkout_command = 'git checkout release'
     merge_command = 'git merge development'
@@ -167,7 +162,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         name=release_name,
         message=release_message,
         draft=draft,
-        prerelease=prerelease,
+        prerelease=False,
         target_commitish=commit)
 
     # Upload the Python wheel as a release asset
@@ -185,7 +180,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
     # Upload the documentation as a release asset.
     logger.debug(f'Uploading documentation as release asset for {tag}...')
     release.upload_asset(path=documentation_archive_path)
-    logger.dbeug('Documentation uploaded.')
+    logger.debug('Documentation uploaded.')
 
     # Go back to the development branch
     checkout_command = 'git checkout development'

@@ -29,9 +29,12 @@ import subprocess
 from mde.constants import MDE_LOGGER_NAME, DIST_PATH
 from mde.utils.version import get_version_num
 
-def do_pypi_release() -> None:
+def do_pypi_release(arguments: 'argparse.Namespace') -> None:
 
     """Creates a new release on PyPi.
+
+    Args:
+        arguments (argparse.Namespace): The parsed command line arguments.
 
     Authors:
         Attila Kovacs
@@ -40,12 +43,24 @@ def do_pypi_release() -> None:
     logger = logging.getLogger(MDE_LOGGER_NAME)
     logger.debug('Releasing package on PyPi...')
 
-    command = \
-    [
-        'twine',
-        'upload',
-        f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl'
-    ]
+    command = None
+
+    if arguments.draft:
+        command = \
+        [
+            'twine',
+            'upload',
+            '-r',
+            'testpypi'
+            f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl'
+        ]
+    else:
+        command = \
+        [
+            'twine',
+            'upload',
+            f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl'
+        ]
 
     try:
         subprocess.check_call(command)
