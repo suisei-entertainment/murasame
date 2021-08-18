@@ -52,13 +52,11 @@ class Application(LogWriter):
     """Basic application implementation containing fundamental functionalities.
 
     The Unix daemon  implementation is based on the python-daemon
-    implementation at:
-        https://github.com/serverdensity/python-daemon
-    which is derived from:
-        http://www.jejik.com/articles/2007/02/
-        a_simple_unix_linux_daemon_in_python/www.boxedice.com
+    implementation at https://github.com/serverdensity/python-daemon which is
+    derived from http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/www.boxedice.com
 
     Attributes:
+
         _business_logic (BusinessLogic): The business logic of the application.
 
         _type (ApplicationTypes): The type of the application.
