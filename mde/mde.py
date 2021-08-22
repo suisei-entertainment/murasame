@@ -149,4 +149,4 @@ def mde_release(arguments: 'argparse.Namespace') -> MDEReturnCodes:
     """
 
     do_github_release(arguments=arguments)
-    do_pypi_release()
+    do_pypi_release(arguments=arguments)

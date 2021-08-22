@@ -45,15 +45,7 @@ def build_documentation() -> None:
     logger = logging.getLogger(MDE_LOGGER_NAME)
     logger.debug('Creating documentation...')
 
-    command = \
-    [
-        'sphinx-build',
-        '-E',
-        '-a',
-        '-b html',
-        f'{DOCUMENTATION_SOURCE}',
-        f'{DOCUMENTATION_TARGET}'
-    ]
+    command = f'sphinx-build -E -a -b html {DOCUMENTATION_SOURCE} {DOCUMENTATION_TARGET}'
 
     try:
         subprocess.check_call(command, shell=True)
