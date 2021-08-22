@@ -50,8 +50,7 @@ def build_documentation() -> None:
         'sphinx-build',
         '-E',
         '-a',
-        '-b',
-        'html',
+        '-b html',
         f'{DOCUMENTATION_SOURCE}',
         f'{DOCUMENTATION_TARGET}'
     ]

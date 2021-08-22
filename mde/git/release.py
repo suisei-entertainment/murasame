@@ -63,10 +63,10 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
                      'environment.')
         try:
             access_token = os.environ['GITHUB_ACCESS_TOKEN']
-        except KeyError:
+        except KeyError as error:
             logger.error('      No GitHub access token could be retrieved from '
                         'the environment')
-            raise SystemExit
+            raise SystemExit from error
 
     # Access GitHub and retrieve the repository
     git = github.Github(access_token)
@@ -106,7 +106,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         raise SystemExit from error
 
     # Create the release tag
-    tag_command = ['git', 'tag', '-a', 'f{tag}', '-m', 'f{tag_message}']
+    tag_command = ['git', 'tag', '-a', f'{tag}', '-m', f'{tag_message}']
 
     try:
         subprocess.check_call(tag_command)
@@ -117,19 +117,26 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
 
     # Update GitHub
     push_command = ['git', 'push']
-
     try:
         subprocess.check_call(push_command)
     except subprocess.CalledProcessError as error:
         logger.error('Failed to push the release changes to the repository.')
         raise SystemExit from error
 
+    tag_push_command = ['git', 'push', 'origin', f'{tag}']
+    try:
+        subprocess.check_call(tag_push_command)
+    except subprocess.CalledProcessError as error:
+        logger.error('Failed to push the release tag to the repository.')
+        raise SystemExit from error
+
     # Get the current HEAD as a GitHub commit object
     commit_hash = get_git_commit_hash()
     commit = repository.get_commit(sha=commit_hash)
 
-    if not commit_hash:
+    if not commit:
         logger.error(f'Failed to retrieve commit {commit_hash} from GitHub.')
+        raise SystemExit
 
     # Force a release build even if it wasn't specified
     arguments.build_type = 'release'
@@ -146,7 +153,7 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
             'Cannot create release without a valid repository snapshot.')
         raise SystemExit
 
-    logger.debug(f'Creating git release {release_name} for object {obj}...')
+    logger.debug(f'Creating git release {release_name}...')
 
     # Create documentation
     build_documentation()
