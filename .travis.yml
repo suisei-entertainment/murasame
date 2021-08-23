@@ -54,35 +54,35 @@ jobs:
       name: "Building Python Wheel [PyPy3]"
       python: "pypy3"
     - stage: Test
-      script: ./scripts/ci/travis_unittest.sh
+      script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python 3.9][x64]"
       python: "3.9"
       arch: "amd64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python 3.10][x64]"
       python: "3.10-dev"
       arch: "amd64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python Nightly Build][x64]"
       python: "nightly"
       arch: "amd64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [PyPy3][x64]"
       python: "pypy3"
       arch: "amd64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python 3.9][ARM64]"
       python: "3.9"
       arch: "arm64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python 3.10][ARM64]"
       python: "3.10-dev"
       arch: "arm64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [Python Nightly Build][ARM64]"
       python: "nightly"
       arch: "arm64"
-    - script: ./scripts/ci/travis_unittest.sh
+    - script: travis_wait 30 ./scripts/ci/travis_unittest.sh
       name: "Unit Tests [PyPy3][ARM64]"
       python: "pypy3"
       arch: "arm64"
@@ -90,7 +90,7 @@ jobs:
       name: "PyLint"
       script: ./scripts/ci/travis_lint.sh
       python: "3.9"
-    - script: ./scripts/ci/travis_coverage.sh
+    - script: travis_wait 30 ./scripts/ci/travis_coverage.sh
       name: "Unit Test Coverage"
       python: "3.9"
     - script: ./scripts/ci/travis_semgrep.sh
