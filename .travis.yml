@@ -55,49 +55,57 @@ jobs:
       python: "pypy3"
     - stage: Test
       script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [Python 3.9][x64]"
       python: "3.9"
       arch: "amd64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [Python 3.10][x64]"
       python: "3.10-dev"
       arch: "amd64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [Python Nightly Build][x64]"
       python: "nightly"
       arch: "amd64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [PyPy3][x64]"
       python: "pypy3"
       arch: "amd64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [Python 3.9][ARM64]"
       python: "3.9"
       arch: "arm64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [Python 3.10][ARM64]"
       python: "3.10-dev"
       arch: "arm64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [Python Nightly Build][ARM64]"
       python: "nightly"
       arch: "arm64"
     - script:
-        - pytest -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
+        - pytest --version
+        - pytest -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html
         - pytest --xkill
       name: "Unit Tests [PyPy3][ARM64]"
       python: "pypy3"
@@ -107,7 +115,8 @@ jobs:
       script: ./scripts/ci/travis_lint.sh
       python: "3.9"
     - script:
-        - pytest -n auto -vv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+        - pytest --version
+        - pytest -n auto -vvv --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
         - pytest --xkill
       name: "Unit Test Coverage"
       python: "3.9"
