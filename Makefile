@@ -136,7 +136,7 @@ lint:
 ## ============================================================================
 test:
 	@echo Executing framework tests...
-	pytest
+	pytest -n auto
 	pytest --xkill
 	@echo
 
