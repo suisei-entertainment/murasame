@@ -36,7 +36,7 @@ language: python
 
 install:
   - pip install -r requirements.txt
-  - pip install -r requirements-dev.txt
+  - pip install -r requirements-dev-travis.txt
 
 jobs:
   include:

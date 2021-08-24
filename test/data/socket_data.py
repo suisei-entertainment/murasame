@@ -180,8 +180,8 @@ def create_socket_test_data():
         client_file.write(TEST_CLIENT)
 
     # Start the server
-    #command = ['python', f'{server_script}']
-    #try:
-    #    subprocess.Popen(command)
-    #except subprocess.CalledProcessError:
-    #    assert False
+    command = ['python', f'{server_script}']
+    try:
+        subprocess.Popen(command)
+    except subprocess.CalledProcessError:
+        assert False
