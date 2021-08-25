@@ -75,13 +75,18 @@ def initialize_test_data():
         Attila Kovacs
     """
 
+    # Try to retrieve the name of the xdist worker. If it was found, it means
+    # the test is running with xdist enable, in which case this init code
+    # should be only executed once. If running without xdist, the init code can
+    # be executed without precautions as the test run is ran by a single
+    # process.
     in_init_thread = False
     try:
         current_worker = os.environ['PYTEST_XDIST_WORKER']
         if current_worker == 'gw0':
             in_init_thread = True
     except KeyError:
-        pass
+        in_init_thread = True
 
     if in_init_thread:
 

@@ -145,7 +145,7 @@ test:
 ## ============================================================================
 coverage:
 	@echo Executing coverage measurement...
-	pytest -n auto -vv --durations=10 --full-trace --html=~/.murasame/logs/unittest/report.html --self-contained-html --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest -n auto --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	pytest --xkill
 	@echo
 
