@@ -45,7 +45,7 @@ def do_pypi_release(arguments: 'argparse.Namespace') -> None:
 
     command = None
 
-    if arguments.draft:
+    if arguments.release_draft:
         command = \
         [
             'twine',

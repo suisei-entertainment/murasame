@@ -88,6 +88,23 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
         draft = True
         logger.debug('    Marking the release as draft.')
 
+    # Create a snapshot of the source code
+    tar_path = create_snapshot()
+    if not tar_path:
+        logger.error(
+            'Cannot create release without a valid repository snapshot.')
+        raise SystemExit
+
+    logger.debug(f'Creating git release {release_name}...')
+
+    # Create documentation
+    build_documentation()
+    documentation_archive_path = package_documentation()
+    if not documentation_archive_path:
+        logger.error('Cannot create release without a valid documentation '
+                     'package.')
+        raise SystemExit
+
     # Merge the current development branch to the release branch
     checkout_command = ['git', 'checkout', 'release']
     merge_command = ['git', 'merge', 'development']
@@ -145,23 +162,6 @@ def do_github_release(arguments: 'argparse.Namespace') -> None:
     bump_version_number()
     create_constants_file()
     create_wheel(arguments=arguments)
-
-    # Create a snapshot of the source code
-    tar_path = create_snapshot()
-    if not tar_path:
-        logger.error(
-            'Cannot create release without a valid repository snapshot.')
-        raise SystemExit
-
-    logger.debug(f'Creating git release {release_name}...')
-
-    # Create documentation
-    build_documentation()
-    documentation_archive_path = package_documentation()
-    if not documentation_archive_path:
-        logger.error('Cannot create release without a valid documentation '
-                     'package.')
-        raise SystemExit
 
     # Create the  the release on GitHub
     release = repository.create_git_release(
