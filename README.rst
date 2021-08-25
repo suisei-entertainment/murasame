@@ -8,6 +8,10 @@ Murasame is an application framework for Python to simplify the development of
 microservice based cloud applications, primarily the backend side of online
 games built using Docker containers running in Amazon ECS.
 
+.. warning::
+    At the moment Murasame is in a Pre-Alpha state. It likely contains bugs and
+    unfinished features, so it is not recommended for production use yet.
+
 .. image:: https://img.shields.io/pypi/v/murasame.svg
    :target: https://pypi.org/project/murasame
 
@@ -18,9 +22,6 @@ games built using Docker containers running in Amazon ECS.
    :target: https://travis-ci.com/github/suisei-entertainment/murasame
 
 .. image:: https://img.shields.io/badge/dynamic/json?color=blue&stlye=for-the-badge&label=COVERAGE&query=component.measures%5B0%5D.value&suffix=%20%25&url=https%3A%2F%2Fsonarcloud.io%2Fapi%2Fmeasures%2Fcomponent%3Fcomponent%3Dsuisei-entertainment_murasame%26metricKeys%3Dcoverage%26branch%3Ddevelopment
-   :target: https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame
-
-.. image:: https://sonarcloud.io/api/project_badges/quality_gate?project=suisei-entertainment_murasame&branch=development
    :target: https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame
 
 .. image:: https://img.shields.io/github/stars/suisei-entertainment/murasame.svg
