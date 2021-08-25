@@ -43,24 +43,20 @@ def do_pypi_release(arguments: 'argparse.Namespace') -> None:
     logger = logging.getLogger(MDE_LOGGER_NAME)
     logger.debug('Releasing package on PyPi...')
 
-    command = None
+    command = \
+    [
+        'twine',
+        'upload'
+    ]
+
+    if arguments.debug_mode:
+        command.append('--verbose')
 
     if arguments.release_draft:
-        command = \
-        [
-            'twine',
-            'upload',
-            '-r',
-            'testpypi'
-            f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl'
-        ]
-    else:
-        command = \
-        [
-            'twine',
-            'upload',
-            f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl'
-        ]
+        command.append('-r')
+        command.append('testpypi')
+
+    command.append(f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl')
 
     try:
         subprocess.check_call(command)
@@ -68,4 +64,4 @@ def do_pypi_release(arguments: 'argparse.Namespace') -> None:
         logger.error('Failed to upload the release to PyPi.')
         raise SystemExit from error
 
-    logger.debug('Package released on PyPi...')
+    logger.debug('Package released on PyPi.')
