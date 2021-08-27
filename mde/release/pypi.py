@@ -22,6 +22,7 @@ Contains utility functions related to PyPi releases.
 """
 
 # Runtime Imports
+import os
 import logging
 import subprocess
 
@@ -43,6 +44,19 @@ def do_pypi_release(arguments: 'argparse.Namespace') -> None:
     logger = logging.getLogger(MDE_LOGGER_NAME)
     logger.debug('Releasing package on PyPi...')
 
+    # Retrieve username and password
+    pypi_username = None
+    pypi_password = None
+    try:
+        pypi_username = os.environ['PYPI_USERNAME']
+        logger.debug('PyPi username retrieved from the environment.')
+
+        pypi_password = os.environ['PYPI_PASSWORD']
+
+    except KeyError:
+        logger.debug('PyPi username or password is not configured in the '
+                     'environment.')
+
     command = \
     [
         'twine',
@@ -55,6 +69,12 @@ def do_pypi_release(arguments: 'argparse.Namespace') -> None:
     if arguments.release_draft:
         command.append('-r')
         command.append('testpypi')
+
+    if pypi_username is not None and pypi_password is not None:
+        command.append('-u')
+        command.append(f'{pypi_username}')
+        command.append('-p')
+        command.append(f'{pypi_password}')
 
     command.append(f'{DIST_PATH}/murasame-{get_version_num()}-py3-none-any.whl')
 
