@@ -21,8 +21,8 @@ games built using Docker containers running in Amazon ECS.
 .. image:: https://img.shields.io/travis/suisei-entertainment/murasame/development
    :target: https://travis-ci.com/github/suisei-entertainment/murasame
 
-.. image:: https://img.shields.io/badge/dynamic/json?color=blue&stlye=for-the-badge&label=COVERAGE&query=component.measures%5B0%5D.value&suffix=%20%25&url=https%3A%2F%2Fsonarcloud.io%2Fapi%2Fmeasures%2Fcomponent%3Fcomponent%3Dsuisei-entertainment_murasame%26metricKeys%3Dcoverage%26branch%3Ddevelopment
-   :target: https://sonarcloud.io/dashboard?branch=development&id=suisei-entertainment_murasame
+.. image:: https://img.shields.io/badge/dynamic/json?color=blue&stlye=for-the-badge&label=COVERAGE&query=component.measures%5B0%5D.value&suffix=%20%25&url=https%3A%2F%2Fsonarcloud.io%2Fapi%2Fmeasures%2Fcomponent%3Fcomponent%3Dsuisei-entertainment_murasame%26metricKeys%3Dcoverage%26branch%3Drelease
+   :target: https://sonarcloud.io/dashboard?branch=release&id=suisei-entertainment_murasame
 
 .. image:: https://img.shields.io/github/stars/suisei-entertainment/murasame.svg
    :target: https://github.com/suisei-entertainment/murasame/stargazers

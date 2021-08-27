@@ -21,7 +21,9 @@ SHELL := /bin/bash
 
 WORKSPACE_DIRECTORY =  ~/.murasame
 VIRTUALENV_DIRECTORY = ${WORKSPACE_DIRECTORY}/.env
+SONAR_SCANNER = /opt/sonar-scanner/bin/sonar-scanner
 
+CURRENT_GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 SUBLIME_VERSION := $(shell subl --version 2> /dev/null)
 UNAME := $(shell uname)
 
@@ -147,6 +149,17 @@ coverage:
 	@echo Executing coverage measurement...
 	pytest -n auto --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	pytest --xkill
+	@echo
+
+## ============================================================================
+##	Executes the Sonar scanner locally on the framework code
+## ============================================================================
+sonar:
+	@echo Executing SonarCloud scanner...
+	pytest -n auto --cov=murasame --cov-report=xml --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest --xkill
+	coverage xml -i
+	${SONAR_SCANNER}
 	@echo
 
 ## ============================================================================

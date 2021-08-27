@@ -22,4 +22,4 @@ directory = ~/.murasame/logs/test/coverage
 title = Murasame Test Coverage Report
 
 [xml]
-output = ~/.murasame/coverage.xml
+output = ./coverage.xml
