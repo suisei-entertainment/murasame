@@ -17,44 +17,29 @@
 ##
 ## ============================================================================
 
-# Host detection packages
-py-cpuinfo>=4.0.0
-psutil>=5.4.8
-netifaces>=0.10.7
-distro>=1.3.0
+"""
+Contains the implementation of the GRPCServerTypes class.
+"""
 
-# Networking
-wget>=3.2
-urllib3>=1.26.4 # CVE-2021-28363
-requests>=2.23.0
-aiohttp>=3.7.4 # CVE-2021-21330
-geoip2>=4.2.0
-grpcio>=1.39.0
-grpcio-tools>=1.39.0
+# Runtime Imports
+from enum import IntEnum, auto
 
-# Cryptography
-cryptography>=3.4.6 # CVE-2020-25659 mitigation
-bcrypt>=3.1.7
+class GRPCServerTypes(IntEnum):
 
-# Tools
-protobuf>=3.11.2
-googletrans>=3.1.0a0
+    """Contains the list of supported gRPC server types.
 
-# Logging
-termcolor>=1.1.0
-coloredlogs>=10.0
+    Attributes:
+        UNKNOWN: Unknown server type.
 
-# WebUI
-flask>=1.1.1
-Flask-Session>=0.3.1
+        INSECURE: Represents an insecure server, using non-encrypted
+            communication.
 
-# Sentry.IO
-sentry-sdk
+        SECURE: Represents a secure server using encrypted communication.
 
-# Database Interfaces
-influxdb>=5.3.0
-redis>=3.5.2
+    Authors:
+        Attila Kovacs
+    """
 
-# Utils
-pyyaml>=5.4.1
-python-magic
+    UNKNOWN = auto()
+    INSECURE = auto()
+    SECURE = auto()

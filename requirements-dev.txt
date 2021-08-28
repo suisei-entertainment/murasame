@@ -34,6 +34,7 @@ pytest-html>=2.1.1
 pytest-reraise>=1.0.3
 pytest-xprocess>=0.18.1
 pytest-xdist>=2.3.0
+pytest-grpc>=0.8.0
 codecov>=2.0.15
 coverage>=4.5.2
 pylint>=2.6.1

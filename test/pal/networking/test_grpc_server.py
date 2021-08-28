@@ -17,44 +17,43 @@
 ##
 ## ============================================================================
 
-# Host detection packages
-py-cpuinfo>=4.0.0
-psutil>=5.4.8
-netifaces>=0.10.7
-distro>=1.3.0
+"""
+Contains the unit tests of GRPCServer class.
+"""
 
-# Networking
-wget>=3.2
-urllib3>=1.26.4 # CVE-2021-28363
-requests>=2.23.0
-aiohttp>=3.7.4 # CVE-2021-21330
-geoip2>=4.2.0
-grpcio>=1.39.0
-grpcio-tools>=1.39.0
+# Runtime Imports
+import os
+import sys
 
-# Cryptography
-cryptography>=3.4.6 # CVE-2020-25659 mitigation
-bcrypt>=3.1.7
+# Dependency Imports
+import pytest
 
-# Tools
-protobuf>=3.11.2
-googletrans>=3.1.0a0
+# Fix paths to make framework modules accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
-# Logging
-termcolor>=1.1.0
-coloredlogs>=10.0
+# Murasame Imports
+from murasame.pal.networking.grpcserver import GRPCServer
+from murasame.pal.networking.grpcservertypes import GRPCServerTypes
 
-# WebUI
-flask>=1.1.1
-Flask-Session>=0.3.1
+class TestGRPCServer:
 
-# Sentry.IO
-sentry-sdk
+    """
+    Contains the unit tests for the GRPCServer class.
 
-# Database Interfaces
-influxdb>=5.3.0
-redis>=3.5.2
+    Authors:
+        Attila Kovacs
+    """
 
-# Utils
-pyyaml>=5.4.1
-python-magic
+    def test_creation_of_insecure_server(self):
+
+        """
+        Tests that an insecure gRPC server can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = GRPCServer(port=12345,
+                         server_type=GRPCServerTypes.INSECURE)
+
+        assert sut is not None

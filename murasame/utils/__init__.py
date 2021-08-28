@@ -40,3 +40,6 @@ from murasame.utils.secrets import Secrets
 from murasame.utils.geoip import GeoIP, GeoIPData
 from murasame.utils.cliprocessor import CliProcessor
 from murasame.utils.dices import Dices
+from murasame.utils.certificates import (
+    X509GenericCertificateFields,
+    X509Certificate)

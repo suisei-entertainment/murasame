@@ -26,3 +26,4 @@ from murasame.pal.networking.clientsocket import ClientSocket
 from murasame.pal.networking.serversocket import ServerSocket
 from murasame.pal.networking.clientthread import ClientThread
 from murasame.pal.networking.socketmessagetransformer import SocketMessageTransformer
+from murasame.pal.networking.grpcservertypes import GRPCServerTypes
