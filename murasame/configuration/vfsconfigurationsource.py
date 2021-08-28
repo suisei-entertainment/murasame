@@ -141,7 +141,7 @@ class VFSConfigurationSource(ConfigurationSource):
             Attila Kovacs
         """
 
-        dummy = ConfigurationGroup(name=key, content=value)
+        _ = ConfigurationGroup(name=key, content=value)
 
     def _parse_list(self, key: str, value: list) -> None:
 
@@ -155,7 +155,7 @@ class VFSConfigurationSource(ConfigurationSource):
             Attila Kovacs
         """
 
-        dummy = ConfigurationList(name=key, content=value)
+        _ = ConfigurationList(name=key, content=value)
 
     def _parse_attribute(self, key: str, value: object) -> None:
 
@@ -186,6 +186,6 @@ class VFSConfigurationSource(ConfigurationSource):
                 f'Unsupported data type when trying to parse configuration '
                 f'attribute {key}:{value}.')
 
-        dummy = ConfigurationAttribute(name=key,
-                                       value=value,
-                                       data_type=data_type)
+        _ = ConfigurationAttribute(name=key,
+                                   value=value,
+                                   data_type=data_type)

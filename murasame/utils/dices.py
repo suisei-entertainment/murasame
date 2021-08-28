@@ -67,31 +67,31 @@ class Dices:
         result = base
 
         # D4 dices
-        for dummy in range(1, dice_d4 + 1):
+        for _ in range(1, dice_d4 + 1):
             result += secrets.randbelow(5)
 
         # D6 dices
-        for dummy in range(1, dice_d6 + 1):
+        for _ in range(1, dice_d6 + 1):
             result += secrets.randbelow(7)
 
         # D8 dices
-        for dummy in range(1, dice_d8 + 1):
+        for _ in range(1, dice_d8 + 1):
             result += secrets.randbelow(9)
 
         # D10 dices
-        for dummy in range(1, dice_d10 + 1):
+        for _ in range(1, dice_d10 + 1):
             result += secrets.randbelow(11)
 
         # D12 dices
-        for dummy in range(1, dice_d12 + 1):
+        for _ in range(1, dice_d12 + 1):
             result += secrets.randbelow(13)
 
         # D20 dices
-        for dummy in range(1, dice_d20 + 1):
+        for _ in range(1, dice_d20 + 1):
             result += secrets.randbelow(21)
 
         # D100 dices
-        for dummy in range(1, dice_d100 + 1):
+        for _ in range(1, dice_d100 + 1):
             result += secrets.randbelow(101)
 
         return result

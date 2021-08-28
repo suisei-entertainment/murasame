@@ -34,6 +34,10 @@ from murasame.utils import JsonFile, YamlFile
 from murasame.pal.vfs.vfsresourceconnector import VFSResourceConnector
 from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
+JSON_MIME_TYPE = 'application/json'
+YAML_MIME_TYPE = 'application/x-yaml'
+TEXT_MIME_TYPE = 'text/plain'
+
 class VFSLocalFileConnector(VFSResourceConnector):
 
     """Resource connector implementation for files in the local file system.
@@ -90,12 +94,12 @@ class VFSLocalFileConnector(VFSResourceConnector):
             # LibMagic doesn't recognize JSON and YAML files correctly, so this
             # logic is added to further specify the MIME type if LibMagic
             # recognizes the type as text/plain.
-            if content_type == 'text/plain':
+            if content_type == TEXT_MIME_TYPE:
                 dummy, extension = os.path.splitext(path)
                 if extension == '.json':
-                    content_type = 'application/json'
+                    content_type = JSON_MIME_TYPE
                 elif extension == '.yaml':
-                    content_type = 'application/x-yaml'
+                    content_type = YAML_MIME_TYPE
                 elif extension == '.conf':
                     # Conf files can be either JSON or YAML, try to
                     # differentiate between them without having to fully parse
@@ -103,9 +107,9 @@ class VFSLocalFileConnector(VFSResourceConnector):
                     with open(path, 'r') as file:
                         content = file.read()
                         if content.startswith('{'):
-                            content_type = 'application/json'
+                            content_type = JSON_MIME_TYPE
                         else:
-                            content_type = 'application/x-yaml'
+                            content_type = YAML_MIME_TYPE
 
             # Update the content type in the descriptor
             descriptor.update_content_type(content_type)
@@ -117,11 +121,11 @@ class VFSLocalFileConnector(VFSResourceConnector):
         # the log statement between the elif and the final return.
         #pylint: disable=no-else-return
 
-        if content_type == 'application/json':
+        if content_type == JSON_MIME_TYPE:
             return self._load_as_json(path)
-        elif content_type == 'application/x-yaml':
+        elif content_type == YAML_MIME_TYPE:
             return self._load_as_yaml(path)
-        elif content_type == 'text/plain':
+        elif content_type == TEXT_MIME_TYPE:
             return self._load_as_text(path)
 
         self.debug(f'Content type {content_type} doesn\'t match any of the '

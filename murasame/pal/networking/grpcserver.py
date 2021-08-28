@@ -103,11 +103,11 @@ class GRPCServer(LogWriter):
             Attila Kovacs
         """
 
-        if server_type == GRPCServerTypes.SECURE:
-            if certificate is None or private_key is None:
-                raise InvalidInputError(
-                    'Cannot create a secure gRPC server without a valid '
-                    'certificate and private key.')
+        if server_type == GRPCServerTypes.SECURE \
+            and (certificate is None or private_key is None):
+            raise InvalidInputError(
+                'Cannot create a secure gRPC server without a valid '
+                'certificate and private key.')
 
         self._server_type = server_type
         self._port = port

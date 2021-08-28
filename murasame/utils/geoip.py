@@ -26,6 +26,7 @@ import os
 import tarfile
 import shutil
 import uuid
+from typing import Generator
 
 from urllib.error import ContentTooShortError, URLError
 
@@ -309,7 +310,7 @@ class GeoIP:
         return result
 
     @staticmethod
-    def _find_mmdb(members: list) -> object:
+    def _find_mmdb(members: list) -> Generator:
 
         """Finds the GeoIP database inside the downloaded package.
 

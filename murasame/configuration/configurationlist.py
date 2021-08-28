@@ -22,7 +22,7 @@ Contains the implementation of the ConfigurationList class.
 """
 
 # Platform Imports
-from typing import Any
+from typing import Any, Union
 
 # Murasame Imports
 from murasame.constants import MURASAME_CONFIGURATION_LOG_CHANNEL
@@ -90,9 +90,8 @@ class ConfigurationList(LogWriter):
         if self.Type == 'VALUE':
             if self._values:
                 return len(self._values)
-        elif self.Type == 'GROUP':
-            if self._groups:
-                return len(self._groups)
+        elif self.Type == 'GROUP' and self._groups is not None:
+            return len(self._groups)
 
         return 0
 
@@ -222,7 +221,7 @@ class ConfigurationList(LogWriter):
 
         return self._values[index]
 
-    def get_content(self) -> str:
+    def get_content(self) -> Union[str, None]:
 
         """Returns the content of the list.
 
