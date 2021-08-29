@@ -103,19 +103,6 @@ class BusinessLogic:
         return None
 
     @property
-    def PIDFile(self) -> str:
-
-        """The PID file used by the application.
-
-        Only used for daemon type applications.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        return 'murasame.pid'
-
-    @property
     def WorkingDirectory(self) -> str:
 
         """The working directory of the application.

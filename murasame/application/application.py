@@ -29,6 +29,9 @@ import signal
 import errno
 import platform
 import atexit
+import uuid
+import glob
+import stat
 from typing import Callable, Union
 
 # Dependency Imports
@@ -63,6 +66,8 @@ class Application(LogWriter):
 
         _alive (bool): Whether or not the application is running. Only used for
             daemon applications.
+
+        _pid_file (str): Name of the PID file of the application.
 
     Authors:
         Attila Kovacs
@@ -124,6 +129,7 @@ class Application(LogWriter):
         self._business_logic = business_logic
         self._type = application_type
         self._alive = False
+        self._pid = None
 
         # Validate business logic
         self.debug('Validating business logic...')
@@ -264,11 +270,11 @@ class Application(LogWriter):
             return
 
         # Check the pid file to see if the daemon is already running.
-        pid = self.get_pid()
+        pid = self.get_pid_from_working_directory()
 
         if pid:
-            message = f'PID file {self._business_logic.PIDFile} already '\
-                      f'exists. The daemon is already running?'
+            message = f'PID file already exists with PID {pid}. ' \
+                      f'The daemon is already running?'
             sys.stderr.write(message)
             sys.exit(ApplicationReturnCodes.ALREADY_RUNNING)
 
@@ -300,11 +306,18 @@ class Application(LogWriter):
 
         print('Trying to stop the daemon...')
 
-        pid = self.get_pid()
+        pid = self.get_pid_from_working_directory()
+
+        # If we cannot retrieve a PID from the generated PID file it could
+        # still mean that the daemon is running, so check for other PID files
+        if not pid:
+            pid_files = glob.glob('./*.pid')
+            if len(pid_files) > 0:
+                pid = self.get_pid_from_file(pid_files[0])
 
         if not pid:
-            message = f'PID file {self._business_logic.PIDFile} does not '\
-                      f'exist, The daemon is not running?'
+            message = f'PID file {self._pid} does not exist, The daemon is ' \
+                      f'not running?'
             sys.stderr.write(message)
             sys.exit(ApplicationReturnCodes.NOT_RUNNING)
 
@@ -354,12 +367,16 @@ class Application(LogWriter):
         self.stop()
         self.start(*args, **kwargs)
 
-    def get_pid(self) -> Union[int, None]:
+    def get_pid_from_file(self, path: str) -> Union[int, None]:
 
-        """Returns the PID of the running daemon process.
+        """Returns the PID of the process that is stored in the given file.
+
+        Args:
+            path: Path to the PID file to read.
 
         Returns:
-            int: The PID of the running daemon process.
+            Union[int, None]: The PID from the PID file, or None if it cannot
+                be retrieved.
 
         Authors:
             Attila Kovacs
@@ -371,7 +388,7 @@ class Application(LogWriter):
         pid = None
 
         try:
-            with open(self._business_logic.PIDFile, 'r') as pid_file:
+            with open(file=path, mode='r', encoding='UTF-8') as pid_file:
                 pid = int(pid_file.read().strip())
         except IOError:
             pid = None
@@ -380,6 +397,39 @@ class Application(LogWriter):
             raise
 
         return  pid
+
+    def get_pid(self) -> Union[int, None]:
+
+        """Returns the PID of the running daemon process.
+
+        Returns:
+            int: The PID of the running daemon process.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self.get_pid_from_file(self._pid)
+
+    def get_pid_from_working_directory(self) -> Union[int, None]:
+
+        """Returns the PID stored in a .pid file in the application's working
+        directory.
+
+        Returns:
+            Union[int, None]: The PID from the pid file, or None if no PID was
+                found.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        pid = None
+        pid_files = glob.glob(f'{self._business_logic.WorkingDirectory}/*.pid')
+        if len(pid_files) > 0:
+            pid = self.get_pid_from_file(pid_files[0])
+
+        return pid
 
     def get_status(self) -> str:
 
@@ -392,10 +442,12 @@ class Application(LogWriter):
             Attila Kovacs
         """
 
-        pid = self.get_pid()
+        # Look for any PID file in the working directory
+
+        pid = self.get_pid_from_working_directory()
 
         if pid is not None:
-            return 'Daemon is running with PID {}'.format(pid)
+            return f'Daemon is running with PID {pid}.'
 
         return 'Daemon is not running.'
 
@@ -410,7 +462,7 @@ class Application(LogWriter):
             Attila Kovacs
         """
 
-        pid = self.get_pid()
+        pid = self.get_pid_from_working_directory()
 
         if pid is None:
             # Process is stopped
@@ -431,11 +483,20 @@ class Application(LogWriter):
             Attila Kovacs
         """
 
+        if self._pid is None:
+            # PID is not set yet
+            return
+
         try:
+
             # The process may fork itself again
-            pid = int(open(self._business_logic.PIDFile, 'r').read().strip())
+            pid = None
+            with open(file=self._pid, mode='r', encoding='UTF-8') as file:
+                pid = file.read().strip()
+
             if pid == os.getpid():
-                os.remove(self._business_logic.PIDFile)
+                os.remove(self._pid)
+
         except OSError as error:
             if error.errno == errno.ENOENT:
                 pass
@@ -534,12 +595,21 @@ class Application(LogWriter):
 
         #pylint: disable=consider-using-with
 
-        std_in = open(self.BusinessLogic.StdIn, 'r') # nosemgrep
-        std_out = open(self.BusinessLogic.StdOut, 'a+') # nosemgrep
+        std_in = open(file=self.BusinessLogic.StdIn, # nosemgrep
+                      mode='r', # nosemgrep
+                      encoding='UTF-8') # nosemgrep
+
+        std_out = open(file=self.BusinessLogic.StdOut, # nosemgrep
+                       mode='a+', # nosemgrep
+                       encoding='UTF-8') # nosemgrep
+
         std_err = std_out
 
         if self.BusinessLogic.StdErr is not None:
-            std_err = open(self.BusinessLogic.StdErr, 'a+', 1) # nosemgrep
+            std_err = open(file=self.BusinessLogic.StdErr, # nosemgrep
+                           mode='a+', # nosemgrep
+                           buffering=1, # nosemgrep
+                           encoding='UTF-8') # nosemgrep
 
         # Duplicate file descriptors
         os.dup2(std_in.fileno(), sys.stdin.fileno())
@@ -556,8 +626,35 @@ class Application(LogWriter):
         # Make sure that the PID is removed at exit
         atexit.register(self.delete_pid)
 
-        # Retrieve the PID
-        pid = str(os.getpid())
+        # Write the PID file
+        self._write_pid_file(pid=os.getpid())
+
+    def _write_pid_file(self, pid: int) -> None:
+
+        """Writes the PID file to the application's working directory.
+
+        Args:
+            pid (int): The PID of the application.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        if self._pid is not None:
+            self.warning('Trying to write the PID file twice.')
+            return
+
+        self._pid = os.path.abspath(os.path.expanduser(
+            f'{self._business_logic.WorkingDirectory}/{uuid.uuid4()}.pid'))
 
         # Write the PID file
-        open(self.BusinessLogic.PIDFile, 'w+').write('%s\n' % pid)
+        with open(file=self._pid, mode='w+', encoding='UTF-8') as file:
+            file.write('%s\n' % str(pid))
+
+        self.debug(f'Application PID ({pid}) is written to {self._pid}.')
+
+        # Make the file only accessible for the owner. This ensures that
+        # external processes and other users cannot change it for malicious
+        # reasons, assuming the daemon is started in a secure way under a
+        # separate user.
+        os.chmod(self._pid, stat.S_IREAD | stat.S_IWRITE)
