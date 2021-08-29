@@ -8,7 +8,11 @@ and this project adheres to
 
 ## [UNRELEASED]
 
-## [0.1.0]: 'Fujin'
+### Added
+- [MUR-87]: Added support for manual SonarCloud scans.
+- [MUR-88]: Secured the PID file of a daemon application against tampering.
+
+## [0.1.0]: 'Fujin' - 2021-08-27 
 
 ### Added
 - Initial version.
