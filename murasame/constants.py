@@ -53,6 +53,8 @@ MURASAME_PAL_LOG_CHANNEL = 'murasame.pal'
 
 MURASAME_SOCKET_LOG_CHANNEL = 'murasame.pal.networking.socket'
 
+MURASAME_GRPC_LOG_CHANNEL = 'murasame.pal.networking.grpc'
+
 MURASAME_VFS_LOG_CHANNEL = 'murasame.pal.vfs'
 
 ## ============================================================================

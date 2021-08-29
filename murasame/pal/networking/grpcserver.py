@@ -29,6 +29,7 @@ from typing import Union
 import grpc
 
 # Murasame Imports
+from murasame.constants import MURASAME_GRPC_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.log.logwriter import LogWriter
 from murasame.pal.networking.grpcservertypes import GRPCServerTypes
@@ -53,6 +54,7 @@ class GRPCServer(LogWriter):
         Attila Kovacs
     """
 
+    @property
     def Server(self) -> object:
 
         """Provides access to the underlying gRPC server object.
@@ -102,6 +104,9 @@ class GRPCServer(LogWriter):
         Args:
             Attila Kovacs
         """
+
+        super().__init__(channel_name=MURASAME_GRPC_LOG_CHANNEL,
+                         cache_entries=True)
 
         if server_type == GRPCServerTypes.SECURE \
             and (certificate is None or private_key is None):

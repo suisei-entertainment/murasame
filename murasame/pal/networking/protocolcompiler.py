@@ -25,6 +25,7 @@ Contains the implementation of the ProtocolCompiler class.
 from grpc_tools import protoc
 
 # Murasame Imports
+from murasame.constants import MURASAME_GRPC_LOG_CHANNEL
 from murasame.api import VFSAPI
 from murasame.log import LogWriter
 from murasame.utils import SystemLocator
@@ -101,6 +102,9 @@ class ProtocolCompiler(LogWriter):
             Attila Kovacs
         """
 
+        super().__init__(channel_name=MURASAME_GRPC_LOG_CHANNEL,
+                         cache_entries=True)
+
         self._path = path
         self._include_path = include_path
         self._output_path = output_path
@@ -118,6 +122,9 @@ class ProtocolCompiler(LogWriter):
 
         self.debug(f'Compiling protocol files from VFS directory '
                    f'{self._path}.')
+
+        # Pylint doesn't recognize the instance() member of Singleton
+        #pylint: disable=no-member
 
         vfs = SystemLocator.instance().get_provider(VFSAPI)
 
