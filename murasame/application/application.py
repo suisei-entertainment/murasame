@@ -426,6 +426,12 @@ class Application(LogWriter):
 
         pid = None
         pid_files = glob.glob(f'{self._business_logic.WorkingDirectory}/*.pid')
+
+        # There should be only one PID file, we cannot be sure which one is
+        # the right one, so just return 'None'.
+        if len(pid_files) > 1:
+            return pid
+
         if len(pid_files) > 0:
             pid = self.get_pid_from_file(pid_files[0])
 
