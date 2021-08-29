@@ -265,8 +265,8 @@ class GeoIP:
         shutil.move(src=f'{temp_directory_name}/GeoLite2-City.mmdb',
                     dst=f'{self._database_path}/GeoLite2-City.mmdb')
 
-        # Delete the update package
-        os.remove(package_filename)
+        # Delete the temporary directory
+        shutil.rmtree(temp_directory_name)
 
     def query(self, ip_address: str) -> GeoIPData:
 

@@ -24,7 +24,7 @@ Contains the implementation of the VFSPackage class.
 # Runtime Imports
 import os
 import tarfile
-import uuid
+import tempfile
 import shutil
 
 # Dependency Imports
@@ -132,7 +132,7 @@ class VFSPackage(LogWriter):
                 raise InvalidInputError(f'Resource package {self._path} does not '
                                         f'contains a VFS descriptor.')
 
-            self._extract_directory = f'/tmp/{uuid.uuid4()}'
+            self._extract_directory = tempfile.mkdtemp()
             self.debug(f'Random directory for package {self._path} is '
                        f'{self._extract_directory}.')
 
