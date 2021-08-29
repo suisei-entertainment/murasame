@@ -75,7 +75,9 @@ class YamlFile(ContentFile):
 
         # Save the file unencrypted.
         try:
-            with open(self._path, 'w+') as yaml_file:
+            with open(file=self._path,
+                      mode='w+',
+                      encoding='UTF-8') as yaml_file:
                 yaml.dump(self._content, yaml_file)
         except OSError as exception:
             raise RuntimeError(
@@ -97,7 +99,9 @@ class YamlFile(ContentFile):
         """
 
         try:
-            with open(self._path, 'r+') as yaml_file:
+            with open(file=self._path,
+                      mode='r+',
+                      encoding='UTF-8') as yaml_file:
                 # Parse the file and load the content to memory.
                 self._content = yaml.load(yaml_file, Loader=yaml.SafeLoader)
         except OSError as exception:

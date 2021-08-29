@@ -307,7 +307,9 @@ class PasswordComplexity:
                 f'The common password list ({common_pwds}) was not found.')
 
         try:
-            with open(common_pwds, 'r') as pwd_file:
+            with open(file=common_pwds,
+                      mode='r',
+                      encoding='UTF-8') as pwd_file:
                 passwords = pwd_file.readlines()
         except IOError as error:
             raise RuntimeError(

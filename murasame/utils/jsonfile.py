@@ -73,7 +73,9 @@ class JsonFile(ContentFile):
 
         # Save the file unencrypted.
         try:
-            with open(self._path, 'w+') as json_file:
+            with open(file=self._path,
+                      mode='w+',
+                      encoding='UTF-8') as json_file:
                 if compact:
                     json.dump(self._content, json_file)
                 else:
@@ -101,7 +103,9 @@ class JsonFile(ContentFile):
         """
 
         try:
-            with open(self._path, 'r+') as json_file:
+            with open(file=self._path,
+                      mode='r+',
+                      encoding='UTF-8') as json_file:
                 # Parse the file and load the content to memory.
                 self._content = json.load(json_file)
         except OSError as exception:

@@ -104,7 +104,9 @@ class VFSLocalFileConnector(VFSResourceConnector):
                     # Conf files can be either JSON or YAML, try to
                     # differentiate between them without having to fully parse
                     # the whole file
-                    with open(path, 'r') as file:
+                    with open(file=path,
+                              mode='r',
+                              encoding='UTF-8') as file:
                         content = file.read()
                         if content.startswith('{'):
                             content_type = JSON_MIME_TYPE
@@ -186,7 +188,9 @@ class VFSLocalFileConnector(VFSResourceConnector):
             Attila Kovacs
         """
 
-        with open(path, 'r') as file:
+        with open(file=path,
+                  mode='r',
+                  encoding='UTF-8') as file:
             return file.read()
 
     @staticmethod
