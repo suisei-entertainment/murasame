@@ -26,6 +26,7 @@ import os
 import tarfile
 import shutil
 import uuid
+import tempfile
 from urllib.error import ContentTooShortError
 
 # Dependency Imports
@@ -39,8 +40,6 @@ from murasame.constants import MURASAME_PAL_LOG_CHANNEL
 from murasame.exceptions import InvalidInputError
 from murasame.utils import GeoIP
 from murasame.log import LogWriter
-
-PACKAGE_DOWNLOAD_LOCATION = '/tmp'
 
 class HostLocation(LogWriter):
 
@@ -213,7 +212,9 @@ class HostLocation(LogWriter):
                 # file with malicious content if the downloaded file has been
                 # compromised.
                 package_temp_name = str(uuid.uuid4())
-                package_filename = f'{PACKAGE_DOWNLOAD_LOCATION}/{package_temp_name}.tar.gz'
+                temp_directory_name = tempfile.mkdtemp()
+                package_filename = \
+                    f'{temp_directory_name}/{package_temp_name}.tar.gz'
 
                 # Download the update package
                 try:
@@ -233,11 +234,11 @@ class HostLocation(LogWriter):
                     # Disable warning about using GeoIP internals
                     #pylint: disable=protected-access
 
-                    tar.extractall(path=PACKAGE_DOWNLOAD_LOCATION,
+                    tar.extractall(path=temp_directory_name,
                                    members=GeoIP._find_mmdb(tar))
 
                 # Move the database to the requested location
-                shutil.move(src=f'{PACKAGE_DOWNLOAD_LOCATION}/GeoLite2-City.mmdb',
+                shutil.move(src=f'{temp_directory_name}/GeoLite2-City.mmdb',
                             dst=f'{database_path}/GeoLite2-City.mmdb')
 
                 # Delete the update package

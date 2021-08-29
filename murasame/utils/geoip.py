@@ -26,6 +26,7 @@ import os
 import tarfile
 import shutil
 import uuid
+import tempfile
 from typing import Generator
 
 from urllib.error import ContentTooShortError, URLError
@@ -35,9 +36,6 @@ import requests
 import wget
 import geoip2
 import geoip2.database
-
-# Path to the temporary location where the update package will be downloaded
-PACKAGE_DOWNLOAD_LOCATION = '/tmp/'
 
 class GeoIPData:
 
@@ -241,7 +239,8 @@ class GeoIP:
         # attack vector by forcing the application to open a file with
         # malicious content if the downloaded file has been compromised.
         package_temp_name = str(uuid.uuid4())
-        package_filename = f'{PACKAGE_DOWNLOAD_LOCATION}/{package_temp_name}.tar.gz'
+        temp_directory_name = tempfile.mkdtemp()
+        package_filename = f'{temp_directory_name}/{package_temp_name}.tar.gz'
 
         # Download the update package
         try:
@@ -259,11 +258,11 @@ class GeoIP:
 
         # Extract the update package
         with tarfile.open(package_filename) as tar:
-            tar.extractall(path=PACKAGE_DOWNLOAD_LOCATION,
+            tar.extractall(path=temp_directory_name,
                            members=GeoIP._find_mmdb(tar))
 
         # Move the database to the requested location
-        shutil.move(src=f'{PACKAGE_DOWNLOAD_LOCATION}/GeoLite2-City.mmdb',
+        shutil.move(src=f'{temp_directory_name}/GeoLite2-City.mmdb',
                     dst=f'{self._database_path}/GeoLite2-City.mmdb')
 
         # Delete the update package
