@@ -23,7 +23,6 @@ Contains the implementation of the HostLocation class.
 
 # Runtime Imports
 import os
-import tarfile
 import shutil
 import uuid
 import tempfile
@@ -37,8 +36,9 @@ import wget
 
 # Murasame Imports
 from murasame.constants import MURASAME_PAL_LOG_CHANNEL
-from murasame.exceptions import InvalidInputError
+from murasame.exceptions import InvalidInputError, SecurityValidationError
 from murasame.utils import GeoIP
+from murasame.utils.securetarfile import SecureTarFile
 from murasame.log import LogWriter
 
 class HostLocation(LogWriter):
@@ -178,11 +178,13 @@ class HostLocation(LogWriter):
             RuntimeError: Raised when it is not possible to connect to the
                 GeoIP download server.
 
-            RuntimeError:       Raised if the GeoIP database cannot be
-                downloaded.
+            RuntimeError: Raised if the GeoIP database cannot be downloaded.
 
             InvalidInputError: Raised if the GeoIP database was not found and
                 there is no license key provided to download one automatically.
+
+            SecurityValidationError: Raised if the downloaded GeoIP database
+                fails the security validation.
 
         Authors:
             Attila Kovacs
@@ -229,13 +231,20 @@ class HostLocation(LogWriter):
                         'Failed to download GeoIP database.') from error
 
                 # Extract the update package
-                with tarfile.open(package_filename) as tar:
+                try:
+                    with SecureTarFile.open(package_filename) as tar:
 
-                    # Disable warning about using GeoIP internals
-                    #pylint: disable=protected-access
+                        # Disable warning about using GeoIP internals
+                        #pylint: disable=protected-access
 
-                    tar.extract(member=GeoIP._find_mmdb(tar),
-                                path=temp_directory_name)
+                        tar.extract(member=GeoIP._find_mmdb(tar),
+                                    path=temp_directory_name)
+                except SecurityValidationError as error:
+                    self.error(
+                        f'The downloaded GeoIP database ({temp_directory_name}'
+                        f'/{package_temp_name}.tar.gz) failed security '
+                        f'validation. Reason: {error}')
+                    raise
 
                 # Move the database to the requested location
                 shutil.move(src=f'{temp_directory_name}/GeoLite2-City.mmdb',
