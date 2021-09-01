@@ -109,9 +109,12 @@ class ProtocolCompiler(LogWriter):
         self._include_path = include_path
         self._output_path = output_path
 
-    def compile(self) -> None:
+    def compile(self) -> bool:
 
         """Compiles all proto files in the source directory.
+
+        Returns:
+            bool: 'True' if the compilation was successful, 'False' otherwise.
 
         Raises:
             InvalidInputError: Raised when no VFS provider can be retrieved.
@@ -135,11 +138,16 @@ class ProtocolCompiler(LogWriter):
         file_list = vfs.get_all_files(node_name=self._path,
                                       filename_filter='.proto')
 
+        result = True
         for file in file_list:
-            protoc.main((
+            if protoc.main((
                 '',
                 f'-I{self._include_path}',
                 f'--python_out={self._output_path}',
                 f'--grpc_python_out={self._output_path}',
                 f'{file.Latest.Descriptor.Path}'
-            ))
+            )) != 0:
+                self.error(f'Failed to compile proto file {file}.')
+                result = False
+
+        return result

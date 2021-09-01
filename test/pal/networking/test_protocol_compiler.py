@@ -88,8 +88,7 @@ class TestProtocolCompiler:
                                include_path=PROTOCOL_INPUT_DIRECTORY,
                                output_path=PROTOCOL_OUTPUT_DIRECTORY)
 
-        sut.compile()
-
+        assert sut.compile()
         assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2.py')
         assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2_grpc.py')
 
@@ -111,6 +110,6 @@ class TestProtocolCompiler:
                                include_path=INVALID_INPUT_DIRECTORY,
                                output_path=PROTOCOL_OUTPUT_DIRECTORY)
 
-        sut.compile()
+        assert not sut.compile()
 
         SystemLocator.instance().unregister_provider(VFSAPI, vfs)
