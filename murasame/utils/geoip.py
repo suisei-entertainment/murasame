@@ -23,7 +23,6 @@ Contains the implementation of the GeoIP class.
 
 # Runtime Imports
 import os
-import tarfile
 import shutil
 import uuid
 import tempfile
@@ -257,7 +256,11 @@ class GeoIP:
             return
 
         # Extract the update package
-        with tarfile.open(package_filename) as tar:
+        # SecureTarFile is imported here to avoid a circular dependency with
+        # LogWriter
+        #pylint: disable=import-outside-toplevel
+        from murasame.utils.securetarfile import SecureTarFile
+        with SecureTarFile.open(package_filename) as tar:
             tar.extract(member=GeoIP._find_mmdb(tar),
                         path=temp_directory_name)
 
