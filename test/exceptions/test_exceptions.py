@@ -44,7 +44,8 @@ from murasame.exceptions import (
     NotRegisteredError,
     UncaughtExceptionError,
     InvalidLicenseKeyError,
-    DatabaseOperationError)
+    DatabaseOperationError,
+    SecurityValidationError)
 
 class TestExceptions:
 
@@ -422,4 +423,35 @@ class TestExceptions:
             raise DatabaseOperationError('test', inspect_caller=False)
         except DatabaseOperationError as error:
             assert error.errorcode == ErrorCodes.DATABASE_ERROR
+            assert error.errormessage == 'test'
+
+    def test_security_validation_error(self):
+
+        """
+        Tests that SecurityValidationError can be raised.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        try:
+            raise SecurityValidationError('test')
+        except SecurityValidationError as error:
+            assert error.errorcode == ErrorCodes.SECURITY_VALIDATION_FAILED
+            assert error.errormessage == 'test'
+
+    def test_security_validation_error_without_caller_inspection(self):
+
+        """
+        Tests that SecurityValidationError can be raised without caller
+        inspection enabled.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        try:
+            raise SecurityValidationError('test', inspect_caller=False)
+        except SecurityValidationError as error:
+            assert error.errorcode == ErrorCodes.SECURITY_VALIDATION_FAILED
             assert error.errormessage == 'test'

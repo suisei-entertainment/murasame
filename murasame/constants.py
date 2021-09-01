@@ -57,8 +57,17 @@ MURASAME_GRPC_LOG_CHANNEL = 'murasame.pal.networking.grpc'
 
 MURASAME_VFS_LOG_CHANNEL = 'murasame.pal.vfs'
 
+MURASAME_IO_LOG_CHANNEL = 'murasame.io'
+
 ## ============================================================================
 ##  COMMON CONSTANTS
 ## ============================================================================
 
+# Configuration file used to store the logging configuration
 MURASAME_LOGGING_CONFIG = os.path.abspath('./config/log.conf')
+
+# Max size of a member inside the tar file
+MURASAME_TAR_MAX_MEMBER_SIZE = 100 * 1024 * 1024
+
+# Maximum amount of members inside the tar file
+MURASAME_TAR_MAX_MEMBER_COUNT = 1024

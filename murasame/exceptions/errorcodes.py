@@ -56,6 +56,8 @@ class ErrorCodes(IntEnum):
 
         DATABASE_ERROR: Indicates a database operation error.
 
+        SECURITY_VALIDATION_FAILED: Indicates a security rule violation.
+
     Authors:
         Attila Kovacs
     """
@@ -72,3 +74,4 @@ class ErrorCodes(IntEnum):
     INSTALL_FAILED = auto()
     LICENSE_ERROR = auto()
     DATABASE_ERROR = auto()
+    SECURITY_VALIDATION_FAILED = auto()

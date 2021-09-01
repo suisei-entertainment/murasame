@@ -130,13 +130,13 @@ class VFSPackage(LogWriter):
             descriptor = tar.getmember(name='.vfs')
             if not descriptor:
                 raise InvalidInputError(f'Resource package {self._path} does not '
-                                        f'contains a VFS descriptor.')
+                                        f'contain a VFS descriptor.')
 
             self._extract_directory = tempfile.mkdtemp()
             self.debug(f'Random directory for package {self._path} is '
                        f'{self._extract_directory}.')
 
-            tar.extractall(path=self._extract_directory, members=[descriptor])
+            tar.extract(member=descriptor, path=self._extract_directory)
 
         descriptor_file = JsonFile(path=f'{self._extract_directory}/.vfs')
         descriptor_file.load()

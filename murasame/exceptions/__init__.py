@@ -33,3 +33,4 @@ from murasame.exceptions.missingrequirementerror import MissingRequirementError
 from murasame.exceptions.installationfailederror import InstallationFailedError
 from murasame.exceptions.invalidlicensekeyerror import InvalidLicenseKeyError
 from murasame.exceptions.databaseoperationerror import DatabaseOperationError
+from murasame.exceptions.securityvalidationerror import SecurityValidationError
