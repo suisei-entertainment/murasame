@@ -23,7 +23,6 @@ Contains the implementation of the VFSPackage class.
 
 # Runtime Imports
 import os
-import tarfile
 import tempfile
 import shutil
 
@@ -32,9 +31,10 @@ import magic
 
 # Murasame Imports
 from murasame.constants import MURASAME_VFS_LOG_CHANNEL
-from murasame.exceptions import InvalidInputError
+from murasame.exceptions import InvalidInputError, SecurityValidationError
 from murasame.log import LogWriter
 from murasame.utils import SystemLocator, JsonFile
+from murasame.utils.securetarfile import SecureTarFile
 
 class VFSPackage(LogWriter):
 
@@ -109,6 +109,9 @@ class VFSPackage(LogWriter):
             InvalidInputError: Raised if the archive does not contain a .vfs
                 VFS descriptor file.
 
+            SecurityValidationError: Raised when the package fails security
+                validation.
+
         Authors:
             Attila Kovacs
         """
@@ -126,17 +129,25 @@ class VFSPackage(LogWriter):
                                     f'gzip compressed archive.')
 
         # Load the VFS configuration from the package
-        with  tarfile.TarFile(name=self._path) as tar:
-            descriptor = tar.getmember(name='.vfs')
-            if not descriptor:
-                raise InvalidInputError(f'Resource package {self._path} does not '
-                                        f'contain a VFS descriptor.')
 
-            self._extract_directory = tempfile.mkdtemp()
-            self.debug(f'Random directory for package {self._path} is '
-                       f'{self._extract_directory}.')
+        try:
+            with SecureTarFile.open(name=self._path) as tar:
+                descriptor = tar.getmember(name='.vfs')
+                if not descriptor:
+                    raise InvalidInputError(
+                        f'Resource package {self._path} does not contain a '
+                        f'VFS descriptor.')
 
-            tar.extract(member=descriptor, path=self._extract_directory)
+                self._extract_directory = tempfile.mkdtemp()
+                self.debug(f'Random directory for package {self._path} is '
+                           f'{self._extract_directory}.')
+
+                tar.extract(member=descriptor, path=self._extract_directory)
+        except SecurityValidationError as error:
+            self.error(
+                f'Failed to extract from VFS package ({self._path}) due to '
+                f'security validation error. Reason: {error}')
+            raise
 
         descriptor_file = JsonFile(path=f'{self._extract_directory}/.vfs')
         descriptor_file.load()
