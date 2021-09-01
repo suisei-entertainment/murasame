@@ -138,7 +138,7 @@ lint:
 ## ============================================================================
 test:
 	@echo Executing framework tests...
-	pytest -n auto
+	pytest -n auto --dist loadscope
 	pytest --xkill
 	@echo
 
@@ -147,7 +147,7 @@ test:
 ## ============================================================================
 coverage:
 	@echo Executing coverage measurement...
-	pytest -n auto --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest -n auto --dist loadscope --cov=murasame --cov-report=html --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	pytest --xkill
 	@echo
 
@@ -156,7 +156,7 @@ coverage:
 ## ============================================================================
 sonar:
 	@echo Executing SonarCloud scanner...
-	pytest -n auto --cov=murasame --cov-report=xml --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
+	pytest -n auto --dist loadscope --cov=murasame --cov-report=xml --cov-config=./.coveragerc --no-cov-on-fail --cov-fail-under=80
 	pytest --xkill
 	coverage xml -i
 	${SONAR_SCANNER}

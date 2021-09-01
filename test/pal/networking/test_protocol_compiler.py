@@ -33,6 +33,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 # Murasame Imports
 from murasame.pal.networking.protocolcompiler import ProtocolCompiler
+from murasame.utils import SystemLocator
+from murasame.pal.vfs import VFS
+from murasame.api import VFSAPI
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
@@ -42,6 +45,7 @@ PROTOCOL_DIRECTORTY = os.path.abspath(os.path.expanduser(
 
 PROTOCOL_INPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/input'
 PROTOCOL_OUTPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/output'
+INVALID_INPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/invalidinput'
 
 PROTOCOL_FILE = f'{PROTOCOL_INPUT_DIRECTORY}/testfile.proto'
 
@@ -53,7 +57,7 @@ class TestProtocolCompiler:
         Attila Kovacs
     """
 
-    def test_creation_with_valid_parameters(self):
+    def test_creation_with_valid_parameters(self) -> None:
 
         """Tests that a ProtocolCompiler instance can be created with valid
         parameters.
@@ -68,14 +72,45 @@ class TestProtocolCompiler:
 
         assert sut is not None
 
-    def test_compilation_of_valid_source_files(self):
+    def test_compilation_of_valid_source_files(self) -> None:
 
-        pass
+        """Tests that valid protocol files can be compiled.
 
-    def test_compilation_without_vfs(self):
+        Authors:
+            Attila Kovacs
+        """
 
-        pass
+        vfs = VFS()
+        vfs.register_source(path=PROTOCOL_DIRECTORTY)
+        SystemLocator.instance().register_provider(VFSAPI, vfs)
 
-    def test_compilation_of_invalid_source_file(self):
+        sut = ProtocolCompiler(path='/input',
+                               include_path=PROTOCOL_INPUT_DIRECTORY,
+                               output_path=PROTOCOL_OUTPUT_DIRECTORY)
 
-        pass
+        sut.compile()
+
+        assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2.py')
+        assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2_grpc.py')
+
+        SystemLocator.instance().unregister_provider(VFSAPI, vfs)
+
+    def test_compilation_of_invalid_source_file(self) -> None:
+
+        """Tests trying to compile a source file with invalid syntax.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        vfs = VFS()
+        vfs.register_source(path=PROTOCOL_DIRECTORTY)
+        SystemLocator.instance().register_provider(VFSAPI, vfs)
+
+        sut = ProtocolCompiler(path='/invalidinput',
+                               include_path=INVALID_INPUT_DIRECTORY,
+                               output_path=PROTOCOL_OUTPUT_DIRECTORY)
+
+        sut.compile()
+
+        SystemLocator.instance().unregister_provider(VFSAPI, vfs)

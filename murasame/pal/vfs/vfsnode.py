@@ -798,7 +798,7 @@ class VFSNode(LogWriter):
 
         result = []
 
-        for dummy, file in self.Files:
+        for dummy, file in self.Files.items():
             if filename_filter is not None:
                 if filename_filter in file.Name:
                     result.append(file)

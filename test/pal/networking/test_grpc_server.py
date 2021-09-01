@@ -37,17 +37,15 @@ from murasame.pal.networking.grpcservertypes import GRPCServerTypes
 
 class TestGRPCServer:
 
-    """
-    Contains the unit tests for the GRPCServer class.
+    """Contains the unit tests for the GRPCServer class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_of_insecure_server(self):
+    def test_creation_of_insecure_server(self) -> None:
 
-        """
-        Tests that an insecure gRPC server can be created.
+        """Tests that an insecure gRPC server can be created.
 
         Authors:
             Attila Kovacs
@@ -57,3 +55,45 @@ class TestGRPCServer:
                          server_type=GRPCServerTypes.INSECURE)
 
         assert sut is not None
+        assert isinstance(sut, GRPCServer)
+        assert sut.Server is not None
+
+    def test_creation_of_secure_serveR(self) -> None:
+
+        """Tests that a secure gRPC server can be created.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # TODO
+
+    def test_start_stop_server_in_non_blocking_mode(self) -> None:
+
+        """Tests that a gRPC server can be started in non-blocking mode and
+        stopped.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = GRPCServer(port=12346,
+                         server_type=GRPCServerTypes.INSECURE)
+
+        sut.start()
+        sut.stop()
+
+    def test_start_stop_server_in_blocking_mode(self) -> None:
+
+        """Tests that a gRPC server can be started in blocking mode and
+        stopped.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        sut = GRPCServer(port=12347,
+                         server_type=GRPCServerTypes.INSECURE)
+
+        sut.start(block=True, timeout=0.1)
+        sut.stop()

@@ -33,7 +33,10 @@ PROTOCOL_DIRECTORTY = os.path.abspath(os.path.expanduser(
 PROTOCOL_INPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/input'
 PROTOCOL_OUTPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/output'
 
+INVALID_INPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/invalidinput'
+
 PROTOCOL_FILE = f'{PROTOCOL_INPUT_DIRECTORY}/testfile.proto'
+INVALID_PROTOCOL_FILE= f'{INVALID_INPUT_DIRECTORY}/invalid.proto'
 
 TEST_PROTOCOL_FILE = \
 """
@@ -58,14 +61,27 @@ message TestReturn
 }
 """
 
+INVALID_PROTOCOL_FILE_DATA = \
+"""
+syntax = "proto3";
+
+package testpackage;
+
+syntax error
+"""
+
 def create_protocol_compiler_data():
 
     # Create directories
     if not os.path.isdir(PROTOCOL_DIRECTORTY):
         os.mkdir(PROTOCOL_DIRECTORTY)
         os.mkdir(PROTOCOL_INPUT_DIRECTORY)
+        os.mkdir(INVALID_INPUT_DIRECTORY)
         os.mkdir(PROTOCOL_OUTPUT_DIRECTORY)
 
     # Create protocol files
-    with open(PROTOCOL_FILE, 'w') as file:
+    with open(PROTOCOL_FILE, 'w', encoding='UTF-8') as file:
         file.write(TEST_PROTOCOL_FILE)
+
+    with open(INVALID_PROTOCOL_FILE, 'w', encoding='UTF-8') as file:
+        file.write(INVALID_PROTOCOL_FILE_DATA)

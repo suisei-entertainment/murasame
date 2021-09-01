@@ -146,7 +146,10 @@ class GRPCServer(LogWriter):
         else:
             self._server.add_insecure_port(f'[::]:{self._port}')
 
-    def start(self, block: bool = False) -> None:
+    def start(
+        self,
+        block: bool = False,
+        timeout: Union[float, None] = None) -> None:
 
         """Starts the server.
 
@@ -165,7 +168,7 @@ class GRPCServer(LogWriter):
         if block:
             self.debug(
                 f'Waiting for gRPC server on port {self._port} to finish.')
-            self._server.wait_for_termination()
+            self._server.wait_for_termination(timeout=timeout)
             self.debug(
                 f'gRPC server on port {self._port} has been terminated.')
 

@@ -141,5 +141,5 @@ class ProtocolCompiler(LogWriter):
                 f'-I{self._include_path}',
                 f'--python_out={self._output_path}',
                 f'--grpc_python_out={self._output_path}',
-                f'{file.Latest.Resource.Descriptor.Path}'
+                f'{file.Latest.Descriptor.Path}'
             ))
