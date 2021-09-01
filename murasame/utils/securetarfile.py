@@ -160,6 +160,7 @@ class SecureTarFile(tarfile.TarFile):
         self,
         path: str = ".",
         members: list = None,
+        *,
         numeric_owner: bool = False) -> None:
 
         """Extracts multiple members from the archive after performing the
@@ -210,10 +211,8 @@ class SecureTarFile(tarfile.TarFile):
                                f'{error}')
             raise
 
-    def _check_traversal_attempt(
-        self,
-        tarinfo: tarfile.TarInfo,
-        path: str) -> None:
+    @staticmethod
+    def _check_traversal_attempt(tarinfo: tarfile.TarInfo, path: str) -> None:
 
         """Checks for attempted directory traversal.
 
@@ -239,10 +238,8 @@ class SecureTarFile(tarfile.TarFile):
             raise SecurityValidationError(
                 f'Attempted directory traversal for member: {tarinfo.name}')
 
-    def _check_unsafe_symlink(
-        self,
-        tarinfo: tarfile.TarInfo,
-        path: str) -> None:
+    @staticmethod
+    def _check_unsafe_symlink(tarinfo: tarfile.TarInfo, path: str) -> None:
 
         """Checks for attempted directory traversal through a symlink.
 
@@ -268,10 +265,8 @@ class SecureTarFile(tarfile.TarFile):
                     f'Attempted directory traversal via symlink for member: '
                     f'{tarinfo.linkname}')
 
-    def _check_unsafe_link(
-        self,
-        tarinfo: tarfile.TarInfo,
-        path: str) -> None:
+    @staticmethod
+    def _check_unsafe_link(tarinfo: tarfile.TarInfo, path: str) -> None:
 
         """Checks for attempted directory traversal through a link.
 
@@ -297,10 +292,8 @@ class SecureTarFile(tarfile.TarFile):
                     f'Attempted directory traversal via link for member: '
                     f'{tarinfo.linkname}')
 
-    def _check_is_device(
-        self,
-        tarinfo: tarfile.TarInfo,
-        path: str) -> None:
+    @staticmethod
+    def _check_is_device(tarinfo: tarfile.TarInfo, path: str) -> None:
 
         """Checks that the object is not reported to be a character or block
         device.
@@ -320,10 +313,10 @@ class SecureTarFile(tarfile.TarFile):
 
         if tarinfo.ischr() or tarinfo.isblk():
             raise SecurityValidationError(
-                f'Tarfile returns true for isblk() or ischr().')
+                'Tarfile returns true for isblk() or ischr().')
 
+    @staticmethod
     def _check_blacklisted_extension(
-        self,
         tarinfo: tarfile.TarInfo,
         path: str) -> None:
 
@@ -349,10 +342,8 @@ class SecureTarFile(tarfile.TarFile):
                     f'Blocked file extension ({blocked_extension}) detected '
                     f'inside the archive. Member: {tarinfo.name}')
 
-    def _check_member_size(
-        self,
-        tarinfo: tarfile.TarInfo,
-        path: str) -> None:
+    @staticmethod
+    def _check_member_size(tarinfo: tarfile.TarInfo, path: str) -> None:
 
         if tarinfo.size > MURASAME_TAR_MAX_MEMBER_SIZE:
             raise SecurityValidationError(
