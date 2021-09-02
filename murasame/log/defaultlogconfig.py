@@ -57,6 +57,36 @@ DEFAULT_LOG_CONFIG = \
             ]
         },
         {
+            "name": "murasame.debug",
+            "defaultloglevel": "INFO",
+            "targets":
+            [
+                {
+                    'type': 'console',
+                    'coloredlogs': 'true',
+                },
+                {
+                    'type': 'file',
+                    'filename': 'murasame.debug.log'
+                }
+            ]
+        },
+        {
+            "name": "murasame.event",
+            "defaultloglevel": "INFO",
+            "targets":
+            [
+                {
+                    'type': 'console',
+                    'coloredlogs': 'true',
+                },
+                {
+                    'type': 'file',
+                    'filename': 'murasame.event.log'
+                }
+            ]
+        },
+        {
             "name": "murasame.exceptions",
             "defaultloglevel": "INFO",
             "targets":
@@ -117,6 +147,21 @@ DEFAULT_LOG_CONFIG = \
             ]
         },
         {
+            "name": "murasame.pal.networking.grpc",
+            "defaultloglevel": "INFO",
+            "targets":
+            [
+                {
+                    'type': 'console',
+                    'coloredlogs': 'true',
+                },
+                {
+                    'type': 'file',
+                    'filename': 'murasame.pal.networking.grpc.log'
+                }
+            ]
+        },
+        {
             "name": "murasame.pal.vfs",
             "defaultloglevel": "INFO",
             "targets":
@@ -132,7 +177,7 @@ DEFAULT_LOG_CONFIG = \
             ]
         },
         {
-            "name": "murasame.utils",
+            "name": "murasame.io",
             "defaultloglevel": "INFO",
             "targets":
             [
@@ -142,7 +187,7 @@ DEFAULT_LOG_CONFIG = \
                 },
                 {
                     'type': 'file',
-                    'filename': 'murasame.utils.log'
+                    'filename': 'murasame.io.log'
                 }
             ]
         }
