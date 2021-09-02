@@ -32,6 +32,7 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 # Murasame Imports
+from murasame.exceptions import InvalidInputError
 from murasame.pal.networking.grpcserver import GRPCServer
 from murasame.pal.networking.grpcservertypes import GRPCServerTypes
 
@@ -58,15 +59,30 @@ class TestGRPCServer:
         assert isinstance(sut, GRPCServer)
         assert sut.Server is not None
 
-    def test_creation_of_secure_serveR(self) -> None:
+    def test_creation_of_secure_server_with_valid_certificate(self) -> None:
 
-        """Tests that a secure gRPC server can be created.
+        """Tests that a secure gRPC server can be created with a valid
+        certificate.
 
         Authors:
             Attila Kovacs
         """
 
         # TODO
+
+    def test_creation_of_secure_server_without_valid_certificate(self) -> None:
+
+        """Tests that a secure gRPC server cannot be created without a valid
+        certificate.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        with pytest.raises(InvalidInputError):
+            sut = GRPCServer(port=12345,
+                             server_type=GRPCServerTypes.SECURE)
+
 
     def test_start_stop_server_in_non_blocking_mode(self) -> None:
 
@@ -81,7 +97,7 @@ class TestGRPCServer:
                          server_type=GRPCServerTypes.INSECURE)
 
         sut.start()
-        sut.stop()
+        sut.stop(grace_period=1)
 
     def test_start_stop_server_in_blocking_mode(self) -> None:
 
@@ -97,3 +113,13 @@ class TestGRPCServer:
 
         sut.start(block=True, timeout=0.1)
         sut.stop()
+
+    def test_message_handling(self) -> None:
+
+        """Tests that gRPC messages can be handled.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        #TODO

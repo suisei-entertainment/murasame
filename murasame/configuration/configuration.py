@@ -174,7 +174,7 @@ class Configuration(LogWriter):
         """
 
         for source in self._sources:
-            source.load()
+            source.load(backend=self._backend)
 
     def save(self) -> None:
 

@@ -44,6 +44,7 @@ from test.data.secrets_data import create_secrets_data
 from test.data.systemlocator_data import create_systemlocator_data
 from test.data.protocol_compiler_data import create_protocol_compiler_data
 from test.data.securetarfile_data import create_securetarfile_data
+from test.data.vfsconfigurationsource_data import create_vfsconfigurationsource_data
 
 # Contains the list of callback functions to call when creating the test data
 # for a test run.
@@ -61,7 +62,8 @@ SESSION_INIT_FUNCTIONS = \
     create_secrets_data,
     create_systemlocator_data,
     create_protocol_compiler_data,
-    create_securetarfile_data
+    create_securetarfile_data,
+    create_vfsconfigurationsource_data
 ]
 
 # Path to the file that is used to mark that the environment is ready for

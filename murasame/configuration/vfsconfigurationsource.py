@@ -57,11 +57,18 @@ class VFSConfigurationSource(ConfigurationSource):
 
         self._path = path
 
-    def load(self) -> None:
+    def load(self, backend: 'ConfigurationBackend') -> None:
 
         """Loads the configuration from this configuration source.
 
+        Args:
+            backend (ConfigurationBackend): The backend to add the the
+                configuration to.
+
         Raises:
+            InvalidInputError: Raised when trying to load the configuration
+                without providing a valid configuration backend.
+
             RuntimeError: Raised if no VFS provider can be retrieved to load
                 the configuration files.
 
@@ -74,9 +81,14 @@ class VFSConfigurationSource(ConfigurationSource):
 
         self.debug(f'Loading configuration from VFS source {self._path}...')
 
+        if not backend:
+            raise InvalidInputError(
+                'A valid configuration backend has to be provided to load the '
+                'configuration.')
+
         # Pylint doesn't recognize the instance() member of Singleton.
         # pylint: disable=no-member
-        vfs = SystemLocator.instance().get_provicer(VFSAPI)
+        vfs = SystemLocator.instance().get_provider(VFSAPI)
 
         if not vfs:
             raise RuntimeError(f'VFS provider cannot be retrieved, cannot '
@@ -88,14 +100,15 @@ class VFSConfigurationSource(ConfigurationSource):
             raise InvalidInputError(f'VFS path {self._path} does not exist.')
 
         # Get all configuration files from the VFS node
-        config_files = node.get_all_files(recursive=True, filter='.conf')
+        config_files = node.get_all_files(recursive=True,
+                                          filename_filter='.conf')
 
         # Load all configuration files individually
         for config_file in config_files:
             self.debug(f'Loading configuration from {config_file.Name} '
                        f'(v{config_file.get_resource().Version})...')
             resource = config_file.get_resource().Resource
-            self._parse(content=resource)
+            self._parse(content=resource, backend=backend)
 
         self.debug('Configuration has been loaded.')
 
@@ -110,12 +123,15 @@ class VFSConfigurationSource(ConfigurationSource):
         raise NotImplementedError(f'ConfigurationSource.save() has to be '
                                   f'implemented in {self.__class__.__name__}.')
 
-    def _parse(self, content: dict) -> None:
+    def _parse(self, content: dict, backend: 'ConfigurationBackend') -> None:
 
         """Parses the content of the provided dictionary.
 
         Args:
             content (dict): The content of the configuration file.
+
+            backend (ConfigurationBackend): The backend to add the the
+                configuration to.
 
         Authors:
             Attila Kovacs
@@ -123,69 +139,56 @@ class VFSConfigurationSource(ConfigurationSource):
 
         for key, value in content.items():
             if isinstance(value, dict):
-                self._parse_dictionary(key, value)
+                self._parse_dictionary(key, value, backend)
             elif isinstance(value, list):
-                self._parse_list(key, value)
+                self._parse_list(key, value, backend)
             else:
-                self._parse_attribute(key, value)
+                raise InvalidInputError(
+                    f'Invalid content encountered when trying to parse config '
+                    f'file. Content: {content}')
 
-    def _parse_dictionary(self, key: str , value: dict) -> None:
+    @staticmethod
+    def _parse_dictionary(
+        key: str,
+        value: dict,
+        backend: 'ConfigurationBackend') -> None:
 
         """Parse the configuration content as a configuration group.
 
         Args:
             key (str): The name of the configuration group.
+
             value (dict): The content of the configuration group.
+
+            backend (ConfigurationBackend): The backend to add the the
+                configuration to.
 
         Authors:
             Attila Kovacs
         """
 
-        _ = ConfigurationGroup(name=key, content=value)
+        config_group = ConfigurationGroup(name=key, content=value)
+        backend.add_group(parent=None, group=config_group)
 
-    def _parse_list(self, key: str, value: list) -> None:
+    @staticmethod
+    def _parse_list(
+        key: str,
+        value: list,
+        backend: 'ConfigurationBackend') -> None:
 
         """Parse the configuration content as a configuration list.
 
         Args:
             key (str): The name of the configuration list.
+
             value (list): The content of the configuration list.
 
-        Authors:
-            Attila Kovacs
-        """
-
-        _ = ConfigurationList(name=key, content=value)
-
-    def _parse_attribute(self, key: str, value: object) -> None:
-
-        """Parse the configuration content as a configuration attribute.
-
-        Args:
-            key (str): The name of the configuration attribute.
-            value (object): The content of the configuration attribute.
-
-        Raises:
-            InvalidInputError: Raised when unsupported datatype is detected for
-                the the attribute value.
+            backend (ConfigurationBackend): The backend to add the the
+                configuration to.
 
         Authors:
             Attila Kovacs
         """
 
-        data_type = None
-
-        if isinstance(value, str):
-            data_type  = 'STRING'
-        elif isinstance(value, int):
-            data_type = 'INT'
-        elif isinstance(value, float):
-            data_type = 'FLOAT'
-        else:
-            raise InvalidInputError(
-                f'Unsupported data type when trying to parse configuration '
-                f'attribute {key}:{value}.')
-
-        _ = ConfigurationAttribute(name=key,
-                                   value=value,
-                                   data_type=data_type)
+        config_list = ConfigurationList(name=key, content=value)
+        backend.add_list(parent=None, config_list=config_list)

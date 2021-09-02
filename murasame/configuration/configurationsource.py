@@ -44,9 +44,13 @@ class ConfigurationSource(LogWriter):
         super().__init__(channel_name=MURASAME_CONFIGURATION_LOG_CHANNEL,
                          cache_entries=True)
 
-    def load(self) -> None:
+    def load(self, backend: 'ConfigurationBackend') -> None:
 
         """Loads the configuration from this configuration source.
+
+        Args:
+            backend (ConfigurationBackend): The backend to add the the
+                configuration to.
 
         Authors:
             Attila Kovacs
