@@ -27,8 +27,6 @@ from murasame.utils import SystemLocator
 from murasame.api import VFSAPI
 from murasame.configuration.configurationsource import ConfigurationSource
 from murasame.configuration.configurationgroup import ConfigurationGroup
-from murasame.configuration.configurationlist import ConfigurationList
-from murasame.configuration.configurationattribute import ConfigurationAttribute
 
 class VFSConfigurationSource(ConfigurationSource):
 
