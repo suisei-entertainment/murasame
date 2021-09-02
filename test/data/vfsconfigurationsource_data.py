@@ -31,6 +31,8 @@ from test.constants import TEST_FILES_DIRECTORY
 SOURCE_DIRECTORY = f'{TEST_FILES_DIRECTORY}/vfsconfigurationsource'
 CONFIG_DIRECTORY = f'{SOURCE_DIRECTORY}/config'
 CONFIG_FILE = f'{CONFIG_DIRECTORY}/testconfig.conf'
+INVALID_CONFIG_DIRECTORY = f'{SOURCE_DIRECTORY}/invalidconfig'
+INVALID_CONFIG_FILE = f'{INVALID_CONFIG_DIRECTORY}/testconfig.conf'
 
 CONFIG_DATA = \
 {
@@ -45,13 +47,22 @@ CONFIG_DATA = \
     }
 }
 
+INVALID_CONFIG_DATA = \
+{
+    "testdata": 1
+}
+
 def create_vfsconfigurationsource_data() -> None:
 
     # Create directories
     if not os.path.isdir(SOURCE_DIRECTORY):
         os.mkdir(SOURCE_DIRECTORY)
         os.mkdir(CONFIG_DIRECTORY)
+        os.mkdir(INVALID_CONFIG_DIRECTORY)
 
     # Create files
     with open(CONFIG_FILE, 'w', encoding='UTF-8') as file:
         file.write(json.dumps(CONFIG_DATA))
+
+    with open(INVALID_CONFIG_FILE, 'w', encoding='UTF-8') as file:
+        file.write(json.dumps(INVALID_CONFIG_DATA))

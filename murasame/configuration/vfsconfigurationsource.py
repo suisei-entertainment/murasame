@@ -140,8 +140,6 @@ class VFSConfigurationSource(ConfigurationSource):
         for key, value in content.items():
             if isinstance(value, dict):
                 self._parse_dictionary(key, value, backend)
-            elif isinstance(value, list):
-                self._parse_list(key, value, backend)
             else:
                 raise InvalidInputError(
                     f'Invalid content encountered when trying to parse config '
@@ -169,26 +167,3 @@ class VFSConfigurationSource(ConfigurationSource):
 
         config_group = ConfigurationGroup(name=key, content=value)
         backend.add_group(parent=None, group=config_group)
-
-    @staticmethod
-    def _parse_list(
-        key: str,
-        value: list,
-        backend: 'ConfigurationBackend') -> None:
-
-        """Parse the configuration content as a configuration list.
-
-        Args:
-            key (str): The name of the configuration list.
-
-            value (list): The content of the configuration list.
-
-            backend (ConfigurationBackend): The backend to add the the
-                configuration to.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        config_list = ConfigurationList(name=key, content=value)
-        backend.add_list(parent=None, config_list=config_list)

@@ -42,6 +42,7 @@ from murasame.configuration.dictionarybackend import DictionaryBackend
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
 CONFIG_SOURCE_PATH = f'{TEST_FILES_DIRECTORY}/vfsconfigurationsource'
+INVALID_CONFIG_SOURCE_PATH = f'{TEST_FILES_DIRECTORY}/vfsconfigurationsource/invalidconfig'
 
 class TestVFSConfigurationSource:
 
@@ -115,6 +116,26 @@ class TestVFSConfigurationSource:
         backend=DictionaryBackend()
 
         sut = VFSConfigurationSource(path='/invalid')
+        with pytest.raises(InvalidInputError):
+            sut.load(backend=backend)
+
+        SystemLocator.instance().unregister_provider(VFSAPI, vfs)
+
+    def test_loading_invalid_content(self) -> None:
+
+        """Test that loading invalid content is handled correctly.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        vfs = VFS()
+        vfs.register_source(path=INVALID_CONFIG_SOURCE_PATH)
+        SystemLocator.instance().register_provider(VFSAPI, vfs)
+
+        backend=DictionaryBackend()
+
+        sut = VFSConfigurationSource(path='/')
         with pytest.raises(InvalidInputError):
             sut.load(backend=backend)
 
