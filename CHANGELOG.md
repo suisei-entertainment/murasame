@@ -11,6 +11,9 @@ and this project adheres to
 ### Added
 - [MUR-87]: Added support for manual SonarCloud scans.
 - [MUR-88]: Secured the PID file of a daemon application against tampering.
+- [MUR-89]: Added secure handling for temp directories
+- [MUR-90]: TarBomb protection for VFS packages
+- [MUR-91]: TarBomb protection for GeoIP database updates
 
 ## [0.1.0]: 'Fujin' - 2021-08-27 
 
