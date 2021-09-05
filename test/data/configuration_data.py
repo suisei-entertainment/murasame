@@ -18,10 +18,39 @@
 ## ============================================================================
 
 """
-Contains the application implementations of the framework.
+Contains the test data for the configuration tests.
 """
 
-from murasame.application.application import Application
-from murasame.application.businesslogic import BusinessLogic
-from murasame.application.applicationreturncodes import ApplicationReturnCodes
-from murasame.application.applicationtypes import ApplicationTypes
+# Runtime Imports
+import os
+import json
+
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
+
+CONFIG_TEST_DIRECTORY = f'{TEST_FILES_DIRECTORY}/configurationtest'
+CONFIG_DIRECTORY = f'{CONFIG_TEST_DIRECTORY}/configuration'
+CONFIG_FILE = f'{CONFIG_DIRECTORY}/configuration.conf'
+
+CONFIG_DATA = \
+{
+    'testgroup1':
+    {
+        'testgroup2':
+        {
+            'testattribute2': 'testvalue'
+        },
+        'testattribute1': 1
+    }
+}
+
+def create_configuration_data() -> None:
+
+    # Create directories
+    if not os.path.isdir(CONFIG_TEST_DIRECTORY):
+        os.mkdir(CONFIG_TEST_DIRECTORY)
+        os.mkdir(CONFIG_DIRECTORY)
+
+    # Create files
+    with open(CONFIG_FILE, 'w', encoding='UTF-8') as file:
+        file.write(json.dumps(CONFIG_DATA))

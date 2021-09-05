@@ -36,7 +36,7 @@ sys.path.insert(0, FRAMEWORK_DIR)
 
 # Murasame Imports
 from murasame.exceptions import InvalidInputError
-from murasame.application import Application, BusinessLogic, ApplicationReturnCodes
+from murasame.application import Application, BusinessLogic, ApplicationReturnCodes, ApplicationTypes
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
@@ -86,7 +86,10 @@ class TestApplication:
             Attila Kovacs
         """
 
-        sut = Application(business_logic=DummyBusinessLogic())
+        business_logic = DummyBusinessLogic()
+        sut = Application(business_logic=business_logic)
+        assert sut.BusinessLogic == business_logic
+        assert sut.Type == ApplicationTypes.DAEMON_APPLICATION
 
     def test_creation_without_business_logic(self):
 

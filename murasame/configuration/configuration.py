@@ -129,11 +129,7 @@ class Configuration(LogWriter):
             raise RuntimeError('No configuration backend has been specified, '
                                'cannot retrieve attributes.')
 
-        attr = self._backend.get_attribute(attribute_name=attribute)
-        if attr:
-            return attr.Value
-
-        return None
+        return self._backend.get_value(attribute_name=attribute)
 
     def set(self, attribute: str, value: Any) -> None:
 
@@ -157,13 +153,7 @@ class Configuration(LogWriter):
             raise RuntimeError('No configuration backend has been specified, '
                                'cannot set configuration attributes.')
 
-        attr = self._backend.get_attribute(attribute_name=attribute)
-        if attr:
-            attr.Value = value
-        else:
-            raise InvalidInputError(
-                f'Trying to set the value for non-existing attribute '
-                f'{attribute}.')
+        self._backend.set(attribute=attribute, value=value)
 
     def load(self) -> None:
 
