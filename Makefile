@@ -75,6 +75,9 @@ semgrep:
 	semgrep --config=p/r2c-bug-scan ./murasame
 	semgrep --config=p/r2c-ci ./murasame
 	semgrep --config=p/r2c-security-audit ./murasame
+	semgrep --config=p/secrets ./murasame
+	semgrep --config=p/xss ./murasame
+	semgrep --config=p/sql-injection ./murasame
 	@echo
 
 ## ============================================================================
@@ -87,6 +90,9 @@ semgrep-sarif:
 	semgrep --config=p/r2c-bug-scan -o ${WORKSPACE_DIRECTORY}/logs/semgrep-bug-scan.sarif --sarif ./murasame
 	semgrep --config=p/r2c-ci -o ${WORKSPACE_DIRECTORY}/logs/semgrep-ci.sarif --sarif ./murasame
 	semgrep --config=p/r2c-security-audit -o ${WORKSPACE_DIRECTORY}/logs/semgrep-security-audit.sarif --sarif ./murasame
+	semgrep --config=p/secrets -o ${WORKSPACE_DIRECTORY}/logs/semgrep-secrets.sarif --sarif ./murasame
+	semgrep --config=p/xss -o ${WORKSPACE_DIRECTORY}/logs/semgrep-xss.sarif --sarif ./murasame
+	semgrep --config=p/sql-injection -o ${WORKSPACE_DIRECTORY}/logs/semgrep-sqli.sarif --sarif ./murasame
 	@echo
 
 ## ============================================================================
