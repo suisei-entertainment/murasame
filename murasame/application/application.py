@@ -504,9 +504,7 @@ class Application(LogWriter):
                 os.remove(self._pid)
 
         except OSError as error:
-            if error.errno == errno.ENOENT:
-                pass
-            else:
+            if error.errno != errno.ENOENT:
                 raise OSError from error
 
     def _validate_license(
