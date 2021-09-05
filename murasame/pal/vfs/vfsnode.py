@@ -717,64 +717,9 @@ class VFSNode(LogWriter):
                 'Node type was not found in the serialized data.') from error
 
         if node_type == 'directory':
-
-            self.debug(f'Deserializing {self.Name} as a directory node...')
-            self._type = VFSNodeTypes.DIRECTORY
-
-            subdirectories = None
-            files = None
-
-            # Retrieve subdirectories
-            try:
-                subdirectories = data['subdirectories']
-            except KeyError:
-                self.debug(f'No subdirectories found for {self.Name}.')
-
-            for name, subdirectory in subdirectories.items():
-                node = VFSNode(node_name=name)
-                node.deserialize(data=subdirectory)
-                self.add_node(node)
-
-            # Retrieve files
-            try:
-                files = data['files']
-            except KeyError:
-                self.debug(f'No files found for {self.Name}.')
-
-            for name, file in files.items():
-                node = VFSNode(node_name=name)
-                node.deserialize(data=file)
-                self.add_node(node)
-
+            self._deserialize_as_directory(data=data)
         else:
-
-            self.debug(f'Deserializing {self.Name} as a file node...')
-            self._type = VFSNodeTypes.FILE
-
-            resources = None
-
-            # Retrieve resources
-            try:
-                resources = data['resource']
-            except KeyError:
-                self.debug(f'No resources found for {self.Name}.')
-
-            for resource in resources:
-                try:
-                    resource_type = resource['descriptor']['type']
-                except KeyError as error:
-                    raise InvalidInputError(
-                        'The resource does not specify the type.') from error
-
-                res = None
-                if resource_type == 'localfile':
-                    res = VFSResource(descriptor=VFSLocalFile(),
-                                      data=resource)
-                elif resource_type == 'packagefile':
-                    res = VFSResource(descriptor=VFSPackageFile(),
-                                      data=resource)
-
-                self.add_resource(res)
+            self._deserialize_as_file(data=data)
 
         self.debug(f'Node deserialization complete for {self.Name}.')
 
@@ -888,3 +833,81 @@ class VFSNode(LogWriter):
         self.add_node(node)
 
         self.debug(f'File {name} has been added to node {self.Name}.')
+
+    def _deserialize_as_directory(self, data: dict) -> None:
+
+        """Deserializes the VFS node as a directory node.
+
+        Args:
+            data (dict): The dictionary containing the serialized node data.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Deserializing {self.Name} as a directory node...')
+        self._type = VFSNodeTypes.DIRECTORY
+
+        subdirectories = None
+        files = None
+
+        # Retrieve subdirectories
+        try:
+            subdirectories = data['subdirectories']
+        except KeyError:
+            self.debug(f'No subdirectories found for {self.Name}.')
+
+        for name, subdirectory in subdirectories.items():
+            node = VFSNode(node_name=name)
+            node.deserialize(data=subdirectory)
+            self.add_node(node)
+
+        # Retrieve files
+        try:
+            files = data['files']
+        except KeyError:
+            self.debug(f'No files found for {self.Name}.')
+
+        for name, file in files.items():
+            node = VFSNode(node_name=name)
+            node.deserialize(data=file)
+            self.add_node(node)
+
+    def _deserialize_as_file(self, data: dict) -> None:
+
+        """Deserializes the VFS node as a file node.
+
+        Args:
+            data (dict): The dictionary containing the serialized node data.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Deserializing {self.Name} as a file node...')
+        self._type = VFSNodeTypes.FILE
+
+        resources = None
+
+        # Retrieve resources
+        try:
+            resources = data['resource']
+        except KeyError:
+            self.debug(f'No resources found for {self.Name}.')
+
+        for resource in resources:
+            try:
+                resource_type = resource['descriptor']['type']
+            except KeyError as error:
+                raise InvalidInputError(
+                    'The resource does not specify the type.') from error
+
+            res = None
+            if resource_type == 'localfile':
+                res = VFSResource(descriptor=VFSLocalFile(),
+                                  data=resource)
+            elif resource_type == 'packagefile':
+                res = VFSResource(descriptor=VFSPackageFile(),
+                                    data=resource)
+
+            self.add_resource(res)

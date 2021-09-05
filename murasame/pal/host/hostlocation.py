@@ -200,13 +200,65 @@ class HostLocation(LogWriter):
             f'{database_path}/GeoLite2-City.mmdb'))
         self.debug(f'Loading GeoIP database from {full_path}')
 
-        if not os.path.isfile(full_path):
-            if geoip_license_key is not None:
+        self._update_database(path=full_path,
+                              license_key=geoip_license_key,
+                              database_path=database_path)
+
+        response = None
+        reader = geoip2.database.Reader(full_path)
+        try:
+            self.debug(f'Trying to locate public IP ({public_ip}) in the '
+                       f'GeoIP database.')
+            response = reader.city(public_ip)
+        except geoip2.errors.AddressNotFoundError:
+            # IP address not found
+            self.warning(f'Public IP ({public_ip}) was not found in the '
+                         f'GeoIP database.')
+
+        if response:
+            self._continent = response.continent.name
+            self._country = response.country.name
+            self._city = response.city.name
+            self._postal_code = response.postal.code
+            self._location = (
+                response.location.latitude,
+                response.location.longitude)
+            self.debug(f'Location of public IP {public_ip}: {self._continent} '
+                       f'- {self._country} - {self._city} '
+                       f'({self._postal_code})')
+
+    def _update_database(
+        self,
+        path: str,
+        license_key: str,
+        database_path: str) -> None:
+
+        """Updates the GeoIP database.
+
+        Args:
+            path (str): Path to the GeoIP database file.
+
+            license_key (str): The license key to use when downloading the
+                GeoIP database.
+
+            database_path (str): Path to the diretory where the GeoIP database
+                is located.
+
+        Raises:
+            InvalidInputError: Raised if the GeoIP database was not found and
+                there is no license key provided to download one automatically.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        if not os.path.isfile(path):
+            if license_key is not None:
 
                 # Attempt to download the database
                 update_link = f'https://download.maxmind.com/app/geoip_'\
                     f'download?edition_id=GeoLite2-City&license_key='\
-                    f'{geoip_license_key}&suffix=tar.gz'
+                    f'{license_key}&suffix=tar.gz'
 
                 # Use a random generated UUID as a temporary filename for the
                 # downloaded GeoIP database to avoid it being used as a
@@ -254,27 +306,3 @@ class HostLocation(LogWriter):
                 shutil.rmtree(temp_directory_name)
             else:
                 raise InvalidInputError('GeoIP database was not found.')
-
-        response = None
-
-        reader = geoip2.database.Reader(full_path)
-        try:
-            self.debug(f'Trying to locate public IP ({public_ip}) in the '
-                       f'GeoIP database.')
-            response = reader.city(public_ip)
-        except geoip2.errors.AddressNotFoundError:
-            # IP address not found
-            self.warning(f'Public IP ({public_ip}) was not found in the '
-                         f'GeoIP database.')
-
-        if response:
-            self._continent = response.continent.name
-            self._country = response.country.name
-            self._city = response.city.name
-            self._postal_code = response.postal.code
-            self._location = (
-                response.location.latitude,
-                response.location.longitude)
-            self.debug(f'Location of public IP {public_ip}: {self._continent} '
-                       f'- {self._country} - {self._city} '
-                       f'({self._postal_code})')

@@ -85,33 +85,7 @@ class VFSLocalFileConnector(VFSResourceConnector):
         # If there is no content type provided in the descriptor, try to guess
         # the content type from the extension.
         if not content_type:
-            self.debug(f'No content type provided in the descriptor, trying to '
-                       f'guess the content type of {path}.')
-            content_type = magic.from_file(path, mime=True)
-            self.debug(f'Content type for {path} is identified as '
-                       f'{content_type}.')
-
-            # LibMagic doesn't recognize JSON and YAML files correctly, so this
-            # logic is added to further specify the MIME type if LibMagic
-            # recognizes the type as text/plain.
-            if content_type == TEXT_MIME_TYPE:
-                dummy, extension = os.path.splitext(path)
-                if extension == '.json':
-                    content_type = JSON_MIME_TYPE
-                elif extension == '.yaml':
-                    content_type = YAML_MIME_TYPE
-                elif extension == '.conf':
-                    # Conf files can be either JSON or YAML, try to
-                    # differentiate between them without having to fully parse
-                    # the whole file
-                    with open(file=path,
-                              mode='r',
-                              encoding='UTF-8') as file:
-                        content = file.read()
-                        if content.startswith('{'):
-                            content_type = JSON_MIME_TYPE
-                        else:
-                            content_type = YAML_MIME_TYPE
+            content_type = self._detect_content_type(descriptor=descriptor)
 
             # Update the content type in the descriptor
             descriptor.update_content_type(content_type)
@@ -133,6 +107,53 @@ class VFSLocalFileConnector(VFSResourceConnector):
         self.debug(f'Content type {content_type} doesn\'t match any of the '
                    f'supported MIME types, loading the file as a binary.')
         return self._load_as_binary(path)
+
+    def _detect_content_type(self, descriptor: 'VFSResourceDescriptor') -> str:
+
+        """Utility function to detect the content type of the resource.
+
+        Args:
+            descriptor (VFSResourceDescriptpr): The resource descriptor of the
+                file.
+
+        Returns:
+            str: The detected content type.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        path = os.path.abspath(os.path.expanduser(descriptor.Path))
+
+        self.debug(f'No content type provided in the descriptor, trying to '
+                       f'guess the content type of {path}.')
+        content_type = magic.from_file(path, mime=True)
+        self.debug(f'Content type for {path} is identified as '
+                    f'{content_type}.')
+
+        # LibMagic doesn't recognize JSON and YAML files correctly, so this
+        # logic is added to further specify the MIME type if LibMagic
+        # recognizes the type as text/plain.
+        if content_type == TEXT_MIME_TYPE:
+            dummy, extension = os.path.splitext(path)
+            if extension == '.json':
+                content_type = JSON_MIME_TYPE
+            elif extension == '.yaml':
+                content_type = YAML_MIME_TYPE
+            elif extension == '.conf':
+                # Conf files can be either JSON or YAML, try to
+                # differentiate between them without having to fully parse
+                # the whole file
+                with open(file=path,
+                            mode='r',
+                            encoding='UTF-8') as file:
+                    content = file.read()
+                    if content.startswith('{'):
+                        content_type = JSON_MIME_TYPE
+                    else:
+                        content_type = YAML_MIME_TYPE
+
+        return  content_type
 
     @staticmethod
     def _load_as_json(path: str) -> dict:
