@@ -303,32 +303,46 @@ class SystemLocator:
             os.chdir(os.path.abspath(system_path.Path))
 
             for file in glob.iglob('*.py', recursive=False):
-
-                # Skip __init__.py
-                if file.endswith('__init__.py'):
-                    continue
-
-                # Import the module
-                dummy, filename = os.path.split(file)
-                filename, dummy = os.path.splitext(filename)
-
-                import_name = '{}.{}'.format(system_path.Package, filename)
-
-                module_loaded = False
-                for module in self._modules:
-                    if module.__name__ == import_name:
-                        importlib.reload(module)
-                        module_loaded = True
-                        break
-
-                if not module_loaded:
-
-                    # Register the system by loading its module
-                    module = importlib.import_module(import_name)
-                    if module is not None:
-                        self._modules.append(module)
+                self._load_module(file=file, system_path=system_path)
 
             os.chdir(current_dir)
+
+    def _load_module(self, file: str, system_path: str) -> None:
+
+        """Load the module.
+
+        Args:
+            file (str): Path to the file.
+
+            system_path (str): Path to the system.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # Skip __init__.py
+        if file.endswith('__init__.py'):
+            return
+
+        # Import the module
+        dummy, filename = os.path.split(file)
+        filename, dummy = os.path.splitext(filename)
+
+        import_name = f'{system_path.Package}.{filename}'
+
+        module_loaded = False
+        for module in self._modules:
+            if module.__name__ == import_name:
+                importlib.reload(module)
+                module_loaded = True
+                break
+
+        if not module_loaded:
+
+            # Register the system by loading its module
+            module = importlib.import_module(import_name)
+            if module is not None:
+                self._modules.append(module)
 
 # Using underscore system here would redefine an existing name
 #pylint: disable=invalid-name
