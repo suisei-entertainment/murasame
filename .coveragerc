@@ -8,6 +8,7 @@ omit =
     */site-packages/*
     */.murasame/*
     */version.py
+    */murasame/api/*
 
 [paths]
 source =
