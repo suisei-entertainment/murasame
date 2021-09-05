@@ -332,7 +332,7 @@ class ConfigurationList(LogWriter):
         self.debug(f'Configuration list {self.Name} parsed successfully.')
 
     @staticmethod
-    def _identify_element_type(content: object) -> str:
+    def _identify_element_type(content: list) -> str:
 
         """Identify the type of the elements in the list.
 
