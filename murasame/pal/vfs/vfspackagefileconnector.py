@@ -56,6 +56,6 @@ class VFSPackageFileConnector(VFSResourceConnector):
             Attila Kovacs
         """
 
-        # This connector can only load resources with type VFSLocalFile
+        # This connector can only load resources with type VFSPackageFile
         if not descriptor or not isinstance(descriptor, VFSPackageFile):
             raise InvalidInputError('Invalid descriptor type provided.')
