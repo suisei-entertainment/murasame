@@ -37,17 +37,15 @@ from murasame.licensing import LicenseDescriptor, LicenseTypes
 
 class TestLicenseDescriptor:
 
-    """
-    Contains the unit tests of the LicenseDescriptor class.
+    """Contains the unit tests of the LicenseDescriptor class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a licensedescriptor instance can be created.
+        """Tests that a licensedescriptor instance can be created.
 
         Authors:
             Attila Kovacs
@@ -67,10 +65,9 @@ class TestLicenseDescriptor:
         assert sut.Type == license_type
         assert sut.Features == {}
 
-    def test_adding_feature(self):
+    def test_adding_feature(self) -> None:
 
-        """
-        Tests that features can be added to the license descriptor.
+        """Tests that features can be added to the license descriptor.
 
         Authors:
             Attila Kovacs
@@ -91,10 +88,9 @@ class TestLicenseDescriptor:
         assert sut.has_feature(feature_id=feature)
         assert not sut.has_feature(feature_id=uuid.uuid4())
 
-    def test_removing_feature(self):
+    def test_removing_feature(self) -> None:
 
-        """
-        Tests that features can be removed.
+        """Tests that features can be removed.
 
         Authors:
             Attila Kovacs
@@ -116,10 +112,9 @@ class TestLicenseDescriptor:
         sut.remove_feature(feature_id=feature)
         assert not sut.has_feature(feature_id=feature)
 
-    def test_serialization(self):
+    def test_serialization(self) -> None:
 
-        """
-        Tests that a license descriptor can be serialized to JSON.
+        """Tests that a license descriptor can be serialized to JSON.
 
         Authors:
             Attila Kovacs

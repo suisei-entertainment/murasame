@@ -55,17 +55,15 @@ def get_encryption_key():
 
 class TestLicenseValidator:
 
-    """
-    Contains the unit tests of the LicenseValidator class.
+    """Contains the unit tests of the LicenseValidator class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_with_public_key(self):
+    def test_creation_with_public_key(self) -> None:
 
-        """
-        Tests that a LicenseValidator can be created with using an existing
+        """Tests that a LicenseValidator can be created with using an existing
         RSAPublic object.
 
         Authors:
@@ -79,10 +77,9 @@ class TestLicenseValidator:
 
         assert sut is not None
 
-    def test_creation_with_public_key_path(self):
+    def test_creation_with_public_key_path(self) -> None:
 
-        """
-        Tests that a LicenseValidator can be created with a path to a public
+        """Tests that a LicenseValidator can be created with a path to a public
         key in the file system.
 
         Authors:
@@ -94,10 +91,9 @@ class TestLicenseValidator:
 
         assert sut is not None
 
-    def test_validation(self):
+    def test_validation(self) -> None:
 
-        """
-        Tests that a license can be validated using the validator.
+        """Tests that a license can be validated using the validator.
 
         Authors:
             Attila Kovacs

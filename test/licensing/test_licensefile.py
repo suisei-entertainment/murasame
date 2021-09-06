@@ -55,17 +55,15 @@ def get_encryption_key():
 
 class TestLicenseFile:
 
-    """
-    Contains the unit tests for the LicenseFile class.
+    """Contains the unit tests for the LicenseFile class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_with_existing_private_key(self):
+    def test_creation_with_existing_private_key(self) -> None:
 
-        """
-        Tests that a LicenseFile object can be created when providing an
+        """Tests that a LicenseFile object can be created when providing an
         existing RSAPrivate object.
 
         Authors:
@@ -107,10 +105,9 @@ class TestLicenseFile:
         assert sut.Signature is not None
         assert isinstance(sut.License, LicenseDescriptor)
 
-    def test_creation_with_private_key_path(self):
+    def test_creation_with_private_key_path(self) -> None:
 
-        """
-        Tests that a license file can be created when providing a path to a
+        """Tests that a license file can be created when providing a path to a
         private key file in the file system.
 
         Authors:

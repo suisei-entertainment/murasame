@@ -54,18 +54,16 @@ def get_encryption_key():
 
 class TestLicenseGenerator:
 
-    """
-    Contains the unit tests of the LicenseGenerator class.
+    """Contains the unit tests of the LicenseGenerator class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_with_existing_private_key(self):
+    def test_creation_with_existing_private_key(self) -> None:
 
-        """
-        Tests that a license generator can be created with an existing private
-        key object.
+        """Tests that a license generator can be created with an existing
+        private key object.
 
         Authors:
             Attila Kovacs
@@ -81,10 +79,9 @@ class TestLicenseGenerator:
 
         assert sut is not None
 
-    def test_creation_with_private_key_path(self):
+    def test_creation_with_private_key_path(self) -> None:
 
-        """
-        Tests that a license generator can be created with a path to a private
+        """Tests that a license generator can be created with a path to a private
         key in the file system.
 
         Authors:
@@ -98,10 +95,9 @@ class TestLicenseGenerator:
 
         assert sut is not None
 
-    def test_generation(self):
+    def test_generation(self) -> None:
 
-        """
-        Tests that a license key can be generated.
+        """Tests that a license key can be generated.
 
         Authors:
             Attila Kovacs

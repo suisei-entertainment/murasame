@@ -52,7 +52,7 @@ class TestEventSystem:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
         """Tests that the EventSystem can be created.
 
@@ -63,7 +63,7 @@ class TestEventSystem:
         sut = EventSystem()
         assert sut is not None
 
-    def test_subscribing_to_new_event(self):
+    def test_subscribing_to_new_event(self) -> None:
 
         """Tests that it's possible to subscribe to a new event.
 
@@ -77,7 +77,7 @@ class TestEventSystem:
         assert sut.NumEvents == 1
         assert sut.get_num_handlers_for_event('testevent') == 1
 
-    def test_subscribing_to_existing_event(self):
+    def test_subscribing_to_existing_event(self) -> None:
 
         """Tests that it's possible to subscribe to an existing event.
 
@@ -91,7 +91,7 @@ class TestEventSystem:
         assert sut.NumEvents == 1
         assert sut.get_num_handlers_for_event('testevent') == 2
 
-    def test_unsubscribing_from_existing_event(self):
+    def test_unsubscribing_from_existing_event(self) -> None:
 
         """Tests that it's possible to subscribe from an existing event.
 
@@ -106,7 +106,7 @@ class TestEventSystem:
         sut.unsubscribe('testevent', cb_handler)
         assert sut.get_num_handlers_for_event('testevent') == 1
 
-    def test_unsubscribing_from_existing_event_with_last_handler(self):
+    def test_unsubscribing_from_existing_event_with_last_handler(self) -> None:
 
         """Tests that when the last event handler is unsubscribed, the event is
         removed as well.
@@ -122,7 +122,7 @@ class TestEventSystem:
         sut.unsubscribe('testevent', cb_handler2)
         assert sut.get_num_handlers_for_event('testevent') == 0
 
-    def test_unsubscribing_from_non_existing_event(self):
+    def test_unsubscribing_from_non_existing_event(self) -> None:
 
         """Tests that unsubscribing from a non-existing event is handled.
 
@@ -134,7 +134,7 @@ class TestEventSystem:
         sut.subscribe('testevent', cb_handler)
         sut.unsubscribe('testevent2', cb_handler)
 
-    def test_sending_event_without_handlers(self):
+    def test_sending_event_without_handlers(self) -> None:
 
         """Tests that events can be sent when there are no handlers registered.
 
@@ -145,7 +145,7 @@ class TestEventSystem:
         sut = EventSystem()
         sut.send_event('testevent')
 
-    def test_sending_event_with_handlers(self):
+    def test_sending_event_with_handlers(self) -> None:
 
         """Tests that events can be sent when there are registered handlers.
 

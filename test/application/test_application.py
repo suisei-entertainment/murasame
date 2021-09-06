@@ -70,17 +70,15 @@ class DummyBusinessLogicThrowingException(BusinessLogic):
 
 class TestApplication:
 
-    """
-    Contains the unit tests of the Application class.
+    """Contains the unit tests of the Application class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_with_valid_business_logic(self):
+    def test_creation_with_valid_business_logic(self) -> None:
 
-        """
-        Tests that an application can be created.
+        """Tests that an application can be created.
 
         Authors:
             Attila Kovacs
@@ -91,10 +89,9 @@ class TestApplication:
         assert sut.BusinessLogic == business_logic
         assert sut.Type == ApplicationTypes.DAEMON_APPLICATION
 
-    def test_creation_without_business_logic(self):
+    def test_creation_without_business_logic(self) -> None:
 
-        """
-        Tests that an application cannot be created without a valid business
+        """Tests that an application cannot be created without a valid business
         logic.
 
         Authors:
@@ -104,10 +101,9 @@ class TestApplication:
         with pytest.raises(InvalidInputError):
             sut = Application(business_logic=None)
 
-    def test_creation_without_working_directory(self):
+    def test_creation_without_working_directory(self) -> None:
 
-        """
-        Tests that an application cannot be created without a valid working
+        """Tests that an application cannot be created without a valid working
         directory.
 
         Authors:
@@ -115,12 +111,12 @@ class TestApplication:
         """
 
         with pytest.raises(InvalidInputError):
-            sut = Application(business_logic=DummyBusinessLogicInvalidWorkingDirectory())
+            sut = Application(
+                business_logic=DummyBusinessLogicInvalidWorkingDirectory())
 
-    def test_creation_without_config_directory(self):
+    def test_creation_without_config_directory(self) -> None:
 
-        """
-        Tests that an application cannot be created without a valid config
+        """Tests that an application cannot be created without a valid config
         subdirectory in its working directory.
 
         Authors:
@@ -130,10 +126,9 @@ class TestApplication:
         with pytest.raises(InvalidInputError):
             sut = Application(business_logic=DummyBusinessLogicNoConfig())
 
-    def test_daemon_application(self):
+    def test_daemon_application(self) -> None:
 
-        """
-        Tests that the application can operate as a Unix daemon.
+        """Tests that the application can operate as a Unix daemon.
 
         Authors:
             Attila Kovacs
@@ -152,23 +147,9 @@ class TestApplication:
 
         assert os.path.isfile(f'{daemon_path}/daemontest1.txt')
 
-    def test_daemon_sigterm_signals(self):
+    def test_daemon_sigterm_signals(self) -> None:
 
-        """
-        Tests that the daemon application can handle the SIGTERM signal.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        # TODO
-
-        pass
-
-    def test_daemon_sigint_signals(self):
-
-        """
-        Tests that the daemon application can handle the SIGINT signal.
+        """Tests that the daemon application can handle the SIGTERM signal.
 
         Authors:
             Attila Kovacs
@@ -178,23 +159,9 @@ class TestApplication:
 
         pass
 
-    def test_daemon_sigalrm_signals(self):
+    def test_daemon_sigint_signals(self) -> None:
 
-        """
-        Tests that the daemon application can handle the SIGALRM signal.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        # TODO
-
-        pass
-
-    def test_daemon_sigusr1_signals(self):
-
-        """
-        Tests that the daemon application can handle the SIGUSR1 signal.
+        """Tests that the daemon application can handle the SIGINT signal.
 
         Authors:
             Attila Kovacs
@@ -204,10 +171,9 @@ class TestApplication:
 
         pass
 
-    def test_daemon_sigusr2_signals(self):
+    def test_daemon_sigalrm_signals(self) -> None:
 
-        """
-        Tests that the daemon application can handle the SIGUSR2 signal.
+        """Tests that the daemon application can handle the SIGALRM signal.
 
         Authors:
             Attila Kovacs
@@ -217,11 +183,34 @@ class TestApplication:
 
         pass
 
-    def test_return_code_after_successful_execution(self):
+    def test_daemon_sigusr1_signals(self) -> None:
 
+        """Tests that the daemon application can handle the SIGUSR1 signal.
+
+        Authors:
+            Attila Kovacs
         """
-        Tests that the application returns SUCCESS return code upon successful
-        execution.
+
+        # TODO
+
+        pass
+
+    def test_daemon_sigusr2_signals(self) -> None:
+
+        """Tests that the daemon application can handle the SIGUSR2 signal.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        # TODO
+
+        pass
+
+    def test_return_code_after_successful_execution(self) -> None:
+
+        """Tests that the application returns SUCCESS return code upon
+        successful execution.
 
         Authors:
             Attila Kovacs
@@ -230,10 +219,9 @@ class TestApplication:
         sut = Application(business_logic=DummyBusinessLogic())
         assert sut.execute() == ApplicationReturnCodes.SUCCESS
 
-    def test_return_code_on_uncaught_exception(self):
+    def test_return_code_on_uncaught_exception(self) -> None:
 
-        """
-        Tests that the application returns UNCAUGHT_EXCEPTION return code
+        """Tests that the application returns UNCAUGHT_EXCEPTION return code
         when an unhandled exception is encountered.
 
         Authors:

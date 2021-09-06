@@ -49,14 +49,15 @@ from murasame.exceptions import (
 
 class TestExceptions:
 
-    """
-    Contains the unit tests for the exception classes.
+    """Contains the unit tests for the exception classes.
+
+    Authors:
+        Attila Kovacs
     """
 
-    def test_exception(self):
+    def test_exception(self) -> None:
 
-        """
-        Tests that FrameworkError can be raised.
+        """Tests that FrameworkError can be raised.
 
         Authors:
             Attila Kovacs
@@ -68,10 +69,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.NOT_SET
             assert error.errormessage == 'test'
 
-    def test_exception_without_caller_inspection(self):
+    def test_exception_without_caller_inspection(self) -> None:
 
-        """
-        Tests that FrameworkError can be raised without caller inspection
+        """Tests that FrameworkError can be raised without caller inspection
         enabled.
 
         Authors:
@@ -84,10 +84,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.NOT_SET
             assert error.errormessage == 'test'
 
-    def test_access_violation_error(self):
+    def test_access_violation_error(self) -> None:
 
-        """
-        Tests that AccessViolationError can be raised.
+        """Tests that AccessViolationError can be raised.
 
         Authors:
             Attila Kovacs
@@ -99,11 +98,10 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.PERMISSION_ERROR
             assert error.errormessage == 'test'
 
-    def test_access_violation_error_without_caller_inspection(self):
+    def test_access_violation_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that AccessViolationError can be raised without caller inspection
-        enabled.
+        """Tests that AccessViolationError can be raised without caller
+        inspection enabled.
 
         Authors:
             Attila Kovacs
@@ -115,10 +113,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.PERMISSION_ERROR
             assert error.errormessage == 'test'
 
-    def test_already_registered_error(self):
+    def test_already_registered_error(self) -> None:
 
-        """
-        Tests that AlreadyRegisteredError can be raised.
+        """Tests that AlreadyRegisteredError can be raised.
 
         Authors:
             Attila Kovacs
@@ -130,10 +127,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.ALREADY_REGISTERED
             assert error.errormessage == 'test'
 
-    def test_already_registered_error_without_caller_inspection(self):
+    def test_already_registered_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that AlreadyRegisteredError can be raised without caller
+        """Tests that AlreadyRegisteredError can be raised without caller
         inspection enabled.
 
         Authors:
@@ -146,10 +142,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.ALREADY_REGISTERED
             assert error.errormessage == 'test'
 
-    def test_already_exists_error(self):
+    def test_already_exists_error(self) -> None:
 
-        """
-        Tests that AlreadyExistsError can be raised.
+        """Tests that AlreadyExistsError can be raised.
 
         Authors:
             Attila Kovacs
@@ -161,11 +156,10 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.ALREADY_EXISTS
             assert error.errormessage == 'test'
 
-    def test_already_exists_error_without_caller_inspection(self):
+    def test_already_exists_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that AlreadyExistsError can be raised without caller inspection
-        enabled.
+        """Tests that AlreadyExistsError can be raised without caller
+        inspection enabled.
 
         Authors:
             Attila Kovacs
@@ -177,10 +171,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.ALREADY_EXISTS
             assert error.errormessage == 'test'
 
-    def test_invalid_input_error(self):
+    def test_invalid_input_error(self) -> None:
 
-        """
-        Tests that InvalidInputError can be raised.
+        """Tests that InvalidInputError can be raised.
 
         Authors:
             Attila Kovacs
@@ -192,10 +185,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.INPUT_ERROR
             assert error.errormessage == 'test'
 
-    def test_invalid_input_error_without_caller_inspection(self):
+    def test_invalid_input_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that InvalidInputError can be raised without caller inspection
+        """Tests that InvalidInputError can be raised without caller inspection
         enabled.
 
         Authors:
@@ -208,10 +200,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.INPUT_ERROR
             assert error.errormessage == 'test'
 
-    def test_not_registered_error(self):
+    def test_not_registered_error(self) -> None:
 
-        """
-        Tests that NotRegisteredError can be raised.
+        """Tests that NotRegisteredError can be raised.
 
         Authors:
             Attila Kovacs
@@ -223,11 +214,10 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.NOT_REGISTERED
             assert error.errormessage == 'test'
 
-    def test_not_registered_error_without_caller_inspection(self):
+    def test_not_registered_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that NotRegisteredError can be raised without caller inspection
-        enabled.
+        """Tests that NotRegisteredError can be raised without caller
+        inspection enabled.
 
         Authors:
             Attila Kovacs
@@ -239,10 +229,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.NOT_REGISTERED
             assert error.errormessage == 'test'
 
-    def test_permission_error(self):
+    def test_permission_error(self) -> None:
 
-        """
-        Tests that AccessViolation can be raised.
+        """Tests that AccessViolation can be raised.
 
         Authors:
             Attila Kovacs
@@ -254,10 +243,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.PERMISSION_ERROR
             assert error.errormessage == 'test'
 
-    def test_permission_error_without_caller_inspection(self):
+    def test_permission_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that AccessViolation can be raised without caller inspection
+        """Tests that AccessViolation can be raised without caller inspection
         enabled.
 
         Authors:
@@ -270,10 +258,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.PERMISSION_ERROR
             assert error.errormessage == 'test'
 
-    def test_installation_failed_error(self):
+    def test_installation_failed_error(self) -> None:
 
-        """
-        Tests that InstallationFailedError can be raised.
+        """Tests that InstallationFailedError can be raised.
 
         Authors:
             Attila Kovacs
@@ -285,10 +272,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.INSTALL_FAILED
             assert error.errormessage == 'test'
 
-    def test_installation_failed_error_without_caller_inspection(self):
+    def test_installation_failed_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that InstallationFailedError can be raised without caller
+        """Tests that InstallationFailedError can be raised without caller
         inspection enabled.
 
         Authors:
@@ -301,10 +287,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.INSTALL_FAILED
             assert error.errormessage == 'test'
 
-    def test_missing_requirement_error(self):
+    def test_missing_requirement_error(self) -> None:
 
-        """
-        Tests that MissingRequirementError can be raised.
+        """Tests that MissingRequirementError can be raised.
 
         Authors:
             Attila Kovacs
@@ -316,10 +301,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.MISSING_REQUIREMENT
             assert error.errormessage == 'test'
 
-    def test_missing_requirement_error_without_caller_inspection(self):
+    def test_missing_requirement_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that MissingRequirementError can be raised without caller
+        """Tests that MissingRequirementError can be raised without caller
         inspection enabled.
 
         Authors:
@@ -332,10 +316,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.MISSING_REQUIREMENT
             assert error.errormessage == 'test'
 
-    def test_uncaught_exception_error(self):
+    def test_uncaught_exception_error(self) -> None:
 
-        """
-        Tests that UncaughtExceptionError can be raised.
+        """Tests that UncaughtExceptionError can be raised.
 
         Authors:
             Attila Kovacs
@@ -347,10 +330,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.UNCAUGHT_EXCEPTION
             assert error.errormessage == 'test'
 
-    def test_uncaught_exception_error_without_caller_inspection(self):
+    def test_uncaught_exception_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that UncaughtExceptionError can be raised without caller
+        """Tests that UncaughtExceptionError can be raised without caller
         inspection enabled.
 
         Authors:
@@ -363,10 +345,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.UNCAUGHT_EXCEPTION
             assert error.errormessage == 'test'
 
-    def test_invalid_license_key_error(self):
+    def test_invalid_license_key_error(self) -> None:
 
-        """
-        Tests that InvalidLicenseKeyError can be raised.
+        """Tests that InvalidLicenseKeyError can be raised.
 
         Authors:
             Attila Kovacs
@@ -378,10 +359,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.LICENSE_ERROR
             assert error.errormessage == 'test'
 
-    def test_invalid_license_key_error_without_caller_inspection(self):
+    def test_invalid_license_key_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that InvalidLicenseKeyError can be raised without caller
+        """Tests that InvalidLicenseKeyError can be raised without caller
         inspection enabled.
 
         Authors:
@@ -394,10 +374,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.LICENSE_ERROR
             assert error.errormessage == 'test'
 
-    def test_database_operation_error(self):
+    def test_database_operation_error(self) -> None:
 
-        """
-        Tests that DatabaseOperationError can be raised.
+        """Tests that DatabaseOperationError can be raised.
 
         Authors:
             Attila Kovacs
@@ -409,10 +388,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.DATABASE_ERROR
             assert error.errormessage == 'test'
 
-    def test_database_operation_error_without_caller_inspection(self):
+    def test_database_operation_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that DatabaseOperationError can be raised without caller
+        """Tests that DatabaseOperationError can be raised without caller
         inspection enabled.
 
         Authors:
@@ -425,10 +403,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.DATABASE_ERROR
             assert error.errormessage == 'test'
 
-    def test_security_validation_error(self):
+    def test_security_validation_error(self) -> None:
 
-        """
-        Tests that SecurityValidationError can be raised.
+        """Tests that SecurityValidationError can be raised.
 
         Authors:
             Attila Kovacs
@@ -440,10 +417,9 @@ class TestExceptions:
             assert error.errorcode == ErrorCodes.SECURITY_VALIDATION_FAILED
             assert error.errormessage == 'test'
 
-    def test_security_validation_error_without_caller_inspection(self):
+    def test_security_validation_error_without_caller_inspection(self) -> None:
 
-        """
-        Tests that SecurityValidationError can be raised without caller
+        """Tests that SecurityValidationError can be raised without caller
         inspection enabled.
 
         Authors:

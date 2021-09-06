@@ -249,7 +249,7 @@ class TestDictionaryBackend:
         """
 
         sut = DictionaryBackend()
-        assert sut.get(entry_name='nonexistent') is None
+        assert sut.get(entry_name='nonexistent.nonexistent') is None
 
     def test_setting_attributes(self) -> None:
 

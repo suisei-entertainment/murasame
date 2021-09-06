@@ -78,17 +78,15 @@ TEST_CONFIGURATION_WITH_FILE_TARGET = \
 
 class TestLogChannel:
 
-    """
-    Contains all unit tests of the LogChannel class.
+    """Contains all unit tests of the LogChannel class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a log channel can be created.
+        """Tests that a log channel can be created.
 
         Authors:
             Attila Kovacs
@@ -98,10 +96,9 @@ class TestLogChannel:
         assert sut.Name == 'testchannel'
         assert sut.DefaultLogLevel == LogLevels.INFO
 
-    def test_console_target_loading(self):
+    def test_console_target_loading(self) -> None:
 
-        """
-        Tests that a console log target can be used in a log channel.
+        """Tests that a console log target can be used in a log channel.
 
         Authors:
             Attila Kovacs
@@ -111,10 +108,9 @@ class TestLogChannel:
         assert sut.Name == 'testchannel'
         assert sut.DefaultLogLevel == LogLevels.INFO
 
-    def test_file_target_loading(self):
+    def test_file_target_loading(self) -> None:
 
-        """
-        Tests that a file log target can be used in a log channel.
+        """Tests that a file log target can be used in a log channel.
 
         Authors:
             Attila Kovacs
@@ -124,21 +120,9 @@ class TestLogChannel:
         assert sut.Name == 'testchannel'
         assert sut.DefaultLogLevel == LogLevels.INFO
 
-    def test_syslog_target_loading(self):
+    def test_syslog_target_loading(self) -> None:
 
-        """
-        Tests that a syslog log target can be used in a log channel.
-
-        Authors:
-            Attila Kovacs
-        """
-
-        pass
-
-    def test_database_target_loading(self):
-
-        """
-        Tests that a database log target can be used in a log channel.
+        """Tests that a syslog log target can be used in a log channel.
 
         Authors:
             Attila Kovacs
@@ -146,10 +130,19 @@ class TestLogChannel:
 
         pass
 
-    def test_structured_target_loading(self):
+    def test_database_target_loading(self) -> None:
 
+        """Tests that a database log target can be used in a log channel.
+
+        Authors:
+            Attila Kovacs
         """
-        Tests that a structured log target can be used in a log channel.
+
+        pass
+
+    def test_structured_target_loading(self) -> None:
+
+        """Tests that a structured log target can be used in a log channel.
 
         Authors:
             Attila Kovacs

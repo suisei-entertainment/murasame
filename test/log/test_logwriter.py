@@ -49,17 +49,15 @@ class LoggingSystemTester:
 
 class TestLogWriter:
 
-    """
-    Contains all unit tests of the LogWriter class.
+    """Contains all unit tests of the LogWriter class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_without_logging_service_and_caching_enabled(self):
+    def test_creation_without_logging_service_and_caching_enabled(self) -> None:
 
-        """
-        Tests that a log writer can be created without an existing log
+        """Tests that a log writer can be created without an existing log
         service and caching enabled.
 
         Authors:
@@ -69,10 +67,9 @@ class TestLogWriter:
         sut = LogWriter(channel_name='test', cache_entries=True)
         assert sut.LogLevel == LogLevels.INFO
 
-    def test_creation_without_logging_service_and_caching_disabled(self):
+    def test_creation_without_logging_service_and_caching_disabled(self) -> None:
 
-        """
-        Tests that a log writer can be created without an existing log
+        """Tests that a log writer can be created without an existing log
         service and caching disabled.
 
         Authors:
@@ -82,10 +79,9 @@ class TestLogWriter:
         sut = LogWriter(channel_name='test', cache_entries=False)
         assert sut.LogLevel == LogLevels.INFO
 
-    def test_creation_with_logging_service(self):
+    def test_creation_with_logging_service(self) -> None:
 
-        """
-        Tests that a log writer can be created with a valid log service
+        """Tests that a log writer can be created with a valid log service
 
         Authors:
             Attila Kovacs
@@ -96,10 +92,9 @@ class TestLogWriter:
         assert sut.LogLevel == LogLevels.INFO
         SystemLocator.instance().reset()
 
-    def test_log_level_overwrite(self):
+    def test_log_level_overwrite(self) -> None:
 
-        """
-        Tests that log levels can be overwritten in the log writer.
+        """Tests that log levels can be overwritten in the log writer.
 
         Authors:
             Attila Kovacs
@@ -111,10 +106,10 @@ class TestLogWriter:
         assert sut.LogLevel == LogLevels.WARNING
         assert sut.IsLogLevelOverwritten
 
-    def test_log_level_overwrite_disable(self):
+    def test_log_level_overwrite_disable(self) -> None:
 
-        """
-        Tests that an overwritten log level can be reset to its default value.
+        """Tests that an overwritten log level can be reset to its default
+        value.
 
         Authors:
             Attila Kovacs
@@ -126,11 +121,10 @@ class TestLogWriter:
         assert sut.LogLevel, LogLevels.INFO
         assert not sut.IsLogLevelOverwritten
 
-    def test_log_level_overwrite_when_channel_is_attached(self):
+    def test_log_level_overwrite_when_channel_is_attached(self) -> None:
 
-        """
-        Tests that log levels can be overwritten in the log writer when there
-        is a log channel attached.
+        """Tests that log levels can be overwritten in the log writer when
+        there is a log channel attached.
 
         Authors:
             Attila Kovacs
@@ -144,10 +138,9 @@ class TestLogWriter:
         assert sut.LogLevel == LogLevels.INFO
         SystemLocator.instance().reset()
 
-    def test_trace_message_with_log_level_trace(self):
+    def test_trace_message_with_log_level_trace(self) -> None:
 
-        """
-        Tests that TRACE level messages are handled correctly when log level
+        """Tests that TRACE level messages are handled correctly when log level
         is set to TRACE.
 
         Authors:
@@ -159,10 +152,9 @@ class TestLogWriter:
         sut.trace(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_trace_message_with_log_level_above_trace(self):
+    def test_trace_message_with_log_level_above_trace(self) -> None:
 
-        """
-        Tests that TRACE level messages are handled correctly when log level
+        """Tests that TRACE level messages are handled correctly when log level
         is set above TRACE.
 
         Authors:
@@ -174,10 +166,9 @@ class TestLogWriter:
         sut.trace(message='test')
         assert not sut.CachedLogEntries
 
-    def test_trace_message_with_logging_suspended(self):
+    def test_trace_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that TRACE level messages are handled correctly when log is
+        """Tests that TRACE level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -190,11 +181,10 @@ class TestLogWriter:
         sut.trace(message='test')
         assert not sut.CachedLogEntries
 
-    def test_debug_message_with_log_level_debug(self):
+    def test_debug_message_with_log_level_debug(self) -> None:
 
-        """
-        Tests that DEBUG level messages are handled correctly when log level is
-        set to DEBUG.
+        """Tests that DEBUG level messages are handled correctly when log level
+        is set to DEBUG.
 
         Authors:
             Attila Kovacs
@@ -205,11 +195,10 @@ class TestLogWriter:
         sut.debug(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_debug_message_with_log_level_below_debug(self):
+    def test_debug_message_with_log_level_below_debug(self) -> None:
 
-        """
-        Tests that DEBUG level messages are handled correctly when log level is
-        below DEBUG.
+        """Tests that DEBUG level messages are handled correctly when log level
+        is below DEBUG.
 
         Authors:
             Attila Kovacs
@@ -220,11 +209,10 @@ class TestLogWriter:
         sut.debug(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_debug_message_with_log_level_above_debug(self):
+    def test_debug_message_with_log_level_above_debug(self) -> None:
 
-        """
-        Tests that DEBUG level messages are handled correctly when log level is
-        above DEBUG.
+        """Tests that DEBUG level messages are handled correctly when log level
+        is above DEBUG.
 
         Authors:
             Attila Kovacs
@@ -235,10 +223,9 @@ class TestLogWriter:
         sut.debug(message='test')
         assert not sut.CachedLogEntries
 
-    def test_debug_message_with_logging_suspended(self):
+    def test_debug_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that DEBUG level messages are handled correctly when log is
+        """Tests that DEBUG level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -251,11 +238,10 @@ class TestLogWriter:
         sut.debug(message='test')
         assert not sut.CachedLogEntries
 
-    def test_info_message_when_log_level_under_info(self):
+    def test_info_message_when_log_level_under_info(self) -> None:
 
-        """
-        Tests that INFO level messages are handled correctly when log level is
-        set below INFO.
+        """Tests that INFO level messages are handled correctly when log level
+        is set below INFO.
 
         Authors:
             Attila Kovacs
@@ -266,11 +252,10 @@ class TestLogWriter:
         sut.info(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_info_message_when_log_level_is_info(self):
+    def test_info_message_when_log_level_is_info(self) -> None:
 
-        """
-        Tests that INFO level messages are handled correctly when log level is
-        set to INFO.
+        """Tests that INFO level messages are handled correctly when log level
+        is set to INFO.
 
         Authors:
             Attila Kovacs
@@ -281,11 +266,10 @@ class TestLogWriter:
         sut.info(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_info_message_when_log_level_above_info(self):
+    def test_info_message_when_log_level_above_info(self) -> None:
 
-        """
-        Tests that INFO level messages are handled correctly when log level is
-        set above INFO.
+        """Tests that INFO level messages are handled correctly when log level
+        is set above INFO.
 
         Authors:
             Attila Kovacs
@@ -296,10 +280,9 @@ class TestLogWriter:
         sut.info(message='test')
         assert not sut.CachedLogEntries
 
-    def test_info_message_when_logging_suspended(self):
+    def test_info_message_when_logging_suspended(self) -> None:
 
-        """
-        Tests that INFO level messages are handled correctly when log is
+        """Tests that INFO level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -312,11 +295,10 @@ class TestLogWriter:
         sut.info(message='test')
         assert not sut.CachedLogEntries
 
-    def test_notice_message_with_log_level_below_notice(self):
+    def test_notice_message_with_log_level_below_notice(self) -> None:
 
-        """
-        Tests that NOTICE level messages are handled correctly when log level
-        is set below NOTICE.
+        """Tests that NOTICE level messages are handled correctly when log
+        level is set below NOTICE.
 
         Authors:
             Attila Kovacs
@@ -327,11 +309,10 @@ class TestLogWriter:
         sut.notice(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_notice_message_with_log_level_notice(self):
+    def test_notice_message_with_log_level_notice(self) -> None:
 
-        """
-        Tests that NOTICE level messages are handled correctly when log level
-        is set to NOTICE.
+        """Tests that NOTICE level messages are handled correctly when log
+        level is set to NOTICE.
 
         Authors:
             Attila Kovacs
@@ -342,11 +323,10 @@ class TestLogWriter:
         sut.notice(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_notice_message_with_log_level_above_notice(self):
+    def test_notice_message_with_log_level_above_notice(self) -> None:
 
-        """
-        Tests that NOTICE level messages are handled correctly when log level
-        is set above NOTICE.
+        """Tests that NOTICE level messages are handled correctly when log
+        level is set above NOTICE.
 
         Authors:
             Attila Kovacs
@@ -357,10 +337,9 @@ class TestLogWriter:
         sut.notice(message='test')
         assert not sut.CachedLogEntries
 
-    def test_notice_message_when_logging_suspended(self):
+    def test_notice_message_when_logging_suspended(self) -> None:
 
-        """
-        Tests that NOTICE level messages are handled correctly when log is
+        """Tests that NOTICE level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -373,11 +352,10 @@ class TestLogWriter:
         sut.notice(message='test')
         assert not sut.CachedLogEntries
 
-    def test_warning_message_with_log_level_below_warning(self):
+    def test_warning_message_with_log_level_below_warning(self) -> None:
 
-        """
-        Tests that WARNING level messages are handled correctly when log level
-        is set below WARNING.
+        """Tests that WARNING level messages are handled correctly when log
+        level is set below WARNING.
 
         Authors:
             Attila Kovacs
@@ -388,11 +366,10 @@ class TestLogWriter:
         sut.warning(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_warning_message_with_log_level_warning(self):
+    def test_warning_message_with_log_level_warning(self) -> None:
 
-        """
-        Tests that WARNING level messages are handled correctly when log level
-        is set to WARNING.
+        """Tests that WARNING level messages are handled correctly when log
+        level is set to WARNING.
 
         Authors:
             Attila Kovacs
@@ -403,11 +380,10 @@ class TestLogWriter:
         sut.warning(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_warning_message_with_log_level_above_warning(self):
+    def test_warning_message_with_log_level_above_warning(self) -> None:
 
-        """
-        Tests that WARNING level messages are handled correctly when log level
-        is set above WARNING.
+        """Tests that WARNING level messages are handled correctly when log
+        level is set above WARNING.
 
         Authors:
             Attila Kovacs
@@ -418,10 +394,9 @@ class TestLogWriter:
         sut.warning(message='test')
         assert not sut.CachedLogEntries
 
-    def test_warning_message_with_logging_suspended(self):
+    def test_warning_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that WARNING level messages are handled correctly when log is
+        """Tests that WARNING level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -434,11 +409,10 @@ class TestLogWriter:
         sut.warning(message='test')
         assert not sut.CachedLogEntries
 
-    def test_error_message_with_log_level_below_error(self):
+    def test_error_message_with_log_level_below_error(self) -> None:
 
-        """
-        Tests that ERROR level messages are handled correctly when log level is
-        set below ERROR.
+        """Tests that ERROR level messages are handled correctly when log level
+        is set below ERROR.
 
         Authors:
             Attila Kovacs
@@ -449,11 +423,10 @@ class TestLogWriter:
         sut.error(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_error_message_with_log_level_error(self):
+    def test_error_message_with_log_level_error(self) -> None:
 
-        """
-        Tests that ERROR level messages are handled correctly when log level is
-        set to ERROR.
+        """Tests that ERROR level messages are handled correctly when log level
+        is set to ERROR.
 
         Authors:
             Attila Kovacs
@@ -464,11 +437,10 @@ class TestLogWriter:
         sut.error(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_error_message_with_log_level_above_error(self):
+    def test_error_message_with_log_level_above_error(self) -> None:
 
-        """
-        Tests that ERROR level messages are handled correctly when log level is
-        set above ERROR.
+        """Tests that ERROR level messages are handled correctly when log level
+        is set above ERROR.
 
         Authors:
             Attila Kovacs
@@ -479,10 +451,9 @@ class TestLogWriter:
         sut.error(message='test')
         assert not sut.CachedLogEntries
 
-    def test_error_message_with_logging_suspended(self):
+    def test_error_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that ERROR level messages are handled correctly when log is
+        """Tests that ERROR level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -495,11 +466,10 @@ class TestLogWriter:
         sut.error(message='test')
         assert not sut.CachedLogEntries
 
-    def test_critical_message_with_log_level_below_critical(self):
+    def test_critical_message_with_log_level_below_critical(self) -> None:
 
-        """
-        Tests that CRITICAL level messages are handled correctly when log level
-        is set below CRITICAL.
+        """Tests that CRITICAL level messages are handled correctly when log
+        level is set below CRITICAL.
 
         Authors:
             Attila Kovacs
@@ -510,11 +480,10 @@ class TestLogWriter:
         sut.critical(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_critical_message_with_log_level_critical(self):
+    def test_critical_message_with_log_level_critical(self) -> None:
 
-        """
-        Tests that CRITICAL level messages are handled correctly when log level
-        is set to CRITICAL.
+        """Tests that CRITICAL level messages are handled correctly when log
+        level is set to CRITICAL.
 
         Authors:
             Attila Kovacs
@@ -525,11 +494,10 @@ class TestLogWriter:
         sut.critical(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_critical_message_with_log_level_above_critical(self):
+    def test_critical_message_with_log_level_above_critical(self) -> None:
 
-        """
-        Tests that CRITICAL level messages are handled correctly when log level
-        is set above CRITICAL.
+        """Tests that CRITICAL level messages are handled correctly when log
+        level is set above CRITICAL.
 
         Authors:
             Attila Kovacs
@@ -540,10 +508,9 @@ class TestLogWriter:
         sut.critical(message='test')
         assert not sut.CachedLogEntries
 
-    def test_critical_message_with_logging_suspended(self):
+    def test_critical_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that CRITICAL level messages are handled correctly when log
+        """Tests that CRITICAL level messages are handled correctly when log
         is suspended.
 
         Authors:
@@ -556,10 +523,9 @@ class TestLogWriter:
         sut.critical(message='test')
         assert not sut.CachedLogEntries
 
-    def test_alert_message_with_log_level_below_alert(self):
+    def test_alert_message_with_log_level_below_alert(self) -> None:
 
-        """
-        Tests that ALERT level messages are handled correctly when log level
+        """Tests that ALERT level messages are handled correctly when log level
         is set below ALERT.
 
         Authors:
@@ -571,10 +537,9 @@ class TestLogWriter:
         sut.alert(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_alert_message_with_log_level_alert(self):
+    def test_alert_message_with_log_level_alert(self) -> None:
 
-        """
-        Tests that ALERT level messages are handled correctly when log level
+        """Tests that ALERT level messages are handled correctly when log level
         is set to ALERT.
 
         Authors:
@@ -586,10 +551,9 @@ class TestLogWriter:
         sut.alert(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_alert_message_with_log_level_above_alert(self):
+    def test_alert_message_with_log_level_above_alert(self) -> None:
 
-        """
-        Tests that ALERT level messages are handled correctly when log level
+        """Tests that ALERT level messages are handled correctly when log level
         is set above ALERT.
 
         Authors:
@@ -601,10 +565,9 @@ class TestLogWriter:
         sut.alert(message='test')
         assert not sut.CachedLogEntries
 
-    def test_alert_message_with_logging_suspended(self):
+    def test_alert_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that ALERT level messages are handled correctly when log is
+        """Tests that ALERT level messages are handled correctly when log is
         suspended.
 
         Authors:
@@ -617,10 +580,9 @@ class TestLogWriter:
         sut.alert(message='test')
         assert not sut.CachedLogEntries
 
-    def test_emergency_message_with_log_level_below_emergency(self):
+    def test_emergency_message_with_log_level_below_emergency(self) -> None:
 
-        """
-        Tests that EMERGENCY level messages are handled correctly when log
+        """Tests that EMERGENCY level messages are handled correctly when log
         level is set below EMERGENCY.
 
         Authors:
@@ -632,10 +594,9 @@ class TestLogWriter:
         sut.emergency(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_emergency_message_with_log_level_emergency(self):
+    def test_emergency_message_with_log_level_emergency(self) -> None:
 
-        """
-        Tests that EMERGENCY level messages are handled correctly when log
+        """Tests that EMERGENCY level messages are handled correctly when log
         level is set to EMERGENCY.
 
         Authors:
@@ -647,10 +608,9 @@ class TestLogWriter:
         sut.emergency(message='test')
         assert sut.CachedLogEntries[0].Message == 'test'
 
-    def test_emergency_message_with_logging_suspended(self):
+    def test_emergency_message_with_logging_suspended(self) -> None:
 
-        """
-        Tests that EMERGENCY level messages are handled correctly when log
+        """Tests that EMERGENCY level messages are handled correctly when log
         is suspended.
 
         Authors:
@@ -663,10 +623,9 @@ class TestLogWriter:
         sut.emergency(message='test')
         assert not sut.CachedLogEntries
 
-    def test_logging_suspension(self):
+    def test_logging_suspension(self) -> None:
 
-        """
-        Tests that log can be suspended.
+        """Tests that log can be suspended.
 
         Authors:
             Attila Kovacs
@@ -676,10 +635,9 @@ class TestLogWriter:
         sut.suspend_logging()
         assert sut.IsLoggingSuspended
 
-    def test_logging_resume(self):
+    def test_logging_resume(self) -> None:
 
-        """
-        Tests that log can be resumed.
+        """Tests that log can be resumed.
 
         Authors:
             Attila Kovacs

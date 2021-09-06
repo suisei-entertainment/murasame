@@ -37,17 +37,15 @@ from murasame.configuration.configurationattribute import ConfigurationAttribute
 
 class TestConfigurationAttribute:
 
-    """
-    Contains the unit tests of the ConfigurationAttribute class.
+    """Contains the unit tests of the ConfigurationAttribute class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_string_attribute_creation(self):
+    def test_string_attribute_creation(self) -> None:
 
-        """
-        Tests that a string type configuration attribute can be created.
+        """Tests that a string type configuration attribute can be created.
 
         Authors:
             Attila Kovacs
@@ -58,10 +56,9 @@ class TestConfigurationAttribute:
         assert sut.Value == 'test'
         assert sut.Type == 'STRING'
 
-    def test_integer_attribute_creation(self):
+    def test_integer_attribute_creation(self) -> None:
 
-        """
-        Tests that an integer type configuration attribute can be created.
+        """Tests that an integer type configuration attribute can be created.
 
         Authors:
             Attila Kovacs
@@ -72,10 +69,9 @@ class TestConfigurationAttribute:
         assert sut.Value == 1
         assert sut.Type == 'INT'
 
-    def test_float_attribute_creation(self):
+    def test_float_attribute_creation(self) -> None:
 
-        """
-        Tests that a floating point type configuration attribute can be
+        """Tests that a floating point type configuration attribute can be
         created.
 
         Authors:
@@ -87,10 +83,9 @@ class TestConfigurationAttribute:
         assert sut.Value == 1.0
         assert sut.Type == 'FLOAT'
 
-    def test_assigning_string_to_a_string_attribute(self):
+    def test_assigning_string_to_a_string_attribute(self) -> None:
 
-        """
-        Tests that a string can be assinged to a string type configuration
+        """Tests that a string can be assinged to a string type configuration
         attribute.
 
         Authors:
@@ -101,10 +96,9 @@ class TestConfigurationAttribute:
         sut.Value = 'testtest'
         assert sut.Value == 'testtest'
 
-    def test_assigning_integer_to_a_string_attribute(self):
+    def test_assigning_integer_to_a_string_attribute(self) -> None:
 
-        """
-        Tests that an integer value can be assigned to a string type
+        """Tests that an integer value can be assigned to a string type
         configuration attribute.
 
         Authors:
@@ -115,10 +109,9 @@ class TestConfigurationAttribute:
         sut.Value = 1
         assert sut.Value == '1'
 
-    def test_assigning_float_to_a_string_attribute(self):
+    def test_assigning_float_to_a_string_attribute(self) -> None:
 
-        """
-        Tests that a floating point value can be assigned to a string type
+        """Tests that a floating point value can be assigned to a string type
         configuration attribute.
 
         Authors:
@@ -129,10 +122,9 @@ class TestConfigurationAttribute:
         sut.Value = 1.0
         assert sut.Value == '1.0'
 
-    def test_assigning_integer_to_an_integer_attribute(self):
+    def test_assigning_integer_to_an_integer_attribute(self) -> None:
 
-        """
-        Tests that an integer value can be assigned to an integer type
+        """Tests that an integer value can be assigned to an integer type
         configuration attribute.
 
         Authors:
@@ -143,10 +135,9 @@ class TestConfigurationAttribute:
         sut.Value = 2
         assert sut.Value == 2
 
-    def test_assigning_string_containing_integer_to_an_integer_attribute(self):
+    def test_assigning_string_containing_integer_to_an_integer_attribute(self) -> None:
 
-        """
-        Tests that a string containing an integer value can be assigned to an
+        """Tests that a string containing an integer value can be assigned to an
         integer type configuration attribute.
 
         Authors:
@@ -157,11 +148,10 @@ class TestConfigurationAttribute:
         sut.Value = '5'
         assert sut.Value == 5
 
-    def test_assigning_string_containing_float_to_an_integer_attribute(self):
+    def test_assigning_string_containing_float_to_an_integer_attribute(self) -> None:
 
-        """
-        Tests that a string containing a floating point value can be assigned
-        to an integer type configuration attribute.
+        """Tests that a string containing a floating point value can be
+        assigned to an integer type configuration attribute.
 
         Authors:
             Attila Kovacs
@@ -171,10 +161,9 @@ class TestConfigurationAttribute:
         sut.Value = '7.5'
         assert sut.Value == 7
 
-    def test_simple_string_cannot_be_assigned_to_an_integer_attribute(self):
+    def test_simple_string_cannot_be_assigned_to_an_integer_attribute(self) -> None:
 
-        """
-        Tests that a simple string cannot be assigned to an integer type
+        """Tests that a simple string cannot be assigned to an integer type
         configuration attribute.
 
         Authors:
@@ -185,10 +174,9 @@ class TestConfigurationAttribute:
         with pytest.raises(InvalidInputError):
             sut.Value = 'test'
 
-    def test_assigning_float_to_an_integer_attribute(self):
+    def test_assigning_float_to_an_integer_attribute(self) -> None:
 
-        """
-        Tests that floating point attributes can be assigned to an integer
+        """Tests that floating point attributes can be assigned to an integer
         type configuration attribute.
 
         Authors:
@@ -206,10 +194,9 @@ class TestConfigurationAttribute:
         sut.Value = 6.6
         assert sut.Value == 6
 
-    def test_assigning_float_to_a_float_attribute(self):
+    def test_assigning_float_to_a_float_attribute(self) -> None:
 
-        """
-        Tests that floating point value can be assigned to a float type
+        """Tests that floating point value can be assigned to a float type
         configuration attribute.
 
         Authors:
@@ -220,10 +207,9 @@ class TestConfigurationAttribute:
         sut.Value = 2.0
         assert sut.Value == 2.0
 
-    def test_assigning_string_containing_float_to_a_float_attribute(self):
+    def test_assigning_string_containing_float_to_a_float_attribute(self) -> None:
 
-        """
-        Tests that a string containing a floating point value can be assigned
+        """Tests that a string containing a floating point value can be assigned
         to a float type configuration attribute.
 
         Authors:
@@ -234,10 +220,9 @@ class TestConfigurationAttribute:
         sut.Value = '5.0'
         assert sut.Value == 5.0
 
-    def test_assigning_string_containing_int_to_a_float_attribute(self):
+    def test_assigning_string_containing_int_to_a_float_attribute(self) -> None:
 
-        """
-        Tests that a string containing an integer value can be assigned to a
+        """Tests that a string containing an integer value can be assigned to a
         float type configuration attribute.
 
         Authors:
@@ -248,10 +233,9 @@ class TestConfigurationAttribute:
         sut.Value = '7'
         assert sut.Value == 7.0
 
-    def test_simple_string_cannot_be_assigned_to_a_float_attribute(self):
+    def test_simple_string_cannot_be_assigned_to_a_float_attribute(self) -> None:
 
-        """
-        Tests that a simple string cannot be assigned to a float type
+        """Tests that a simple string cannot be assigned to a float type
         configuration attribute.
 
         Authors:
@@ -263,10 +247,9 @@ class TestConfigurationAttribute:
         with pytest.raises(InvalidInputError):
             sut.Value = 'test'
 
-    def test_assigning_integer_value_to_a_float_attribute(self):
+    def test_assigning_integer_value_to_a_float_attribute(self) -> None:
 
-        """
-        Tests that an integer value can be assigned to a float type
+        """Tests that an integer value can be assigned to a float type
         configuration attribute.
 
         Authors:
@@ -277,10 +260,9 @@ class TestConfigurationAttribute:
         sut.Value = 5
         assert sut.Value == 5.0
 
-    def test_string_conversion(self):
+    def test_string_conversion(self) -> None:
 
-        """
-        Tests converting the configuration attribute to its string
+        """Tests converting the configuration attribute to its string
         representation.
 
         Authors:

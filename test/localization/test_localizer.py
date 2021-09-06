@@ -41,29 +41,28 @@ LANGUAGE_FILES_PATH = f'{TEST_FILES_DIRECTORY}/localizer'
 
 class TestLocalizer:
 
-    """
-    Contains the unit tests of the Localizer class.
+    """Contains the unit tests of the Localizer class.
 
     Authors:
         Attila Kovacs
     """
 
     @classmethod
-    def setup_class(cls):
+    def setup_class(cls) -> None:
 
         SystemLocator.instance().register_provider(VFSAPI, VFS())
         vfs = SystemLocator.instance().get_provider(VFSAPI)
         vfs.register_source(path=LANGUAGE_FILES_PATH)
 
     @classmethod
-    def teardown_class(cls):
+    def teardown_class(cls) -> None:
 
         SystemLocator.instance().reset()
 
-    def test_creation_with_default_parameters(self):
+    def test_creation_with_default_parameters(self) -> None:
 
-        """
-        Tests that a Localizer instance can be created with default parameters.
+        """Tests that a Localizer instance can be created with default
+        parameters.
 
         Authors:
             Attila Kovacs
@@ -73,10 +72,10 @@ class TestLocalizer:
 
         assert sut is not None
 
-    def test_creation_with_custom_language(self):
+    def test_creation_with_custom_language(self) -> None:
 
-        """
-        Tests that a Localizer instance can be created with a custom language.
+        """Tests that a Localizer instance can be created with a custom
+        language.
 
         Authors:
             Attila Kovacs
@@ -86,10 +85,9 @@ class TestLocalizer:
 
         assert sut is not None
 
-    def test_creation_with_google_translate_enabled(self):
+    def test_creation_with_google_translate_enabled(self) -> None:
 
-        """
-        Tests that a Localizer instance can be created with Google Translate
+        """Tests that a Localizer instance can be created with Google Translate
         enabled.
 
         Authors:
@@ -100,10 +98,9 @@ class TestLocalizer:
 
         assert sut is not None
 
-    def test_retrieving_entries(self):
+    def test_retrieving_entries(self) -> None:
 
-        """
-        Tests that localized texts can be retrieved from the Localizer.
+        """Tests that localized texts can be retrieved from the Localizer.
 
         Authors:
             Attila Kovacs
@@ -112,10 +109,9 @@ class TestLocalizer:
         sut = Localizer()
         assert sut.get(key='test_key') == 'test_data_en'
 
-    def test_switching_language(self):
+    def test_switching_language(self) -> None:
 
-        """
-        Tests that language can be switched at runtime.
+        """Tests that language can be switched at runtime.
 
         Authors:
             Attila Kovacs
@@ -126,10 +122,9 @@ class TestLocalizer:
         sut.switch_language(new_language='de')
         assert sut.get(key='test_key') == 'test_data_de'
 
-    def test_autotranslate(self):
+    def test_autotranslate(self) -> None:
 
-        """
-        Tests that non-existent entries can be localized using Google
+        """Tests that non-existent entries can be localized using Google
         Translate.
 
         Authors:
@@ -139,10 +134,9 @@ class TestLocalizer:
         sut = Localizer(language='de', auto_translate=True)
         assert sut.get(key='autotranslate_key') == 'Schiff'
 
-    def test_update_with_reloading_default_language(self):
+    def test_update_with_reloading_default_language(self) -> None:
 
-        """
-        Tests the update of localization files with reloading the default
+        """Tests the update of localization files with reloading the default
         language.
 
         Authors:
@@ -153,10 +147,9 @@ class TestLocalizer:
         sut.update_localizations()
         assert sut.get(key='test_key') == 'test_data_en'
 
-    def test_update_without_reloading_default_language(self):
+    def test_update_without_reloading_default_language(self) -> None:
 
-        """
-        Tests the update of localization files without reloading the default
+        """Tests the update of localization files without reloading the default
         language.
 
         Authors:

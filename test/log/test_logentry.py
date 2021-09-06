@@ -37,17 +37,15 @@ from murasame.log import LogEntry, LogLevels
 
 class TestLogEntry:
 
-    """
-    Contains all unit tests of the LogEntry class.
+    """Contains all unit tests of the LogEntry class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a log entry can be created.
+        """Tests that a log entry can be created.
 
         Authors:
             Attila Kovacs
