@@ -36,31 +36,27 @@ from murasame.password import PasswordGenerator
 
 class TestPasswordGenerator:
 
-    """
-    Contains the unit tests of the PasswordGenerator class.
+    """Contains the unit tests of the PasswordGenerator class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_generation_single_character(self):
+    def test_generation_single_character(self) -> None:
 
-        """
-        Tests password generation of a single character.
+        """Tests password generation of a single character.
 
         Authors:
             Attila Kovacs
         """
 
-        # STEP #1 - Generate a single character
         pwd = PasswordGenerator.generate(pwd_length=1)
 
         assert len(pwd) == 1
 
-    def test_generation_multiple_characters(self):
+    def test_generation_multiple_characters(self) -> None:
 
-        """
-        Tests password generation of multiple characters.
+        """Tests password generation of multiple characters.
 
         Authors:
             Attila Kovacs

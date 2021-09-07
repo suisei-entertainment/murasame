@@ -129,17 +129,15 @@ TEST_DATA = \
 
 class TestCPUDetection:
 
-    """
-    Contains the unit tests of HostCPU class.
+    """Contains the unit tests of HostCPU class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that the HostCPU object can be created without errors.
+        """Tests that the HostCPU object can be created without errors.
 
         Authors:
             Attila Kovacs
@@ -148,11 +146,10 @@ class TestCPUDetection:
         sut = HostCPU()
         assert sut is not None
 
-    def test_architecture_detection_with_cpuinfo(self):
+    def test_architecture_detection_with_cpuinfo(self) -> None:
 
-        """
-        Tests that the host CPU architecture can be detected correctly by using
-        cpuinfo.
+        """Tests that the host CPU architecture can be detected correctly by
+        using cpuinfo.
 
         Authors:
             Attila Kovacs
@@ -162,11 +159,10 @@ class TestCPUDetection:
         sut._detect_architecture(TEST_DATA)
         assert sut.Architecture in ('X86_64', 'AARCH64')
 
-    def test_architecture_detection_with_platform(self):
+    def test_architecture_detection_with_platform(self) -> None:
 
-        """
-        Tests that the host CPU architecture can be detected correctly by using
-        platform.
+        """Tests that the host CPU architecture can be detected correctly by
+        using platform.
 
         Authors:
             Attila Kovacs
@@ -176,11 +172,10 @@ class TestCPUDetection:
         sut._detect_architecture({})
         assert sut.Architecture in ('X86_64', 'AARCH64')
 
-    def test_cpu_count_detection_with_cpuinfo(self):
+    def test_cpu_count_detection_with_cpuinfo(self) -> None:
 
-        """
-        Tests that the amount of CPU cores can be detected correctly with using
-        cpuinfo.
+        """Tests that the amount of CPU cores can be detected correctly with
+        using cpuinfo.
 
         Authors:
             Attila Kovacs
@@ -191,11 +186,10 @@ class TestCPUDetection:
         assert sut.NumCores == 16
         assert sut.NumPhysicalCores != -1
 
-    def test_cpu_count_detection_with_multiprocessing(self):
+    def test_cpu_count_detection_with_multiprocessing(self) -> None:
 
-        """
-        Tests that the amount of CPU cores can be detected correctly with using
-        multiprocessing.
+        """Tests that the amount of CPU cores can be detected correctly with
+        using multiprocessing.
 
         Authors:
             Attila Kovacs
@@ -206,10 +200,9 @@ class TestCPUDetection:
         assert sut.NumCores != -1
         assert sut.NumPhysicalCores != -1
 
-    def test_cpu_type_detection_with_cpuinfo(self):
+    def test_cpu_type_detection_with_cpuinfo(self) -> None:
 
-        """
-        Tests that the CPU type can be detected correctly with cpuinfo.
+        """Tests that the CPU type can be detected correctly with cpuinfo.
 
         Authors:
             Attila Kovacs
@@ -225,10 +218,9 @@ class TestCPUDetection:
         assert sut.Family == 6
 
 
-    def test_cpu_type_detection_with_missing_cpuinfo(self):
+    def test_cpu_type_detection_with_missing_cpuinfo(self) -> None:
 
-        """
-        Tests that the CPU type can be detected correctly without cpuinfo.
+        """Tests that the CPU type can be detected correctly without cpuinfo.
 
         Authors:
             Attila Kovacs
@@ -243,10 +235,9 @@ class TestCPUDetection:
         assert sut.ExtendedModel == -1
         assert sut.Family == -1
 
-    def test_cpu_speed_detection_with_cpuinfo(self):
+    def test_cpu_speed_detection_with_cpuinfo(self) -> None:
 
-        """
-        Tests that the CPU speed can be detected correctly.
+        """Tests that the CPU speed can be detected correctly.
 
         Authors:
             Attila Kovacs
@@ -256,10 +247,9 @@ class TestCPUDetection:
         sut._detect_cpu_speed(TEST_DATA)
         assert sut.MaxSpeed == '2.6000 GHz'
 
-    def test_cpu_speed_detection_without_cpuinfo(self):
+    def test_cpu_speed_detection_without_cpuinfo(self) -> None:
 
-        """
-        Tests that the CPU type can be detected correctly without cpuinfo.
+        """Tests that the CPU type can be detected correctly without cpuinfo.
 
         Authors:
             Attila Kovacs
@@ -269,10 +259,10 @@ class TestCPUDetection:
         sut._detect_cpu_speed({})
         assert sut.MaxSpeed == 'UNKNOWN'
 
-    def test_cpu_cache_detection_with_cpuinfo(self):
+    def test_cpu_cache_detection_with_cpuinfo(self) -> None:
 
-        """
-        Tests that the CPU cache size can be detected correctly with cpuinfo.
+        """Tests that the CPU cache size can be detected correctly with
+        cpuinfo.
 
         Authors:
             Attila Kovacs
@@ -282,10 +272,9 @@ class TestCPUDetection:
         sut._detect_cache_data(TEST_DATA)
         assert sut.L2CacheSize == '256 KB'
 
-    def test_cpu_cache_detection_without_cpuinfo(self):
+    def test_cpu_cache_detection_without_cpuinfo(self) -> None:
 
-        """
-        Tests that the CPU cache size can be detected correctly without
+        """Tests that the CPU cache size can be detected correctly without
         cpuinfo.
 
         Authors:

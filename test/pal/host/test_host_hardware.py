@@ -36,17 +36,15 @@ from murasame.pal.host.hosthardware import HostHardware
 
 class TestHostHardware:
 
-    """
-    Contains the unit tests of HostHardware class.
+    """Contains the unit tests of HostHardware class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostHardware instance can be created successfully.
+        """Tests that a HostHardware instance can be created successfully.
 
         Authors:
             Attila Kovacs

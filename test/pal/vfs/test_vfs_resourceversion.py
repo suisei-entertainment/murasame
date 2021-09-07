@@ -37,18 +37,16 @@ from murasame.pal.vfs.resourceversion import ResourceVersion
 
 class TestResourceVersion:
 
-    """
-    Contains the unit tests for the ResourceVersion class.
+    """Contains the unit tests for the ResourceVersion class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_with_valid_version_number(self):
+    def test_creation_with_valid_version_number(self) -> None:
 
-        """
-        Tests that a ResourceVersion object can be created with a valid version
-        number.
+        """Tests that a ResourceVersion object can be created with a valid
+        version number.
 
         Authors:
             Attila Kovacs
@@ -57,10 +55,9 @@ class TestResourceVersion:
         sut = ResourceVersion(version=1)
         assert sut is not None
 
-    def test_creation_without_version_number(self):
+    def test_creation_without_version_number(self) -> None:
 
-        """
-        Tests that a RersourceVersion object cannot be created without a
+        """Tests that a RersourceVersion object cannot be created without a
         version number.
 
         Authors:
@@ -70,11 +67,10 @@ class TestResourceVersion:
         with pytest.raises(TypeError):
             sut = ResourceVersion()
 
-    def test_creation_with_invalid_version_number(self):
+    def test_creation_with_invalid_version_number(self) -> None:
 
-        """
-        Tests that a ResourceVersion object cannot be created with an invalid
-        version number.
+        """Tests that a ResourceVersion object cannot be created with an
+        invalid version number.
 
         Authors:
             Attila Kovacs
@@ -86,10 +82,9 @@ class TestResourceVersion:
         with pytest.raises(InvalidInputError):
             sut = ResourceVersion(version=-1)
 
-    def test_comparison(self):
+    def test_comparison(self) -> None:
 
-        """
-        Tests that resource version instances can be compared.
+        """Tests that resource version instances can be compared.
 
         Authors:
             Attila Kovacs
@@ -120,11 +115,10 @@ class TestResourceVersion:
         with pytest.raises(TypeError):
             assert not sut1 > 1
 
-    def test_string_representations(self):
+    def test_string_representations(self) -> None:
 
-        """
-        Tests that the string represenations of a resource version object are
-        correct.
+        """Tests that the string representations of a resource version object
+        are correct.
 
         Authors:
             Attila Kovacs
@@ -135,10 +129,9 @@ class TestResourceVersion:
         assert sut.__str__() == '1'
         assert sut.__repr__() == 'ResourceVersion(1)'
 
-    def test_bumping_version_number(self):
+    def test_bumping_version_number(self) -> None:
 
-        """
-        Tests that the version number can be bumped.
+        """Tests that the version number can be bumped.
 
         Authors:
             Attila Kovacs

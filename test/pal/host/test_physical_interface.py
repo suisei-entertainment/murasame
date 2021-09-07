@@ -36,17 +36,15 @@ from murasame.pal.host.hostnetworking import PhysicalInterface
 
 class TestPhysicalInterface:
 
-    """
-    Contains the unit tests of PhysicalInterface class.
+    """Contains the unit tests of PhysicalInterface class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a PhysicalInterface instance can be created.
+        """Tests that a PhysicalInterface instance can be created.
 
         Authors:
             Attila Kovacs
@@ -55,10 +53,9 @@ class TestPhysicalInterface:
         sut = PhysicalInterface(interface_name='test')
         assert sut.Name == 'test'
 
-    def test_link_address_handling(self):
+    def test_link_address_handling(self) -> None:
 
-        """
-        Tests that link addresses are handled correctly.
+        """Tests that link addresses are handled correctly.
 
         Authors:
             Attila Kovacs
@@ -71,10 +68,9 @@ class TestPhysicalInterface:
         assert not sut.has_link_address('00:0A:95:9D:68:FF')
         sut.add_link_address(address='00:0A:95:9D:68:16')
 
-    def test_ipv4_address_handling(self):
+    def test_ipv4_address_handling(self) -> None:
 
-        """
-        Tests that IPv4 addresses are handled correctly.
+        """Tests that IPv4 addresses are handled correctly.
 
         Authors:
             Attila Kovacs
@@ -95,10 +91,9 @@ class TestPhysicalInterface:
                              is_localhost=False,
                              is_link_local_address=False)
 
-    def test_ipv6_address_handling(self):
+    def test_ipv6_address_handling(self) -> None:
 
-        """
-        Tests that IPv6 addresses are handled correctly.
+        """Tests that IPv6 addresses are handled correctly.
 
         Authors:
             Attila Kovacs

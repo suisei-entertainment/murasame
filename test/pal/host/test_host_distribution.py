@@ -36,17 +36,15 @@ from murasame.pal.host.hostdistribution import HostDistribution
 
 class TestHostDistribution:
 
-    """
-    Contains the unit tests of HostDistribution class.
+    """Contains the unit tests of HostDistribution class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostDistribution instance can be created.
+        """Tests that a HostDistribution instance can be created.
 
         Authors:
             Attila Kovacs

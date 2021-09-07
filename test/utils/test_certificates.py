@@ -52,9 +52,10 @@ class TestX509GenericCertificateFields:
         Attila Kovacs
     """
 
-    def test_creation_of_empty_object(self):
+    def test_creation_of_empty_object(self) -> None:
 
-        """Tests that an X509GenericCertificateFields object can be created empty.
+        """Tests that an X509GenericCertificateFields object can be created
+        empty.
 
         Authors:
             Attila Kovacs
@@ -76,7 +77,7 @@ class TestX509GenericCertificateFields:
         assert sut.Email is None
         assert sut.SAN is None
 
-    def test_creation_with_data(self):
+    def test_creation_with_data(self) -> None:
 
         """Tests that an X509GenericCertificateFields object can be created
         with data.
@@ -115,7 +116,7 @@ class TestX509GenericCertificateFields:
         assert sut.Email == 'testemail'
         assert sut.SAN == 'testsan'
 
-    def test_name_generation(self):
+    def test_name_generation(self) -> None:
 
         """Tests that an X.509 name object can be generated correctly.
 
@@ -174,7 +175,7 @@ class TestX509Certificate:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
         """Tests that a certificate object can be created.
 
@@ -199,7 +200,7 @@ class TestX509Certificate:
         assert sut.Extensions is None
         assert sut.CertificateBytes is None
 
-    def test_loading_valid_certificate(self):
+    def test_loading_valid_certificate(self) -> None:
 
         """Tests that a valid certificate can be loaded from disk.
 
@@ -226,7 +227,7 @@ class TestX509Certificate:
         assert sut.Extensions is not None
         assert sut.CertificateBytes is not None
 
-    def test_loading_invalid_certificate(self):
+    def test_loading_invalid_certificate(self) -> None:
 
         """Tests that loading an invalid certificate is handled correctly.
 
@@ -239,7 +240,7 @@ class TestX509Certificate:
             certificate_path=f'{TEST_FILES_DIRECTORY}/invalid_cert.pem',
             private_key_path=f'{TEST_FILES_DIRECTORY}/invalid_key.pem')
 
-    def test_loading_non_existent_certificate(self):
+    def test_loading_non_existent_certificate(self) -> None:
 
         """Tests that a valid certificate can be loaded from disk.
 
@@ -252,7 +253,7 @@ class TestX509Certificate:
             certificate_path='/path/to/nonexistent/cert',
             private_key_path='/path/to/nonexistent/key')
 
-    def test_certificate_saving(self):
+    def test_certificate_saving(self) -> None:
 
         """Tests that certificates can be saved to disk.
 
@@ -287,7 +288,7 @@ class TestX509Certificate:
         assert sut.Extensions == sut.Extensions
         assert sut.CertificateBytes == sut.CertificateBytes
 
-    def test_certificate_generation_with_default_parameters(self):
+    def test_certificate_generation_with_default_parameters(self) -> None:
 
         """Tests that a new certificate can be generated with default
         parameters.
@@ -327,7 +328,7 @@ class TestX509Certificate:
         assert cert is not None
         assert cert.IsValid
 
-    def test_certificate_generation_with_custom_validity(self):
+    def test_certificate_generation_with_custom_validity(self) -> None:
 
         """Tests that a new certificate can be generated with custom validity
         parameters.

@@ -37,17 +37,15 @@ from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
 class TestVFSLocalFile:
 
-    """
-    Contains the unit tests of the VFSLocalFile class.
+    """Contains the unit tests of the VFSLocalFile class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a VFSLocalFile object can be created.
+        """Tests that a VFSLocalFile object can be created.
 
         Authors:
             Attila Kovacs
@@ -56,10 +54,10 @@ class TestVFSLocalFile:
         sut = VFSLocalFile()
         assert sut.Path is None
 
-    def test_serialization(self):
+    def test_serialization(self) -> None:
 
-        """
-        Tests that at a VFSLocalFile object can be serialized to a dictionary.
+        """Tests that at a VFSLocalFile object can be serialized to a
+        dictionary.
 
         Authors:
             Attila Kovacs
@@ -74,10 +72,10 @@ class TestVFSLocalFile:
         assert serialized['path'] == '/test/path'
 
 
-    def test_deserialization(self):
+    def test_deserialization(self) -> None:
 
-        """
-        Tests that a VFSLocalFile object can be deserialized from a dictionary.
+        """Tests that a VFSLocalFile object can be deserialized from a
+        dictionary.
 
         Authors:
             Attila Kovacs
@@ -88,10 +86,9 @@ class TestVFSLocalFile:
         sut.deserialize(data=serialized)
         assert sut.Path == '/test/path'
 
-    def test_deserialization_of_invalid_structure(self):
+    def test_deserialization_of_invalid_structure(self) -> None:
 
-        """
-        Tests the deserialization of an invalid structure.
+        """Tests the deserialization of an invalid structure.
 
         Authors:
             Attila Kovacs
@@ -102,11 +99,9 @@ class TestVFSLocalFile:
         with pytest.raises(InvalidInputError):
             sut.deserialize(data={'path': '/test/path'})
 
+    def test_deserialization_without_type_marker(self) -> None:
 
-    def test_deserialization_without_type_marker(self):
-
-        """
-        Tests deserialization without a valid type marker in the serialized
+        """Tests deserialization without a valid type marker in the serialized
         data.
 
         Authors:

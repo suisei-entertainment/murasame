@@ -36,17 +36,15 @@ from murasame.pal.host.linkaddress import LinkAddress
 
 class TestLinkAddress:
 
-    """
-    Contains the unit tests of LinkAddress class.
+    """Contains the unit tests of LinkAddress class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a LinkAddress instance can be created.
+        """Tests that a LinkAddress instance can be created.
 
         Authors:
             Attila Kovacs

@@ -37,17 +37,15 @@ from murasame.pal.host.hostos import HostOS
 
 class TestHostOS:
 
-    """
-    Contains the unit tests of HostOS class.
+    """Contains the unit tests of HostOS class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostOS instance can be created.
+        """Tests that a HostOS instance can be created.
 
         Authors:
             Attila Kovacs

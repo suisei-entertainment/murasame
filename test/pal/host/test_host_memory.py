@@ -36,17 +36,15 @@ from murasame.pal.host.hostmemory import HostMemory
 
 class TestHostMemory:
 
-    """
-    Contains the unit tests of HostMemory class.
+    """Contains the unit tests of HostMemory class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostMemory instance can be created successfully.
+        """Tests that a HostMemory instance can be created successfully.
 
         Authors:
             Attila Kovacs

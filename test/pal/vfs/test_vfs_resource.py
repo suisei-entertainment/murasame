@@ -38,17 +38,15 @@ from murasame.pal.vfs.vfslocalfile import VFSLocalFile
 
 class TestPackageContent:
 
-    """
-    Contains the unit tests for the VFSResource class.
+    """Contains the unit tests for the VFSResource class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a VFSResource object can be created.
+        """Tests that a VFSResource object can be created.
 
         Authors:
             Attila Kovacs

@@ -46,10 +46,9 @@ from murasame.utils import (
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
 
-def get_password():
+def get_password() -> str:
 
-    """
-    Returns the test password to be used in the unit tests.
+    """Returns the test password to be used in the unit tests.
 
     Authors:
         Attila Kovacs
@@ -59,17 +58,15 @@ def get_password():
 
 class TestRSA:
 
-    """
-    Contains the RSA related unit tests.
+    """Contains the RSA related unit tests.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_2048_bit_key_generation_without_encryption(self):
+    def test_2048_bit_key_generation_without_encryption(self) -> None:
 
-        """
-        Tests that a 2048 bit unencrypted RSA key can be generated.
+        """Tests that a 2048 bit unencrypted RSA key can be generated.
 
         Authors:
             Attila Kovacs
@@ -80,10 +77,9 @@ class TestRSA:
 
         assert sut.PrivateKey is not None
 
-    def test_4096_bit_key_generation_without_encryption(self):
+    def test_4096_bit_key_generation_without_encryption(self) -> None:
 
-        """
-        Tests that a 4096 bit unencrypted RSA key can be generated.
+        """Tests that a 4096 bit unencrypted RSA key can be generated.
 
         Authors:
             Attila Kovacs
@@ -94,10 +90,9 @@ class TestRSA:
 
         assert sut.PrivateKey is not None
 
-    def test_2048_bit_key_generation_with_encryption(self):
+    def test_2048_bit_key_generation_with_encryption(self) -> None:
 
-        """
-        Tests that a 2048 bit encrypted RSA key can be generated.
+        """Tests that a 2048 bit encrypted RSA key can be generated.
 
         Authors:
             Attila Kovacs
@@ -109,10 +104,9 @@ class TestRSA:
 
         assert sut.PrivateKey is not None
 
-    def test_4096_bit_key_generation_with_encryption(self):
+    def test_4096_bit_key_generation_with_encryption(self) -> None:
 
-        """
-        Tests that a 4096 bit encrypted RSA key can be generated.
+        """Tests that a 4096 bit encrypted RSA key can be generated.
 
         Authors:
             Attila Kovacs
@@ -125,10 +119,9 @@ class TestRSA:
         assert sut.PrivateKey is not None
 
 
-    def test_saving_2048_bit_public_key(self):
+    def test_saving_2048_bit_public_key(self) -> None:
 
-        """
-        Tests that the generated 2048 bit public key can be saved to disk.
+        """Tests that the generated 2048 bit public key can be saved to disk.
 
         Authors:
             Attila Kovacs
@@ -142,10 +135,9 @@ class TestRSA:
 
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/public_2048_1.pem')
 
-    def test_saving_4096_bit_public_key(self):
+    def test_saving_4096_bit_public_key(self) -> None:
 
-        """
-        Tests that the generated 4096 bit public key can be saved to disk.
+        """Tests that the generated 4096 bit public key can be saved to disk.
 
         Authors:
             Attila Kovacs
@@ -159,11 +151,10 @@ class TestRSA:
 
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/public_4096_1.pem')
 
-    def test_saving_2048_bit_unencrypted_private_key(self):
+    def test_saving_2048_bit_unencrypted_private_key(self) -> None:
 
-        """
-        Tests that the generated 2048 bit unencrypted private key can be saved
-        to disk.
+        """Tests that the generated 2048 bit unencrypted private key can be
+        saved to disk.
 
         Authors:
             Attila Kovacs
@@ -177,11 +168,10 @@ class TestRSA:
 
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_2048_1.pem')
 
-    def test_saving_4096_bit_unencrypted_private_key(self):
+    def test_saving_4096_bit_unencrypted_private_key(self) -> None:
 
-        """
-        Tests that the generated 4096 bit unencrypted private key can be saved
-        to disk.
+        """Tests that the generated 4096 bit unencrypted private key can be
+        saved to disk.
 
         Authors:
             Attila Kovacs
@@ -195,10 +185,9 @@ class TestRSA:
 
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_4096_1.pem')
 
-    def test_saving_2048_bit_encrypted_private_key(self):
+    def test_saving_2048_bit_encrypted_private_key(self) -> None:
 
-        """
-        Tests that the generated 2048 bit encrypted private key can be saved
+        """Tests that the generated 2048 bit encrypted private key can be saved
         to disk.
 
         Authors:
@@ -214,10 +203,9 @@ class TestRSA:
 
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_2048_2.pem')
 
-    def test_saving_4096_bit_encrypted_private_key(self):
+    def test_saving_4096_bit_encrypted_private_key(self) -> None:
 
-        """
-        Tests that the generated 4096 bit encrypted private key can be saved
+        """Tests that the generated 4096 bit encrypted private key can be saved
         to disk.
 
         Authors:
@@ -233,10 +221,9 @@ class TestRSA:
 
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/private_4096_2.pem')
 
-    def test_saving_2048_bit_key_pair_unencrypted(self):
+    def test_saving_2048_bit_key_pair_unencrypted(self) -> None:
 
-        """
-        Tests that a 2048 bit RSA key pair can be saved unencrypted.
+        """Tests that a 2048 bit RSA key pair can be saved unencrypted.
 
         Authors:
             Attila Kovacs
@@ -252,10 +239,9 @@ class TestRSA:
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_2048_1.pem')
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_2048_1.pem')
 
-    def test_saving_4096_bit_key_pair_unencrypted(self):
+    def test_saving_4096_bit_key_pair_unencrypted(self) -> None:
 
-        """
-        Tests that a 4096 bit RSA key pair can be saved unencrypted.
+        """Tests that a 4096 bit RSA key pair can be saved unencrypted.
 
         Authors:
             Attila Kovacs
@@ -271,10 +257,9 @@ class TestRSA:
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_4096_1.pem')
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_4096_1.pem')
 
-    def test_saving_2048_bit_key_pair_encrypted(self):
+    def test_saving_2048_bit_key_pair_encrypted(self) -> None:
 
-        """
-        Tests that a 2048 bit RSA key pair can be saved encrypted.
+        """Tests that a 2048 bit RSA key pair can be saved encrypted.
 
         Authors:
             Attila Kovacs
@@ -291,10 +276,9 @@ class TestRSA:
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_2048_2.pem')
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_2048_2.pem')
 
-    def test_saving_4096_bit_key_pair_encrypted(self):
+    def test_saving_4096_bit_key_pair_encrypted(self) -> None:
 
-        """
-        Tests that a 4096 bit RSA key pair can be saved encrypted.
+        """Tests that a 4096 bit RSA key pair can be saved encrypted.
 
         Authors:
             Attila Kovacs
@@ -311,10 +295,9 @@ class TestRSA:
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_private_4096_2.pem')
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/pair_public_4096_2.pem')
 
-    def test_loading_existing_public_key(self):
+    def test_loading_existing_public_key(self) -> None:
 
-        """
-        Tests that an existing public key can be loaded.
+        """Tests that an existing public key can be loaded.
 
         Authors:
             Attila Kovacs
@@ -330,10 +313,9 @@ class TestRSA:
 
         assert sut.Key is not None
 
-    def test_loading_non_existing_public_key(self):
+    def test_loading_non_existing_public_key(self) -> None:
 
-        """
-        Tests that a non-existent public key cannot be loaded.
+        """Tests that a non-existent public key cannot be loaded.
 
         Authors:
             Attila Kovacs
@@ -342,10 +324,9 @@ class TestRSA:
         with pytest.raises(InvalidInputError):
             sut = RSAPublic(key_path='/non/existing/path')
 
-    def test_loading_unencrypted_private_key(self):
+    def test_loading_unencrypted_private_key(self) -> None:
 
-        """
-        Tests that a generated private key can be loaded.
+        """Tests that a generated private key can be loaded.
 
         Authors:
             Attila Kovacs
@@ -362,10 +343,9 @@ class TestRSA:
 
         assert sut.Key is not None
 
-    def test_loading_encrypted_private_key(self):
+    def test_loading_encrypted_private_key(self) -> None:
 
-        """
-        Tests that a generated encrypted private key can be loaded.
+        """Tests that a generated encrypted private key can be loaded.
 
         Authors:
             Attila Kovacs
@@ -384,10 +364,9 @@ class TestRSA:
 
         assert sut.Key is not None
 
-    def test_loading_non_existing_private_key(self):
+    def test_loading_non_existing_private_key(self) -> None:
 
-        """
-        Tests that a non-existing private key cannot be loaded.
+        """Tests that a non-existing private key cannot be loaded.
 
         Authors:
             Attila Kovacs
@@ -396,10 +375,9 @@ class TestRSA:
         with pytest.raises(InvalidInputError):
             sut = RSAPrivate(key_path='/non/existing/path')
 
-    def test_message_verification_without_encoding(self):
+    def test_message_verification_without_encoding(self) -> None:
 
-        """
-        Tests that messages can be signed and verified using an RSA key pair
+        """Tests that messages can be signed and verified using an RSA key pair
         without encoding.
 
         Authors:
@@ -417,10 +395,9 @@ class TestRSA:
         signature = sut_signer.sign(message)
         assert sut_verifier.verify(message, signature)
 
-    def test_message_verification_with_encoding(self):
+    def test_message_verification_with_encoding(self) -> None:
 
-        """
-        Tests that messages can be signed and verified using an RSA key pair
+        """Tests that messages can be signed and verified using an RSA key pair
         with encoding.
 
         Authors:
@@ -439,10 +416,9 @@ class TestRSA:
         assert sut_verifier.verify(
             message=message, signature=signature, encoded=True)
 
-    def test_message_encryption(self):
+    def test_message_encryption(self) -> None:
 
-        """
-        Tests that messages can be encrypted and decrypted using an RSA key
+        """Tests that messages can be encrypted and decrypted using an RSA key
         pair.
 
         Authors:

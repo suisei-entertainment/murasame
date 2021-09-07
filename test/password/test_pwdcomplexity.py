@@ -41,10 +41,15 @@ COMMON_PASSWORD_LIST_2 = "password1\npassword2\npassword3\npassword4"
 
 class TestPasswordComplexity:
 
-    def test_creation(self):
+    """Contains the unit tests for the PasswordComplexity class.
 
-        """
-        Tests that the password complexity validator can be created.
+    Authors:
+        Attila Kovacs
+    """
+
+    def test_creation(self) -> None:
+
+        """Tests that the password complexity validator can be created.
 
         Authors:
             Attila Kovacs
@@ -54,10 +59,9 @@ class TestPasswordComplexity:
         assert sut is not None
         assert sut.validate(password='test')
 
-    def test_length_validation_with_default_parameters(self):
+    def test_length_validation_with_default_parameters(self) -> None:
 
-        """
-        Tests that passwords are validated for length correctly with default
+        """Tests that passwords are validated for length correctly with default
         parameters.
 
         Authors:
@@ -69,10 +73,9 @@ class TestPasswordComplexity:
         assert sut.validate(password='')
         assert sut.validate(password='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
-    def test_length_validation_with_minimum_length(self):
+    def test_length_validation_with_minimum_length(self) -> None:
 
-        """
-        Tests that passwords are validated for length correctly with custom
+        """Tests that passwords are validated for length correctly with custom
         minimum length specified.
 
         Authors:
@@ -83,10 +86,9 @@ class TestPasswordComplexity:
         assert not sut.validate(password='test')
         assert sut.validate(password='test1')
 
-    def test_lenggth_validation_with_maximum_length(self):
+    def test_lenggth_validation_with_maximum_length(self) -> None:
 
-        """
-        Tests that passwords are validated for length correctly with custom
+        """Tests that passwords are validated for length correctly with custom
         maximum length specified.
 
         Authors:
@@ -97,10 +99,9 @@ class TestPasswordComplexity:
         assert sut.validate(password='test')
         assert not sut.validate(password='test11')
 
-    def test_character_validation_with_default_parameters(self):
+    def test_character_validation_with_default_parameters(self) -> None:
 
-        """
-        Tests that passwords are validated for characters correctly with
+        """Tests that passwords are validated for characters correctly with
         default parameters.
 
         Authors:
@@ -112,10 +113,9 @@ class TestPasswordComplexity:
         assert sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-    def test_character_validation_with_lowercase_required(self):
+    def test_character_validation_with_lowercase_required(self) -> None:
 
-        """
-        Tests that passwords are validated for characters correctly with
+        """Tests that passwords are validated for characters correctly with
         lowercase character requirement configured.
 
         Authors:
@@ -127,10 +127,9 @@ class TestPasswordComplexity:
         assert not sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-    def test_character_validation_with_uppercase_required(self):
+    def test_character_validation_with_uppercase_required(self) -> None:
 
-        """
-        Tests that passwords are validated for characters correctly with
+        """Tests that passwords are validated for characters correctly with
         uppercase character requirement configured.
 
         Authors:
@@ -142,10 +141,9 @@ class TestPasswordComplexity:
         assert sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-    def test_character_validation_with_lowercase_uppercase_required(self):
+    def test_character_validation_with_lowercase_uppercase_required(self) -> None:
 
-        """
-        Tests that passwords are validated for characters correctly with
+        """Tests that passwords are validated for characters correctly with
         lowercase and uppercase character requirement configured.
 
         Authors:
@@ -157,11 +155,10 @@ class TestPasswordComplexity:
         assert not sut.validate(password='TEST')
         assert sut.validate(password='Test')
 
-    def test_numerical_validation_with_default_parameters(self):
+    def test_numerical_validation_with_default_parameters(self) -> None:
 
-        """
-        Tests that passwords are validated for numerical characters correctly
-        with default parameters.
+        """Tests that passwords are validated for numerical characters
+        correctly with default parameters.
 
         Authors:
             Attila Kovacs
@@ -176,11 +173,10 @@ class TestPasswordComplexity:
         assert sut.validate(password='@')
         assert sut.validate(password='Test@')
 
-    def test_numerical_validation_with_custom_parameters(self):
+    def test_numerical_validation_with_custom_parameters(self) -> None:
 
-        """
-        Tests that passwords are validated for numerical characters correctly
-        with custom parameters.
+        """Tests that passwords are validated for numerical characters
+        correctly with custom parameters.
 
         Authors:
             Attila Kovacs
@@ -195,11 +191,10 @@ class TestPasswordComplexity:
         assert not sut.validate(password='@')
         assert not sut.validate(password='Test@')
 
-    def test_symbol_required_with_default_parameters(self):
+    def test_symbol_required_with_default_parameters(self) -> None:
 
-        """
-        Tests that passwords are validated for symbols correctly with default
-        parameters.
+        """Tests that passwords are validated for symbols correctly with
+        default parameters.
 
         Authors:
             Attila Kovacs
@@ -214,10 +209,9 @@ class TestPasswordComplexity:
         assert sut.validate(password='@')
         assert sut.validate(password='Test@')
 
-    def test_symbol_required_with_custom_parameters(self):
+    def test_symbol_required_with_custom_parameters(self) -> None:
 
-        """
-        Tests that passwords are validated for symbols correctly with custom
+        """Tests that passwords are validated for symbols correctly with custom
         parameters.
 
         Authors:
@@ -233,10 +227,10 @@ class TestPasswordComplexity:
         assert sut.validate(password='@')
         assert sut.validate(password='Test@')
 
-    def test_common_passwords(self):
+    def test_common_passwords(self) -> None:
 
-        """
-        Tests that passwords can be validated against a common password list.
+        """Tests that passwords can be validated against a common password
+        list.
 
         Authors:
             Attila Kovacs
@@ -250,10 +244,9 @@ class TestPasswordComplexity:
         assert not sut.validate(password='password3')
         assert sut.validate(password='password5')
 
-    def test_common_passwords_after_list_reload(self):
+    def test_common_passwords_after_list_reload(self) -> None:
 
-        """
-        Tests that passwords can be validated against a common password list
+        """Tests that passwords can be validated against a common password list
         after reloading the list.
 
         Authors:

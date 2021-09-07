@@ -35,17 +35,15 @@ from test.constants import TEST_FILES_DIRECTORY
 
 class TestHostSystem:
 
-    """
-    Contains the unit tests of HostSystem class.
+    """Contains the unit tests of HostSystem class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostSystem instance can be created.
+        """Tests that a HostSystem instance can be created.
 
         Authors:
             Attila Kovacs
@@ -54,10 +52,9 @@ class TestHostSystem:
         sut = HostSystem()
         assert sut is not None
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
 
-        """
-        Tests that a HostSystem instane can be initialized.
+        """Tests that a HostSystem instance can be initialized.
 
         Authors:
             Attila Kovacs

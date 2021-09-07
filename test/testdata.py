@@ -74,8 +74,7 @@ READY_MARKER = f'{TEST_FILES_DIRECTORY}/data_ready'
 
 def initialize_test_data():
 
-    """
-    Initializes all test data needed by the test cases.
+    """Initializes all test data needed by the test cases.
 
     This function makes sure that data initialization happens only once.
 

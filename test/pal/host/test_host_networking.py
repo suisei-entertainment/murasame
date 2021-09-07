@@ -36,17 +36,15 @@ from murasame.pal.host.hostnetworking import HostNetworking
 
 class TestHostNetworking:
 
-    """
-    Contains the unit tests of HostNetworking class.
+    """Contains the unit tests of HostNetworking class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostNetworking instance can be created.
+        """Tests that a HostNetworking instance can be created.
 
         Authors:
             Attila Kovacs

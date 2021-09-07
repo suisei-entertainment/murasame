@@ -36,17 +36,15 @@ from murasame.pal.host.hostdescriptor import HostDescriptor
 
 class TestHostDescriptor:
 
-    """
-    Contains the unit tests of HostDescriptor class.
+    """Contains the unit tests of HostDescriptor class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostDescriptor instance can be created.
+        """Tests that a HostDescriptor instance can be created.
 
         Authors:
             Attila Kovacs

@@ -59,13 +59,12 @@ MALFORMED_FILE_PATH = os.path.abspath(os.path.expanduser(
 MALFORMED_FILE_PATH_2 = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/malformed_2.json'))
 
-def get_password():
+def get_password() -> str:
 
-    """
-    Utility function for returning a password for file encryption tests.
+    """Utility function for returning a password for file encryption tests.
 
     Returns:
-        The test password.
+        str: The test password.
 
     Authors:
         Attila Kovacs
@@ -75,17 +74,15 @@ def get_password():
 
 class TestJsonFile:
 
-    """
-    Contains all unit tests of the JsonFile class.
+    """Contains all unit tests of the JsonFile class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a JsonFile object can be created.
+        """Tests that a JsonFile object can be created.
 
         Authors:
             Attila Kovacs
@@ -95,11 +92,10 @@ class TestJsonFile:
         assert sut.Path is not None
         assert sut.Content == {}
 
-    def test_saving_and_loading_compacted_json_file(self):
+    def test_saving_and_loading_compacted_json_file(self) -> None:
 
-        """
-        Tests that a compacted JSON content can be saved to and loaded from a
-        file on disk.
+        """Tests that a compacted JSON content can be saved to and loaded from
+        a file on disk.
 
         Authors:
             Attila Kovacs
@@ -114,11 +110,10 @@ class TestJsonFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_saving_and_loading_formatted_json_file(self):
+    def test_saving_and_loading_formatted_json_file(self) -> None:
 
-        """
-        Tests that a formatted JSON content can be saved to and loaded from a
-        file on disk.
+        """Tests that a formatted JSON content can be saved to and loaded from
+        a file on disk.
 
         Authors:
             Attila Kovacs
@@ -133,10 +128,9 @@ class TestJsonFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_saving_and_loading_encrypted_json_file(self):
+    def test_saving_and_loading_encrypted_json_file(self) -> None:
 
-        """
-        Tests that JSON content can be saved to and loaded from an encrypted
+        """Tests that JSON content can be saved to and loaded from an encrypted
         file on disk.
 
         Authors:
@@ -151,10 +145,9 @@ class TestJsonFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_loading_non_existent_file(self):
+    def test_loading_non_existent_file(self) -> None:
 
-        """
-        Tests loading a non-existent JSON file is handled properly.
+        """Tests loading a non-existent JSON file is handled properly.
 
         Authors:
             Attila Kovacs
@@ -164,10 +157,9 @@ class TestJsonFile:
         sut.load()
         assert sut.Content == {}
 
-    def test_savig_unencrypted_file_to_invalid_location(self):
+    def test_savig_unencrypted_file_to_invalid_location(self) -> None:
 
-        """
-        Tests that an unencrypted JSON  file is not saved to an invalid
+        """Tests that an unencrypted JSON  file is not saved to an invalid
         location.
 
         Authors:
@@ -178,10 +170,9 @@ class TestJsonFile:
         with pytest.raises(RuntimeError):
             sut.save()
 
-    def test_savig_encrypted_file_to_invalid_location(self):
+    def test_savig_encrypted_file_to_invalid_location(self) -> None:
 
-        """
-        Tests that an encrypted JSON  file is not saved to an invalid
+        """Tests that an encrypted JSON  file is not saved to an invalid
         location.
 
         Authors:
@@ -193,10 +184,9 @@ class TestJsonFile:
         with pytest.raises(RuntimeError):
             sut.save()
 
-    def test_loading_unencrypted_malformed_json_file(self):
+    def test_loading_unencrypted_malformed_json_file(self) -> None:
 
-        """
-        Tests loading an unencrypted and malformed JSON file.
+        """Tests loading an unencrypted and malformed JSON file.
 
         Authors:
             Attila Kovacs
@@ -211,10 +201,9 @@ class TestJsonFile:
         with pytest.raises(InvalidInputError):
             sut.load()
 
-    def test_loading_encrypted_malformed_json_file(self):
+    def test_loading_encrypted_malformed_json_file(self) -> None:
 
-        """
-        Tests loading an encrypted and malformed JSON file.
+        """Tests loading an encrypted and malformed JSON file.
 
         Authors:
             Attila Kovacs
@@ -232,10 +221,9 @@ class TestJsonFile:
         with pytest.raises(InvalidInputError):
             sut.load()
 
-    def test_overwrite_json_file_content(self):
+    def test_overwrite_json_file_content(self) -> None:
 
-        """
-        Tests that athe content of the JSON file can be overwritten.
+        """Tests that athe content of the JSON file can be overwritten.
 
         Authors:
             Attila Kovacs

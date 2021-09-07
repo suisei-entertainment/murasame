@@ -44,28 +44,26 @@ TEST_PACKAGE_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vf
 
 class TestPackage:
 
-    """
-    Contains the unit tests for the VFSPackage class.
+    """Contains the unit tests for the VFSPackage class.
 
     Authors:
         Attila Kovacs
     """
 
     @classmethod
-    def setup_class(cls):
+    def setup_class(cls) -> None:
 
         # Setup VFS
         SystemLocator.instance().register_provider(VFSAPI, VFS())
 
     @classmethod
-    def teardown_class(cls):
+    def teardown_class(cls) -> None:
 
         SystemLocator.instance().reset()
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a VFSPackage object can be created.
+        """Tests that a VFSPackage object can be created.
 
         Authors:
             Attila Kovacs
@@ -75,10 +73,9 @@ class TestPackage:
         assert sut is not None
         assert sut.Path == TEST_PACKAGE_PATH
 
-    def test_package_loading(self):
+    def test_package_loading(self) -> None:
 
-        """
-        Tests that a VFSPackage loads correctly from file.
+        """Tests that a VFSPackage loads correctly from file.
 
         Authors:
             Attila Kovacs

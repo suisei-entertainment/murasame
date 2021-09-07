@@ -39,17 +39,15 @@ from test.constants import TEST_FILES_DIRECTORY, GEOIP_DOWNLOAD_URL
 
 class TestGeoIP:
 
-    """
-    Contains all unit tests of the GeoIP class.
+    """Contains all unit tests of the GeoIP class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a GeoIP object can be created.
+        """Tests that a GeoIP object can be created.
 
         Authors:
             Attila Kovacs
@@ -61,10 +59,9 @@ class TestGeoIP:
         assert sut is not None
         assert os.path.isfile(f'{TEST_FILES_DIRECTORY}/GeoLite2-City.mmdb')
 
-    def test_geoip_query_with_valid_ip_address(self):
+    def test_geoip_query_with_valid_ip_address(self) -> None:
 
-        """
-        Tests that valid IP addresses can be queried.
+        """Tests that valid IP addresses can be queried.
 
         Authors:
             Attila Kovacs
@@ -83,10 +80,9 @@ class TestGeoIP:
         assert result.Latitude == 37.751
         assert result.Longitude == -97.822
 
-    def test_geoip_with_local_ip_address(self):
+    def test_geoip_with_local_ip_address(self) -> None:
 
-        """
-        Test querying an internal IP address for GeoIP.
+        """Test querying an internal IP address for GeoIP.
 
         Authors:
             Attila Kovacs
@@ -105,10 +101,9 @@ class TestGeoIP:
         assert result.Latitude == 'UNKNOWN'
         assert result.Longitude == 'UNKNOWN'
 
-    def test_geoip_with_invalid_ip_address(self):
+    def test_geoip_with_invalid_ip_address(self) -> None:
 
-        """
-        Test querying an invalid IP address for GeoIP.
+        """Test querying an invalid IP address for GeoIP.
 
         Authors:
             Attila Kovacs

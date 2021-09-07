@@ -40,17 +40,15 @@ KEY = 'secret test password'
 
 class TestAESEncryption:
 
-    """
-    Contains the unit tests for the content encryption functions.
+    """Contains the unit tests for the content encryption functions.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_content_encrpytion_same_cipher(self):
+    def test_content_encrpytion_same_cipher(self) -> None:
 
-        """
-        Tests that content can be encrypted and decrypted successfully with
+        """Tests that content can be encrypted and decrypted successfully with
         the same AES cipher.
 
         Authors:
@@ -62,10 +60,9 @@ class TestAESEncryption:
         decrypted = sut.decrypt(encrypted)
         assert decrypted == TEST_STRING
 
-    def test_content_encryption_different_ciphers(self):
+    def test_content_encryption_different_ciphers(self) -> None:
 
-        """
-        Tests that content can be encrypted and decrypted successfully with
+        """Tests that content can be encrypted and decrypted successfully with
         different AES cipher objects.
 
         Authors:

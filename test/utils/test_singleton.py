@@ -37,21 +37,19 @@ from murasame.utils import Singleton
 @Singleton
 class TestSingletonObject:
 
-    """
-    Basic test singleton.
+    """Basic test singleton.
 
     Authors:
         Attila Kovacs
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.testvalue = 'test'
 
-    def testfunction(self):
+    def testfunction(self) -> None:
 
-        """
-        Simple test function to test function calling on the singleton.
+        """Simple test function to test function calling on the singleton.
 
         Authors:
             Attila Kovacs
@@ -61,28 +59,26 @@ class TestSingletonObject:
 
 class TestSingleton:
 
-    """
-    Test suite for the Singleton annotation.
+    """Test suite for the Singleton annotation.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_singleton_access_through_instance(self):
+    def test_singleton_access_through_instance(self) -> None:
 
-        """
-        Test accessing the singleton through the instance method.
+        """Test accessing the singleton through the instance method.
 
-        Authors: Attila Kovacs
+        Authors:
+            Attila Kovacs
         """
 
         sut = TestSingletonObject.instance()
         assert sut.testvalue == 'test'
 
-    def test_singleton_instance_outside_instance(self):
+    def test_singleton_instance_outside_instance(self) -> None:
 
-        """
-        Tests accessing the singleton outside the instance method.
+        """Tests accessing the singleton outside the instance method.
 
         Authors:
             Attila Kovacs
@@ -91,10 +87,9 @@ class TestSingleton:
         with pytest.raises(TypeError):
             sut = TestSingletonObject()
 
-    def test_singleton_function_call(self):
+    def test_singleton_function_call(self) -> None:
 
-        """
-        Test calling functions on the singleton.
+        """Test calling functions on the singleton.
 
         Authors:
             Attila Kovacs
@@ -104,10 +99,9 @@ class TestSingleton:
         sut.testfunction()
         assert sut.testvalue == 'modified'
 
-    def test_singleton_instance_check(self):
+    def test_singleton_instance_check(self) -> None:
 
-        """
-        Test the instance check functionality of the Singleton.
+        """Test the instance check functionality of the Singleton.
 
         Authors:
             Attila Kovacs

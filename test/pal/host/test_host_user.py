@@ -37,17 +37,15 @@ from murasame.pal.host.hostuser import HostUser
 
 class TestHostUser:
 
-    """
-    Contains the unit tests of the HostUser class.
+    """Contains the unit tests of the HostUser class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that the HostUser class can be created.
+        """Tests that the HostUser class can be created.
 
         Authors:
             Attila Kovacs

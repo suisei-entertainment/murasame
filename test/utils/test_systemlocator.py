@@ -43,21 +43,19 @@ SYSTEM_DIR = f'{TEST_FILES_DIRECTORY}/systems/'
 
 class TestSystemLocator:
 
-    """
-    Contains the unit tests of the system locator pattern.
+    """Contains the unit tests of the system locator pattern.
 
     Authors:
         Attila Kovacs
     """
 
     @classmethod
-    def setup_class(cls):
+    def setup_class(cls) -> None:
         sys.path.append(TEST_FILES_DIRECTORY)
 
-    def test_system_path(self):
+    def test_system_path(self) -> None:
 
-        """
-        Tests that system paths can be created correctly.
+        """Tests that system paths can be created correctly.
 
         Authors:
             Attila Kovacs
@@ -70,10 +68,9 @@ class TestSystemLocator:
         assert sut.Path == system_path
         assert sut.Package == system_package
 
-    def test_system_discovery_with_valid_system_path(self):
+    def test_system_discovery_with_valid_system_path(self) -> None:
 
-        """
-        Tests that system discovery works properly when a valid system path
+        """Tests that system discovery works properly when a valid system path
         is provided.
 
         Authors:
@@ -90,11 +87,10 @@ class TestSystemLocator:
 
         assert SystemLocator.instance().get_provider(AbstractSystem) is not None
 
-    def test_system_discovery_with_valid_system_path(self):
+    def test_system_discovery_with_valid_system_path(self) -> None:
 
-        """
-        Tests that system discovery works properly when an invalid system path
-        is provided.
+        """Tests that system discovery works properly when an invalid system
+        path is provided.
 
         Authors:
             Attila Kovacs
@@ -106,10 +102,9 @@ class TestSystemLocator:
 
         assert SystemLocator.instance().get_provider(AbstractSystem) is not None
 
-    def test_duplicate_system_path_registration(self):
+    def test_duplicate_system_path_registration(self) -> None:
 
-        """
-        Tests that system paths cannot be registered twice.
+        """Tests that system paths cannot be registered twice.
 
         Authors:
             Attila Kovacs
@@ -122,10 +117,9 @@ class TestSystemLocator:
         from systems.testsystem import AbstractSystem
         assert  SystemLocator.instance().get_provider(AbstractSystem) is not None
 
-    def test_accessing_systems(self):
+    def test_accessing_systems(self) -> None:
 
-        """
-        Tests that systems can be accessed through the SystemLocator.
+        """Tests that systems can be accessed through the SystemLocator.
 
         Authors:
             Attila Kovacs
@@ -139,10 +133,9 @@ class TestSystemLocator:
         assert provider is not None
         assert provider.system_function()
 
-    def test_resetting_system_locator(self):
+    def test_resetting_system_locator(self) -> None:
 
-        """
-        Tests that the system locator can be reset.
+        """Tests that the system locator can be reset.
 
         Authors:
             Attila Kovacs
@@ -160,10 +153,9 @@ class TestSystemLocator:
         provider = SystemLocator.instance().get_provider(AbstractSystem)
         assert provider is None
 
-    def test_adding_providers_after_reset(self):
+    def test_adding_providers_after_reset(self) -> None:
 
-        """
-        Tests that new providers can be registered after the system locator
+        """Tests that new providers can be registered after the system locator
         has been reset.
 
         Authors:
@@ -178,10 +170,9 @@ class TestSystemLocator:
         assert provider is not None
         assert provider.system_function()
 
-    def test_unregistering_single_provider(self):
+    def test_unregistering_single_provider(self) -> None:
 
-        """
-        Tests that as single registered provider can be unregistered.
+        """Tests that as single registered provider can be unregistered.
 
         Authors:
             Attila Kovacs
@@ -202,10 +193,9 @@ class TestSystemLocator:
 
         assert provider is None
 
-    def test_unregistering_all_providers(self):
+    def test_unregistering_all_providers(self) -> None:
 
-        """
-        Tests that all providers can be unregistered.
+        """Tests that all providers can be unregistered.
 
         Authors:
             Attila Kovacs

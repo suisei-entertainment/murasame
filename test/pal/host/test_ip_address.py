@@ -38,17 +38,15 @@ from murasame.pal.host.ipv6address import IPv6Address
 
 class TestIPAddress:
 
-    """
-    Contains the unit tests of IpAddress class.
+    """Contains the unit tests of IpAddress class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_ip_address_creation(self):
+    def test_ip_address_creation(self) -> None:
 
-        """
-        Tests that a IpAddress instance can be created.
+        """Tests that a IpAddress instance can be created.
 
         Authors:
             Attila Kovacs
@@ -66,10 +64,9 @@ class TestIPAddress:
         assert not sut.is_localhost()
         assert not sut.is_link_local_address()
 
-    def test_ipv4_address_creation(self):
+    def test_ipv4_address_creation(self) -> None:
 
-        """
-        Tests that an IPv4Address instance can be created.
+        """Tests that an IPv4Address instance can be created.
 
         Authors:
             Attila Kovacs
@@ -87,10 +84,9 @@ class TestIPAddress:
         assert not sut.is_localhost()
         assert not sut.is_link_local_address()
 
-    def test_ipv6_address_creation(self):
+    def test_ipv6_address_creation(self) -> None:
 
-        """
-        Tests that an IPv6Address instance can be created.
+        """Tests that an IPv6Address instance can be created.
 
         Authors:
             Attila Kovacs

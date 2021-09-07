@@ -36,17 +36,15 @@ from murasame.utils.dices import Dices
 
 class TestDices:
 
-    """
-    Contains the unit tests for the Dices class.
+    """Contains the unit tests for the Dices class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_dice_rolling(self):
+    def test_dice_rolling(self) -> None:
 
-        """
-        Tests random number generation by throwing dices.
+        """Tests random number generation by throwing dices.
 
         Authors:
             Attila Kovacs

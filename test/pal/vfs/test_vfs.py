@@ -42,17 +42,15 @@ VFS_ROOT_PATH = os.path.abspath(os.path.expanduser('~/.murasame/testfiles/vfs'))
 
 class TestVFS:
 
-    """
-    Contains the unit tests for the VFS class.
+    """Contains the unit tests for the VFS class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a VFS object can be created.
+        """Tests that a VFS object can be created.
 
         Authors:
             Attila Kovacs
@@ -64,10 +62,9 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-    def test_adding_nodes_normally(self):
+    def test_adding_nodes_normally(self) -> None:
 
-        """
-        Tests that nodes can be added to the VFS.
+        """Tests that nodes can be added to the VFS.
 
         Authors:
             Attila Kovacs
@@ -85,10 +82,10 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-    def test_adding_duplicate_node(self):
+    def test_adding_duplicate_node(self) -> None:
 
-        """
-        Tests that adding a node with the same name twice results in a merge.
+        """Tests that adding a node with the same name twice results in a
+        merge.
 
         Authors:
             Attila Kovacs
@@ -113,10 +110,9 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-    def test_adding_node_to_existing_parent(self):
+    def test_adding_node_to_existing_parent(self) -> None:
 
-        """
-        Tests that a node can be added to an existing parent.
+        """Tests that a node can be added to an existing parent.
 
         Authors:
             Attila Kovacs
@@ -137,10 +133,9 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-    def test_removing_nodes(self):
+    def test_removing_nodes(self) -> None:
 
-        """
-        Tests that nodes can be removed from the VFS.
+        """Tests that nodes can be removed from the VFS.
 
         Authors:
             Attila Kovacs
@@ -156,10 +151,9 @@ class TestVFS:
 
         SystemLocator.instance().unregister_all_providers(VFSAPI)
 
-    def test_adding_directories(self):
+    def test_adding_directories(self) -> None:
 
-        """
-        Tests that file system directories can be added to the VFS.
+        """Tests that file system directories can be added to the VFS.
 
         Authors:
             Attila Kovacs

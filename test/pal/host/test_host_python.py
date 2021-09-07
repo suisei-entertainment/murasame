@@ -36,17 +36,15 @@ from murasame.pal.host.hostpython import HostPython
 
 class TestHostPython:
 
-    """
-    Contains the unit tests of HostPython class.
+    """Contains the unit tests of HostPython class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a HostPython instance can be created.
+        """Tests that a HostPython instance can be created.
 
         Authors:
             Attila Kovacs
@@ -62,10 +60,9 @@ class TestHostPython:
             sys.version_info.micro)
         assert sut.Location == sys.executable
 
-    def test_virtualenv_detection(self):
+    def test_virtualenv_detection(self) -> None:
 
-        """
-        Tests that detecting virtualenv is working.
+        """Tests that detecting virtualenv is working.
 
         This testcase assumes that tests are always executed in a virtualenv
         environment.

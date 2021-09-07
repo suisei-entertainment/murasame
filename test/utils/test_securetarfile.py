@@ -48,7 +48,7 @@ class TestSecureTarFile:
         Attila Kovacs
     """
 
-    def test_creation_without_parameters(self):
+    def test_creation_without_parameters(self) -> None:
 
         """Tests that a SecureTarFile object cannot be created without
         valid parameters.
@@ -60,7 +60,7 @@ class TestSecureTarFile:
         with pytest.raises(TypeError):
             sut = SecureTarFile()
 
-    def test_opening_valid_tar_file(self):
+    def test_opening_valid_tar_file(self) -> None:
 
         """Tests that a valid tar file can be opened.
 
@@ -72,7 +72,7 @@ class TestSecureTarFile:
             assert tar is not None
             assert isinstance(tar, SecureTarFile)
 
-    def test_extracting_from_valid_tar_file(self):
+    def test_extracting_from_valid_tar_file(self) -> None:
 
         """Tests that members can be extracted from a valid tar file.
 
@@ -85,7 +85,7 @@ class TestSecureTarFile:
 
         assert os.path.isdir(f'{TARTEST_DIRECTORY}/home')
 
-    def test_extracting_from_tarbomb(self):
+    def test_extracting_from_tarbomb(self) -> None:
 
         """Tests that a tar bomb is recognized when trying to extract a single
         member from it.
@@ -98,7 +98,7 @@ class TestSecureTarFile:
             with SecureTarFile.open(name=f'{TARTEST_DIRECTORY}/tarbomb.tar.gz') as tar:
                 tar.extract(member=tar.getmembers()[0])
 
-    def test_extracting_all_from_valid_tar_file(self):
+    def test_extracting_all_from_valid_tar_file(self) -> None:
 
         """Tests that all members can be extracted from a valid tar file.
 
@@ -111,7 +111,7 @@ class TestSecureTarFile:
 
         assert os.path.isdir(f'{TARTEST_DIRECTORY}/home')
 
-    def test_extracting_all_from_tarbomb(self):
+    def test_extracting_all_from_tarbomb(self) -> None:
 
         """Tests that a tar bomb is recognized when trying to extract all
         members from it.

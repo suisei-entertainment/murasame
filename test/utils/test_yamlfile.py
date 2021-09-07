@@ -59,13 +59,12 @@ MALFORMED_FILE_PATH = os.path.abspath(os.path.expanduser(
 MALFORMED_FILE_PATH_2 = os.path.abspath(os.path.expanduser(
     '~/.murasame/testfiles/malformed2.yaml'))
 
-def get_password():
+def get_password() -> str:
 
-    """
-    Utility function for returning a password for file encryption tests.
+    """Utility function for returning a password for file encryption tests.
 
     Returns:
-        The test password.
+        str: The test password.
 
     Authors:
         Attila Kovacs
@@ -75,17 +74,15 @@ def get_password():
 
 class TestYamlFile:
 
-    """
-    Contains all unit tests of the JsonFile class.
+    """Contains all unit tests of the JsonFile class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a JsonFile object can be created.
+        """Tests that a JsonFile object can be created.
 
         Authors:
             Attila Kovacs
@@ -95,11 +92,10 @@ class TestYamlFile:
         assert sut.Path is not None
         assert sut.Content == {}
 
-    def test_saving_and_loading_compacted_yaml_file(self):
+    def test_saving_and_loading_compacted_yaml_file(self) -> None:
 
-        """
-        Tests that YAML content can be saved to and loaded from a file on disk
-        in compacted format.
+        """Tests that YAML content can be saved to and loaded from a file on
+        disk in compacted format.
 
         Authors:
             Attila Kovacs
@@ -114,11 +110,10 @@ class TestYamlFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_saving_and_loading_formatted_yaml_file(self):
+    def test_saving_and_loading_formatted_yaml_file(self) -> None:
 
-        """
-        Tests that YAML content can be saved to and loaded from a file on disk
-        formatted.
+        """Tests that YAML content can be saved to and loaded from a file on
+        disk formatted.
 
         Authors:
             Attila Kovacs
@@ -133,10 +128,9 @@ class TestYamlFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_saving_and_loading_encrypted_yaml_file(self):
+    def test_saving_and_loading_encrypted_yaml_file(self) -> None:
 
-        """
-        Tests that YAML content can be saved to and loaded from an encrypted
+        """Tests that YAML content can be saved to and loaded from an encrypted
         file on disk.
 
         Authors:
@@ -151,10 +145,9 @@ class TestYamlFile:
         sut2.load()
         assert sut2.Content['test'] == 'test content'
 
-    def test_loading_non_existent_file(self):
+    def test_loading_non_existent_file(self) -> None:
 
-        """
-        Tests loading a non-existent YAML file is handled properly.
+        """Tests loading a non-existent YAML file is handled properly.
 
         Authors:
             Attila Kovacs
@@ -164,10 +157,9 @@ class TestYamlFile:
         sut.load()
         assert sut.Content == {}
 
-    def test_savig_unencrypted_file_to_invalid_location(self):
+    def test_savig_unencrypted_file_to_invalid_location(self) -> None:
 
-        """
-        Tests that the unencrypted file is not saved to an invalid location.
+        """Tests that the unencrypted file is not saved to an invalid location.
 
         Authors:
             Attila Kovacs
@@ -177,10 +169,9 @@ class TestYamlFile:
         with pytest.raises(RuntimeError):
             sut.save()
 
-    def test_savig_encrypted_file_to_invalid_location(self):
+    def test_savig_encrypted_file_to_invalid_location(self) -> None:
 
-        """
-        Tests that the encrypted file is not saved to an invalid location.
+        """Tests that the encrypted file is not saved to an invalid location.
 
         Authors:
             Attila Kovacs
@@ -191,10 +182,9 @@ class TestYamlFile:
         with pytest.raises(RuntimeError):
             sut.save()
 
-    def test_loading_unencrypted_malformed_yaml_file(self):
+    def test_loading_unencrypted_malformed_yaml_file(self) -> None:
 
-        """
-        Tests that an unencrypted malformed YAML file cannot be loaded.
+        """Tests that an unencrypted malformed YAML file cannot be loaded.
 
         Authors:
             Attila Kovacs
@@ -209,10 +199,9 @@ class TestYamlFile:
         with pytest.raises(InvalidInputError):
             sut.load()
 
-    def test_loading_encrypted_malformed_yaml_file(self):
+    def test_loading_encrypted_malformed_yaml_file(self) -> None:
 
-        """
-        Tests that an encrypted malformed YAML file cannot be loaded.
+        """Tests that an encrypted malformed YAML file cannot be loaded.
 
         Authors:
             Attila Kovacs
@@ -230,10 +219,9 @@ class TestYamlFile:
         with pytest.raises(InvalidInputError):
             sut.load()
 
-    def test_overwrite_yaml_file_content(self):
+    def test_overwrite_yaml_file_content(self) -> None:
 
-        """
-        Tests that the content of a YAML file can be overwritten.
+        """Tests that the content of a YAML file can be overwritten.
 
         Authors:
             Attila Kovacs

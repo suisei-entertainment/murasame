@@ -84,8 +84,7 @@ TEST_FILE_PATH = os.path.abspath(os.path.expanduser(
 
 class TestCliProcessor:
 
-    """
-    Contains all unit tests of the CliProcessor class.
+    """Contains all unit tests of the CliProcessor class.
 
     Authors:
         Attila Kovacs
@@ -93,8 +92,7 @@ class TestCliProcessor:
 
     def test_creation_from_command_map(self) -> None:
 
-        """
-        Tests that a CliProcessor object can be created from a command map.
+        """Tests that a CliProcessor object can be created from a command map.
 
         Authors:
             Attila Kovacs
@@ -105,8 +103,7 @@ class TestCliProcessor:
 
     def test_creation_from_config_file(self) -> None:
 
-        """
-        Tests that a CliProcessor object can be created from a configuration
+        """Tests that a CliProcessor object can be created from a configuration
         file.
 
         Authors:
@@ -122,8 +119,7 @@ class TestCliProcessor:
 
     def test_creation_without_command_map_or_config_file(self) -> None:
 
-        """
-        Tests that a CLI processor cannot be created without a valid command
+        """Tests that a CLI processor cannot be created without a valid command
         map or configuration file.
 
         Authors:
@@ -133,10 +129,9 @@ class TestCliProcessor:
         with pytest.raises(InvalidInputError):
             sut = CliProcessor(command_map=None, config_file=None)
 
-    def test_creation_with_unparsable_command_map(self):
+    def test_creation_with_unparsable_command_map(self) -> None:
 
-        """
-        Tests that a CLI processor cannot be created if the provided command
+        """Tests that a CLI processor cannot be created if the provided command
         map cannot be parsed.
 
         Authors:
@@ -146,10 +141,9 @@ class TestCliProcessor:
         with pytest.raises(InvalidInputError):
             sut = CliProcessor(command_map={'malformed': 'value'})
 
-    def test_creation_with_failing_config_file_and_fallback_command_map(self):
+    def test_creation_with_failing_config_file_and_fallback_command_map(self) -> None:
 
-        """
-        Tests that a CLI processor can be created if the loading of the
+        """Tests that a CLI processor can be created if the loading of the
         configuration file fails, but there is a fallback command map.
 
         Authors:
@@ -162,10 +156,9 @@ class TestCliProcessor:
         sut = CliProcessor(command_map=TEST_COMMAND_MAP,
                            config_file=TEST_FILE_PATH)
 
-    def test_creation_with_failing_config_file_without_fallback_command_map(self):
+    def test_creation_with_failing_config_file_without_fallback_command_map(self) -> None:
 
-        """
-        Tests that a CLI processor cannot be created if the loading of the
+        """Tests that a CLI processor cannot be created if the loading of the
         configuration file fails and there is no fallback command map.
 
         Authors:
@@ -178,8 +171,7 @@ class TestCliProcessor:
     @staticmethod
     def parser_callback(args: 'argparse.Namespace') -> None:
 
-        """
-        Callback function to test argument processing.
+        """Callback function to test argument processing.
 
         Authors:
             Attila Kovacs
@@ -189,8 +181,7 @@ class TestCliProcessor:
 
     def test_argument_parsing(self) -> None:
 
-        """
-        Tests that arguments are parsed correctly.
+        """Tests that arguments are parsed correctly.
 
         Authors:
             Attila Kovacs

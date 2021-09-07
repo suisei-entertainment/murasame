@@ -71,17 +71,15 @@ class ExampleMessageTransformer(SocketMessageTransformer):
 
 class TestSocket:
 
-    """
-    Contains unit tests for the socket wrappers.
+    """Contains unit tests for the socket wrappers.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_create_unencrypted_client_socket(self):
+    def test_create_unencrypted_client_socket(self) -> None:
 
-        """
-        Tests that an unencrypted client socket can be created with valid
+        """Tests that an unencrypted client socket can be created with valid
         parameters.
 
         Authors:
@@ -97,10 +95,9 @@ class TestSocket:
 
         del sut
 
-    def test_create_unencrypted_client_socket_with_invalid_port(self):
+    def test_create_unencrypted_client_socket_with_invalid_port(self) -> None:
 
-        """
-        Tests creation of a client socket with invalid port.
+        """Tests creation of a client socket with invalid port.
 
         Authors:
             Attila Kovacs
@@ -121,10 +118,9 @@ class TestSocket:
                                host='localhost',
                                port=123456789)
 
-    def test_create_unencrypted_client_socket_with_invalid_protocol(self):
+    def test_create_unencrypted_client_socket_with_invalid_protocol(self) -> None:
 
-        """
-        Tests creation of a client socket with invalid protocol.
+        """Tests creation of a client socket with invalid protocol.
 
         Authors:
             Attila Kovacs
@@ -143,10 +139,9 @@ class TestSocket:
     # class structure? It seems to be a false positive, so ignore this warning
     # for now.
     @pytest.mark.filterwarnings('ignore')
-    def test_create_unencrypted_server_socket(self):
+    def test_create_unencrypted_server_socket(self) -> None:
 
-        """
-        Tests that an unencrypted server socket can be created with valid
+        """Tests that an unencrypted server socket can be created with valid
         parameters.
 
         Authors:
@@ -162,10 +157,9 @@ class TestSocket:
 
         del sut
 
-    def test_create_unencrypted_server_socket_with_invalid_port(self):
+    def test_create_unencrypted_server_socket_with_invalid_port(self) -> None:
 
-        """
-        Test creation of unencrypted server socket with invalid port.
+        """Test creation of unencrypted server socket with invalid port.
 
         Authors:
             Attila Kovacs
@@ -192,10 +186,9 @@ class TestSocket:
     # class structure? It seems to be a false positive, so ignore this warning
     # for now.
     @pytest.mark.filterwarnings('ignore')
-    def test_create_unencrypted_server_socket_with_invalid_protocol(self):
+    def test_create_unencrypted_server_socket_with_invalid_protocol(self) -> None:
 
-        """
-        Test creation of unencrypted server socket with invalid protocol.
+        """Test creation of unencrypted server socket with invalid protocol.
 
         Authors:
             Attila Kovacs
@@ -208,10 +201,9 @@ class TestSocket:
                 port=11492,
                 ssl_protocol='invalidprotocol')
 
-    def test_create_tls12_client_socket(self):
+    def test_create_tls12_client_socket(self) -> None:
 
-        """
-        Tests that a TLS v1.2 encrypted client socket can be created with valid
+        """Tests that a TLS v1.2 encrypted client socket can be created with valid
         parameters.
 
         Authors:
@@ -232,10 +224,9 @@ class TestSocket:
 
         del sut
 
-    def test_create_tls12_client_socket_with_invalid_port(self):
+    def test_create_tls12_client_socket_with_invalid_port(self) -> None:
 
-        """
-        Tests TLS v1.2 client socket creation with invalid port.
+        """Tests TLS v1.2 client socket creation with invalid port.
 
         Authors:
             Attila Kovacs
@@ -262,11 +253,10 @@ class TestSocket:
                                ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
-    def test_create_tls12_server_socket(self):
+    def test_create_tls12_server_socket(self) -> None:
 
-        """
-        Tests that a TLS v1.2 encrypted server socket can be created with valid
-        parameters.
+        """Tests that a TLS v1.2 encrypted server socket can be created with
+        valid parameters.
 
         Authors:
             Attila Kovacs
@@ -286,10 +276,9 @@ class TestSocket:
 
         del sut
 
-    def test_create_tls12_server_socket_with_invalid_port(self):
+    def test_create_tls12_server_socket_with_invalid_port(self) -> None:
 
-        """
-        Tests creation of TLSv1.2 server socket with invalid port.
+        """Tests creation of TLSv1.2 server socket with invalid port.
 
         Authors:
             Attila Kovacs
@@ -316,11 +305,10 @@ class TestSocket:
                                ssl_protocol=BaseSocket.Protocols.TLS_V_1_2,
                                require_cert=False)
 
-    def test_create_tls13_client_socket(self):
+    def test_create_tls13_client_socket(self) -> None:
 
-        """
-        Tests that a TLS v1.3 encrypted client socket can be created with valid
-        parameters.
+        """Tests that a TLS v1.3 encrypted client socket can be created with
+        valid parameters.
 
         Authors:
             Attila Kovacs
@@ -340,10 +328,9 @@ class TestSocket:
 
         del sut
 
-    def test_create_tls13_client_socket_with_invalid_port(self):
+    def test_create_tls13_client_socket_with_invalid_port(self) -> None:
 
-        """
-        Test creation of TLSv1.3 client socket with invalid port.
+        """Test creation of TLSv1.3 client socket with invalid port.
 
         Authors:
             Attila Kovacs
@@ -370,11 +357,10 @@ class TestSocket:
                                ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
-    def test_create_tls13_server_socket(self):
+    def test_create_tls13_server_socket(self) -> None:
 
-        """
-        Tests that a TLS v1.3 encrypted server socket can be created with valid
-        parameters.
+        """Tests that a TLS v1.3 encrypted server socket can be created with
+        valid parameters.
 
         Authors:
             Attila Kovacs
@@ -394,10 +380,9 @@ class TestSocket:
 
         del sut
 
-    def test_create_tls13_server_socket_with_invalid_port(self):
+    def test_create_tls13_server_socket_with_invalid_port(self) -> None:
 
-        """
-        Tests creation of TLSv1.3 server socket with invalid port.
+        """Tests creation of TLSv1.3 server socket with invalid port.
 
         Authors:
             Attila Kovacs
@@ -424,10 +409,9 @@ class TestSocket:
                                ssl_protocol=BaseSocket.Protocols.TLS_V_1_3,
                                require_cert=False)
 
-    def test_message_sending_from_client_socket(self):
+    def test_message_sending_from_client_socket(self) -> None:
 
-        """
-        Messages can be sent between sockets from a client socket.
+        """Messages can be sent between sockets from a client socket.
 
         Authors:
             Attila Kovacs
@@ -452,10 +436,9 @@ class TestSocket:
 
         del client
 
-    def test_message_sending_from_server_socket(self):
+    def test_message_sending_from_server_socket(self) -> None:
 
-        """
-        Messages can be sent between sockets from a server socket.
+        """Messages can be sent between sockets from a server socket.
 
         Authors:
             Attila Kovacs

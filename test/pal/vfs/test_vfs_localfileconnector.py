@@ -132,17 +132,15 @@ NONEXISTENT_DESCRIPTOR.deserialize(data=NONEXISTENT_DESCRIPTOR_DATA)
 
 class TestVFSLocalFileConnector:
 
-    """
-    Contains the unit tests for the VFSLocalFileConnector class.
+    """Contains the unit tests for the VFSLocalFileConnector class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a VFSLocalFileConnector instance can be created.
+        """Tests that a VFSLocalFileConnector instance can be created.
 
         Authors:
             Attila Kovacs
@@ -151,10 +149,10 @@ class TestVFSLocalFileConnector:
         sut = VFSLocalFileConnector()
         assert sut is not None
 
-    def test_loading_json_files(self):
+    def test_loading_json_files(self) -> None:
 
-        """
-        Tests that JSON files can be loaded through the local file connector.
+        """Tests that JSON files can be loaded through the local file
+        connector.
 
         Authors:
             Attila Kovacs
@@ -164,10 +162,9 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=JSON_DESCRIPTOR)
         assert data['test'] == 'value'
 
-    def test_loading_json_files_without_mime_type(self):
+    def test_loading_json_files_without_mime_type(self) -> None:
 
-        """
-        Tests that JSON files can be loaded through the local file connector
+        """Tests that JSON files can be loaded through the local file connector
         without a valid MIME type specified.
 
         Authors:
@@ -178,10 +175,10 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=JSON_DESCRIPTOR_NO_MIME)
         assert data['test'] == 'value'
 
-    def test_loading_yaml_files(self):
+    def test_loading_yaml_files(self) -> None:
 
-        """
-        Tests that YAML files can be loaded through the local file connector.
+        """Tests that YAML files can be loaded through the local file
+        connector.
 
         Authors:
             Attila Kovacs
@@ -191,10 +188,9 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=YAML_DESCRIPTOR)
         assert data['test'] == 'value'
 
-    def test_loading_yaml_files_without_mime_type(self):
+    def test_loading_yaml_files_without_mime_type(self) -> None:
 
-        """
-        Tests that JSON files can be loaded through the local file connector
+        """Tests that JSON files can be loaded through the local file connector
         without a valid MIME type specified.
 
         Authors:
@@ -205,10 +201,9 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=YAML_DESCRIPTOR_NO_MIME)
         assert data['test'] == 'value'
 
-    def test_loading_generic_files(self):
+    def test_loading_generic_files(self) -> None:
 
-        """
-        Tests that generic files can be loaded through the local file
+        """Tests that generic files can be loaded through the local file
         connector.
 
         Authors:
@@ -219,10 +214,10 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=GENERIC_DESCRIPTOR)
         assert data == 'test'
 
-    def test_loading_binary_files(self):
+    def test_loading_binary_files(self) -> None:
 
-        """
-        Tests that binary files can be loaded through the local file connector.
+        """Tests that binary files can be loaded through the local file
+        connector.
 
         Authors:
             Attila Kovacs
@@ -232,11 +227,10 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=BINARY_DESCRIPTOR)
         assert data == b'test'
 
-    def test_loading_json_config_files(self):
+    def test_loading_json_config_files(self) -> None:
 
-        """
-        Tests that configuration files with JSON syntax can be loaded through
-        the local file connector.
+        """Tests that configuration files with JSON syntax can be loaded
+        through the local file connector.
 
         Authors:
             Attila Kovacs
@@ -246,11 +240,10 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=JSON_CONF_DESCRIPTOR)
         assert data['test'] == 'value'
 
-    def test_loading_yaml_config_files(self):
+    def test_loading_yaml_config_files(self) -> None:
 
-        """
-        Tests that configuration files with YAML syntax can be loaded through
-        the local file connector.
+        """Tests that configuration files with YAML syntax can be loaded
+        through the local file connector.
 
         Authors:
             Attila Kovacs
@@ -260,10 +253,9 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=YAML_CONF_DESCRIPTOR)
         assert data['test'] == 'value'
 
-    def test_loading_non_existent_files(self):
+    def test_loading_non_existent_files(self) -> None:
 
-        """
-        Tests that non-existent files cannot be loaded.
+        """Tests that non-existent files cannot be loaded.
 
         Authors:
             Attila Kovacs
@@ -273,10 +265,9 @@ class TestVFSLocalFileConnector:
         data = sut.load(descriptor=NONEXISTENT_DESCRIPTOR)
         assert data == None
 
-    def test_loading_invalid_descriptor(self):
+    def test_loading_invalid_descriptor(self) -> None:
 
-        """
-        Tests that invalid file descriptors cannot be loaded.
+        """Tests that invalid file descriptors cannot be loaded.
 
         Authors:
             Attila Kovacs
@@ -286,10 +277,12 @@ class TestVFSLocalFileConnector:
         with pytest.raises(InvalidInputError):
             sut.load(descriptor=None)
 
-    def test_saving_files(self):
+    def test_saving_files(self) -> None:
 
-        """
-        Tests that files can be saved through the local file connector.
+        """Tests that files can be saved through the local file connector.
+
+        Authors:
+            Attila Kovacs
         """
 
         # STEP #1 - JSON file can be saved

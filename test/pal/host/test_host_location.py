@@ -40,17 +40,15 @@ from test.constants import TEST_FILES_DIRECTORY
 
 class TestHostLocation:
 
-    """
-    Contains the unit tests of HostLocation class.
+    """Contains the unit tests of HostLocation class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_with_valid_ip_without_database(self):
+    def test_creation_with_valid_ip_without_database(self) -> None:
 
-        """
-        Tests that a HostLocation instance can be created successfully with
+        """Tests that a HostLocation instance can be created successfully with
         a valid IP address but without a GeoIP database.
 
         Authors:
@@ -66,11 +64,10 @@ class TestHostLocation:
             assert sut.PostalCode == 'UNKNOWN'
             assert sut.Location == (0,0)
 
-    def test_creation_without_valid_ip_without_database(self):
+    def test_creation_without_valid_ip_without_database(self) -> None:
 
-        """
-        Tests that a HostLocation instance can be created successfully without
-        a valid IP address and a GeoIP database.
+        """Tests that a HostLocation instance can be created successfully
+        without a valid IP address and a GeoIP database.
 
         Authors:
             Attila Kovacs
@@ -85,10 +82,9 @@ class TestHostLocation:
             assert sut.PostalCode == 'UNKNOWN'
             assert sut.Location == (0,0)
 
-    def test_creation_with_valid_ip_and_database(self):
+    def test_creation_with_valid_ip_and_database(self) -> None:
 
-        """
-        Tests that a HostLocation instance can be created successfully with
+        """Tests that a HostLocation instance can be created successfully with
         a valid IP address and GeoIP database.
 
         Authors:
@@ -103,11 +99,10 @@ class TestHostLocation:
         assert sut.PostalCode != 'UNKNOWN'
         assert sut.Location != (0,0)
 
-    def test_creation_with_invalid_ip_and_valid_database(self):
+    def test_creation_with_invalid_ip_and_valid_database(self) -> None:
 
-        """
-        Tests that a HostLocation instance can be created successfully without
-        a valid IP address but with a GeoIP database.
+        """Tests that a HostLocation instance can be created successfully
+        without a valid IP address but with a GeoIP database.
 
         Authors:
             Attila Kovacs

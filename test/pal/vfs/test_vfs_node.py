@@ -77,17 +77,15 @@ SERIALIZED_NODE_DATA = \
 
 class TestVFSNode:
 
-    """
-    Contains the unit tests for the VFSNode class.
+    """Contains the unit tests for the VFSNode class.
 
     Authors:
         Attila Kovacs
     """
 
-    def test_creation_root_node(self):
+    def test_creation_root_node(self) -> None:
 
-        """
-        Tests that a VFSNode object can be created as the root node of the
+        """Tests that a VFSNode object can be created as the root node of the
         VFS tree.
 
         Authors:
@@ -99,10 +97,9 @@ class TestVFSNode:
         assert sut.is_root()
         assert sut.Name == 'ROOT'
 
-    def test_creation_non_root_node(self):
+    def test_creation_non_root_node(self) -> None:
 
-        """
-        Tests that a VFSNode object can be created as a non-root node of the
+        """Tests that a VFSNode object can be created as a non-root node of the
         VFS tree.
 
         Authors:
@@ -118,10 +115,10 @@ class TestVFSNode:
         assert not sut.Resources
         assert not sut.Latest
 
-    def test_creation_non_directory_root_node(self):
+    def test_creation_non_directory_root_node(self) -> None:
 
-        """
-        Tests that the root node of the VFS tree can only be a directory node.
+        """Tests that the root node of the VFS tree can only be a directory
+        node.
 
         Authors:
             Attila Kovacs
@@ -130,10 +127,9 @@ class TestVFSNode:
         with pytest.raises(InvalidInputError):
             sut = VFSNode(node_name='', node_type=VFSNodeTypes.FILE)
 
-    def test_type_checking_of_directory_node(self):
+    def test_type_checking_of_directory_node(self) -> None:
 
-        """
-        Tests that the type of a directory node can be checked.
+        """Tests that the type of a directory node can be checked.
 
         Authors:
             Attila Kovacs
@@ -144,10 +140,9 @@ class TestVFSNode:
         assert sut.is_dir()
         assert not sut.is_file()
 
-    def test_type_checking_of_file_node(self):
+    def test_type_checking_of_file_node(self) -> None:
 
-        """
-        Tests that the type of a file node can be checked.
+        """Tests that the type of a file node can be checked.
 
         Authors:
             Attila Kovacs
@@ -158,10 +153,9 @@ class TestVFSNode:
         assert not sut.is_dir()
         assert sut.is_file()
 
-    def test_adding_single_resource(self):
+    def test_adding_single_resource(self) -> None:
 
-        """
-        Tests that a single VFS resource can be added to the node.
+        """Tests that a single VFS resource can be added to the node.
 
         Authors:
             Attila Kovacs
@@ -179,10 +173,9 @@ class TestVFSNode:
         assert sut.Latest == resource1
         assert sut.NumResources == 1
 
-    def test_adding_multiple_resources_with_different_version(self):
+    def test_adding_multiple_resources_with_different_version(self) -> None:
 
-        """
-        Tests that multiple VFS resources with difference resource versions
+        """Tests that multiple VFS resources with difference resource versions
         can be added to the node.
 
         Authors:
@@ -208,10 +201,9 @@ class TestVFSNode:
         assert sut.Latest == resource2
         assert sut.NumResources == 2
 
-    def test_adding_multiple_resources_with_same_version(self):
+    def test_adding_multiple_resources_with_same_version(self) -> None:
 
-        """
-        Tests that a second VFS resource with the same version as an already
+        """Tests that a second VFS resource with the same version as an already
         existing resource cannot be added to the node.
 
         Authors:
@@ -237,10 +229,9 @@ class TestVFSNode:
         assert sut.Latest == resource1
         assert sut.NumResources == 1
 
-    def test_adding_resource_in_any_order(self):
+    def test_adding_resource_in_any_order(self) -> None:
 
-        """
-        Tests that resources can be added to the VFS node in any order.
+        """Tests that resources can be added to the VFS node in any order.
 
         Authors:
             Attila Kovacs
@@ -279,10 +270,9 @@ class TestVFSNode:
         assert sut.NumResources == 4
         assert sut.Latest == resource4
 
-    def test_removing_single_resource(self):
+    def test_removing_single_resource(self) -> None:
 
-        """
-        Tests that a single VFS resource can be removed from the node.
+        """Tests that a single VFS resource can be removed from the node.
 
         Authors:
             Attila Kovacs
@@ -300,10 +290,9 @@ class TestVFSNode:
 
         assert sut.NumResources == 0
 
-    def test_removing_single_resource_from_multiple(self):
+    def test_removing_single_resource_from_multiple(self) -> None:
 
-        """
-        Tests that a single VFS resource can be removed from the node when
+        """Tests that a single VFS resource can be removed from the node when
         multiple resource are added to the node.
 
         Authors:
@@ -336,10 +325,9 @@ class TestVFSNode:
 
         assert sut.NumResources == 2
 
-    def test_serialization(self):
+    def test_serialization(self) -> None:
 
-        """
-        Tests that a VFS node can be serialized to a dictionary.
+        """Tests that a VFS node can be serialized to a dictionary.
 
         Authors:
             Attila Kovacs
@@ -359,10 +347,9 @@ class TestVFSNode:
 
         assert data == SERIALIZED_NODE_DATA
 
-    def test_deserialization(self):
+    def test_deserialization(self) -> None:
 
-        """
-        Tests that a VFS node can be deserialized from a dictionary.
+        """Tests that a VFS node can be deserialized from a dictionary.
 
         Authors:
             Attila Kovacs

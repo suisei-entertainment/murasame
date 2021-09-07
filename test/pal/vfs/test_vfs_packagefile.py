@@ -36,16 +36,16 @@ from murasame.pal.vfs.vfspackagefile import VFSPackageFile
 
 class TestPackageFile:
 
-    """
-    Contains the unit tests for the PackageFile class.
+    """Contains the unit tests for the PackageFile class.
+
     Authors:
         Attila Kovacs
     """
 
-    def test_creation(self):
+    def test_creation(self) -> None:
 
-        """
-        Tests that a PackageFile object can be created.
+        """Tests that a PackageFile object can be created.
+
         Authors:
             Attila Kovacs
         """
