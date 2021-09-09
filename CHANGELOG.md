@@ -9,6 +9,7 @@ and this project adheres to
 ## [UNRELEASED]
 
 ### Added
+- [MUR-57]: Added support for protoc compiler.
 - [MUR-87]: Added support for manual SonarCloud scans.
 - [MUR-88]: Secured the PID file of a daemon application against tampering.
 - [MUR-89]: Added secure handling for temp directories
