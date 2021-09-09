@@ -22,6 +22,7 @@ Contains the implementation of the GRPCServer class.
 """
 
 # Runtime Imports
+import os
 from concurrent import futures
 from typing import Union
 
@@ -70,8 +71,8 @@ class GRPCServer(LogWriter):
         port: int,
         server_type: GRPCServerTypes = GRPCServerTypes.SECURE,
         max_threads: Union[int, None] = None,
-        certificate: X509Certificate = None,
-        private_key: RSAPrivate = None,
+        certificate_path: str = None,
+        private_key_path: str = None,
         root_certificate: X509Certificate = None,
         capacity: Union[int, None] = None) -> None:
 
@@ -85,10 +86,10 @@ class GRPCServer(LogWriter):
             max_threads (Union[int, None]): The maximum amount of threads to
                 assign to the server.
 
-            certificate (X509Certificate): Optional X.509 certificate to use to
+            certificate_path (str): Optional X.509 certificate to use to
                 secure the server.
 
-            private_key (RSAPrivate): The private key associated with the
+            private_key_path (str): The private key associated with the
                 certificate.
 
             root_certificate (X509Certificate): The root certificate to use for
@@ -109,10 +110,18 @@ class GRPCServer(LogWriter):
                          cache_entries=True)
 
         if server_type == GRPCServerTypes.SECURE \
-            and (certificate is None or private_key is None):
+            and (certificate_path is None or private_key_path is None):
             raise InvalidInputError(
                 'Cannot create a secure gRPC server without a valid '
                 'certificate and private key.')
+
+            if not os.path.isfile(certificate_path):
+                raise InvalidInputError(
+                    f'Certificate file {certificate_path} does not exist.')
+
+            if not os.path.isfile(private_key_path):
+                raise InvalidInputError(
+                    f'Private key file {private_key_path} does not exist.')
 
         self._server_type = server_type
         self._port = port
@@ -122,20 +131,29 @@ class GRPCServer(LogWriter):
             max_workers=max_threads),
             maximum_concurrent_rpcs=capacity)
 
-        # Create the server credentials
+        # Configure secure server
         self._server_credentials = None
         if server_type == GRPCServerTypes.SECURE:
 
+            # Read the certificate and the private key from disk
+            private_key = None
+            certificate = None
+
+            with open(private_key_path, 'rb') as private_key_file:
+                private_key = private_key_file.read()
+
+            with open(certificate_path, 'rb') as certificate_file:
+                certificate = certificate_file.read()
+
+            # Create the server credentials
             if root_certificate:
                 self._server_credentials = grpc.ssl_server_credentials(
-                    [(private_key.Key,
-                      certificate.CertificateBytes)],
+                    [(private_key, certificate)],
                     root_certificates=root_certificate.CertificateBytes,
                     require_client_auth=True)
             else:
                 self._server_credentials = grpc.ssl_server_credentials(
-                    [(private_key.Key,
-                      certificate.CertificateBytes)],
+                    [(private_key, certificate)],
                     root_certificates=None,
                     require_client_auth=False)
 

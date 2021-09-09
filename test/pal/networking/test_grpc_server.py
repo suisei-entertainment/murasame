@@ -35,6 +35,12 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from murasame.exceptions import InvalidInputError
 from murasame.pal.networking.grpcserver import GRPCServer
 from murasame.pal.networking.grpcservertypes import GRPCServerTypes
+from murasame.utils import X509Certificate, RSAPrivate
+
+# Test Imports
+from test.constants import TEST_FILES_DIRECTORY
+
+GRPC_TEST_DIRECTORY = f'{TEST_FILES_DIRECTORY}/grpc'
 
 class TestGRPCServer:
 
@@ -68,7 +74,10 @@ class TestGRPCServer:
             Attila Kovacs
         """
 
-        # TODO
+        sut = GRPCServer(port=12346,
+                         server_type=GRPCServerTypes.SECURE,
+                         certificate_path=f'{GRPC_TEST_DIRECTORY}/cert.pem',
+                         private_key_path=f'{GRPC_TEST_DIRECTORY}/key.pem')
 
     def test_creation_of_secure_server_without_valid_certificate(self) -> None:
 
@@ -80,9 +89,8 @@ class TestGRPCServer:
         """
 
         with pytest.raises(InvalidInputError):
-            sut = GRPCServer(port=12345,
+            sut = GRPCServer(port=12347,
                              server_type=GRPCServerTypes.SECURE)
-
 
     def test_start_stop_server_in_non_blocking_mode(self) -> None:
 
@@ -93,7 +101,7 @@ class TestGRPCServer:
             Attila Kovacs
         """
 
-        sut = GRPCServer(port=12346,
+        sut = GRPCServer(port=12348,
                          server_type=GRPCServerTypes.INSECURE)
 
         sut.start()
@@ -108,7 +116,7 @@ class TestGRPCServer:
             Attila Kovacs
         """
 
-        sut = GRPCServer(port=12347,
+        sut = GRPCServer(port=12349,
                          server_type=GRPCServerTypes.INSECURE)
 
         sut.start(block=True, timeout=0.1)

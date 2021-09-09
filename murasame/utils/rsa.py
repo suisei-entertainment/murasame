@@ -190,6 +190,20 @@ class RSAPrivate:
 
         return self._private_key
 
+    @property
+    def PrivateBytes(self) -> bytes:
+
+        """Returns the private key serialized to a byte array.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        return self._private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption())
+
     def __init__(self,
                  key_path: str,
                  cb_retrieve_password: Callable = None) -> None:
