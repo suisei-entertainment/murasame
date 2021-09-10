@@ -40,13 +40,10 @@ from murasame.api import VFSAPI
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
 
-PROTOCOL_DIRECTORTY = os.path.abspath(os.path.expanduser(
-    f'{TEST_FILES_DIRECTORY}/protocolcompiler'))
-
+PROTOCOL_DIRECTORTY = f'{TEST_FILES_DIRECTORY}/protocolcompiler'
 PROTOCOL_INPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/input'
 PROTOCOL_OUTPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/output'
 INVALID_INPUT_DIRECTORY = f'{PROTOCOL_DIRECTORTY}/invalidinput'
-
 PROTOCOL_FILE = f'{PROTOCOL_INPUT_DIRECTORY}/testfile.proto'
 
 class TestProtocolCompiler:
@@ -72,9 +69,10 @@ class TestProtocolCompiler:
 
         assert sut is not None
 
-    def test_compilation_of_valid_source_files(self) -> None:
+    def test_compilation_of_valid_source_files_with_include_path(self) -> None:
 
-        """Tests that valid protocol files can be compiled.
+        """Tests that valid protocol files can be compiled when an include path
+        is provided.
 
         Authors:
             Attila Kovacs
@@ -86,6 +84,28 @@ class TestProtocolCompiler:
 
         sut = ProtocolCompiler(path='/input',
                                include_path=PROTOCOL_INPUT_DIRECTORY,
+                               output_path=PROTOCOL_OUTPUT_DIRECTORY)
+
+        assert sut.compile()
+        assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2.py')
+        assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2_grpc.py')
+
+        SystemLocator.instance().unregister_provider(VFSAPI, vfs)
+
+    def test_compilation_of_valid_source_files_without_include_path(self) -> None:
+
+        """Tests that valid protocol files can be compiled when no include path
+        is provided.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        vfs = VFS()
+        vfs.register_source(path=PROTOCOL_DIRECTORTY)
+        SystemLocator.instance().register_provider(VFSAPI, vfs)
+
+        sut = ProtocolCompiler(path='/input',
                                output_path=PROTOCOL_OUTPUT_DIRECTORY)
 
         assert sut.compile()

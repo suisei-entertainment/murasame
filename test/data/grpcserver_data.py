@@ -33,11 +33,40 @@ from test.constants import TEST_FILES_DIRECTORY
 
 GRPC_TEST_DIRECTORY = f'{TEST_FILES_DIRECTORY}/grpc'
 
+PROTOCOL_INPUT_DIRECTORY = f'{GRPC_TEST_DIRECTORY}/input'
+PROTOCOL_OUTPUT_DIRECTORY = f'{GRPC_TEST_DIRECTORY}/output'
+PROTOCOL_FILE = f'{PROTOCOL_INPUT_DIRECTORY}/testfile.proto'
+
+TEST_PROTOCOL_FILE = \
+"""
+syntax = "proto3";
+
+package testpackage;
+
+service TestService
+{
+    rpc TestCall(TestInput) returns (TestReturn) {} 
+}
+
+message TestInput
+{
+    int32 testInt = 1;
+    string testString = 2;
+}
+
+message TestReturn
+{
+    string response = 1;
+}
+"""
+
 def create_grpc_data() -> None:
 
     # Create directories
     if not os.path.isdir(GRPC_TEST_DIRECTORY):
         os.mkdir(GRPC_TEST_DIRECTORY)
+        os.mkdir(PROTOCOL_INPUT_DIRECTORY)
+        os.mkdir(PROTOCOL_OUTPUT_DIRECTORY)
 
     # Create certificates
     command = f'openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout {GRPC_TEST_DIRECTORY}/key.pem -out {GRPC_TEST_DIRECTORY}/cert.pem -days 365 -subj "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com"'
@@ -49,3 +78,5 @@ def create_grpc_data() -> None:
         assert False
 
     # Create protocol files
+    with open(PROTOCOL_FILE, 'w', encoding='UTF-8') as file:
+        file.write(TEST_PROTOCOL_FILE)

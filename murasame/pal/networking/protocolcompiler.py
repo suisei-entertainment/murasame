@@ -21,6 +21,9 @@
 Contains the implementation of the ProtocolCompiler class.
 """
 
+# Runtime Imports
+import os
+
 # Dependency Imports
 from grpc_tools import protoc
 
@@ -84,7 +87,11 @@ class ProtocolCompiler(LogWriter):
 
         return  self._output_path
 
-    def __init__(self, path: str, include_path: str, output_path: str) -> None:
+    def __init__(
+        self,
+        path: str,
+        output_path: str,
+        include_path: str = None) -> None:
 
         """Creates a new ProtocolCompiler instance.
 
@@ -92,11 +99,11 @@ class ProtocolCompiler(LogWriter):
             path (str): The path to the VFS directory containing the proto
                 files.
 
-            include_path (str): Path to a file system directory containing
-                include files that are required during compilation.
-
             output_path (path): Path to a directory in the file system where
                 the generated code will be saved.
+
+            include_path (str): Path to a file system directory containing
+                include files that are required during compilation.
 
         Authors:
             Attila Kovacs
@@ -140,14 +147,32 @@ class ProtocolCompiler(LogWriter):
 
         result = True
         for file in file_list:
-            if protoc.main((
-                '',
-                f'-I{self._include_path}',
-                f'--python_out={self._output_path}',
-                f'--grpc_python_out={self._output_path}',
-                f'{file.Latest.Descriptor.Path}'
-            )) != 0:
-                self.error(f'Failed to compile proto file {file}.')
-                result = False
+
+            # Get the directory of the file we're compiling. It needs to be
+            # added as an include directory if it's not specified as include
+            # directory already.
+            file_directory = os.path.dirname(file.Latest.Descriptor.Path)
+
+            # Compile the file
+            if self._include_path is None \
+                or self._include_path == file_directory:
+                if protoc.main((
+                    '',
+                    f'-I{file_directory}',
+                    f'--python_out={self._output_path}',
+                    f'--grpc_python_out={self._output_path}',
+                    f'{file.Latest.Descriptor.Path}')) != 0:
+                    self.error(f'Failed to compile proto file {file}.')
+                    result = False
+            else:
+                if protoc.main((
+                    '',
+                    f'-I{file_directory}',
+                    f'-I{self._include_path}',
+                    f'--python_out={self._output_path}',
+                    f'--grpc_python_out={self._output_path}',
+                    f'{file.Latest.Descriptor.Path}')) != 0:
+                    self.error(f'Failed to compile proto file {file}.')
+                    result = False
 
         return result

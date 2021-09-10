@@ -35,6 +35,7 @@ from murasame.exceptions import InvalidInputError
 from murasame.log.logwriter import LogWriter
 from murasame.pal.networking.grpcservertypes import GRPCServerTypes
 from murasame.utils import X509Certificate, RSAPrivate
+from murasame.pal.networking.protocolcompiler import ProtocolCompiler
 
 class GRPCServer(LogWriter):
 
@@ -218,3 +219,37 @@ class GRPCServer(LogWriter):
                        f'{self._port}.')
 
         self.debug(f'gRPC server on port {self._port} has been stopped.')
+
+    def compile_protocol(
+        self,
+        input_path: str,
+        output_path: str,
+        additional_include_path: str = None) -> bool:
+
+        """Compiles the given protocol files.
+
+        Args:
+            input_path (str): The path to the VFS directory containing the
+                proto files.
+
+            output_path (str): Path to a directory in the file system where
+                the generated code will be saved.
+
+            additional_include_path (str): Path to a file system directory
+                containing include files that are required during compilation.
+
+        Returns:
+            bool: 'True' if the compilation was successful, 'False' otherwise.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        self.debug(f'Compiling protocol files from {input_path}...')
+
+        compiler = ProtocolCompiler(
+            path=input_path,
+            include_path=additional_include_path,
+            output_path=output_path)
+
+        return  compiler.compile()

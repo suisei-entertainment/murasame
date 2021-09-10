@@ -35,12 +35,18 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from murasame.exceptions import InvalidInputError
 from murasame.pal.networking.grpcserver import GRPCServer
 from murasame.pal.networking.grpcservertypes import GRPCServerTypes
-from murasame.utils import X509Certificate, RSAPrivate
+from murasame.utils import SystemLocator
+from murasame.api import VFSAPI
+from murasame.pal.vfs import VFS
 
 # Test Imports
 from test.constants import TEST_FILES_DIRECTORY
 
 GRPC_TEST_DIRECTORY = f'{TEST_FILES_DIRECTORY}/grpc'
+
+PROTOCOL_INPUT_DIRECTORY = f'{GRPC_TEST_DIRECTORY}/input'
+PROTOCOL_OUTPUT_DIRECTORY = f'{GRPC_TEST_DIRECTORY}/output'
+PROTOCOL_FILE = f'{GRPC_TEST_DIRECTORY}/testfile.proto'
 
 class TestGRPCServer:
 
@@ -121,6 +127,30 @@ class TestGRPCServer:
 
         sut.start(block=True, timeout=0.1)
         sut.stop()
+
+    def test_compiling_protocol_files(self) -> None:
+
+        """Tests that protocol files can be compiled through the gRPC server
+        object.
+
+        Authors:
+            Attila Kovacs
+        """
+
+        vfs = VFS()
+        vfs.register_source(path=GRPC_TEST_DIRECTORY)
+        SystemLocator.instance().register_provider(VFSAPI, vfs)
+
+        sut = GRPCServer(port=12350,
+                         server_type=GRPCServerTypes.INSECURE)
+
+        assert sut.compile_protocol(input_path='/input',
+                                    output_path=PROTOCOL_OUTPUT_DIRECTORY)
+
+        assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2.py')
+        assert os.path.isfile(f'{PROTOCOL_OUTPUT_DIRECTORY}/testfile_pb2_grpc.py')
+
+        SystemLocator.instance().unregister_provider(VFSAPI, vfs)
 
     def test_message_handling(self) -> None:
 
